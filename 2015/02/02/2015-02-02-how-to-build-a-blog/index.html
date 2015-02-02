@@ -18,6 +18,8 @@
 <meta property="og:url" content="http://www.yuthon.com/2015/02/02/2015-02-02-how-to-build-a-blog/">
 <meta property="og:site_name" content="Yuhton's blog">
 <meta property="og:description" content="本篇文章详细介绍了从买域名、Github与Hexo设置到DNS设置等一系列建站流程，所有步骤都在搭建此网站时测试通过。兹撰此文，以为后用。">
+<meta property="og:image" content="http://i.imgur.com/7IphlLj.png">
+<meta property="og:image" content="http://i.imgur.com/CJzWyzX.png">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="建站手札——如何建立一个部署在Github上的Hexo博客">
 <meta name="twitter:description" content="本篇文章详细介绍了从买域名、Github与Hexo设置到DNS设置等一系列建站流程，所有步骤都在搭建此网站时测试通过。兹撰此文，以为后用。">
@@ -233,12 +235,12 @@
 <figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="variable">$ </span>hexo d -g</div></pre></td></tr></table></figure>
 
 <h3 id="DNSpod设置">DNSpod设置</h3>
-<p>推荐使用DNSpod，免费而且稳定。<br>注册<a href="https://www.dnspod.cn/" target="_blank" rel="external">DNSpod</a>，添加域名后按如下配置：</p>
+<p>推荐使用DNSpod，免费而且稳定。<br>注册<a href="https://www.dnspod.cn/" target="_blank" rel="external">DNSpod</a>，添加域名后按如下配置：<br><img src="http://i.imgur.com/7IphlLj.png" alt="DNSpod"></p>
 <blockquote>
 <p><strong>Tips</strong>：其中主机记录为A的指向的ip地址是Github Pages的提供的ip，如博客不能登录，有可能是Github更改了空间服务的ip地址，记得及时到在<a href="https://help.github.com/articles/setting-up-a-custom-domain-with-github-pages" target="_blank" rel="external">GitHub Pages</a>查看最新的ip即可。<br><strong>Tips 2</strong>：www指定的记录是你在Github注册的仓库地址。</p>
 </blockquote>
 <h3 id="Godaddy设置">Godaddy设置</h3>
-<p>进入My Account —&gt; DOMAINS —&gt; yuthon.com —&gt; Launch —&gt; SETTINGS —&gt; Nameservers，点击Manage，选Custom，将DNSpod的地址（f1g1ns1.dnspod.net和f1g1ns2.dnspod.net）填入其中，点Save保存。<br>至此，大功告成。</p>
+<p>进入My Account —&gt; DOMAINS —&gt; yuthon.com —&gt; Launch —&gt; SETTINGS —&gt; Nameservers，点击Manage，选Custom，将DNSpod的地址（f1g1ns1.dnspod.net和f1g1ns2.dnspod.net）填入其中，点Save保存。<br><img src="http://i.imgur.com/CJzWyzX.png" alt="Nameserver"><br>至此，大功告成。</p>
   
 	</div>
 		<footer class="article-footer clearfix">
