@@ -102,7 +102,7 @@
 				
 				<section class="switch-part switch-part2">
 					<div class="widget tagcloud">
-						<a href="/tags/Github/" style="font-size: 15.00px;">Github</a><a href="/tags/Godaddy/" style="font-size: 10.00px;">Godaddy</a><a href="/tags/Hexo/" style="font-size: 20.00px;">Hexo</a>
+						<a href="/tags/Coursera/" style="font-size: 10.00px;">Coursera</a><a href="/tags/Digital-Image-Processing/" style="font-size: 10.00px;">Digital Image Processing</a><a href="/tags/Github/" style="font-size: 15.00px;">Github</a><a href="/tags/Godaddy/" style="font-size: 10.00px;">Godaddy</a><a href="/tags/Hexo/" style="font-size: 20.00px;">Hexo</a>
 					</div>
 				</section>
 				
@@ -198,7 +198,7 @@
 <p>Hexo在2.4.1版本之后增加了文章目录（Table Of Contents）的功能，对于用Markdown语言写的文章能自动生成目录。但是现在使用的Yilia主题里似乎没有集成这一功能，可以通过以下几步来实现。</p>
 <h3 id="将文章目录模块添加到文章模板中">将文章目录模块添加到文章模板中</h3>
 <p>打开<code>/theme/yilia/layout/_partial/article.ejs</code>文件，在<code>&lt;%- post.content %&gt;</code>之前插入以下代码：</p>
-<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"><span class="vbscript">&lt;% <span class="keyword">if</span>(post.toc !== <span class="literal">false</span>){ %&gt;</span></div><div class="line">	<span class="tag">&lt;<span class="title">div</span> <span class="attribute">id</span>=<span class="value">"toc"</span> <span class="attribute">class</span>=<span class="value">"toc-article"</span>&gt;</span></div><div class="line">		<span class="tag">&lt;<span class="title">strong</span> <span class="attribute">class</span>=<span class="value">"toc-title"</span>&gt;</span><span class="vbscript">&lt;%= __(<span class="comment">'文章目录') %&gt;</span></span><span class="tag">&lt;/<span class="title">strong</span>&gt;</span></div><div class="line">	<span class="vbscript">&lt;%- toc(page.content) %&gt;</span></div><div class="line">	<span class="tag">&lt;/<span class="title">div</span>&gt;</span></div><div class="line"><span class="vbscript">&lt;% } %&gt;</span></div></pre></td></tr></table></figure>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"><span class="vbscript">&lt;% <span class="keyword">if</span>(post.toc !== <span class="literal">false</span>){ %&gt;</span></div><div class="line">	<span class="tag">&lt;<span class="title">div</span> <span class="attribute">id</span>=<span class="value">"toc"</span> <span class="attribute">class</span>=<span class="value">"toc-article"</span>&gt;</span></div><div class="line">		<span class="tag">&lt;<span class="title">strong</span> <span class="attribute">class</span>=<span class="value">"toc-title"</span>&gt;</span><span class="vbscript">&lt;%= __(<span class="comment">'文章目录') %&gt;</span></span><span class="tag">&lt;/<span class="title">strong</span>&gt;</span></div><div class="line">	<span class="vbscript">&lt;%- toc(post.content) %&gt;</span></div><div class="line">	<span class="tag">&lt;/<span class="title">div</span>&gt;</span></div><div class="line"><span class="vbscript">&lt;% } %&gt;</span></div></pre></td></tr></table></figure>
 
 <p>如此则默认开启文章目录，如果某些文章不需要文章目录的话，可以在<code>front-matter</code>加上<code>toc: false</code>即可，如</p>
 <figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">title: 新博客开张</div><div class="line">date: 2015-02-02 11:58:24</div><div class="line">categories: Mess</div><div class="line">tags: [Hexo,Github]</div><div class="line"><span class="header">toc: false</span></div><div class="line">---</div><div class="line">最近按照[<span class="link_label">网上的教程</span>](<span class="link_url">http://cnfeat.com/2014/05/10/2014-05-11-how-to-build-a-blog/</span>)在Github上利用Github Pages和Hexo建了一个静态的站点，作为以后发布读书笔记所用。</div></pre></td></tr></table></figure>
@@ -214,6 +214,15 @@
   
     
 <nav id="article-nav">
+  
+    <a href="/2015/02/03/imageproc-week1/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">&lt;</strong>
+      <div class="article-nav-title">
+        
+          Image and video precessing - Week 1 Notes
+        
+      </div>
+    </a>
   
   
     <a href="/2015/02/02/how-to-build-a-blog/" id="article-nav-older" class="article-nav-link-wrap">
