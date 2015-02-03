@@ -1,0 +1,444 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>建站手札——如何建立一个部署在Github上的Hexo博客 | Yuhton&#39;s blog</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="本篇文章详细介绍了从买域名、Github与Hexo设置到DNS设置等一系列建站流程，所有步骤都在搭建此网站时测试通过。兹撰此文，以为后用。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="建站手札——如何建立一个部署在Github上的Hexo博客">
+<meta property="og:url" content="http://www.yuthon.com/2015/02/02/how-to-build-a-blog/">
+<meta property="og:site_name" content="Yuhton's blog">
+<meta property="og:description" content="本篇文章详细介绍了从买域名、Github与Hexo设置到DNS设置等一系列建站流程，所有步骤都在搭建此网站时测试通过。兹撰此文，以为后用。">
+<meta property="og:image" content="http://i.imgur.com/7IphlLj.png">
+<meta property="og:image" content="http://i.imgur.com/CJzWyzX.png">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="建站手札——如何建立一个部署在Github上的Hexo博客">
+<meta name="twitter:description" content="本篇文章详细介绍了从买域名、Github与Hexo设置到DNS设置等一系列建站流程，所有步骤都在搭建此网站时测试通过。兹撰此文，以为后用。">
+
+  
+    <link rel="alternative" href="/atom.xml" title="Yuhton&#39;s blog" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  <link rel="stylesheet" href="/css/style.css" type="text/css">
+
+  
+
+  <script src="http://libs.baidu.com/jquery/1.9.0/jquery.js"></script>
+</head>
+<body>
+  <div id="container">
+    <div class="left-col">
+    <div class="overlay"></div>
+<div class="intrude-less">
+	<header id="header" class="inner">
+		<div class="profilepic">
+			<img src="/img/Avatar.png">
+		</div>
+
+		<hgroup>
+		  <h1 class="header-author"><a href="/">Yusu Pan</a></h1>
+		</hgroup>
+
+		
+		<p class="header-subtitle">Gaining Through Losing</p>
+		
+
+		
+			<div class="switch-btn">
+				<div class="icon">
+					<div class="icon-ctn">
+						<div class="icon-wrap icon-house" data-idx="0">
+							<div class="birdhouse"></div>
+							<div class="birdhouse_holes"></div>
+						</div>
+						<div class="icon-wrap icon-ribbon hide" data-idx="1">
+							<div class="ribbon"></div>
+						</div>
+						
+						
+						<div class="icon-wrap icon-me hide" data-idx="3">
+							<div class="user"></div>
+							<div class="shoulder"></div>
+						</div>
+						
+					</div>
+					
+				</div>
+				<div class="tips-box hide">
+					<div class="tips-arrow"></div>
+					<ul class="tips-inner">
+						<li>菜单</li>
+						<li>标签</li>
+						
+						
+						<li>关于我</li>
+						
+					</ul>
+				</div>
+			</div>
+		
+
+		<div class="switch-area">
+			<div class="switch-wrap">
+				<section class="switch-part switch-part1">
+					<nav class="header-menu">
+						<ul>
+						
+							<li><a href="/">主页</a></li>
+				        
+							<li><a href="/archives">所有文章</a></li>
+				        
+						</ul>
+					</nav>
+					<nav class="header-nav">
+						<div class="social">
+							
+								<a class="github" target="_blank" href="/corenel" title="github">github</a>
+					        
+								<a class="rss" target="_blank" href="/#" title="rss">rss</a>
+					        
+								<a class="google" target="_blank" href="/xxdsox@gmail.com" title="google">google</a>
+					        
+								<a class="twitter" target="_blank" href="/xxdsox" title="twitter">twitter</a>
+					        
+						</div>
+					</nav>
+				</section>
+				
+				
+				<section class="switch-part switch-part2">
+					<div class="widget tagcloud">
+						<a href="/tags/Github/" style="font-size: 15.00px;">Github</a><a href="/tags/Godaddy/" style="font-size: 10.00px;">Godaddy</a><a href="/tags/Hexo/" style="font-size: 20.00px;">Hexo</a>
+					</div>
+				</section>
+				
+				
+				
+
+				
+				
+				<section class="switch-part switch-part3">
+				
+					I&#39;m Yusu Pan in ZJU, that&#39;s my blog.
+				</section>
+				
+			</div>
+		</div>
+	</header>				
+</div>
+    </div>
+    <div class="mid-col">
+      <nav id="mobile-nav">
+  	<div class="overlay"></div>
+	<div class="intrude-less">
+		<header id="header" class="inner">
+			<div class="profilepic">
+				<img src="/img/Avatar.png">
+			</div>
+
+			<hgroup>
+			  <h1 class="header-author"><a href="/">Yusu Pan</a></h1>
+			</hgroup>
+			
+			<p class="header-subtitle">Gaining Through Losing</p>
+			
+			<nav class="header-menu">
+				<ul>
+				
+					<li><a href="/">主页</a></li>
+		        
+					<li><a href="/archives">所有文章</a></li>
+		        
+		        <div class="clearfix"></div>
+				</ul>
+			</nav>
+			<nav class="header-nav">
+				<div class="social">
+					
+						<a class="github" target="_blank" href="/corenel" title="github">github</a>
+			        
+						<a class="rss" target="_blank" href="/#" title="rss">rss</a>
+			        
+						<a class="google" target="_blank" href="/xxdsox@gmail.com" title="google">google</a>
+			        
+						<a class="twitter" target="_blank" href="/xxdsox" title="twitter">twitter</a>
+			        
+				</div>
+			</nav>
+		</header>				
+	</div>
+</nav>
+      <article id="post-how-to-build-a-blog" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2015/02/02/how-to-build-a-blog/" class="article-date">
+  	<time datetime="2015-02-02T05:21:26.000Z" itemprop="datePublished">Feb 2 2015</time>
+</a>
+      
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Mess/">Mess</a>
+  </div>
+
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Github/">Github</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Godaddy/">Godaddy</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Hexo/">Hexo</a></li></ul>
+
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      建站手札——如何建立一个部署在Github上的Hexo博客
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        
+          <div id="toc" class="toc-article">
+            <strong class="toc-title">文章目录</strong>
+         <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#前言"><span class="toc-number">1.</span> <span class="toc-text">前言</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#什么是Github_Pages？"><span class="toc-number">2.</span> <span class="toc-text">什么是Github Pages？</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#什么是Hexo"><span class="toc-number">3.</span> <span class="toc-text">什么是Hexo</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#购买域名"><span class="toc-number">4.</span> <span class="toc-text">购买域名</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#配置与使用Github"><span class="toc-number">5.</span> <span class="toc-text">配置与使用Github</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#安装Git"><span class="toc-number">5.1.</span> <span class="toc-text">安装Git</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#注册Github账号"><span class="toc-number">5.2.</span> <span class="toc-text">注册Github账号</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#配置SSH"><span class="toc-number">5.3.</span> <span class="toc-text">配置SSH</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#检查本地的SSH_Keys配置"><span class="toc-number">5.3.1.</span> <span class="toc-text">检查本地的SSH Keys配置</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#生成一个新的SSH_Key"><span class="toc-number">5.3.2.</span> <span class="toc-text">生成一个新的SSH Key</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#将SSH_Key添加到Github"><span class="toc-number">5.3.3.</span> <span class="toc-text">将SSH Key添加到Github</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#测试SSH_Key"><span class="toc-number">5.3.4.</span> <span class="toc-text">测试SSH Key</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#设置个人信息"><span class="toc-number">5.3.5.</span> <span class="toc-text">设置个人信息</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#常见问题"><span class="toc-number">5.3.6.</span> <span class="toc-text">常见问题</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#配置Github_Pages"><span class="toc-number">5.4.</span> <span class="toc-text">配置Github Pages</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#在Github上建立仓库"><span class="toc-number">5.4.1.</span> <span class="toc-text">在Github上建立仓库</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#配置Hexo"><span class="toc-number">6.</span> <span class="toc-text">配置Hexo</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#安装Node-js"><span class="toc-number">6.1.</span> <span class="toc-text">安装Node.js</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#安装Hexo"><span class="toc-number">6.2.</span> <span class="toc-text">安装Hexo</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#部署Hexo"><span class="toc-number">6.3.</span> <span class="toc-text">部署Hexo</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Hexo的常用命令"><span class="toc-number">6.4.</span> <span class="toc-text">Hexo的常用命令</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#配置主题"><span class="toc-number">6.5.</span> <span class="toc-text">配置主题</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#复制主题"><span class="toc-number">6.5.1.</span> <span class="toc-text">复制主题</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#启用主题"><span class="toc-number">6.5.2.</span> <span class="toc-text">启用主题</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#更新主题"><span class="toc-number">6.5.3.</span> <span class="toc-text">更新主题</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#调试Hexo"><span class="toc-number">6.6.</span> <span class="toc-text">调试Hexo</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#将Hexo部署到Github上"><span class="toc-number">6.7.</span> <span class="toc-text">将Hexo部署到Github上</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#绑定独立域名"><span class="toc-number">7.</span> <span class="toc-text">绑定独立域名</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#GitHub_Pages设置"><span class="toc-number">7.1.</span> <span class="toc-text">GitHub Pages设置</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#DNSpod设置"><span class="toc-number">7.2.</span> <span class="toc-text">DNSpod设置</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Godaddy设置"><span class="toc-number">7.3.</span> <span class="toc-text">Godaddy设置</span></a></li></ol></li></ol>
+         </div>
+      
+        <p>本篇文章详细介绍了从买域名、Github与Hexo设置到DNS设置等一系列建站流程，所有步骤都在搭建此网站时测试通过。兹撰此文，以为后用。<br><a id="more"></a></p>
+<h2 id="前言">前言</h2>
+<p>在Twitter、Facebook、Google+、Weibo等社交网站，以及Evernote、Onenote等笔记应用与如此丰富与成功的今天，为什么要建Blog这么一个看起来快要被时代淘汰的东西？我想，Blog相比于其他的社交媒体或是笔记应用至少有以下好处：</p>
+<ul>
+<li>Blog更有条理。现在的轻媒体注重的是时效性，基本上都是以Timeline为主线，碎片化严重。而Blog则是以Page为主，可以通过Category以及Tag来组织，更有条理，更容易利于以后的自我审阅与回顾。</li>
+<li>Blog更易专注。社交媒体太乱，Blog则是自己的，只有自己来慢慢写，能把自己的想法完全地展现出来。</li>
+<li>Blog更为公开。Evernote、Onenote等虽然也有分享功能，但是太弱了，基本上只能单个分享，各个笔记本之间没有联系，不便于网上的朋友浏览。而Blog则没有这种不足。</li>
+</ul>
+<p>当然你也可以看看<a href="http://zhuanlan.zhihu.com/cnfeat/19743861" target="_blank" rel="external">这篇文章</a>。</p>
+<p>而使用Github Pages与Hexo来建站，则更有学习使用Github、能用Markdown语言写Blog等优点，以下不再赘述。</p>
+<h2 id="什么是Github_Pages？">什么是Github Pages？</h2>
+<p>Github Pages是Github推出的一个服务，是用来为你托管在Github上的项目作介绍的网站。<br>Github Pages事实上也是Github上的一个Repository，不过Github专门为它给了子域名（username.github.io，username是你的用户名），所以你可以放静态网页上去，用来做博客。</p>
+<h2 id="什么是Hexo">什么是Hexo</h2>
+<p>Hexo是一个简单、快速、强大的博客发布工具，支持Markdown格式。</p>
+<h2 id="购买域名">购买域名</h2>
+<p>推荐上Godaddy购买，安全便捷。虽然是个国外网站，但是出人意料的支持支付宝支付。</p>
+<ol>
+<li>查询你想要的域名</li>
+<li>如果该域名Available，点击「Continue to Cart」继续</li>
+<li>无视Godaddy的收费服务，继续「Continue to Cart」</li>
+<li><p>此处可以修改购买年限，默认是两年。除了域名的购买费用之外，还有ICANN的管理费用。</p>
+<blockquote>
+<p>网上可以搜到Godaddy的各种优惠码，填在下面即可。截至2015.02.02，我只找到过第一年优惠为9.92美元的，据说之前有优惠到8.99美元的，看各位自己的运气了。<br>有些优惠码只支持海外的信用卡支付，而不支持支付宝支付，各位需要甄别。<br>若遇到输入优惠码却没有优惠的情况，请清楚浏览器Cookies再试。</p>
+</blockquote>
+</li>
+<li><p>最后就是账单的结算，填完必要信息后可以选择使用支付宝结算。支付完成后记得在邮箱内查看激活邮件进行激活。</p>
+</li>
+</ol>
+<h2 id="配置与使用Github">配置与使用Github</h2>
+<h3 id="安装Git">安装Git</h3>
+<p>在<a href="http://git-scm.com/" target="_blank" rel="external">Git</a>处下载客户端安装。</p>
+<h3 id="注册Github账号">注册Github账号</h3>
+<p>打开<a href="http://www.github.com/" target="_blank" rel="external">官方网站</a>，进行注册即可。</p>
+<h3 id="配置SSH">配置SSH</h3>
+<h4 id="检查本地的SSH_Keys配置">检查本地的SSH Keys配置</h4>
+<p>打开Git Bash，输入如下内容</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ <span class="built_in">cd</span> ~/.ssh</div></pre></td></tr></table></figure>
+
+<p>若是显示<code>No such file or directory</code>则表示本地没有SSH Keys。</p>
+<h4 id="生成一个新的SSH_Key">生成一个新的SSH Key</h4>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">$ ssh-keygen -t rsa -C <span class="string">"xxdsox@gmail.com"</span></div><div class="line">Generating <span class="keyword">public</span>/<span class="keyword">private</span> rsa <span class="keyword">key</span> pair.</div><div class="line">Enter file <span class="keyword">in</span> which <span class="keyword">to</span> save the <span class="keyword">key</span> (/Users/your_user_directory/.ssh/id_rsa):</div></pre></td></tr></table></figure>
+
+<blockquote>
+<p>Tips 1 ：注意此处的xxdsox@gmail.com需要替换为你的邮箱地址。<br>Tips 2 ：<code>-C</code>是大写的C。<br>Tips 3 ：出现最后一句提示时，没有特殊情况的话按回车就好。</p>
+</blockquote>
+<p>之后需要设置密码，在提交项目的时候会用到，是为了防止别人往你的项目提交内容。留空的话提交项目的时候就不用输入。</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">Enter</span> passphrase (empty for no passphrase):</div><div class="line"><span class="keyword">Enter</span> same passphrase again:</div></pre></td></tr></table></figure>
+
+<blockquote>
+<p>Tips：输入密码的时候是没有显示的。</p>
+</blockquote>
+<h4 id="将SSH_Key添加到Github">将SSH Key添加到Github</h4>
+<ol>
+<li>打开<code>~/.ssh/id_rsa.pub</code>文件，复制其中的密钥。</li>
+<li>打开Github网站并登录，点击「Settings」  —&gt; 「SSH Keys」  —&gt; 「Add SSH Key」 ，填写Title与Key。</li>
+</ol>
+<h4 id="测试SSH_Key">测试SSH Key</h4>
+<p>回到Git Bash，输入</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="variable">$ </span>ssh -<span class="constant">T</span> git<span class="variable">@github</span>.com</div></pre></td></tr></table></figure>
+
+<p>看到如下提示，输入yes</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">The authenticity of host 'github.com (207.97.227.239)' can't be established.</div><div class="line">RSA key fingerprint is d3:f9:<span class="keyword">*</span><span class="keyword">*</span>:f1:8f:51:<span class="keyword">*</span><span class="keyword">*</span>:d6:9d:<span class="keyword">*</span><span class="keyword">*</span>:53:40:<span class="keyword">*</span><span class="keyword">*</span>:<span class="keyword">*</span><span class="keyword">*</span>:03:5d.</div><div class="line">Are you sure you want to continue connecting (yes/no)?</div></pre></td></tr></table></figure>
+
+<p>若是看到如下提示，则表示SSH Key已经配置成功</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">Hi corenel! You<span class="attribute">'ve</span> successfully authenticated, but GitHub does <span class="keyword">not</span> provide shell <span class="keyword">access</span>.</div></pre></td></tr></table></figure>
+
+<h4 id="设置个人信息">设置个人信息</h4>
+<p>Git会根据用户的名字与邮箱来记录提交信息，所以需要在本地进行个人信息的设置。</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">$ git config --global <span class="literal">user</span>.name <span class="string">"Yusu Pan"</span></div><div class="line">$ git config --global <span class="literal">user</span>.email  <span class="string">"xxdsox@gmail.com"</span></div></pre></td></tr></table></figure>
+
+<h4 id="常见问题">常见问题</h4>
+<p><a href="https://help.github.com/articles/generating-ssh-keys/" target="_blank" rel="external">GitHub Help - Generating SSH Keys</a><br><a href="https://help.github.com/articles/error-permission-denied-publickey/" target="_blank" rel="external">GitHub Help - Error Permission denied (publickey)</a></p>
+<h3 id="配置Github_Pages">配置Github Pages</h3>
+<h4 id="在Github上建立仓库">在Github上建立仓库</h4>
+<p>登录后，点击「New Repository」 ，填写相关信息后点击「Create Repository」 完成创建</p>
+<blockquote>
+<p>Tips：注意<strong>Project name</strong>内需要填写为username.github.io，username是你的用户名，这样里面的东西才是属于Github Pages的</p>
+</blockquote>
+<h2 id="配置Hexo">配置Hexo</h2>
+<h3 id="安装Node-js">安装Node.js</h3>
+<p><a href="http://nodejs.org/" target="_blank" rel="external">Node.js</a></p>
+<h3 id="安装Hexo">安装Hexo</h3>
+<p>在Git Bash中运行以下命令</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="variable">$ </span>npm install -g hexo</div></pre></td></tr></table></figure>
+
+<h3 id="部署Hexo">部署Hexo</h3>
+<p>在home下新建一个名为「hexo」的文件夹，并让Hexo在此内初始化</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="variable">$ </span>cd ~</div><div class="line"><span class="variable">$ </span>mkdir hexo</div><div class="line"><span class="variable">$ </span>cd hexo/</div><div class="line"><span class="variable">$ </span>hexo init</div><div class="line"><span class="variable">$ </span>npm install</div></pre></td></tr></table></figure>
+
+<p>初始化完成之后可以运行以下命令，在localhost:4000上可以见到Hexo的默认效果。</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="variable">$ </span>hexo g</div><div class="line"><span class="variable">$ </span>hexo s</div></pre></td></tr></table></figure>
+
+<h3 id="Hexo的常用命令">Hexo的常用命令</h3>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">$ hexo clean <span class="comment">//清理Cache</span></div><div class="line">$ hexo g <span class="comment">//相当于hexo generate，生成静态页面</span></div><div class="line">$ hexo s <span class="comment">//相当于hexo server，开启本地服务</span></div><div class="line">$ hexo d <span class="comment">//相当于hexo deploy，将本地文件部署至Github上</span></div><div class="line">$ hexo d -g <span class="comment">//组合命令，相当于先generate再deploy</span></div><div class="line">$ hexo s -g  <span class="comment">//组合命令，相当于先generate再server</span></div></pre></td></tr></table></figure>
+
+<h3 id="配置主题">配置主题</h3>
+<h4 id="复制主题">复制主题</h4>
+<p>可以复制yilla的主题，简洁，我的主题也是在此基础上修改的。</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="variable">$ </span>git clone <span class="symbol">https:</span>/<span class="regexp">/github.com/litten</span><span class="regexp">/hexo-theme-yilia.git themes/yilia</span></div></pre></td></tr></table></figure>
+
+<h4 id="启用主题">启用主题</h4>
+<p>用Sublime Text打开<code>~/hexo/_config.yml</code>文件，配置其中的theme属性，改为yilia。</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="attribute">theme</span>: <span class="string">yilia</span></div></pre></td></tr></table></figure>
+
+<blockquote>
+<p>Tips：<code>_config.yml</code>文件有多个，此处要修改的是根目录下的那个，不要错打开为theme目录下的。<br>Tips 2：可能会提示<code>Error: Theme landscape does not exist.</code>，参照<a href="https://github.com/hexojs/hexo/issues/607" target="_blank" rel="external">Hexo作者的解释</a>，此时重新下一个landscape就好了</p>
+</blockquote>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="variable">$ </span>git clone <span class="symbol">https:</span>/<span class="regexp">/github.com/hexojs</span><span class="regexp">/hexo-theme-landscape.git themes/landscape</span></div></pre></td></tr></table></figure>
+
+<h4 id="更新主题">更新主题</h4>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="variable">$ </span>cd themes/yilia</div><div class="line"><span class="variable">$ </span>git pull</div></pre></td></tr></table></figure>
+
+<blockquote>
+<p>Tips：为避免出错，请先备份你的_config.yml 文件后再升级。</p>
+</blockquote>
+<h3 id="调试Hexo">调试Hexo</h3>
+<p>可以输入以下命令，启动本地服务器，在 <a href="http://localhost:4000" target="_blank" rel="external">http://localhost:4000</a> 中查看效果。建议在本地调试完成后，再将Hexo部署到Github上。</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="variable">$ </span>hexo s -g</div></pre></td></tr></table></figure>
+
+<h3 id="将Hexo部署到Github上">将Hexo部署到Github上</h3>
+<p>需要修改<code>~/hexo/_config.yml</code>文件，注意将repository中的地址换为你的git仓库地址。</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">deploy:</div><div class="line">  <span class="class"><span class="keyword">type</span>: <span class="title">github</span></span></div><div class="line">  repository: https:<span class="comment">//github.com/corenel/corenel.github.io.git</span></div><div class="line">  branch: master</div></pre></td></tr></table></figure>
+
+<p>之后使用deploy命令部署Hexo到Github上。</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="variable">$ </span>hexo clean</div><div class="line"><span class="variable">$ </span>hexo d -g</div></pre></td></tr></table></figure>
+
+<p>至此基本上就接近成功了，可以访问username.github.io来查看你的Hexo站了。</p>
+<h2 id="绑定独立域名">绑定独立域名</h2>
+<h3 id="GitHub_Pages设置">GitHub Pages设置</h3>
+<p>新建一个名为「CNAME」的文件，放进<code>~/hexo/source</code>目录下，用hexo命令提交上去。</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="variable">$ </span>hexo d -g</div></pre></td></tr></table></figure>
+
+<h3 id="DNSpod设置">DNSpod设置</h3>
+<p>推荐使用DNSpod，免费而且稳定。<br>注册<a href="https://www.dnspod.cn/" target="_blank" rel="external">DNSpod</a>，添加域名后按如下配置：<br><img src="http://i.imgur.com/7IphlLj.png" alt="DNSpod"></p>
+<blockquote>
+<p><strong>Tips</strong>：其中主机记录为A的指向的ip地址是Github Pages的提供的ip，如博客不能登录，有可能是Github更改了空间服务的ip地址，记得及时到在<a href="https://help.github.com/articles/setting-up-a-custom-domain-with-github-pages" target="_blank" rel="external">GitHub Pages</a>查看最新的ip即可。<br><strong>Tips 2</strong>：www指定的记录是你在Github注册的仓库地址。</p>
+</blockquote>
+<h3 id="Godaddy设置">Godaddy设置</h3>
+<p>进入My Account —&gt; DOMAINS —&gt; yuthon.com —&gt; Launch —&gt; SETTINGS —&gt; Nameservers，点击Manage，选Custom，将DNSpod的地址（f1g1ns1.dnspod.net和f1g1ns2.dnspod.net）填入其中，点Save保存。<br><img src="http://i.imgur.com/CJzWyzX.png" alt="Nameserver"><br>至此，大功告成。</p>
+
+      
+    </div>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2015/02/03/tips-for-hexo/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">&lt;</strong>
+      <div class="article-nav-title">
+        
+          Hexo使用技巧
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2015/02/02/brand-new-blog/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">新博客开张</div>
+      <strong class="article-nav-caption">&gt;</strong>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+<div class="share">
+	<!-- JiaThis Button BEGIN -->
+	<div class="jiathis_style">
+		<span class="jiathis_txt">分享到：</span>
+		<a class="jiathis_button_tsina"></a>
+		<a class="jiathis_button_cqq"></a>
+		<a class="jiathis_button_douban"></a>
+		<a class="jiathis_button_weixin"></a>
+		<a class="jiathis_button_tumblr"></a>
+		<a href="http://www.jiathis.com/share" class="jiathis jiathis_txt jtico jtico_jiathis" target="_blank"></a>
+	</div>
+	<script type="text/javascript" src="http://v3.jiathis.com/code/jia.js?uid=1405949716054953" charset="utf-8"></script>
+	<!-- JiaThis Button END -->
+</div>
+
+
+
+<div class="duoshuo">
+	<!-- 多说评论框 start -->
+	<div class="ds-thread" data-thread-key="how-to-build-a-blog" data-title="建站手札——如何建立一个部署在Github上的Hexo博客" data-url="http://www.yuthon.com/2015/02/02/how-to-build-a-blog/"></div>
+	<!-- 多说评论框 end -->
+	<!-- 多说公共JS代码 start (一个网页只需插入一次) -->
+	<script type="text/javascript">
+	var duoshuoQuery = {short_name:"true"};
+	(function() {
+		var ds = document.createElement('script');
+		ds.type = 'text/javascript';ds.async = true;
+		ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+		ds.charset = 'UTF-8';
+		(document.getElementsByTagName('head')[0] 
+		 || document.getElementsByTagName('body')[0]).appendChild(ds);
+	})();
+	</script>
+	<!-- 多说公共JS代码 end -->
+</div>
+
+
+
+
+      <footer id="footer">
+  <div class="outer">
+    <div id="footer-info">
+    	<div class="footer-left">
+    		&copy; 2015 Yusu Pan
+    	</div>
+      	<div class="footer-right">
+      		<a href="http://hexo.io/" target="_blank">Hexo</a>  Theme <a href="https://github.com/litten/hexo-theme-yilia" target="_blank">Yilia</a> by Litten
+      	</div>
+    </div>
+  </div>
+</footer>
+    </div>
+    
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css" type="text/css">
+
+  <script src="/fancybox/jquery.fancybox.pack.js" type="text/javascript"></script>
+
+  <script src="/js/main.js" type="text/javascript"></script>
+
+
+  </div>
+</body>
+</html>
