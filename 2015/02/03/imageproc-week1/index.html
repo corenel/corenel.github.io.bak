@@ -3,16 +3,16 @@
 <head>
   <meta charset="utf-8">
   
-  <title>Image and video precessing - Week 1 Notes | Yuhton&#39;s blog</title>
+  <title>Image and video precessing - Week 1 笔记 | Yuhton&#39;s blog</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
   <meta name="description" content="本文为Coursera上课程《Image and Video Processing: From Mars to Hollywood with A Stop at The Hospital》之Week 1的笔记。">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Image and video precessing - Week 1 Notes">
+<meta property="og:title" content="Image and video precessing - Week 1 笔记">
 <meta property="og:url" content="http://www.yuthon.com/2015/02/03/imageproc-week1/">
 <meta property="og:site_name" content="Yuhton's blog">
 <meta property="og:description" content="本文为Coursera上课程《Image and Video Processing: From Mars to Hollywood with A Stop at The Hospital》之Week 1的笔记。">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Image and video precessing - Week 1 Notes">
+<meta name="twitter:title" content="Image and video precessing - Week 1 笔记">
 <meta name="twitter:description" content="本文为Coursera上课程《Image and Video Processing: From Mars to Hollywood with A Stop at The Hospital》之Week 1的笔记。">
 
   
@@ -179,7 +179,7 @@
         
   
     <h1 class="article-title" itemprop="name">
-      Image and video precessing - Week 1 Notes
+      Image and video precessing - Week 1 笔记
     </h1>
   
 
@@ -190,11 +190,11 @@
         
           <div id="toc" class="toc-article">
             <strong class="toc-title">文章目录</strong>
-         <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#1_-_What’s_image_and_video_processing"><span class="toc-number">1.</span> <span class="toc-text">1 - What’s image and video processing</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#图像和视频压缩"><span class="toc-number">1.1.</span> <span class="toc-text">图像和视频压缩</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#图像和视频修复"><span class="toc-number">1.2.</span> <span class="toc-text">图像和视频修复</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#特效"><span class="toc-number">1.3.</span> <span class="toc-text">特效</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#图像和视频识别"><span class="toc-number">1.4.</span> <span class="toc-text">图像和视频识别</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#医学与生物学图像处理"><span class="toc-number">1.5.</span> <span class="toc-text">医学与生物学图像处理</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4_-_Human_visual_system"><span class="toc-number">2.</span> <span class="toc-text">4 - Human visual system</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#生理结构"><span class="toc-number">2.1.</span> <span class="toc-text">生理结构</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#人眼组成"><span class="toc-number">2.1.1.</span> <span class="toc-text">人眼组成</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#视锥细胞"><span class="toc-number">2.1.2.</span> <span class="toc-text">视锥细胞</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#视杆细胞"><span class="toc-number">2.1.3.</span> <span class="toc-text">视杆细胞</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#盲点"><span class="toc-number">2.1.4.</span> <span class="toc-text">盲点</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#视觉特点"><span class="toc-number">2.2.</span> <span class="toc-text">视觉特点</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#5_-_Image_formation_-_Sampling_&_Quantization"><span class="toc-number">3.</span> <span class="toc-text">5 - Image formation - Sampling & Quantization</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#数字相机基本原理"><span class="toc-number">3.1.</span> <span class="toc-text">数字相机基本原理</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#离散化"><span class="toc-number">3.2.</span> <span class="toc-text">离散化</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#采样"><span class="toc-number">3.3.</span> <span class="toc-text">采样</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#量化"><span class="toc-number">3.4.</span> <span class="toc-text">量化</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#像素"><span class="toc-number">3.5.</span> <span class="toc-text">像素</span></a></li></ol></li></ol>
+         <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#What’s_image_and_video_processing"><span class="toc-number">1.</span> <span class="toc-text">What’s image and video processing</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#图像和视频压缩"><span class="toc-number">1.1.</span> <span class="toc-text">图像和视频压缩</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#图像和视频修复"><span class="toc-number">1.2.</span> <span class="toc-text">图像和视频修复</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#特效"><span class="toc-number">1.3.</span> <span class="toc-text">特效</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#图像和视频识别"><span class="toc-number">1.4.</span> <span class="toc-text">图像和视频识别</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#医学与生物学图像处理"><span class="toc-number">1.5.</span> <span class="toc-text">医学与生物学图像处理</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Human_visual_system"><span class="toc-number">2.</span> <span class="toc-text">Human visual system</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#生理结构"><span class="toc-number">2.1.</span> <span class="toc-text">生理结构</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#人眼组成"><span class="toc-number">2.1.1.</span> <span class="toc-text">人眼组成</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#视锥细胞"><span class="toc-number">2.1.2.</span> <span class="toc-text">视锥细胞</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#视杆细胞"><span class="toc-number">2.1.3.</span> <span class="toc-text">视杆细胞</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#盲点"><span class="toc-number">2.1.4.</span> <span class="toc-text">盲点</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#视觉特点"><span class="toc-number">2.2.</span> <span class="toc-text">视觉特点</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Image_formation_-_Sampling_&_Quantization"><span class="toc-number">3.</span> <span class="toc-text">Image formation - Sampling & Quantization</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#数字相机基本原理"><span class="toc-number">3.1.</span> <span class="toc-text">数字相机基本原理</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#离散化"><span class="toc-number">3.2.</span> <span class="toc-text">离散化</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#采样"><span class="toc-number">3.3.</span> <span class="toc-text">采样</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#量化"><span class="toc-number">3.4.</span> <span class="toc-text">量化</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#像素"><span class="toc-number">3.5.</span> <span class="toc-text">像素</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#图像的表示"><span class="toc-number">3.6.</span> <span class="toc-text">图像的表示</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#空间采样与灰度值量化对图像质量的影响"><span class="toc-number">3.7.</span> <span class="toc-text">空间采样与灰度值量化对图像质量的影响</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Simple_image_operations"><span class="toc-number">4.</span> <span class="toc-text">Simple image operations</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#邻域"><span class="toc-number">4.1.</span> <span class="toc-text">邻域</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#图像的叠加"><span class="toc-number">4.2.</span> <span class="toc-text">图像的叠加</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#图像的相减"><span class="toc-number">4.3.</span> <span class="toc-text">图像的相减</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#图像的逻辑运算"><span class="toc-number">4.4.</span> <span class="toc-text">图像的逻辑运算</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#图像的反相"><span class="toc-number">4.5.</span> <span class="toc-text">图像的反相</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#图像的模糊化"><span class="toc-number">4.6.</span> <span class="toc-text">图像的模糊化</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#图像变换"><span class="toc-number">4.7.</span> <span class="toc-text">图像变换</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#傅立叶变换、离散余弦变换"><span class="toc-number">4.8.</span> <span class="toc-text">傅立叶变换、离散余弦变换</span></a></li></ol></li></ol>
          </div>
       
         <p>本文为Coursera上课程《Image and Video Processing: From Mars to Hollywood with A Stop at The Hospital》之Week 1的笔记。<br><a id="more"></a></p>
-<h2 id="1_-_What’s_image_and_video_processing">1 - What’s image and video processing</h2>
+<h2 id="What’s_image_and_video_processing">What’s image and video processing</h2>
 <h3 id="图像和视频压缩">图像和视频压缩</h3>
 <p>从火星上传输图像、数码相机、网络图片与视频</p>
 <h3 id="图像和视频修复">图像和视频修复</h3>
@@ -205,7 +205,7 @@
 <p>针对活动(Activity)识别并分类</p>
 <h3 id="医学与生物学图像处理">医学与生物学图像处理</h3>
 <p>Deep Brain Simulation、HIV包膜识别与建模</p>
-<h2 id="4_-_Human_visual_system">4 - Human visual system</h2>
+<h2 id="Human_visual_system">Human visual system</h2>
 <h3 id="生理结构">生理结构</h3>
 <h4 id="人眼组成">人眼组成</h4>
 <p>眼角膜、晶状体、视网膜（上有感光细胞）</p>
@@ -217,7 +217,7 @@
 <p>没有感光细胞</p>
 <h3 id="视觉特点">视觉特点</h3>
 <p>• 人眼能感受到很广的光强范围，但并不是同时感知到的，需要适应<br>• 韦伯定律：当我们在较暗的环境中，我们需要的ΔI较大，而在较明亮的环境中，ΔI较小。也就是说，在昏暗的环境中，微小的亮度变化不会被我们感知到，而是较强的光线亮度变化才能被感知。换种话说，在昏暗的环境中，我们不能区分两个颜色都很暗而且十分相似的物体。反之亦然。<br>• 我们的视觉感知受周边的事物影响，如马赫带效应</p>
-<h2 id="5_-_Image_formation_-_Sampling_&amp;_Quantization">5 - Image formation - Sampling &amp; Quantization</h2>
+<h2 id="Image_formation_-_Sampling_&amp;_Quantization">Image formation - Sampling &amp; Quantization</h2>
 <h3 id="数字相机基本原理">数字相机基本原理</h3>
 <p>物体反射的光投射进相机，并被相机（传感器）所感知，所有的过程都要经过离散化这一步。</p>
 <h3 id="离散化">离散化</h3>
@@ -227,10 +227,31 @@
 即对于一个连续的物体及其之上的信息进行离散化采集。</li>
 <li>空间域的采样（Sampling），即空间分布的离散化。根据一定的离散间隔来取值（点），而非取遍所有的值（点）。<h3 id="量化">量化</h3>
 </li>
-<li>灰度值的量化（Quantization），即灰度值的离散化，即对灰度值进行近似表示。近似表示也有许多种方法来取值。<h3 id="像素">像素</h3>
-像素（Pixel），即图像元素（Picture Element），即指采样的点。<blockquote>
+<li>灰度值的量化（Quantization），即灰度值的离散化。对灰度值进行近似表示。近似表示也有许多种方法来取值。<blockquote>
 <p>采样的密度越高，量化的层级越密，图像的质量就越好。</p>
+<h3 id="像素">像素</h3>
+<p>像素（Pixel），即图像元素（Picture Element），指采样后的点。</p>
+<h3 id="图像的表示">图像的表示</h3>
 </blockquote>
+</li>
+<li>灰度图像由一个二维离散数组构成</li>
+<li>彩色图象由分别代表R、G、B三种通道的三个二维数组组成</li>
+<li>视频则由许多的图像构成</li>
+</ul>
+<h3 id="空间采样与灰度值量化对图像质量的影响">空间采样与灰度值量化对图像质量的影响</h3>
+<h2 id="Simple_image_operations">Simple image operations</h2>
+<h3 id="邻域">邻域</h3>
+<ul>
+<li>4邻域：一个像素上下左右的相邻像素</li>
+<li>8邻域：一个像素上下左右加上对角线上的相邻像素。（更为常见）<h3 id="图像的叠加">图像的叠加</h3>
+即二维数组的相加运算，可用以消除噪声。<h3 id="图像的相减">图像的相减</h3>
+即二维数组的相减运算，可用以找出两幅图的差异。<h3 id="图像的逻辑运算">图像的逻辑运算</h3>
+即二维数组的交、并、差、补等运算。<h3 id="图像的反相">图像的反相</h3>
+即二维数组的重映射。<h3 id="图像的模糊化">图像的模糊化</h3>
+即指将一个像素替换为与之相邻的像素的平均值。（注意相邻元素的定义）</li>
+<li>平均值这一概念可扩充为线性组合</li>
+<li>在某些情况下（如与相邻像素反差过大时），可不取全部的8邻域，而是只选择一边的6个像素。<h3 id="图像变换">图像变换</h3>
+即指对二维数组进行缩放、旋转、平移等变换。<h3 id="傅立叶变换、离散余弦变换">傅立叶变换、离散余弦变换</h3>
 </li>
 </ul>
 
