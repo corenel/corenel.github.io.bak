@@ -1,0 +1,329 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>Image and video precessing - Week 1 笔记 | Yuhton&#39;s blog</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="本文为Coursera上课程《Image and Video Processing: From Mars to Hollywood with A Stop at The Hospital》之Week 1的笔记。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Image and video precessing - Week 1 笔记">
+<meta property="og:url" content="http://www.yuthon.com/2015/02/03/imageproc-week1/">
+<meta property="og:site_name" content="Yuhton's blog">
+<meta property="og:description" content="本文为Coursera上课程《Image and Video Processing: From Mars to Hollywood with A Stop at The Hospital》之Week 1的笔记。">
+<meta property="og:image" content="http://i.imgur.com/assfeGg.png">
+<meta property="og:image" content="http://i.imgur.com/yTAt4p9.png">
+<meta property="og:image" content="http://i.imgur.com/1PmS8qH.png">
+<meta property="og:image" content="http://i.imgur.com/9xtCLar.png">
+<meta property="og:image" content="http://i.imgur.com/mHCJfsK.png">
+<meta property="og:image" content="http://i.imgur.com/UifiDyS.png">
+<meta property="og:image" content="http://i.imgur.com/laSGH4h.png">
+<meta property="og:image" content="http://i.imgur.com/6o5JaUB.png">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Image and video precessing - Week 1 笔记">
+<meta name="twitter:description" content="本文为Coursera上课程《Image and Video Processing: From Mars to Hollywood with A Stop at The Hospital》之Week 1的笔记。">
+
+  
+    <link rel="alternative" href="/atom.xml" title="Yuhton&#39;s blog" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  <link rel="stylesheet" href="/css/style.css" type="text/css">
+
+  
+
+  <script src="http://libs.baidu.com/jquery/1.9.0/jquery.js"></script>
+</head>
+<body>
+  <div id="container">
+    <div class="left-col">
+    <div class="overlay"></div>
+<div class="intrude-less">
+	<header id="header" class="inner">
+		<div class="profilepic">
+			<img src="/img/Avatar.png">
+		</div>
+
+		<hgroup>
+		  <h1 class="header-author"><a href="/">Yusu Pan</a></h1>
+		</hgroup>
+
+		
+		<p class="header-subtitle">Gaining Through Losing</p>
+		
+
+		
+			<div class="switch-btn">
+				<div class="icon">
+					<div class="icon-ctn">
+						<div class="icon-wrap icon-house" data-idx="0">
+							<div class="birdhouse"></div>
+							<div class="birdhouse_holes"></div>
+						</div>
+						<div class="icon-wrap icon-ribbon hide" data-idx="1">
+							<div class="ribbon"></div>
+						</div>
+						
+						
+						<div class="icon-wrap icon-me hide" data-idx="3">
+							<div class="user"></div>
+							<div class="shoulder"></div>
+						</div>
+						
+					</div>
+					
+				</div>
+				<div class="tips-box hide">
+					<div class="tips-arrow"></div>
+					<ul class="tips-inner">
+						<li>菜单</li>
+						<li>标签</li>
+						
+						
+						<li>关于我</li>
+						
+					</ul>
+				</div>
+			</div>
+		
+
+		<div class="switch-area">
+			<div class="switch-wrap">
+				<section class="switch-part switch-part1">
+					<nav class="header-menu">
+						<ul>
+						
+							<li><a href="/">主页</a></li>
+				        
+							<li><a href="/archives">所有文章</a></li>
+				        
+						</ul>
+					</nav>
+					<nav class="header-nav">
+						<div class="social">
+							
+						</div>
+					</nav>
+				</section>
+				
+				
+				<section class="switch-part switch-part2">
+					<div class="widget tagcloud">
+						<a href="/tags/Coursera/" style="font-size: 10.00px;">Coursera</a><a href="/tags/Digital-Image-Processing/" style="font-size: 10.00px;">Digital Image Processing</a><a href="/tags/Github/" style="font-size: 15.00px;">Github</a><a href="/tags/Godaddy/" style="font-size: 10.00px;">Godaddy</a><a href="/tags/Hexo/" style="font-size: 20.00px;">Hexo</a>
+					</div>
+				</section>
+				
+				
+				
+
+				
+				
+				<section class="switch-part switch-part3">
+				
+					I&#39;m Yusu Pan in ZJU, that&#39;s my blog.
+				</section>
+				
+			</div>
+		</div>
+	</header>				
+</div>
+    </div>
+    <div class="mid-col">
+      <nav id="mobile-nav">
+  	<div class="overlay"></div>
+	<div class="intrude-less">
+		<header id="header" class="inner">
+			<div class="profilepic">
+				<img src="/img/Avatar.png">
+			</div>
+
+			<hgroup>
+			  <h1 class="header-author"><a href="/">Yusu Pan</a></h1>
+			</hgroup>
+			
+			<p class="header-subtitle">Gaining Through Losing</p>
+			
+			<nav class="header-menu">
+				<ul>
+				
+					<li><a href="/">主页</a></li>
+		        
+					<li><a href="/archives">所有文章</a></li>
+		        
+		        <div class="clearfix"></div>
+				</ul>
+			</nav>
+			<nav class="header-nav">
+				<div class="social">
+					
+				</div>
+			</nav>
+		</header>				
+	</div>
+</nav>
+      <article id="post-imageproc-week1" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2015/02/03/imageproc-week1/" class="article-date">
+  	<time datetime="2015-02-03T11:05:35.000Z" itemprop="datePublished">Feb 3 2015</time>
+</a>
+      
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Notes/">Notes</a>
+  </div>
+
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Coursera/">Coursera</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Digital-Image-Processing/">Digital Image Processing</a></li></ul>
+
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      Image and video precessing - Week 1 笔记
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        
+          <div id="toc" class="toc-article">
+            <strong class="toc-title">文章目录</strong>
+         <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#What’s_image_and_video_processing"><span class="toc-number">1.</span> <span class="toc-text">What’s image and video processing</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#图像和视频压缩"><span class="toc-number">1.1.</span> <span class="toc-text">图像和视频压缩</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#图像和视频修复"><span class="toc-number">1.2.</span> <span class="toc-text">图像和视频修复</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#特效"><span class="toc-number">1.3.</span> <span class="toc-text">特效</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#图像和视频识别"><span class="toc-number">1.4.</span> <span class="toc-text">图像和视频识别</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#医学与生物学图像处理"><span class="toc-number">1.5.</span> <span class="toc-text">医学与生物学图像处理</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Human_visual_system"><span class="toc-number">2.</span> <span class="toc-text">Human visual system</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#生理结构"><span class="toc-number">2.1.</span> <span class="toc-text">生理结构</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#人眼组成"><span class="toc-number">2.1.1.</span> <span class="toc-text">人眼组成</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#视锥细胞"><span class="toc-number">2.1.2.</span> <span class="toc-text">视锥细胞</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#视杆细胞"><span class="toc-number">2.1.3.</span> <span class="toc-text">视杆细胞</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#盲点"><span class="toc-number">2.1.4.</span> <span class="toc-text">盲点</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#视觉特点"><span class="toc-number">2.2.</span> <span class="toc-text">视觉特点</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Image_formation_-_Sampling_&_Quantization"><span class="toc-number">3.</span> <span class="toc-text">Image formation - Sampling & Quantization</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#数字相机基本原理"><span class="toc-number">3.1.</span> <span class="toc-text">数字相机基本原理</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#离散化"><span class="toc-number">3.2.</span> <span class="toc-text">离散化</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#采样"><span class="toc-number">3.3.</span> <span class="toc-text">采样</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#量化"><span class="toc-number">3.4.</span> <span class="toc-text">量化</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#像素"><span class="toc-number">3.5.</span> <span class="toc-text">像素</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#图像的表示"><span class="toc-number">3.6.</span> <span class="toc-text">图像的表示</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#空间采样与灰度值量化对图像质量的影响"><span class="toc-number">3.7.</span> <span class="toc-text">空间采样与灰度值量化对图像质量的影响</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Simple_image_operations"><span class="toc-number">4.</span> <span class="toc-text">Simple image operations</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#邻域"><span class="toc-number">4.1.</span> <span class="toc-text">邻域</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#图像的叠加"><span class="toc-number">4.2.</span> <span class="toc-text">图像的叠加</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#图像的相减"><span class="toc-number">4.3.</span> <span class="toc-text">图像的相减</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#图像的逻辑运算"><span class="toc-number">4.4.</span> <span class="toc-text">图像的逻辑运算</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#图像的反相"><span class="toc-number">4.5.</span> <span class="toc-text">图像的反相</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#图像的模糊化"><span class="toc-number">4.6.</span> <span class="toc-text">图像的模糊化</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#图像变换"><span class="toc-number">4.7.</span> <span class="toc-text">图像变换</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#傅立叶变换、离散余弦变换"><span class="toc-number">4.8.</span> <span class="toc-text">傅立叶变换、离散余弦变换</span></a></li></ol></li></ol>
+         </div>
+      
+        <p>本文为Coursera上课程《Image and Video Processing: From Mars to Hollywood with A Stop at The Hospital》之Week 1的笔记。<br><a id="more"></a></p>
+<h2 id="What’s_image_and_video_processing">What’s image and video processing</h2>
+<h3 id="图像和视频压缩">图像和视频压缩</h3>
+<p>从火星上传输图像、数码相机、网络图片与视频</p>
+<h3 id="图像和视频修复">图像和视频修复</h3>
+<p>电影中低级错误的修正、被去掉一个人的斯大林照片、被涂鸦的照片修复</p>
+<h3 id="特效">特效</h3>
+<p>抠像、黑白视频上色、背景模糊、运动重影</p>
+<h3 id="图像和视频识别">图像和视频识别</h3>
+<p>针对活动(Activity)识别并分类</p>
+<h3 id="医学与生物学图像处理">医学与生物学图像处理</h3>
+<p>Deep Brain Simulation、HIV包膜识别与建模</p>
+<h2 id="Human_visual_system">Human visual system</h2>
+<h3 id="生理结构">生理结构</h3>
+<h4 id="人眼组成">人眼组成</h4>
+<p>眼角膜、晶状体、视网膜（上有感光细胞）<br><img src="http://i.imgur.com/assfeGg.png" alt="Fig 2.1"></p>
+<h4 id="视锥细胞">视锥细胞</h4>
+<p>在中央凹（Fovea）周围分布密度高，随着与中央凹的距离增大密度减少；能很好地捕捉细节，擅长在强光下看清事物</p>
+<h4 id="视杆细胞">视杆细胞</h4>
+<p>分布较为均匀，中央凹附近很少；擅长获取对场景的大体认识，而非细节，并且能在弱光下很好地看清事物<br><img src="http://i.imgur.com/yTAt4p9.png" alt="Fig 2.2"></p>
+<h4 id="盲点">盲点</h4>
+<p>没有感光细胞</p>
+<h3 id="视觉特点">视觉特点</h3>
+<p>• 人眼能感受到很广的光强范围，但并不是同时感知到的，需要适应<br>• 韦伯定律：当我们在较暗的环境中，我们需要的ΔI较大，而在较明亮的环境中，ΔI较小。也就是说，在昏暗的环境中，微小的亮度变化不会被我们感知到，而是较强的光线亮度变化才能被感知。换种话说，在昏暗的环境中，我们不能区分两个颜色都很暗而且十分相似的物体。反之亦然。<br><img src="http://i.imgur.com/1PmS8qH.png" alt="Fig 2.6"><br>• 我们的视觉感知受周边的事物影响，如马赫带效应<br><img src="http://i.imgur.com/9xtCLar.png" alt="Fig 2.7"></p>
+<h2 id="Image_formation_-_Sampling_&amp;_Quantization">Image formation - Sampling &amp; Quantization</h2>
+<h3 id="数字相机基本原理">数字相机基本原理</h3>
+<p>物体反射的光投射进相机，并被相机（传感器）所感知，所有的过程都要经过离散化这一步。</p>
+<h3 id="离散化">离散化</h3>
+<ul>
+<li>传感器空间分布的离散化</li>
+<li>幅值（灰度值）的离散化<h3 id="采样">采样</h3>
+即对于一个连续的物体及其之上的信息进行离散化采集。</li>
+<li>空间域的采样（Sampling），即空间分布的离散化。根据一定的离散间隔来取值（点），而非取遍所有的值（点）。<br><img src="http://i.imgur.com/mHCJfsK.png" alt="Fig 2.16"><h3 id="量化">量化</h3>
+</li>
+<li>灰度值的量化（Quantization），即灰度值的离散化。对灰度值进行近似表示。近似表示也有许多种方法来取值。<blockquote>
+<p>采样的密度越高，量化的层级越密，图像的质量就越好。</p>
+<h3 id="像素">像素</h3>
+<p>像素（Pixel），即图像元素（Picture Element），指采样后的点。</p>
+<h3 id="图像的表示">图像的表示</h3>
+</blockquote>
+</li>
+<li>灰度图像由一个二维离散数组构成</li>
+<li>彩色图象由分别代表R、G、B三种通道的三个二维数组组成</li>
+<li>视频则由许多的图像构成</li>
+</ul>
+<h3 id="空间采样与灰度值量化对图像质量的影响">空间采样与灰度值量化对图像质量的影响</h3>
+<ul>
+<li>分辨率（空间采样离散化程度）对图像质量的影响<br><img src="http://i.imgur.com/UifiDyS.png" alt="Fig 2.20"></li>
+<li>色彩位数（灰度值离散化程度）对图像质量的影响<br><img src="http://i.imgur.com/laSGH4h.png" alt="Fig 2.21-1"><br><img src="http://i.imgur.com/6o5JaUB.png" alt="Fig 2.21-2"><h2 id="Simple_image_operations">Simple image operations</h2>
+<h3 id="邻域">邻域</h3>
+</li>
+<li>4邻域：一个像素上下左右的相邻像素</li>
+<li>8邻域：一个像素上下左右加上对角线上的相邻像素。（更为常见）<h3 id="图像的叠加">图像的叠加</h3>
+即二维数组的相加运算，可用以消除噪声。<h3 id="图像的相减">图像的相减</h3>
+即二维数组的相减运算，可用以找出两幅图的差异。<h3 id="图像的逻辑运算">图像的逻辑运算</h3>
+即二维数组的交、并、差、补等运算。<h3 id="图像的反相">图像的反相</h3>
+即二维数组的重映射。<h3 id="图像的模糊化">图像的模糊化</h3>
+即指将一个像素替换为与之相邻的像素的平均值。（注意相邻元素的定义）</li>
+<li>平均值这一概念可扩充为线性组合</li>
+<li>在某些情况下（如与相邻像素反差过大时），可不取全部的8邻域，而是只选择一边的6个像素。<h3 id="图像变换">图像变换</h3>
+即指对二维数组进行缩放、旋转、平移等变换。<h3 id="傅立叶变换、离散余弦变换">傅立叶变换、离散余弦变换</h3>
+</li>
+</ul>
+
+      
+    </div>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+  
+    <a href="/2015/02/03/tips-for-hexo/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">Hexo使用技巧</div>
+      <strong class="article-nav-caption">&gt;</strong>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+<div class="share">
+	<!-- JiaThis Button BEGIN -->
+	<div class="jiathis_style">
+		<span class="jiathis_txt">分享到：</span>
+		<a class="jiathis_button_tsina"></a>
+		<a class="jiathis_button_cqq"></a>
+		<a class="jiathis_button_douban"></a>
+		<a class="jiathis_button_weixin"></a>
+		<a class="jiathis_button_tumblr"></a>
+		<a href="http://www.jiathis.com/share" class="jiathis jiathis_txt jtico jtico_jiathis" target="_blank"></a>
+	</div>
+	<script type="text/javascript" src="http://v3.jiathis.com/code/jia.js?uid=1405949716054953" charset="utf-8"></script>
+	<!-- JiaThis Button END -->
+</div>
+
+
+
+
+
+      <footer id="footer">
+  <div class="outer">
+    <div id="footer-info">
+    	<div class="footer-left">
+    		&copy; 2015 Yusu Pan
+    	</div>
+      	<div class="footer-right">
+      		<a href="http://hexo.io/" target="_blank">Hexo</a>  Theme <a href="https://github.com/litten/hexo-theme-yilia" target="_blank">Yilia</a> by Litten
+      	</div>
+    </div>
+  </div>
+</footer>
+    </div>
+    
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css" type="text/css">
+
+  <script src="/fancybox/jquery.fancybox.pack.js" type="text/javascript"></script>
+
+  <script src="/js/main.js" type="text/javascript"></script>
+
+
+  </div>
+</body>
+</html>
