@@ -102,7 +102,7 @@
 				
 				<section class="switch-part switch-part2">
 					<div class="widget tagcloud">
-						<a href="/tags/Coursera/" style="font-size: 10.00px;">Coursera</a><a href="/tags/Digital-Image-Processing/" style="font-size: 10.00px;">Digital Image Processing</a><a href="/tags/Github/" style="font-size: 15.00px;">Github</a><a href="/tags/Godaddy/" style="font-size: 10.00px;">Godaddy</a><a href="/tags/Hexo/" style="font-size: 20.00px;">Hexo</a>
+						<a href="/tags/Coursera/" style="font-size: 15.00px;">Coursera</a><a href="/tags/Digital-Image-Processing/" style="font-size: 15.00px;">Digital Image Processing</a><a href="/tags/Github/" style="font-size: 15.00px;">Github</a><a href="/tags/Godaddy/" style="font-size: 10.00px;">Godaddy</a><a href="/tags/Hexo/" style="font-size: 20.00px;">Hexo</a>
 					</div>
 				</section>
 				
@@ -190,7 +190,7 @@
         
           <div id="toc" class="toc-article">
             <strong class="toc-title">文章目录</strong>
-         <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#添加文章目录"><span class="toc-number">1.</span> <span class="toc-text">添加文章目录</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#将文章目录模块添加到文章模板中"><span class="toc-number">1.1.</span> <span class="toc-text">将文章目录模块添加到文章模板中</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#添加CSS样式"><span class="toc-number">1.2.</span> <span class="toc-text">添加CSS样式</span></a></li></ol></li></ol>
+         <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#添加文章目录"><span class="toc-number">1.</span> <span class="toc-text">添加文章目录</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#将文章目录模块添加到文章模板中"><span class="toc-number">1.1.</span> <span class="toc-text">将文章目录模块添加到文章模板中</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#添加CSS样式"><span class="toc-number">1.2.</span> <span class="toc-text">添加CSS样式</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#添加Mathjax支持"><span class="toc-number">2.</span> <span class="toc-text">添加Mathjax支持</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#新建mathjax-ejs文件"><span class="toc-number">2.1.</span> <span class="toc-text">新建mathjax.ejs文件</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#在页面中加入"><span class="toc-number">2.2.</span> <span class="toc-text">在页面中加入</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#使用方法"><span class="toc-number">2.3.</span> <span class="toc-text">使用方法</span></a></li></ol></li></ol>
          </div>
       
         <p>本文主要写的是个人在使用Hexo的过程中觉得较为实用的一些命令与参数，需要更为详细而全面的Hexo使用方法请看<a href="http://hexo.io/docs/" target="_blank" rel="external">官方文档</a>。<br><a id="more"></a></p>
@@ -207,6 +207,30 @@
 <p>打开打开<code>/theme/yilia/source/css/_partial/article.stl</code>文件，在最后加入如下CSS样式即可：</p>
 <figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div></pre></td><td class="code"><pre><div class="line"><span class="comment">//toc</span></div><div class="line"><span class="class">.toc-article</span></div><div class="line">  <span class="attribute">background</span> <span class="id">#eee</span></div><div class="line">  <span class="attribute">margin</span> 2em 0 0 0<span class="class">.5em</span></div><div class="line">  <span class="attribute">padding</span> 1em</div><div class="line">  <span class="tag">strong</span></div><div class="line">    <span class="attribute">padding</span> 0<span class="class">.3em</span> 0</div><div class="line"><span class="id">#toc</span></div><div class="line">  <span class="attribute">line-height</span> 1<span class="class">.5em</span></div><div class="line">  <span class="attribute">font-size</span> 1em</div><div class="line">  <span class="attribute">float</span> <span class="attribute">right</span></div><div class="line">  <span class="class">.toc</span></div><div class="line">    <span class="attribute">padding</span> 0</div><div class="line">    <span class="tag">li</span></div><div class="line">      <span class="attribute">list-style-type</span> <span class="attribute">none</span></div><div class="line">      </div><div class="line">  <span class="class">.toc-child</span> </div><div class="line">    <span class="attribute">padding-left</span> 0<span class="class">.7em</span></div></pre></td></tr></table></figure>
 
+<h2 id="添加Mathjax支持">添加Mathjax支持</h2>
+<p>写文章避免不了要加入一些数学公式之类的，纯手打或者截张图上来总觉得不够优雅，想着要是能添加LaTex或者Mathjax支持就好了。网上一搜，果然有方法。</p>
+<h3 id="新建mathjax-ejs文件">新建mathjax.ejs文件</h3>
+<p>向<code>~/hexo/theme/yilia/layout/_partial/</code>下新建<code>mathjax.ejs</code>文件，内容如下：</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div></pre></td><td class="code"><pre><div class="line"><span class="tag">&lt;<span class="title">script</span> <span class="attribute">type</span>=<span class="value">"text/x-mathjax-config"</span>&gt;</span><span class="javascript"></span></div><div class="line">  MathJax.Hub.Config({</div><div class="line">    tex2jax: {</div><div class="line">      inlineMath: [ [<span class="string">'$'</span>,<span class="string">'$'</span>], [<span class="string">"\\("</span>,<span class="string">"\\)"</span>] ],</div><div class="line">      processEscapes: <span class="literal">true</span></div><div class="line">    }</div><div class="line">  });</div><div class="line"><span class="tag">&lt;/<span class="title">script</span>&gt;</span></div><div class="line"></div><div class="line"><span class="tag">&lt;<span class="title">script</span> <span class="attribute">type</span>=<span class="value">"text/x-mathjax-config"</span>&gt;</span><span class="javascript"></span></div><div class="line">    MathJax.Hub.Config({</div><div class="line">      tex2jax: {</div><div class="line">        skipTags: [<span class="string">'script'</span>, <span class="string">'noscript'</span>, <span class="string">'style'</span>, <span class="string">'textarea'</span>, <span class="string">'pre'</span>, <span class="string">'code'</span>]</div><div class="line">      }</div><div class="line">    });</div><div class="line"><span class="tag">&lt;/<span class="title">script</span>&gt;</span></div><div class="line"></div><div class="line"><span class="tag">&lt;<span class="title">script</span> <span class="attribute">type</span>=<span class="value">"text/x-mathjax-config"</span>&gt;</span><span class="javascript"></span></div><div class="line">    MathJax.Hub.Queue(<span class="function"><span class="keyword">function</span><span class="params">()</span> </span>{</div><div class="line">        <span class="keyword">var</span> all = MathJax.Hub.getAllJax(), i;</div><div class="line">        <span class="keyword">for</span>(i=<span class="number">0</span>; i &lt; all.length; i += <span class="number">1</span>) {</div><div class="line">            all[i].SourceElement().parentNode.className += <span class="string">' has-jax'</span>;</div><div class="line">        }</div><div class="line">    });</div><div class="line"><span class="tag">&lt;/<span class="title">script</span>&gt;</span></div><div class="line"></div><div class="line"><span class="tag">&lt;<span class="title">script</span> <span class="attribute">type</span>=<span class="value">"text/javascript"</span> <span class="attribute">src</span>=<span class="value">"http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"</span>&gt;</span><span class="javascript"></span></div><div class="line"><span class="tag">&lt;/<span class="title">script</span>&gt;</span></div></pre></td></tr></table></figure>
+
+<blockquote>
+<p>从第一段就可以看出Mathjax渲染的调出方法，其实本质上是调用了Mathjax官网的js脚本进行渲染的。</p>
+</blockquote>
+<h3 id="在页面中加入">在页面中加入</h3>
+<p>由于只有有些post才需要用Mathjax，平常不用的话挂在代码里又会影响渲染速度，所以需要对Mathjax的调用加以限制，需要的时候才用。<br>在<code>~/hexo/theme/yilia/layout/_partial/after_footer.ejs</code>中添加以下代码：</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">&lt;% <span class="keyword">if</span> (page.mathjax){ <span class="variable">%&gt;</span></div><div class="line">&lt;<span class="variable">%-</span> partial(<span class="string">'mathjax'</span>) <span class="variable">%&gt;</span></div><div class="line">&lt;% } <span class="variable">%&gt;</span></div></pre></td></tr></table></figure>
+
+<h3 id="使用方法">使用方法</h3>
+<p>如果本post需要调用Mathjax，则在post的front-matter前加上 <code>mathjax: true</code>即可。例如：</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">title: Mathjax-test</div><div class="line">date: 2015-02-06 15:38:44</div><div class="line">tags:</div><div class="line"><span class="header">mathjax: true</span></div><div class="line">---</div></pre></td></tr></table></figure>
+
+<p>inline调用</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="number">$e</span>^{\<span class="built_in">pi</span> i}+<span class="number">1</span>=?$</div></pre></td></tr></table></figure>
+
+<p>$e^{\pi i}+1=?$</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="variable">$$</span>\sum<span class="number">_</span>{i=<span class="number">1</span>}^n a_i=<span class="number">0</span><span class="variable">$$</span></div></pre></td></tr></table></figure>
+
+<p>$$\sum_{i=1}^n a_i=0$$</p>
 
       
     </div>
@@ -275,6 +299,37 @@
 
   <script src="/js/main.js" type="text/javascript"></script>
 
+
+
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+      processEscapes: true
+    }
+  });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      tex2jax: {
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+      }
+    });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for(i=0; i < all.length; i += 1) {
+            all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+    });
+</script>
+
+<script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
 
   </div>
 </body>

@@ -1,0 +1,424 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>Image and video precessing - Week 2 笔记 | Yuhton&#39;s blog</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="本文为Coursera上课程《Image and Video Processing: From Mars to Hollywood with A Stop at The Hospital》之Week 2的笔记。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Image and video precessing - Week 2 笔记">
+<meta property="og:url" content="http://www.yuthon.com/2015/02/05/imageproc-week2/">
+<meta property="og:site_name" content="Yuhton's blog">
+<meta property="og:description" content="本文为Coursera上课程《Image and Video Processing: From Mars to Hollywood with A Stop at The Hospital》之Week 2的笔记。">
+<meta property="og:image" content="http://i.imgur.com/X7QhwA0.png">
+<meta property="og:image" content="http://i.imgur.com/ZlrRNki.png">
+<meta property="og:image" content="http://i.imgur.com/zvxwHBe.png">
+<meta property="og:image" content="http://i.imgur.com/sm18uv1.png">
+<meta property="og:image" content="http://i.imgur.com/5lWT6ux.png">
+<meta property="og:image" content="http://i.imgur.com/vvMQDJL.png">
+<meta property="og:image" content="http://i.imgur.com/CXLO2QR.png">
+<meta property="og:image" content="http://i.imgur.com/jTDLLvE.png">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Image and video precessing - Week 2 笔记">
+<meta name="twitter:description" content="本文为Coursera上课程《Image and Video Processing: From Mars to Hollywood with A Stop at The Hospital》之Week 2的笔记。">
+
+  
+    <link rel="alternative" href="/atom.xml" title="Yuhton&#39;s blog" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  <link rel="stylesheet" href="/css/style.css" type="text/css">
+
+  
+
+  <script src="http://libs.baidu.com/jquery/1.9.0/jquery.js"></script>
+</head>
+<body>
+  <div id="container">
+    <div class="left-col">
+    <div class="overlay"></div>
+<div class="intrude-less">
+	<header id="header" class="inner">
+		<div class="profilepic">
+			<img src="/img/Avatar.png">
+		</div>
+
+		<hgroup>
+		  <h1 class="header-author"><a href="/">Yusu Pan</a></h1>
+		</hgroup>
+
+		
+		<p class="header-subtitle">Gaining Through Losing</p>
+		
+
+		
+			<div class="switch-btn">
+				<div class="icon">
+					<div class="icon-ctn">
+						<div class="icon-wrap icon-house" data-idx="0">
+							<div class="birdhouse"></div>
+							<div class="birdhouse_holes"></div>
+						</div>
+						<div class="icon-wrap icon-ribbon hide" data-idx="1">
+							<div class="ribbon"></div>
+						</div>
+						
+						
+						<div class="icon-wrap icon-me hide" data-idx="3">
+							<div class="user"></div>
+							<div class="shoulder"></div>
+						</div>
+						
+					</div>
+					
+				</div>
+				<div class="tips-box hide">
+					<div class="tips-arrow"></div>
+					<ul class="tips-inner">
+						<li>菜单</li>
+						<li>标签</li>
+						
+						
+						<li>关于我</li>
+						
+					</ul>
+				</div>
+			</div>
+		
+
+		<div class="switch-area">
+			<div class="switch-wrap">
+				<section class="switch-part switch-part1">
+					<nav class="header-menu">
+						<ul>
+						
+							<li><a href="/">主页</a></li>
+				        
+							<li><a href="/archives">所有文章</a></li>
+				        
+						</ul>
+					</nav>
+					<nav class="header-nav">
+						<div class="social">
+							
+						</div>
+					</nav>
+				</section>
+				
+				
+				<section class="switch-part switch-part2">
+					<div class="widget tagcloud">
+						<a href="/tags/Coursera/" style="font-size: 15.00px;">Coursera</a><a href="/tags/Digital-Image-Processing/" style="font-size: 15.00px;">Digital Image Processing</a><a href="/tags/Github/" style="font-size: 15.00px;">Github</a><a href="/tags/Godaddy/" style="font-size: 10.00px;">Godaddy</a><a href="/tags/Hexo/" style="font-size: 20.00px;">Hexo</a>
+					</div>
+				</section>
+				
+				
+				
+
+				
+				
+				<section class="switch-part switch-part3">
+				
+					I&#39;m Yusu Pan in ZJU, that&#39;s my blog.
+				</section>
+				
+			</div>
+		</div>
+	</header>				
+</div>
+    </div>
+    <div class="mid-col">
+      <nav id="mobile-nav">
+  	<div class="overlay"></div>
+	<div class="intrude-less">
+		<header id="header" class="inner">
+			<div class="profilepic">
+				<img src="/img/Avatar.png">
+			</div>
+
+			<hgroup>
+			  <h1 class="header-author"><a href="/">Yusu Pan</a></h1>
+			</hgroup>
+			
+			<p class="header-subtitle">Gaining Through Losing</p>
+			
+			<nav class="header-menu">
+				<ul>
+				
+					<li><a href="/">主页</a></li>
+		        
+					<li><a href="/archives">所有文章</a></li>
+		        
+		        <div class="clearfix"></div>
+				</ul>
+			</nav>
+			<nav class="header-nav">
+				<div class="social">
+					
+				</div>
+			</nav>
+		</header>				
+	</div>
+</nav>
+      <article id="post-imageproc-week2" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2015/02/05/imageproc-week2/" class="article-date">
+  	<time datetime="2015-02-05T09:52:21.000Z" itemprop="datePublished">Feb 5 2015</time>
+</a>
+      
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Notes/">Notes</a>
+  </div>
+
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Coursera/">Coursera</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Digital-Image-Processing/">Digital Image Processing</a></li></ul>
+
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      Image and video precessing - Week 2 笔记
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        
+          <div id="toc" class="toc-article">
+            <strong class="toc-title">文章目录</strong>
+         <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#The_why_and_how_of_compression"><span class="toc-number">1.</span> <span class="toc-text">The why and how of compression</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Why_is_compression_needed?"><span class="toc-number">1.1.</span> <span class="toc-text">Why is compression needed?</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#The_reason_we_can_compress"><span class="toc-number">1.2.</span> <span class="toc-text">The reason we can compress</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#常见压缩标准"><span class="toc-number">1.3.</span> <span class="toc-text">常见压缩标准</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#图像压缩原理"><span class="toc-number">1.4.</span> <span class="toc-text">图像压缩原理</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#JPEG工作原理"><span class="toc-number">1.5.</span> <span class="toc-text">JPEG工作原理</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Huffman_coding"><span class="toc-number">2.</span> <span class="toc-text">Huffman coding</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#直方图"><span class="toc-number">2.1.</span> <span class="toc-text">直方图</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#基本思路"><span class="toc-number">2.2.</span> <span class="toc-text">基本思路</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#具体实现"><span class="toc-number">2.3.</span> <span class="toc-text">具体实现</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#特点"><span class="toc-number">2.4.</span> <span class="toc-text">特点</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#变长编码"><span class="toc-number">2.4.1.</span> <span class="toc-text">变长编码</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#无前缀编码"><span class="toc-number">2.4.2.</span> <span class="toc-text">无前缀编码</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#信息熵与理想编码长度"><span class="toc-number">2.5.</span> <span class="toc-text">信息熵与理想编码长度</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#信息熵的定义"><span class="toc-number">2.5.1.</span> <span class="toc-text">信息熵的定义</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#香农第一定理"><span class="toc-number">2.5.2.</span> <span class="toc-text">香农第一定理</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#JPEG’s_8x8_blocks"><span class="toc-number">3.</span> <span class="toc-text">JPEG’s 8x8 blocks</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#JPEG对于黑白图像的处理方法"><span class="toc-number">3.1.</span> <span class="toc-text">JPEG对于黑白图像的处理方法</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#JPEG对于彩色图象的处理方法"><span class="toc-number">3.2.</span> <span class="toc-text">JPEG对于彩色图象的处理方法</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#YCbCr色彩空间"><span class="toc-number">3.2.1.</span> <span class="toc-text">YCbCr色彩空间</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#The_Discrete_Cosine_Transform_(DCT)"><span class="toc-number">4.</span> <span class="toc-text">The Discrete Cosine Transform (DCT)</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#均方误差（MSE）"><span class="toc-number">4.1.</span> <span class="toc-text">均方误差（MSE）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#什么是变换"><span class="toc-number">4.2.</span> <span class="toc-text">什么是变换</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#卡洛南-洛伊变换（KLT）"><span class="toc-number">4.3.</span> <span class="toc-text">卡洛南-洛伊变换（KLT）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#离散余弦变换（DCT）"><span class="toc-number">4.4.</span> <span class="toc-text">离散余弦变换（DCT）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Why_DCT?"><span class="toc-number">4.5.</span> <span class="toc-text">Why DCT?</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#某些情况下等同于KLT"><span class="toc-number">4.5.1.</span> <span class="toc-text">某些情况下等同于KLT</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#对周期性的假设更为合理"><span class="toc-number">4.5.2.</span> <span class="toc-text">对周期性的假设更为合理</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Why_8x8?"><span class="toc-number">4.6.</span> <span class="toc-text">Why 8x8?</span></a></li></ol></li></ol>
+         </div>
+      
+        <p>本文为Coursera上课程《Image and Video Processing: From Mars to Hollywood with A Stop at The Hospital》之Week 2的笔记。<br><a id="more"></a></p>
+<h2 id="The_why_and_how_of_compression">The why and how of compression</h2>
+<h3 id="Why_is_compression_needed?">Why is compression needed?</h3>
+<p>未经压缩的图像或者视频所占的空间十分巨大为了减少其存储空间的大小，我们需要对其进行压缩。</p>
+<h3 id="The_reason_we_can_compress">The reason we can compress</h3>
+<p>冗余</p>
+<ul>
+<li>编码冗余（coding redundanc） </li>
+<li>空间冗余（spatial redundanc）</li>
+<li>无关信息（irrelevant information）<br><img src="http://i.imgur.com/X7QhwA0.png" alt="Fig 8.1"></li>
+</ul>
+<h3 id="常见压缩标准">常见压缩标准</h3>
+<ul>
+<li>JPEG</li>
+<li>JPEG-LS</li>
+<li>JPEG-2000</li>
+<li>MPEG-1</li>
+<li>MPEG-2</li>
+<li>MPEG-4</li>
+<li>MPEG-4 AVC</li>
+</ul>
+<h3 id="图像压缩原理">图像压缩原理</h3>
+<ol>
+<li>源图像</li>
+<li>Encoder（编码器）</li>
+</ol>
+<ul>
+<li>Mapper（映射器）：对图像做重映射（例如余弦变换等）</li>
+<li>Quantizer（量化器）：容易引起失真，例如[17/4]*4=16这样的。</li>
+<li>Symbol coder（符号编码器）</li>
+</ul>
+<ol>
+<li>Decoder（解码器）</li>
+</ol>
+<ul>
+<li>Symbol decoder（符号解码器）</li>
+<li>Inverse mapper（逆映射变换）</li>
+</ul>
+<ol>
+<li>输出图像：是源图像的近似<br><img src="http://i.imgur.com/ZlrRNki.png" alt="Fig 8.5"></li>
+</ol>
+<h3 id="JPEG工作原理">JPEG工作原理</h3>
+<ol>
+<li>Input image（输入图像）</li>
+<li>Compress</li>
+</ol>
+<ul>
+<li>Construct subimages：构建8*8的子图像</li>
+<li>Forward transform：正变换，通常为离散余弦变换</li>
+<li>Quantizer：将值除以某个数之后取整</li>
+<li>Symbol encoder：进行霍夫曼编码</li>
+</ul>
+<ol>
+<li>Decode</li>
+</ol>
+<ul>
+<li>Symbol decoder</li>
+<li>Inverse transform</li>
+<li>Merge subimages</li>
+</ul>
+<p><img src="http://i.imgur.com/zvxwHBe.png" alt="Fig 8.21"></p>
+<h2 id="Huffman_coding">Huffman coding</h2>
+<h3 id="直方图">直方图</h3>
+<p>直方图（Histogram），记录每一特定的灰度值在图像中出现的次数</p>
+<h3 id="基本思路">基本思路</h3>
+<p>由于图像中的一些灰度值出现的次数多于其他灰度值，我们可以给出现次数多的灰度值一个非常简短的编码，而给出现次数较少的灰度值相对较长的编码</p>
+<p>Table 8.1</p>
+<blockquote>
+<p>Code 1指未经编码的灰度值（即原始的二进制码），Code 2指经过霍夫曼编码后的灰度值。由表可见，存储这些灰度值所需的位数大大减少。<br><strong>平均编码长度</strong>是指各符号编码长度与出现概率之积的总和。</p>
+</blockquote>
+<h3 id="具体实现">具体实现</h3>
+<ol>
+<li>按概率大小从高到低排列这些符号，概率相同的话无所谓先后</li>
+<li>取最底下的两个数，将其概率相加</li>
+<li>重复1、2步，直到只剩下两个符号</li>
+<li>给概率较大的符号赋0，较小的赋1，各层级以此类推<br><img src="http://i.imgur.com/sm18uv1.png" alt="Fig 8.7"><br><img src="http://i.imgur.com/5lWT6ux.png" alt="Fig 8.8"><h3 id="特点">特点</h3>
+<h4 id="变长编码">变长编码</h4>
+霍夫曼编码属于<strong>变长编码</strong>（各个符号编码长度不一）<h4 id="无前缀编码">无前缀编码</h4>
+霍夫曼编码也是一种<strong>无前缀编码</strong>（没有一段编码是其他编码的前缀），否则将无法重建图像信息（有歧义）。<blockquote>
+<p>若非无前缀编码，例如$a_1$为1，$a_2$为0，$a_3$为01，则解码器面对01就不知道是$a_3$还是$a_1+a_2$.</p>
+</blockquote>
+</li>
+</ol>
+<h3 id="信息熵与理想编码长度">信息熵与理想编码长度</h3>
+<h4 id="信息熵的定义">信息熵的定义</h4>
+<p>$H$ (Entropy)定义为所有符号的概率乘以该概率以2为底的对数，再对所有乘积求和，再取负数。<br>$$H=-\sum_{symbols} P(s)\log_2P(s)$$</p>
+<h4 id="香农第一定理">香农第一定理</h4>
+<p>平均编码长度可以渐进趋近于$H$，即$H$为霍夫曼编码等编码方式能达到的最短长度。$\log_2P(s)$为理想的编码长度。</p>
+<h2 id="JPEG’s_8x8_blocks">JPEG’s 8x8 blocks</h2>
+<h3 id="JPEG对于黑白图像的处理方法">JPEG对于黑白图像的处理方法</h3>
+<p>对于黑白图像，JPEG是将一幅图像中的每个8x8小块独立编码的。</p>
+<h3 id="JPEG对于彩色图象的处理方法">JPEG对于彩色图象的处理方法</h3>
+<p>如何处理彩色图象？最原始的想法是将R、G、B通道独立分开来处理。<br>但是色彩通道之间具有很大的相关性，所以JPEG不对RGB编码，而是对YCbCr色彩空间编码。<br>也就是说，JPEG现将图像从RGB阵列转换为YCbCr阵列，而后再分割成<br>8x8的子图像，之后再进行离散余弦变换、量化等操作。</p>
+<h4 id="YCbCr色彩空间">YCbCr色彩空间</h4>
+<p>Y代表亮度通道（Luminance channel），即杂黑白电视机上看到的通道。Cb、Cr为色彩通道<br>从RGB到YCbCr的转换事实上是通过一个乘上3x3的矩阵来实现的<br>$$<br>\begin{bmatrix}Y\\Cb\\Cr\end{bmatrix}=\begin{bmatrix} &amp; &amp; \\ &amp; &amp; \\ &amp; &amp; \\ \end{bmatrix}_{3x3}\begin{bmatrix}R\\G\\B\end{bmatrix}<br>$$<br>所以Y是R、G、B的一个线性组合，Cb、Cr也是。而且这个矩阵是可逆的。所以在对YCbCr解码时，乘上这个矩阵的逆矩阵即可。</p>
+<h2 id="The_Discrete_Cosine_Transform_(DCT)">The Discrete Cosine Transform (DCT)</h2>
+<h3 id="均方误差（MSE）">均方误差（MSE）</h3>
+<p>均方误差（Mean Square Error, MSE），可用以量度有损压缩时压缩图像所产生的误差<br>$$<br>MSE=\frac{1}{Number\ of\ pixels}\sum_{pixels}{\left(\hat{F}-F\right)}^2 \\<br>RMS=\sqrt{\frac{1}{Number\ of\ pixels}\sum_{pixels}{\left(\hat{F}-F\right)}^2 }<br>$$</p>
+<blockquote>
+<p>RMS(Root Mean Error)，均方根误差。</p>
+</blockquote>
+<h3 id="什么是变换">什么是变换</h3>
+<p>变换域<br>$$<br>T(u,v)=\sum_{x=0}^{n-1}\sum_{y=0}^{n-1}F(x,y)r(x,y,u,v)<br>$$</p>
+<p>逆变换<br>$$<br>F(x,y)=\sum_{u=0}^{n-1}\sum_{v=0}^{n-1}T(u,v)s(x,y,u,v)<br>$$</p>
+<blockquote>
+<p>其中，$r(x,y,u,v)$、$s(x,y,u,v)$为变换系数与逆变换系数，在KLT中，这些系数完全依赖于图像中各个像素的位置及其灰度值，而在DCT中是固定的。</p>
+</blockquote>
+<h3 id="卡洛南-洛伊变换（KLT）">卡洛南-洛伊变换（KLT）</h3>
+<p>卡洛南-洛伊变换（Karhunen-Loève Transform，KLT），是在均方误差准则下失真最小的一种变换。<br>为了消除图像元素之间的相关性，KLT将许多信息放入了第一个元素，而后将更多一点的信息放入第二个系数，依此类推，而这些系数之间是相互独立的，这是均方误差准则下的最优变换，也就是说8x8矩阵在变换后，在只能取前N个元素的情况下，KLT能使得均方误差最小。<br>缺点是需要根据输入的图像来调整，没有图像则无从下手。</p>
+<h3 id="离散余弦变换（DCT）">离散余弦变换（DCT）</h3>
+<p>散余弦变换（Discrete Cosine Transform, DCT），相较于KLT，是均方误差准则下的次优变换，有固定的矩阵与系数，是通用的。<br>在DCT中，基函数<br>$$<br>\begin{align}<br>r(x,y,u,v) &amp; =s(x,y,u,v) \\<br> &amp; =\alpha(u)\alpha(v)\cos\frac{(2x+1)u\pi}{2n}\cos\frac{(2y+1)v\pi}{2n}<br>\end{align} \\<br>$$<br>其中，归一化系数<br>$$<br>\alpha(u)=<br>\begin{cases}<br>\sqrt{\frac{1}{n}},&amp;u=0 \\<br>\sqrt{\frac{2}{n}},&amp;u\neq0 \\<br>\end{cases}<br>$$<br>DCT的正变换与逆变换的公式是一样的。<br><img src="http://i.imgur.com/vvMQDJL.png" alt="Fig 8.23"><br>n=4时，根据4x4子图像的不同而选择u、v（u，v的不同代表着所选基图像的数量也不同），用这些基图像的线性组合来表示原图像。</p>
+<h3 id="Why_DCT?">Why DCT?</h3>
+<h4 id="某些情况下等同于KLT">某些情况下等同于KLT</h4>
+<p>对一类图像而言，DCT等同于KLT。</p>
+<blockquote>
+<p>源图像的像素排列符合马尔可夫链，即每个像素都以一种特殊的形式依赖于相邻像素，然后相邻像素也是如此，此即所谓的一阶马尔可夫图像源（Markovian）。</p>
+</blockquote>
+<h4 id="对周期性的假设更为合理">对周期性的假设更为合理</h4>
+<ul>
+<li>离散傅立叶变换（DFT）潜在假设图像具有周期性，即各个8x8小块之间相似，即第n个像素与第n+8个像素相似；而DCT夹着边界处有镜面对称，即第n个像素与第16-n个像素，即像素与紧邻着它的那个像素相似，显然DCT的假设更合理。<br><img src="http://i.imgur.com/CXLO2QR.png" alt="Fig 8.25"></li>
+</ul>
+<h3 id="Why_8x8?">Why 8x8?</h3>
+<p>如下图，使用DCT，并且只取25%的系数，(a)为对整张图，(b)为对2x2子块，(c)为4x4，(d)为8x8，显然随着块的增大，压缩的质量越来越好。<br><img src="http://i.imgur.com/jTDLLvE.png" alt="Fig 8.27"><br>为何止步8x8而非更大的16x16甚至是32x32呢？</p>
+<ul>
+<li>计算方面，进行多个小型DCT比进行一个大的DCT更划算；</li>
+<li>在8x8的条件下，或者说在小范围的情况下，马尔可夫链的条件可能可以成立，即使得DCT等同于KLT；但是在更大的尺度上，条件很难满足。<br>因此，8x8是一个很好的选择。</li>
+</ul>
+
+      
+    </div>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+  
+    <a href="/2015/02/03/imageproc-week1/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">Image and video precessing - Week 1 笔记</div>
+      <strong class="article-nav-caption">&gt;</strong>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+<div class="share">
+	<!-- JiaThis Button BEGIN -->
+	<div class="jiathis_style">
+		<span class="jiathis_txt">分享到：</span>
+		<a class="jiathis_button_tsina"></a>
+		<a class="jiathis_button_cqq"></a>
+		<a class="jiathis_button_douban"></a>
+		<a class="jiathis_button_weixin"></a>
+		<a class="jiathis_button_tumblr"></a>
+		<a href="http://www.jiathis.com/share" class="jiathis jiathis_txt jtico jtico_jiathis" target="_blank"></a>
+	</div>
+	<script type="text/javascript" src="http://v3.jiathis.com/code/jia.js?uid=1405949716054953" charset="utf-8"></script>
+	<!-- JiaThis Button END -->
+</div>
+
+
+
+
+
+      <footer id="footer">
+  <div class="outer">
+    <div id="footer-info">
+    	<div class="footer-left">
+    		&copy; 2015 Yusu Pan
+    	</div>
+      	<div class="footer-right">
+      		<a href="http://hexo.io/" target="_blank">Hexo</a>  Theme <a href="https://github.com/litten/hexo-theme-yilia" target="_blank">Yilia</a> by Litten
+      	</div>
+    </div>
+  </div>
+</footer>
+    </div>
+    
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css" type="text/css">
+
+  <script src="/fancybox/jquery.fancybox.pack.js" type="text/javascript"></script>
+
+  <script src="/js/main.js" type="text/javascript"></script>
+
+
+
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+      processEscapes: true
+    }
+  });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      tex2jax: {
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+      }
+    });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for(i=0; i < all.length; i += 1) {
+            all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+    });
+</script>
+
+<script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+
+  </div>
+</body>
+</html>
