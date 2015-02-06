@@ -3,24 +3,25 @@
 <head>
   <meta charset="utf-8">
   
-  <title>Image and video precessing - Week 2 笔记 | Yuhton&#39;s blog</title>
+  <title>Image and video processing - Week 2 笔记 | Yuhton&#39;s blog</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
   <meta name="description" content="本文为Coursera上课程《Image and Video Processing: From Mars to Hollywood with A Stop at The Hospital》之Week 2的笔记。">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Image and video precessing - Week 2 笔记">
+<meta property="og:title" content="Image and video processing - Week 2 笔记">
 <meta property="og:url" content="http://www.yuthon.com/2015/02/05/imageproc-week2/">
 <meta property="og:site_name" content="Yuhton's blog">
 <meta property="og:description" content="本文为Coursera上课程《Image and Video Processing: From Mars to Hollywood with A Stop at The Hospital》之Week 2的笔记。">
-<meta property="og:image" content="http://i.imgur.com/X7QhwA0.png">
+<meta property="og:image" content="http://i.imgur.com/cKT8Vh7.png">
 <meta property="og:image" content="http://i.imgur.com/ZlrRNki.png">
 <meta property="og:image" content="http://i.imgur.com/zvxwHBe.png">
+<meta property="og:image" content="http://i.imgur.com/X7QhwA0.png">
 <meta property="og:image" content="http://i.imgur.com/sm18uv1.png">
 <meta property="og:image" content="http://i.imgur.com/5lWT6ux.png">
 <meta property="og:image" content="http://i.imgur.com/vvMQDJL.png">
 <meta property="og:image" content="http://i.imgur.com/CXLO2QR.png">
 <meta property="og:image" content="http://i.imgur.com/jTDLLvE.png">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Image and video precessing - Week 2 笔记">
+<meta name="twitter:title" content="Image and video processing - Week 2 笔记">
 <meta name="twitter:description" content="本文为Coursera上课程《Image and Video Processing: From Mars to Hollywood with A Stop at The Hospital》之Week 2的笔记。">
 
   
@@ -187,7 +188,7 @@
         
   
     <h1 class="article-title" itemprop="name">
-      Image and video precessing - Week 2 笔记
+      Image and video processing - Week 2 笔记
     </h1>
   
 
@@ -210,8 +211,9 @@
 <ul>
 <li>编码冗余（coding redundanc） </li>
 <li>空间冗余（spatial redundanc）</li>
-<li>无关信息（irrelevant information）<br><img src="http://i.imgur.com/X7QhwA0.png" alt="Fig 8.1"></li>
+<li>无关信息（irrelevant information）</li>
 </ul>
+<p><img src="http://i.imgur.com/cKT8Vh7.png" alt="Fig 8.1"></p>
 <h3 id="常见压缩标准">常见压缩标准</h3>
 <ul>
 <li>JPEG</li>
@@ -225,49 +227,43 @@
 <h3 id="图像压缩原理">图像压缩原理</h3>
 <ol>
 <li>源图像</li>
-<li>Encoder（编码器）</li>
-</ol>
-<ul>
+<li>Encoder（编码器）<ul>
 <li>Mapper（映射器）：对图像做重映射（例如余弦变换等）</li>
 <li>Quantizer（量化器）：容易引起失真，例如[17/4]*4=16这样的。</li>
 <li>Symbol coder（符号编码器）</li>
 </ul>
-<ol>
-<li>Decoder（解码器）</li>
-</ol>
-<ul>
+</li>
+<li>Decoder（解码器）<ul>
 <li>Symbol decoder（符号解码器）</li>
 <li>Inverse mapper（逆映射变换）</li>
 </ul>
-<ol>
+</li>
 <li>输出图像：是源图像的近似<br><img src="http://i.imgur.com/ZlrRNki.png" alt="Fig 8.5"></li>
 </ol>
 <h3 id="JPEG工作原理">JPEG工作原理</h3>
 <ol>
 <li>Input image（输入图像）</li>
-<li>Compress</li>
-</ol>
-<ul>
+<li>Compress<ul>
 <li>Construct subimages：构建8*8的子图像</li>
 <li>Forward transform：正变换，通常为离散余弦变换</li>
 <li>Quantizer：将值除以某个数之后取整</li>
 <li>Symbol encoder：进行霍夫曼编码</li>
 </ul>
-<ol>
-<li>Decode</li>
-</ol>
-<ul>
+</li>
+<li>Decode<ul>
 <li>Symbol decoder</li>
 <li>Inverse transform</li>
 <li>Merge subimages</li>
 </ul>
+</li>
+</ol>
 <p><img src="http://i.imgur.com/zvxwHBe.png" alt="Fig 8.21"></p>
 <h2 id="Huffman_coding">Huffman coding</h2>
 <h3 id="直方图">直方图</h3>
 <p>直方图（Histogram），记录每一特定的灰度值在图像中出现的次数</p>
 <h3 id="基本思路">基本思路</h3>
-<p>由于图像中的一些灰度值出现的次数多于其他灰度值，我们可以给出现次数多的灰度值一个非常简短的编码，而给出现次数较少的灰度值相对较长的编码</p>
-<p>Table 8.1</p>
+<p>由于图像中的一些灰度值出现的次数多于其他灰度值，我们可以给出现次数多的灰度值一个非常简短的编码，而给出现次数较少的灰度值相对较长的编码.</p>
+<p><img src="http://i.imgur.com/X7QhwA0.png" alt="Table 8.1"></p>
 <blockquote>
 <p>Code 1指未经编码的灰度值（即原始的二进制码），Code 2指经过霍夫曼编码后的灰度值。由表可见，存储这些灰度值所需的位数大大减少。<br><strong>平均编码长度</strong>是指各符号编码长度与出现概率之积的总和。</p>
 </blockquote>
