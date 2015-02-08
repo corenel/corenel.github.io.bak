@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>Image and video processing - Week 3 笔记 | Yuhton&#39;s blog</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="本文为Coursera上课程《Image and Video Processing: From Mars to Hollywood with A Stop at The Hospital》之Week 3的笔记。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Image and video processing - Week 3 笔记">
+<meta property="og:url" content="http://www.yuthon.com/2015/02/08/imageproc-week3/">
+<meta property="og:site_name" content="Yuhton's blog">
+<meta property="og:description" content="本文为Coursera上课程《Image and Video Processing: From Mars to Hollywood with A Stop at The Hospital》之Week 3的笔记。">
+<meta property="og:image" content="http://i.imgur.com/DWqA1CK.png">
+<meta property="og:image" content="http://i.imgur.com/yk5ObO7.png">
+<meta property="og:image" content="http://i.imgur.com/gWqPGPE.png">
+<meta property="og:image" content="http://i.imgur.com/4o0X86u.png">
+<meta property="og:image" content="http://i.imgur.com/pyiNAfG.png">
+<meta property="og:image" content="http://i.imgur.com/6jAjYqp.png">
+<meta property="og:image" content="http://i.imgur.com/jhtgQ5x.png">
+<meta property="og:image" content="http://i.imgur.com/oSABiKQ.png">
+<meta property="og:image" content="http://i.imgur.com/KiVyWZ8.png">
+<meta property="og:image" content="http://i.imgur.com/yG7D3rM.png">
+<meta property="og:image" content="http://i.imgur.com/2HGZTc1.png">
+<meta property="og:image" content="http://i.imgur.com/3J0J12D.png">
+<meta property="og:image" content="http://i.imgur.com/vyrsyzf.png">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Image and video processing - Week 3 笔记">
+<meta name="twitter:description" content="本文为Coursera上课程《Image and Video Processing: From Mars to Hollywood with A Stop at The Hospital》之Week 3的笔记。">
+
+  
+    <link rel="alternative" href="/atom.xml" title="Yuhton&#39;s blog" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  <link rel="stylesheet" href="/css/style.css" type="text/css">
+
+  
+
+  <script src="http://libs.baidu.com/jquery/1.9.0/jquery.js"></script>
+</head>
+<body>
+  <div id="container">
+    <div class="left-col">
+    <div class="overlay"></div>
+<div class="intrude-less">
+	<header id="header" class="inner">
+		<div class="profilepic">
+			<img src="/img/Avatar.png">
+		</div>
+
+		<hgroup>
+		  <h1 class="header-author"><a href="/">Yusu Pan</a></h1>
+		</hgroup>
+
+		
+		<p class="header-subtitle">Gaining Through Losing</p>
+		
+
+		
+			<div class="switch-btn">
+				<div class="icon">
+					<div class="icon-ctn">
+						<div class="icon-wrap icon-house" data-idx="0">
+							<div class="birdhouse"></div>
+							<div class="birdhouse_holes"></div>
+						</div>
+						<div class="icon-wrap icon-ribbon hide" data-idx="1">
+							<div class="ribbon"></div>
+						</div>
+						
+						
+						<div class="icon-wrap icon-me hide" data-idx="3">
+							<div class="user"></div>
+							<div class="shoulder"></div>
+						</div>
+						
+					</div>
+					
+				</div>
+				<div class="tips-box hide">
+					<div class="tips-arrow"></div>
+					<ul class="tips-inner">
+						<li>菜单</li>
+						<li>标签</li>
+						
+						
+						<li>关于我</li>
+						
+					</ul>
+				</div>
+			</div>
+		
+
+		<div class="switch-area">
+			<div class="switch-wrap">
+				<section class="switch-part switch-part1">
+					<nav class="header-menu">
+						<ul>
+						
+							<li><a href="/">主页</a></li>
+				        
+							<li><a href="/archives">所有文章</a></li>
+				        
+						</ul>
+					</nav>
+					<nav class="header-nav">
+						<div class="social">
+							
+						</div>
+					</nav>
+				</section>
+				
+				
+				<section class="switch-part switch-part2">
+					<div class="widget tagcloud">
+						<a href="/tags/Coursera/" style="font-size: 20.00px;">Coursera</a><a href="/tags/Digital-Image-Processing/" style="font-size: 20.00px;">Digital Image Processing</a><a href="/tags/Github/" style="font-size: 15.00px;">Github</a><a href="/tags/Godaddy/" style="font-size: 10.00px;">Godaddy</a><a href="/tags/Hexo/" style="font-size: 20.00px;">Hexo</a>
+					</div>
+				</section>
+				
+				
+				
+
+				
+				
+				<section class="switch-part switch-part3">
+				
+					I&#39;m Yusu Pan in ZJU, that&#39;s my blog.
+				</section>
+				
+			</div>
+		</div>
+	</header>				
+</div>
+    </div>
+    <div class="mid-col">
+      <nav id="mobile-nav">
+  	<div class="overlay"></div>
+	<div class="intrude-less">
+		<header id="header" class="inner">
+			<div class="profilepic">
+				<img src="/img/Avatar.png">
+			</div>
+
+			<hgroup>
+			  <h1 class="header-author"><a href="/">Yusu Pan</a></h1>
+			</hgroup>
+			
+			<p class="header-subtitle">Gaining Through Losing</p>
+			
+			<nav class="header-menu">
+				<ul>
+				
+					<li><a href="/">主页</a></li>
+		        
+					<li><a href="/archives">所有文章</a></li>
+		        
+		        <div class="clearfix"></div>
+				</ul>
+			</nav>
+			<nav class="header-nav">
+				<div class="social">
+					
+				</div>
+			</nav>
+		</header>				
+	</div>
+</nav>
+      <article id="post-imageproc-week3" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2015/02/08/imageproc-week3/" class="article-date">
+  	<time datetime="2015-02-08T05:45:33.000Z" itemprop="datePublished">Feb 8 2015</time>
+</a>
+      
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Notes/">Notes</a>
+  </div>
+
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Coursera/">Coursera</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Digital-Image-Processing/">Digital Image Processing</a></li></ul>
+
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      Image and video processing - Week 3 笔记
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        
+          <div id="toc" class="toc-article">
+            <strong class="toc-title">文章目录</strong>
+         <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#Introduction_to_iamge_enhancement"><span class="toc-number">1.</span> <span class="toc-text">Introduction to iamge enhancement</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#简单的图像变换"><span class="toc-number">1.1.</span> <span class="toc-text">简单的图像变换</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Demo_-_Enhancement_&_Histogram_modification"><span class="toc-number">2.</span> <span class="toc-text">Demo - Enhancement & Histogram modification</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#灰度值反转示例"><span class="toc-number">2.1.</span> <span class="toc-text">灰度值反转示例</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#直方图均衡"><span class="toc-number">2.2.</span> <span class="toc-text">直方图均衡</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Histogram_equalization"><span class="toc-number">3.</span> <span class="toc-text">Histogram equalization</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#基本思想"><span class="toc-number">3.1.</span> <span class="toc-text">基本思想</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#实现"><span class="toc-number">3.2.</span> <span class="toc-text">实现</span></a></li></ol></li></ol>
+         </div>
+      
+        <p>本文为Coursera上课程《Image and Video Processing: From Mars to Hollywood with A Stop at The Hospital》之Week 3的笔记。<br><a id="more"></a></p>
+<h2 id="Introduction_to_iamge_enhancement">Introduction to iamge enhancement</h2>
+<h3 id="简单的图像变换">简单的图像变换</h3>
+<p><img src="http://i.imgur.com/DWqA1CK.png" alt="Fig 3.3"></p>
+<ul>
+<li>输出源图像：$s=r$</li>
+<li>对数变换：$s=c\lg(r+1)$（加1是为了防止输入为0时所产生的错误）</li>
+<li>灰度值反转：$s=L-r$（L为最大灰度值）</li>
+</ul>
+<p><img src="http://i.imgur.com/yk5ObO7.png" alt="Fig 3.4"></p>
+<blockquote>
+<p>由于人眼的视觉特征，灰度值反转在某些时候能让我们更清晰地分辨一些图像。</p>
+</blockquote>
+<ul>
+<li>指数变换（又称伽马校正）：$s=cr^\gamma$，在对显示器的校正以及延展像素值中有所应用。</li>
+</ul>
+<p><img src="http://i.imgur.com/gWqPGPE.png" alt="Fig 3.7"><br><img src="http://i.imgur.com/4o0X86u.png" alt="Fig 3.9"></p>
+<ul>
+<li>阈值处理<br><img src="http://i.imgur.com/pyiNAfG.png" alt="Fig 3.2"></li>
+<li>强化特定区域（其他区域无视），强化特定区域（其他不变）<br><img src="http://i.imgur.com/6jAjYqp.png" alt="Fig 3.11"><br><img src="http://i.imgur.com/jhtgQ5x.png" alt="Fig 3.12"></li>
+</ul>
+<h2 id="Demo_-_Enhancement_&amp;_Histogram_modification">Demo - Enhancement &amp; Histogram modification</h2>
+<h3 id="灰度值反转示例">灰度值反转示例</h3>
+<p>读入图像</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">I</span> = imread(<span class="string">'tire.tif'</span>);</div></pre></td></tr></table></figure>
+
+<p>新建四个窗口，分别输出源图像、源图像的直方图、源图像的灰度值反转、源图像反转后的直方图。<br>可见图像反转之后，直方图也反转了。</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"><span class="function">figure</span>(1);</div><div class="line"><span class="function">imshow</span>(<span class="tag">I</span>);</div><div class="line"><span class="function">figure</span>(2);</div><div class="line"><span class="function">imhist</span>(<span class="tag">I</span>);</div><div class="line"><span class="function">figure</span>(3);</div><div class="line"><span class="function">imshow</span>(255-<span class="tag">I</span>);</div><div class="line"><span class="function">figure</span>(4);</div><div class="line"><span class="function">imshow</span>(255-<span class="tag">I</span>);</div></pre></td></tr></table></figure>
+
+<p><img src="http://i.imgur.com/oSABiKQ.png" alt="iPad screenshot 1"></p>
+<h3 id="直方图均衡">直方图均衡</h3>
+<p>新建四个窗口，分别输出源图像、源图像的直方图、经过直方图均衡化的图像、经过直方图均衡化的图像的直方图。<br>可见图像反转之后，直方图也反转了。</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">figure(<span class="number">1</span>);</div><div class="line">imshow(I);</div><div class="line">figure(<span class="number">2</span>);</div><div class="line">imhist(I);</div><div class="line">figure(<span class="number">3</span>);</div><div class="line">histe<span class="string">q(I)</span>;</div><div class="line">figure(<span class="number">4</span>);</div><div class="line">imshow(histe<span class="string">q(I)</span>);</div></pre></td></tr></table></figure>
+
+<p><img src="http://i.imgur.com/KiVyWZ8.png" alt="iPad Screenshot 2"></p>
+<h2 id="Histogram_equalization">Histogram equalization</h2>
+<p>下图展现了同一图像经过不同的变换所得到的结果，分别是过暗、过亮、对比度过低以及直方图均衡的图像。<br><img src="http://i.imgur.com/yG7D3rM.png" alt="Fig 3.16"><br>直方图均衡的目的就是通过一些变换，让各灰度值出现的概率相等，如下图。<br><img src="http://i.imgur.com/2HGZTc1.png" alt="Fig 3.18"></p>
+<h3 id="基本思想">基本思想</h3>
+<p>将直方图看作一个分布s，即对于源图像的直方图$r$，我们需要寻找一个变换，使得$s=T(r)$为均匀分布<br>由概率论的结论可知<br>$$<br>s=T(r)=(L-1)\int_0^rP_r(\omega)d\omega \\<br>P_s(s)=P_r(r)\left|\frac{dr}{ds}\right|<br>$$</p>
+<h3 id="实现">实现</h3>
+<p>以一个3bit，大小为64x64的图像为例，下图为源图像的信息<br><img src="http://i.imgur.com/3J0J12D.png" alt="Table 3.1"><br>由于图像是离散化的，所以计算积分即转变为求和<br>$$<br>s_0=T(0)=(8-1)\sum_{j=0}^{0}p(r_j)=7p_r(r_0)=1.33<br>$$</p>
+<p>$$<br>s_1=T(0)=(8-1)\sum_{j=0}^{1}p(r_j)=7p_r(r_0)+7p_r(r_1)=3.08<br>$$<br>依此类推，即可得下图<br><img src="http://i.imgur.com/vyrsyzf.png" alt="Fig 3.19"> </p>
+
+      
+    </div>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+  
+    <a href="/2015/02/05/imageproc-week2/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">Image and video processing - Week 2 笔记</div>
+      <strong class="article-nav-caption">&gt;</strong>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+<div class="share">
+	<!-- JiaThis Button BEGIN -->
+	<div class="jiathis_style">
+		<span class="jiathis_txt">分享到：</span>
+		<a class="jiathis_button_tsina"></a>
+		<a class="jiathis_button_cqq"></a>
+		<a class="jiathis_button_douban"></a>
+		<a class="jiathis_button_weixin"></a>
+		<a class="jiathis_button_tumblr"></a>
+		<a href="http://www.jiathis.com/share" class="jiathis jiathis_txt jtico jtico_jiathis" target="_blank"></a>
+	</div>
+	<script type="text/javascript" src="http://v3.jiathis.com/code/jia.js?uid=1405949716054953" charset="utf-8"></script>
+	<!-- JiaThis Button END -->
+</div>
+
+
+
+
+
+      <footer id="footer">
+  <div class="outer">
+    <div id="footer-info">
+    	<div class="footer-left">
+    		&copy; 2015 Yusu Pan
+    	</div>
+      	<div class="footer-right">
+      		<a href="http://hexo.io/" target="_blank">Hexo</a>  Theme <a href="https://github.com/litten/hexo-theme-yilia" target="_blank">Yilia</a> by Litten
+      	</div>
+    </div>
+  </div>
+</footer>
+    </div>
+    
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css" type="text/css">
+
+  <script src="/fancybox/jquery.fancybox.pack.js" type="text/javascript"></script>
+
+  <script src="/js/main.js" type="text/javascript"></script>
+
+
+
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+      processEscapes: true
+    }
+  });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      tex2jax: {
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+      }
+    });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for(i=0; i < all.length; i += 1) {
+            all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+    });
+</script>
+
+<script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+
+  </div>
+</body>
+</html>
