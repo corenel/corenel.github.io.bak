@@ -24,6 +24,14 @@
 <meta property="og:image" content="http://i.imgur.com/2HGZTc1.png">
 <meta property="og:image" content="http://i.imgur.com/3J0J12D.png">
 <meta property="og:image" content="http://i.imgur.com/vyrsyzf.png">
+<meta property="og:image" content="http://i.imgur.com/b9mLjyK.png">
+<meta property="og:image" content="http://i.imgur.com/zPCBATR.png">
+<meta property="og:image" content="http://i.imgur.com/ulI9m7B.png">
+<meta property="og:image" content="http://i.imgur.com/A8NhOb2.png">
+<meta property="og:image" content="http://i.imgur.com/fHQN6HK.png">
+<meta property="og:image" content="http://i.imgur.com/uuC6ZN3.png">
+<meta property="og:image" content="http://i.imgur.com/vIGIF4K.png">
+<meta property="og:image" content="http://i.imgur.com/sH8I0jR.png">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Image and video processing - Week 3 笔记">
 <meta name="twitter:description" content="本文为Coursera上课程《Image and Video Processing: From Mars to Hollywood with A Stop at The Hospital》之Week 3的笔记。">
@@ -203,11 +211,11 @@
         
           <div id="toc" class="toc-article">
             <strong class="toc-title">文章目录</strong>
-         <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#Introduction_to_iamge_enhancement"><span class="toc-number">1.</span> <span class="toc-text">Introduction to iamge enhancement</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#简单的图像变换"><span class="toc-number">1.1.</span> <span class="toc-text">简单的图像变换</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Demo_-_Enhancement_&_Histogram_modification"><span class="toc-number">2.</span> <span class="toc-text">Demo - Enhancement & Histogram modification</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#灰度值反转示例"><span class="toc-number">2.1.</span> <span class="toc-text">灰度值反转示例</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#直方图均衡"><span class="toc-number">2.2.</span> <span class="toc-text">直方图均衡</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Histogram_equalization"><span class="toc-number">3.</span> <span class="toc-text">Histogram equalization</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#基本思想"><span class="toc-number">3.1.</span> <span class="toc-text">基本思想</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#实现"><span class="toc-number">3.2.</span> <span class="toc-text">实现</span></a></li></ol></li></ol>
+         <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#Introduction_to_image_enhancement"><span class="toc-number">1.</span> <span class="toc-text">Introduction to image enhancement</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#简单的图像变换"><span class="toc-number">1.1.</span> <span class="toc-text">简单的图像变换</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Demo_-_Enhancement_&_Histogram_modification"><span class="toc-number">2.</span> <span class="toc-text">Demo - Enhancement & Histogram modification</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#灰度值反转示例"><span class="toc-number">2.1.</span> <span class="toc-text">灰度值反转示例</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#直方图均衡"><span class="toc-number">2.2.</span> <span class="toc-text">直方图均衡</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Histogram_equalization"><span class="toc-number">3.</span> <span class="toc-text">Histogram equalization</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#基本思想"><span class="toc-number">3.1.</span> <span class="toc-text">基本思想</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#实现"><span class="toc-number">3.2.</span> <span class="toc-text">实现</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Histogram_matching"><span class="toc-number">4.</span> <span class="toc-text">Histogram matching</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#目标"><span class="toc-number">4.1.</span> <span class="toc-text">目标</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#基本思想-1"><span class="toc-number">4.2.</span> <span class="toc-text">基本思想</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#实现-1"><span class="toc-number">4.3.</span> <span class="toc-text">实现</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#局域直方图匹配"><span class="toc-number">4.4.</span> <span class="toc-text">局域直方图匹配</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Introduction_to_local_neighborhood_operations"><span class="toc-number">5.</span> <span class="toc-text">Introduction to local neighborhood operations</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Mathematical_properties_of_averaging"><span class="toc-number">6.</span> <span class="toc-text">Mathematical properties of averaging</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Local_averaging"><span class="toc-number">6.1.</span> <span class="toc-text">Local averaging</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#Averaging"><span class="toc-number">6.1.1.</span> <span class="toc-text">Averaging</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Gaussian_Filtering"><span class="toc-number">6.1.2.</span> <span class="toc-text">Gaussian Filtering</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Heat_Flow"><span class="toc-number">6.1.3.</span> <span class="toc-text">Heat Flow</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#局部平均的性质"><span class="toc-number">6.1.4.</span> <span class="toc-text">局部平均的性质</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Non-Local_means"><span class="toc-number">7.</span> <span class="toc-text">Non-Local means</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#非局部均值算法"><span class="toc-number">7.1.</span> <span class="toc-text">非局部均值算法</span></a></li></ol></li></ol>
          </div>
       
         <p>本文为Coursera上课程《Image and Video Processing: From Mars to Hollywood with A Stop at The Hospital》之Week 3的笔记。<br><a id="more"></a></p>
-<h2 id="Introduction_to_iamge_enhancement">Introduction to iamge enhancement</h2>
+<h2 id="Introduction_to_image_enhancement">Introduction to image enhancement</h2>
 <h3 id="简单的图像变换">简单的图像变换</h3>
 <p><img src="http://i.imgur.com/DWqA1CK.png" alt="Fig 3.3"></p>
 <ul>
@@ -245,9 +253,47 @@
 <p>下图展现了同一图像经过不同的变换所得到的结果，分别是过暗、过亮、对比度过低以及直方图均衡的图像。<br><img src="http://i.imgur.com/yG7D3rM.png" alt="Fig 3.16"><br>直方图均衡的目的就是通过一些变换，让各灰度值出现的概率相等，如下图。<br><img src="http://i.imgur.com/2HGZTc1.png" alt="Fig 3.18"></p>
 <h3 id="基本思想">基本思想</h3>
 <p>将直方图看作一个分布s，即对于源图像的直方图$r$，我们需要寻找一个变换，使得$s=T(r)$为均匀分布<br>由概率论的结论可知<br>$$<br>s=T(r)=(L-1)\int_0^rP_r(\omega)d\omega \\<br>P_s(s)=P_r(r)\left|\frac{dr}{ds}\right|<br>$$</p>
+<blockquote>
+<p>积分保证了s是单调递增的，防止了像素值反转。</p>
+</blockquote>
 <h3 id="实现">实现</h3>
 <p>以一个3bit，大小为64x64的图像为例，下图为源图像的信息<br><img src="http://i.imgur.com/3J0J12D.png" alt="Table 3.1"><br>由于图像是离散化的，所以计算积分即转变为求和<br>$$<br>s_0=T(0)=(8-1)\sum_{j=0}^{0}p(r_j)=7p_r(r_0)=1.33<br>$$</p>
 <p>$$<br>s_1=T(0)=(8-1)\sum_{j=0}^{1}p(r_j)=7p_r(r_0)+7p_r(r_1)=3.08<br>$$<br>依此类推，即可得下图<br><img src="http://i.imgur.com/vyrsyzf.png" alt="Fig 3.19"> </p>
+<h2 id="Histogram_matching">Histogram matching</h2>
+<h3 id="目标">目标</h3>
+<p>直方图匹配的目标是将源图像的直方图(a)通过变换(c)尽量与给定的直方图(b)相同，最终结果是(d)<br><img src="http://i.imgur.com/b9mLjyK.png" alt="Fig 3.22"></p>
+<h3 id="基本思想-1">基本思想</h3>
+<p>在直方图均衡一节中已知如何将源图像的直方图(a)转换为均匀分布(e)，亦可知如何将给定的直方图(b)转换为均匀分布，则只需一个变换以及另一个的逆变换即可实现目的。此即直方图匹配的算法。</p>
+<blockquote>
+<p>逆映射的一个问题就是可能会有多射的情况，此时一般选取和原值最为接近的逆映射值。</p>
+</blockquote>
+<h3 id="实现-1">实现</h3>
+<p>原图暗部细节不佳，直方图均衡化之后则对比度太低。根据Fig 3.35(a)的直方图进行匹配，得到Fig 3.35(c)，此时的图像既能看清暗部，对比度也很不错。<br><img src="http://i.imgur.com/zPCBATR.png" alt="Fig 3.23"><br><img src="http://i.imgur.com/ulI9m7B.png" alt="Fig 3.24"><br><img src="http://i.imgur.com/A8NhOb2.png" alt="Fig 3.25"></p>
+<h3 id="局域直方图匹配">局域直方图匹配</h3>
+<p>对Fig 3.27(a)进行直方图匹配后得到(b)，显然暗部细节还是不够明显，所以对暗部与亮部分别进行直方图匹配后得(c)图。<br><img src="http://i.imgur.com/fHQN6HK.png" alt="Fig 3.27"></p>
+<h2 id="Introduction_to_local_neighborhood_operations">Introduction to local neighborhood operations</h2>
+<p>邻域平均、邻域加权平均<br><img src="http://i.imgur.com/uuC6ZN3.png" alt="Fig 3.32"><br>对一张500x500的图，取NxN的小块（N=3,5,9,15,35）做平均化处理。（为什么会模糊？）<br><img src="http://i.imgur.com/vIGIF4K.png" alt="Fig 3.33"><br>领域平均可用于局部滤波处理，例如希望去掉图中的小点（可能为噪点），则对其进行邻域平均，而后再阈值处理，即可得到想要的。<br><img src="http://i.imgur.com/sH8I0jR.png" alt="Fig 3.34"></p>
+<h2 id="Mathematical_properties_of_averaging">Mathematical properties of averaging</h2>
+<h3 id="Local_averaging">Local averaging</h3>
+<p>取一个NxN窗口做局部平均</p>
+<h4 id="Averaging">Averaging</h4>
+<p>给定一组数$a_i(i=0\ldots n)$，求$a$使得$\sum_{i=0}^n(a-a_i)^2$最小，则$a=\overline{a_i}$。<br>在上一节进行邻域平均处理时，用平均数来替代当前像素的值，由以上定理知，此时的MSE（均方差）最小。</p>
+<h4 id="Gaussian_Filtering">Gaussian Filtering</h4>
+<p>取一个图像$f(x,y)$，使用高斯滤波器对其进行卷积处理。高斯函数就是一个均值为0，方差为某数的高斯函数。<br>$$<br>f(x,y,\sigma)=f(x,y)*G(0,\sigma)<br>$$<br>在离散化的情况下，其实就是使用高斯函数提供的权重进行加权平均。此时我们得到一个新的函数$f(x,y,\sigma)$</p>
+<h4 id="Heat_Flow">Heat Flow</h4>
+<p>热流根据以下等式来扩散<br>$$<br>\frac{\partial f}{\partial t}=\Delta f=\frac{\partial ^2f}{\partial x^2}+\frac{\partial ^2f}{\partial y^2}<br>$$<br>使用高斯滤波器对图像求平均等同于将各个像素的灰度值想象作热量，让它遵循着热流来运作。如果让其运作一段时间，也就等同于选择一个完全由时间决定的方差，并对图像做高斯滤波，所以像素值的扩散就像是热量基于热流的扩散</p>
+<h4 id="局部平均的性质">局部平均的性质</h4>
+<ul>
+<li>其类似于计算平均数，使一定区域内均方差最小</li>
+<li>像素至于热量之间有相通的地方，所以局部平均就是在扩散像素值，这也是它使得图像变得模糊的原因</li>
+</ul>
+<h2 id="Non-Local_means">Non-Local means</h2>
+<p>如何解决平均使得图像的边缘也随着内容变模糊的问题。</p>
+<ul>
+<li>使用不同的局部运算来代替局部平均</li>
+<li>选择一个更好的平均方法：只对相似的像素点求平均，而不对相差较大的像素点求平均<h3 id="非局部均值算法">非局部均值算法</h3>
+假设我们在图中观察某个像素$P_i$，它是无噪的像素以及噪声相加的结果，而这个噪声是个随机变量<br>$$<br>P_i=P_o+n_i<br>$$<br>观察多次后做平均，按照信号处理中的结论，噪声将按照我们平均的数量成平方下降。<br>对相似的像素值做平均得越多，噪声越少，这也是非局部均值出现的原因之一。<br>所以非局部均值的基本思想就是先找相似的邻域，而后取平均值。<br>如何寻找相似的邻域？一个较为简单的方法就是使用3x3、5x5或者7x7的邻域来扫描整个图像，比较对象之间的均方误差，确保其足够小，则为相似。</li>
+</ul>
 
       
     </div>
