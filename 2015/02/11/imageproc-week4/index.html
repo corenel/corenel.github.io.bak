@@ -1,0 +1,340 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>Image and video processing - Week 4 笔记 | Yuhton&#39;s blog</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="本文为Coursera上课程《Image and Video Processing: From Mars to Hollywood with A Stop at The Hospital》之Week 4: Image restoration的笔记。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Image and video processing - Week 4 笔记">
+<meta property="og:url" content="http://www.yuthon.com/2015/02/11/imageproc-week4/">
+<meta property="og:site_name" content="Yuhton's blog">
+<meta property="og:description" content="本文为Coursera上课程《Image and Video Processing: From Mars to Hollywood with A Stop at The Hospital》之Week 4: Image restoration的笔记。">
+<meta property="og:image" content="http://i.imgur.com/TtnnCsF.png">
+<meta property="og:image" content="http://i.imgur.com/TBiWgDZ.png">
+<meta property="og:image" content="http://i.imgur.com/QgakoEK.png">
+<meta property="og:image" content="http://i.imgur.com/yOi95E8.png">
+<meta property="og:image" content="http://i.imgur.com/dyRSERs.png">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Image and video processing - Week 4 笔记">
+<meta name="twitter:description" content="本文为Coursera上课程《Image and Video Processing: From Mars to Hollywood with A Stop at The Hospital》之Week 4: Image restoration的笔记。">
+
+  
+    <link rel="alternative" href="/atom.xml" title="Yuhton&#39;s blog" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  <link rel="stylesheet" href="/css/style.css" type="text/css">
+
+  
+
+  <script src="http://libs.baidu.com/jquery/1.9.0/jquery.js"></script>
+</head>
+<body>
+  <div id="container">
+    <div class="left-col">
+    <div class="overlay"></div>
+<div class="intrude-less">
+	<header id="header" class="inner">
+		<div class="profilepic">
+			<img src="/img/Avatar.png">
+		</div>
+
+		<hgroup>
+		  <h1 class="header-author"><a href="/">Yusu Pan</a></h1>
+		</hgroup>
+
+		
+		<p class="header-subtitle">Gaining Through Losing</p>
+		
+
+		
+			<div class="switch-btn">
+				<div class="icon">
+					<div class="icon-ctn">
+						<div class="icon-wrap icon-house" data-idx="0">
+							<div class="birdhouse"></div>
+							<div class="birdhouse_holes"></div>
+						</div>
+						<div class="icon-wrap icon-ribbon hide" data-idx="1">
+							<div class="ribbon"></div>
+						</div>
+						
+						
+						<div class="icon-wrap icon-me hide" data-idx="3">
+							<div class="user"></div>
+							<div class="shoulder"></div>
+						</div>
+						
+					</div>
+					
+				</div>
+				<div class="tips-box hide">
+					<div class="tips-arrow"></div>
+					<ul class="tips-inner">
+						<li>菜单</li>
+						<li>标签</li>
+						
+						
+						<li>关于我</li>
+						
+					</ul>
+				</div>
+			</div>
+		
+
+		<div class="switch-area">
+			<div class="switch-wrap">
+				<section class="switch-part switch-part1">
+					<nav class="header-menu">
+						<ul>
+						
+							<li><a href="/">主页</a></li>
+				        
+							<li><a href="/archives">所有文章</a></li>
+				        
+						</ul>
+					</nav>
+					<nav class="header-nav">
+						<div class="social">
+							
+						</div>
+					</nav>
+				</section>
+				
+				
+				<section class="switch-part switch-part2">
+					<div class="widget tagcloud">
+						<a href="/tags/Coursera/" style="font-size: 20.00px;">Coursera</a><a href="/tags/Digital-Image-Processing/" style="font-size: 20.00px;">Digital Image Processing</a><a href="/tags/Github/" style="font-size: 13.33px;">Github</a><a href="/tags/Godaddy/" style="font-size: 10.00px;">Godaddy</a><a href="/tags/Hexo/" style="font-size: 16.67px;">Hexo</a>
+					</div>
+				</section>
+				
+				
+				
+
+				
+				
+				<section class="switch-part switch-part3">
+				
+					I&#39;m Yusu Pan in ZJU, that&#39;s my blog.
+				</section>
+				
+			</div>
+		</div>
+	</header>				
+</div>
+    </div>
+    <div class="mid-col">
+      <nav id="mobile-nav">
+  	<div class="overlay"></div>
+	<div class="intrude-less">
+		<header id="header" class="inner">
+			<div class="profilepic">
+				<img src="/img/Avatar.png">
+			</div>
+
+			<hgroup>
+			  <h1 class="header-author"><a href="/">Yusu Pan</a></h1>
+			</hgroup>
+			
+			<p class="header-subtitle">Gaining Through Losing</p>
+			
+			<nav class="header-menu">
+				<ul>
+				
+					<li><a href="/">主页</a></li>
+		        
+					<li><a href="/archives">所有文章</a></li>
+		        
+		        <div class="clearfix"></div>
+				</ul>
+			</nav>
+			<nav class="header-nav">
+				<div class="social">
+					
+				</div>
+			</nav>
+		</header>				
+	</div>
+</nav>
+      <article id="post-imageproc-week4" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2015/02/11/imageproc-week4/" class="article-date">
+  	<time datetime="2015-02-11T02:22:14.000Z" itemprop="datePublished">Feb 11 2015</time>
+</a>
+      
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Notes/">Notes</a>
+  </div>
+
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Coursera/">Coursera</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Digital-Image-Processing/">Digital Image Processing</a></li></ul>
+
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      Image and video processing - Week 4 笔记
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        
+          <div id="toc" class="toc-article">
+            <strong class="toc-title">文章目录</strong>
+         <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#What_is_image_restoration"><span class="toc-number">1.</span> <span class="toc-text">What is image restoration</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Noise_types"><span class="toc-number">2.</span> <span class="toc-text">Noise types</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#高斯噪声(Gauss_Noise)"><span class="toc-number">2.1.</span> <span class="toc-text">高斯噪声(Gauss Noise)</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#概率分布公式"><span class="toc-number">2.1.1.</span> <span class="toc-text">概率分布公式</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#应用"><span class="toc-number">2.1.2.</span> <span class="toc-text">应用</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#瑞利噪声(Rayleigh_Noise)"><span class="toc-number">2.2.</span> <span class="toc-text">瑞利噪声(Rayleigh Noise)</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#概率分布公式-1"><span class="toc-number">2.2.1.</span> <span class="toc-text">概率分布公式</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#性质"><span class="toc-number">2.2.2.</span> <span class="toc-text">性质</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#应用-1"><span class="toc-number">2.2.3.</span> <span class="toc-text">应用</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#伽马噪声(Gamma_Noise)"><span class="toc-number">2.3.</span> <span class="toc-text">伽马噪声(Gamma Noise)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#指数噪声"><span class="toc-number">2.4.</span> <span class="toc-text">指数噪声</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#概率分布公式-2"><span class="toc-number">2.4.1.</span> <span class="toc-text">概率分布公式</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#性质-1"><span class="toc-number">2.4.2.</span> <span class="toc-text">性质</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#应用-2"><span class="toc-number">2.4.3.</span> <span class="toc-text">应用</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#均匀噪声"><span class="toc-number">2.5.</span> <span class="toc-text">均匀噪声</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#概率分布公式-3"><span class="toc-number">2.5.1.</span> <span class="toc-text">概率分布公式</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#性质-2"><span class="toc-number">2.5.2.</span> <span class="toc-text">性质</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#应用-3"><span class="toc-number">2.5.3.</span> <span class="toc-text">应用</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#脉冲噪声(Impulse_Noise)"><span class="toc-number">2.6.</span> <span class="toc-text">脉冲噪声(Impulse Noise)</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#性质-3"><span class="toc-number">2.6.1.</span> <span class="toc-text">性质</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Noise_and_histograms"><span class="toc-number">3.</span> <span class="toc-text">Noise and histograms</span></a></li></ol>
+         </div>
+      
+        <p>本文为Coursera上课程《Image and Video Processing: From Mars to Hollywood with A Stop at The Hospital》之Week 4: Image restoration的笔记。<br><a id="more"></a></p>
+<h2 id="What_is_image_restoration">What is image restoration</h2>
+<p> 图像的退化与复原。退化过程中最常见的是加性噪声<br>$$<br>g(x,y)=f(x,y)*H(x,y)+\eta(x,y)<br>$$</p>
+<p>当然也还有比较有限的乘性噪声，噪声的量是由信号大小决定的。对于乘性噪声，往往是将其取对数，转化为加性噪声处理。</p>
+<p>$$<br>g(x,y)=\left[{f(x,y)*H(x,y)}\right]\cdot \eta(x,y)<br>$$</p>
+<p> <img src="http://i.imgur.com/TtnnCsF.png" alt="Fig 5.1"></p>
+<h2 id="Noise_types">Noise types</h2>
+<p>我们通常通过特定的概率模型来区分不同的噪声<br><img src="http://i.imgur.com/TBiWgDZ.png" alt="Fig 5.2"></p>
+<h3 id="高斯噪声(Gauss_Noise)">高斯噪声(Gauss Noise)</h3>
+<h4 id="概率分布公式">概率分布公式</h4>
+<p>$$<br>p(z)=\frac{1}{\sqrt{2\pi}\sigma}e^{-\frac{(z-\overline{z})^2}{2\sigma^2}}<br>$$</p>
+<h4 id="应用">应用</h4>
+<p>虽然没有任何的实际系统能产生高斯噪声，但高斯噪声是在视频与图像处理中应用的最为广泛的模型。</p>
+<ul>
+<li>在数学上容易操作</li>
+<li>是对其他噪声的好的近似，尤其当我们关注图像中的一小块区域时</li>
+</ul>
+<h3 id="瑞利噪声(Rayleigh_Noise)">瑞利噪声(Rayleigh Noise)</h3>
+<h4 id="概率分布公式-1">概率分布公式</h4>
+<p>$$<br>p(z)=<br>\begin{cases}<br>\frac{2}{b}(z-a)e^{-\frac{(z-a)^2}{b}},&amp; z\ge a \\<br>0,&amp;z\lt a<br>\end{cases}<br>$$</p>
+<h4 id="性质">性质</h4>
+<p>$$<br>\overline{z}=a+\sqrt{\frac{\pi b}{4}} \\<br>\sigma^2=\frac{b(4-\pi)}{4}<br>$$</p>
+<h4 id="应用-1">应用</h4>
+<ul>
+<li>模拟磁共振图像中的某些区域</li>
+<li>水下成像</li>
+<li>模拟传感器中的噪声<h3 id="伽马噪声(Gamma_Noise)">伽马噪声(Gamma Noise)</h3>
+$$<br>K=\frac{a(b-1)^{b-1}}{(b-1)!}e^{-(b-1)}<br>$$<h3 id="指数噪声">指数噪声</h3>
+<h4 id="概率分布公式-2">概率分布公式</h4>
+$$<br>p(z)=<br>\begin{cases}<br>ae^{-az},&amp;z\ge 0 \\<br>0,&amp;z\lt 0<br>\end{cases}<br>$$<h4 id="性质-1">性质</h4>
+$$<br>\overline{z}=\frac{1}{a} \\<br>\sigma^2=\frac{1}{a^2}<br>$$<h4 id="应用-2">应用</h4>
+用以描述量化噪声，或者预测编码时产生的噪声。</li>
+</ul>
+<h3 id="均匀噪声">均匀噪声</h3>
+<h4 id="概率分布公式-3">概率分布公式</h4>
+<p>$$<br>p(z)=<br>\begin{cases}<br>\frac{1}{b-a},&amp;a\le z\le b \\<br>0,&amp;other<br>\end{cases}<br>$$</p>
+<h4 id="性质-2">性质</h4>
+<p>$$<br>\overline{z}=\frac{a+b}{2} \\<br>\sigma^2=\frac{(b-a)^2}{12}<br>$$</p>
+<h4 id="应用-3">应用</h4>
+<p>指数噪声与均匀噪声均可用于描述量化噪声，即量化像素值过程中所产生的噪声。</p>
+<h3 id="脉冲噪声(Impulse_Noise)">脉冲噪声(Impulse Noise)</h3>
+<p>又称椒盐噪声</p>
+<h4 id="性质-3">性质</h4>
+<p>只对某些像素值起作用，将其变白（盐）或变黑（椒），切改变的数值相同。</p>
+<h2 id="Noise_and_histograms">Noise and histograms</h2>
+<p>考虑一个非常简单的三色图像，显然其直方图应该是三个$\delta$函数。<br><img src="http://i.imgur.com/QgakoEK.png" alt="Fig 5.3"><br>对其分别加入上一节所述的六种噪声，所得图像与直方图如下，很容易就能分辨出所加的是何种噪声。<br><img src="http://i.imgur.com/yOi95E8.png" alt="Fig 5.4"><br><img src="http://i.imgur.com/dyRSERs.png" alt="Fig 5.5"></p>
+
+      
+    </div>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+  
+    <a href="/2015/02/08/imageproc-week3/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">Image and video processing - Week 3 笔记</div>
+      <strong class="article-nav-caption">&gt;</strong>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+<div class="share">
+	<!-- JiaThis Button BEGIN -->
+	<div class="jiathis_style">
+		<span class="jiathis_txt">分享到：</span>
+		<a class="jiathis_button_tsina"></a>
+		<a class="jiathis_button_cqq"></a>
+		<a class="jiathis_button_douban"></a>
+		<a class="jiathis_button_weixin"></a>
+		<a class="jiathis_button_tumblr"></a>
+		<a href="http://www.jiathis.com/share" class="jiathis jiathis_txt jtico jtico_jiathis" target="_blank"></a>
+	</div>
+	<script type="text/javascript" src="http://v3.jiathis.com/code/jia.js?uid=1405949716054953" charset="utf-8"></script>
+	<!-- JiaThis Button END -->
+</div>
+
+
+
+
+
+      <footer id="footer">
+  <div class="outer">
+    <div id="footer-info">
+    	<div class="footer-left">
+    		&copy; 2015 Yusu Pan
+    	</div>
+      	<div class="footer-right">
+      		<a href="http://hexo.io/" target="_blank">Hexo</a>  Theme <a href="https://github.com/litten/hexo-theme-yilia" target="_blank">Yilia</a> by Litten
+      	</div>
+    </div>
+  </div>
+</footer>
+    </div>
+    
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css" type="text/css">
+
+  <script src="/fancybox/jquery.fancybox.pack.js" type="text/javascript"></script>
+
+  <script src="/js/main.js" type="text/javascript"></script>
+
+
+
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+      processEscapes: true
+    }
+  });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      tex2jax: {
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+      }
+    });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for(i=0; i < all.length; i += 1) {
+            all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+    });
+</script>
+
+<script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+
+  </div>
+</body>
+</html>
