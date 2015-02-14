@@ -189,7 +189,7 @@
         
           <div id="toc" class="toc-article">
             <strong class="toc-title">文章目录</strong>
-         <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#On_Edges_and_Regions"><span class="toc-number">1.</span> <span class="toc-text">On Edges and Regions</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Hough_Transform"><span class="toc-number">2.</span> <span class="toc-text">Hough Transform</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#基本思想"><span class="toc-number">2.1.</span> <span class="toc-text">基本思想</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#具体实现"><span class="toc-number">2.2.</span> <span class="toc-text">具体实现</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#实例"><span class="toc-number">2.3.</span> <span class="toc-text">实例</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Matlab展示"><span class="toc-number">2.4.</span> <span class="toc-text">Matlab展示</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#检测圆"><span class="toc-number">2.5.</span> <span class="toc-text">检测圆</span></a></li></ol></li></ol>
+         <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#On_Edges_and_Regions"><span class="toc-number">1.</span> <span class="toc-text">On Edges and Regions</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Hough_Transform"><span class="toc-number">2.</span> <span class="toc-text">Hough Transform</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#基本思想"><span class="toc-number">2.1.</span> <span class="toc-text">基本思想</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#具体实现"><span class="toc-number">2.2.</span> <span class="toc-text">具体实现</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#实例"><span class="toc-number">2.3.</span> <span class="toc-text">实例</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Matlab展示"><span class="toc-number">2.4.</span> <span class="toc-text">Matlab展示</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#检测圆"><span class="toc-number">2.5.</span> <span class="toc-text">检测圆</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Line_Segment_Detector"><span class="toc-number">3.</span> <span class="toc-text">Line Segment Detector</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Otsu’s_Segmentation"><span class="toc-number">4.</span> <span class="toc-text">Otsu’s Segmentation</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#简介"><span class="toc-number">4.1.</span> <span class="toc-text">简介</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#基本思想-1"><span class="toc-number">4.2.</span> <span class="toc-text">基本思想</span></a></li></ol></li></ol>
          </div>
       
         <p>本文为Coursera上课程《Image and Video Processing: From Mars to Hollywood with A Stop at The Hospital》之Week 5: Segmentation的笔记。<br><a id="more"></a></p>
@@ -207,7 +207,17 @@
 
 <p><img src="http://i.imgur.com/HJ4NXze.jpg" alt="iPad Screenshoot"></p>
 <h3 id="检测圆">检测圆</h3>
-<p>圆的公式：<br>$$<br>(x-x_0)^2+(y-y_0)^2=r^2<br>$$<br>显然它的参数空间是一个三维空间，先遍历x，再y，后r。</p>
+<p>圆的公式：<br>$$<br>(x-x_0)^2+(y-y_0)^2=r^2<br>$$<br>显然它的参数空间是一个三维空间，先遍历x，再y，计算出r投票。</p>
+<h2 id="Line_Segment_Detector">Line Segment Detector</h2>
+<p><a href="http://demo.ipol.im/demo/gjmr_line_segment_detector/" target="_blank" rel="external">Online Demo</a><br>input<br>output</p>
+<h2 id="Otsu’s_Segmentation">Otsu’s Segmentation</h2>
+<h3 id="简介">简介</h3>
+<p>下面(b)是一个双峰直方图，左边的峰是指纹，右边的峰是背景。如果在这中间加一个简单的阈值，就能分割指纹与背景。大津算法就能帮助我们自动找到这个阈值。<br>Fig 10.38<br>大津算法将尝试寻找一个阈值，使得图像的类内方差尽可能的小。</p>
+<h3 id="基本思想-1">基本思想</h3>
+<p>类内方差的定义(t为阈值)<br>$$<br>\sigma^2_w(t)=q_1(t)\sigma_1^2(t)+q_2(t)\sigma_2^2(t) \\<br>q_1(t)=\sum_{i=1}^tP(i) \\<br>q_2(t)=\sum_{i=t+1}^IP(i)\\<br>\mu_1(t)=\sum_{i=1}^t\frac{iP(i)}{q_1(t)} \\<br>\mu_2(t)=\sum_{i=t+1}^I\frac{iP(i)}{q_2(t)} \\<br>\sigma_1^2(t)=\sum_{i=1}^t[i-\mu_1(t)]^2\frac{P(i)}{q_1(t)} \\<br>\sigma_2^2(t)=\sum_{i=t+1}^I[i-\mu_2(t)]^2\frac{P(i)}{q_2(t)}<br>$$</p>
+<p>确定阈值时，一个听起来较为繁琐的方法就是将t取遍所有可能的值，寻找$\sigma^2_w(t)$取最小的时候的t值。<br>注意到有如下等式：</p>
+<p>$$<br>\sigma^2(t)=\sigma_w^2(t)+q_1(t)[1-q_1(t)][\mu_1(t)-\mu_2(t)]^2<br>$$</p>
+<p>且其中的$\sigma^2(t)$即整个图像的方差是不变的，要最小化$\sigma_w^2(t)$，即要最大化$q_1(t)[1-q_1(t)][\mu_1(t)-\mu_2(t)]^2$。而这其中的均值和概率在计算过程中很容易递推得到（t增加的时候，两组的概率和均值一个加一个减），这样的效率非常高。</p>
 
       
     </div>
