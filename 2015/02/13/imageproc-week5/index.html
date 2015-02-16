@@ -189,7 +189,7 @@
         
           <div id="toc" class="toc-article">
             <strong class="toc-title">文章目录</strong>
-         <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#On_Edges_and_Regions"><span class="toc-number">1.</span> <span class="toc-text">On Edges and Regions</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Hough_Transform"><span class="toc-number">2.</span> <span class="toc-text">Hough Transform</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#基本思想"><span class="toc-number">2.1.</span> <span class="toc-text">基本思想</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#具体实现"><span class="toc-number">2.2.</span> <span class="toc-text">具体实现</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#实例"><span class="toc-number">2.3.</span> <span class="toc-text">实例</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Matlab展示"><span class="toc-number">2.4.</span> <span class="toc-text">Matlab展示</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#检测圆"><span class="toc-number">2.5.</span> <span class="toc-text">检测圆</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Line_Segment_Detector"><span class="toc-number">3.</span> <span class="toc-text">Line Segment Detector</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Otsu’s_Segmentation"><span class="toc-number">4.</span> <span class="toc-text">Otsu’s Segmentation</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#简介"><span class="toc-number">4.1.</span> <span class="toc-text">简介</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#基本思想-1"><span class="toc-number">4.2.</span> <span class="toc-text">基本思想</span></a></li></ol></li></ol>
+         <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#On_Edges_and_Regions"><span class="toc-number">1.</span> <span class="toc-text">On Edges and Regions</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Hough_Transform"><span class="toc-number">2.</span> <span class="toc-text">Hough Transform</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#基本思想"><span class="toc-number">2.1.</span> <span class="toc-text">基本思想</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#具体实现"><span class="toc-number">2.2.</span> <span class="toc-text">具体实现</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#实例"><span class="toc-number">2.3.</span> <span class="toc-text">实例</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Matlab展示"><span class="toc-number">2.4.</span> <span class="toc-text">Matlab展示</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#检测圆"><span class="toc-number">2.5.</span> <span class="toc-text">检测圆</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Line_Segment_Detector"><span class="toc-number">3.</span> <span class="toc-text">Line Segment Detector</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Otsu’s_Segmentation"><span class="toc-number">4.</span> <span class="toc-text">Otsu’s Segmentation</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#简介"><span class="toc-number">4.1.</span> <span class="toc-text">简介</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#基本思想-1"><span class="toc-number">4.2.</span> <span class="toc-text">基本思想</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#实例-1"><span class="toc-number">4.3.</span> <span class="toc-text">实例</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Matlab示例"><span class="toc-number">4.4.</span> <span class="toc-text">Matlab示例</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Interactive_Image_Segmentation"><span class="toc-number">5.</span> <span class="toc-text">Interactive Image Segmentation</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Feature_Distribution_Estimation"><span class="toc-number">5.1.</span> <span class="toc-text">Feature Distribution Estimation</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Weighted_Distance_Transform"><span class="toc-number">5.2.</span> <span class="toc-text">Weighted Distance Transform</span></a></li></ol></li></ol>
          </div>
       
         <p>本文为Coursera上课程《Image and Video Processing: From Mars to Hollywood with A Stop at The Hospital》之Week 5: Segmentation的笔记。<br><a id="more"></a></p>
@@ -218,6 +218,24 @@
 <p>确定阈值时，一个听起来较为繁琐的方法就是将t取遍所有可能的值，寻找$\sigma^2_w(t)$取最小的时候的t值。<br>注意到有如下等式：</p>
 <p>$$<br>\sigma^2(t)=\sigma_w^2(t)+q_1(t)[1-q_1(t)][\mu_1(t)-\mu_2(t)]^2<br>$$</p>
 <p>且其中的$\sigma^2(t)$即整个图像的方差是不变的，要最小化$\sigma_w^2(t)$，即要最大化$q_1(t)[1-q_1(t)][\mu_1(t)-\mu_2(t)]^2$。而这其中的均值和概率在计算过程中很容易递推得到（t增加的时候，两组的概率和均值一个加一个减），这样的效率非常高。</p>
+<h3 id="实例-1">实例</h3>
+<p>(a)为源图像，(b)为对整个图像使用大津算法后的结果，(c)为对移动窗口使用大津算法后的结果。<br>Fig 10.49</p>
+<h3 id="Matlab示例">Matlab示例</h3>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">I</span> = imread(<span class="string">'coins.jpg'</span>);</div><div class="line">level = graythresh(<span class="keyword">I</span>);</div><div class="line">BW = im2bw(<span class="keyword">I</span>,level);</div><div class="line">figure, imshow(<span class="keyword">I</span>); figure imshow(BW); figure imhist(<span class="keyword">I</span>);</div></pre></td></tr></table></figure>
+
+<p>iPad Screenshot</p>
+<h2 id="Interactive_Image_Segmentation">Interactive Image Segmentation</h2>
+<h3 id="Feature_Distribution_Estimation">Feature Distribution Estimation</h3>
+<ul>
+<li>画出用户所标记为前景、背景的像素的分布直方图。</li>
+<li>将图像中的每个像素依据概率划分为属于前景还是背景。</li>
+</ul>
+<p>$$<br>P_F(x)=\frac{P_r(\vec{c_x}|F)}{P_r(\vec{c_x}|F)+P_r(\vec{c_x}|B)} \\<br>P_B(x)=\frac{P_r(\vec{c_x}|B)}{P_r(\vec{c_x}|F)+P_r(\vec{c_x}|B)}<br>$$</p>
+<p>不过仅仅如此的话可能导致一些错误的判断，例如猫的眼睛就会被归到</p>
+<h3 id="Weighted_Distance_Transform">Weighted Distance Transform</h3>
+<p>遍历图像中的所有像素，计算到达前景涂抹和到达背景涂抹的最短路径。一旦得到了这两条最短路径，我们就可以比较路径的长短来判断给定像素是前景还是背景。该算法基于新近发展的Dijkstra算法，计算路径的效率很高，计算时间是线性的。<br>$$<br>d(s_1,s_2):={min}_{C_{s_1,s_2}}\int_{C_{s_1,s_2}}Wds<br>$$</p>
+<p>其中的W代表的是权重</p>
+<p>$$<br>W:=|\nabla P_F(x)\cdot \vec{C’}_{s_1,s_2}(x)| \\<br>D_l(x):=min_{s\in \Omega_l}d(s,x),l\in{F,B}<br>$$</p>
 
       
     </div>
@@ -225,6 +243,15 @@
   
     
 <nav id="article-nav">
+  
+    <a href="/2015/02/13/imageproc-week5/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">&lt;</strong>
+      <div class="article-nav-title">
+        
+          Image and video processing - Week 5 笔记
+        
+      </div>
+    </a>
   
   
     <a href="/2015/02/11/imageproc-week4/" id="article-nav-older" class="article-nav-link-wrap">
