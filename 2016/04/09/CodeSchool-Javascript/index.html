@@ -1,0 +1,588 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next muse use-motion">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+  <link href="/vendors/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css"/>
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+<link href="/vendors/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.0.1" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="Hexo, NexT" />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.0.1" />
+
+
+
+
+
+
+<meta name="description" content="ClosuresClosures help in function “construction zones”
+A closure can make the creation of very similar functions ultra-efficient.
+12345678910function buildCoveTicketMaker( transport ) &amp;#123;  return f">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Notes for Code School - JavaScript Road Trip">
+<meta property="og:url" content="http://www.yuthon.com/2016/04/09/CodeSchool-Javascript/index.html">
+<meta property="og:site_name" content="Yuthon's blog">
+<meta property="og:description" content="ClosuresClosures help in function “construction zones”
+A closure can make the creation of very similar functions ultra-efficient.
+12345678910function buildCoveTicketMaker( transport ) &amp;#123;  return f">
+<meta property="og:image" content="http://www.yuthon.com/images/program_load_order.png">
+<meta property="og:image" content="http://www.yuthon.com/images/stuff_declare.png">
+<meta property="og:image" content="http://www.yuthon.com/images/the_impact_of_hoisting.png">
+<meta property="og:image" content="http://www.yuthon.com/images/function_expressions_are_never_hoisted.png">
+<meta property="og:image" content="http://www.yuthon.com/images/function_expressions_are_never_hoisted_2.png">
+<meta property="og:image" content="http://www.yuthon.com/images/how_might_this_affect_our_EARLIER_train_system.png">
+<meta property="og:image" content="http://www.yuthon.com/images/how_might_this_affect_our_EARLIER_train_system_result.png">
+<meta property="og:image" content="http://www.yuthon.com/images/how_might_this_affect_our_EARLIER_train_system_solution_1.png">
+<meta property="og:image" content="http://www.yuthon.com/images/how_might_this_affect_our_EARLIER_train_system_solution_2.png">
+<meta property="og:updated_time" content="2016-04-09T13:12:48.194Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Notes for Code School - JavaScript Road Trip">
+<meta name="twitter:description" content="ClosuresClosures help in function “construction zones”
+A closure can make the creation of very similar functions ultra-efficient.
+12345678910function buildCoveTicketMaker( transport ) &amp;#123;  return f">
+<meta name="twitter:image" content="http://www.yuthon.com/images/program_load_order.png">
+
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    scheme: 'Muse',
+    sidebar: {"position":"left","display":"post"},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: 0,
+      author: 'Author'
+    }
+  };
+</script>
+
+  <title> Notes for Code School - JavaScript Road Trip | Yuthon's blog </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="">
+
+  
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/"  class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">Yuthon's blog</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+  <p class="site-subtitle"></p>
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-home fa-fw"></i> <br />
+            
+            Home
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-archive fa-fw"></i> <br />
+            
+            Archives
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-tags fa-fw"></i> <br />
+            
+            Tags
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                Notes for Code School - JavaScript Road Trip
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">Posted on</span>
+            <time itemprop="dateCreated" datetime="2016-04-09T12:37:07+08:00" content="2016-04-09">
+              2016-04-09
+            </time>
+          </span>
+
+          
+
+          
+            
+          
+
+          
+
+          
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h1 id="Closures"><a href="#Closures" class="headerlink" title="Closures"></a>Closures</h1><p><strong>Closures help in function “construction zones”</strong></p>
+<p>A closure can make the creation of very similar functions ultra-efficient.</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">buildCoveTicketMaker</span>(<span class="params"> transport </span>) </span>&#123;</span><br><span class="line">  <span class="keyword">return</span> <span class="function"><span class="keyword">function</span> (<span class="params"> name </span>) </span>&#123;</span><br><span class="line">    alert(<span class="string">"Here is your transportation ticket via the "</span> + transport + <span class="string">".\n"</span> + </span><br><span class="line">          <span class="string">"Welcome to the Cold Closures Cove, "</span> + name + <span class="string">"!"</span>);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> getSubmarineTicket = buildCoveTicketMaker(<span class="string">"Submarine"</span>);</span><br><span class="line"><span class="keyword">var</span> getBattleshipTicket = buildCoveTicketMaker(<span class="string">"Battleship"</span>);</span><br><span class="line"><span class="keyword">var</span> getGiantSeagullTicket = buildCoveTicketMaker(<span class="string">"Giant Seagull"</span>);</span><br></pre></td></tr></table></figure>
+<a id="more"></a>
+<p><strong>Closure functions can even modify bound variables in the background</strong></p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">buildCoveTicketMaker</span>(<span class="params"> transport </span>) </span>&#123;</span><br><span class="line">  <span class="keyword">return</span> <span class="function"><span class="keyword">function</span> (<span class="params"> name </span>) </span>&#123;</span><br><span class="line">    alert(<span class="string">"Here is your transportation ticket via the "</span> + transport + <span class="string">".\n"</span> + </span><br><span class="line">          <span class="string">"Welcome to the Cold Closures Cove, "</span> + name + <span class="string">"!"</span> + </span><br><span class="line">          <span class="string">"You are passenger #"</span> + passengerNumber + <span class="string">"."</span> );</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> getSubmarineTicket = buildCoveTicketMaker(<span class="string">"Submarine"</span>);</span><br><span class="line"><span class="comment">// passengerNumber is incremented to 1.</span></span><br><span class="line">getSubmarineTicket(<span class="string">"Mario"</span>); </span><br><span class="line"><span class="comment">// Another call to getSubmarineTicket has passengerNumber incremented to 2! </span></span><br><span class="line"><span class="comment">// Wow, even though the function?s local scope disappeared after Mario?s ticket, </span></span><br><span class="line"><span class="comment">// it KEPT the progress of passengerNumber!</span></span><br><span class="line">getSubmarineTicket(<span class="string">"Toad"</span>);</span><br></pre></td></tr></table></figure>
+<p><strong>LOOPS WITH CLOSURES: a cautionary tale</strong></p>
+<p>We have to pay close attention to return times and final variable states.</p>
+<ul>
+<li>Way before torpedoAssignment isreturned, the i loop counter hasprogressed in value to 8 andstopped the loop.</li>
+<li>The function’s actual return is the true “moment of closure”, when the environment andall necessary variables are packaged up. </li>
+</ul>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">assignTorpedo</span> (<span class="params"> name, passengerArray </span>)</span>&#123;</span><br><span class="line">  <span class="keyword">var</span> torpedoAssignment;</span><br><span class="line">  <span class="keyword">for</span> (<span class="keyword">var</span> i = <span class="number">0</span>; i&lt;passengerArray.length; i++) &#123;</span><br><span class="line">    <span class="keyword">if</span> (passengerArray[i] == name) &#123;</span><br><span class="line">      torpedoAssignment = <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">        alert(<span class="string">"Ahoy, "</span> + name + <span class="string">"!\n"</span> + <span class="string">"Man your post at Torpedo #"</span> + (i+<span class="number">1</span>) + <span class="string">"!"</span>);</span><br><span class="line">      &#125;;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">return</span> torpedoAssignment;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> subPassengers = [<span class="string">"Luke"</span>, <span class="string">"Leia"</span>, <span class="string">"Han"</span>, <span class="string">"Chewie"</span>, <span class="string">"Yoda"</span>, <span class="string">"R2-D2"</span>, <span class="string">"C-3PO"</span>, <span class="string">"Boba"</span>];</span><br><span class="line"><span class="keyword">var</span> giveAssignment = assignTorpedo(<span class="string">"Chewie"</span>, subPassengers);</span><br><span class="line">giveAssignment(); </span><br><span class="line"><span class="comment">// Outputs:</span></span><br><span class="line"><span class="comment">// Ahoy, Chewie!</span></span><br><span class="line"><span class="comment">// Man your post at Torpedo #9!</span></span><br></pre></td></tr></table></figure>
+<p>Several options exist for timing closures correctly</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">assignTorpedo</span> (<span class="params"> name, passengerArray </span>)</span>&#123;</span><br><span class="line">  <span class="keyword">for</span> (<span class="keyword">var</span> i = <span class="number">0</span>; i&lt;passengerArray.length; i++) &#123;</span><br><span class="line">    <span class="keyword">if</span> (passengerArray[i] == name) &#123;</span><br><span class="line">      <span class="comment">// Now the function will be immediately returned when the right name is found, locking i in place.</span></span><br><span class="line">      <span class="keyword">return</span> <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">        alert(<span class="string">"Ahoy, "</span> + name + <span class="string">"!\n"</span> + </span><br><span class="line">              <span class="string">"Man your post at Torpedo #"</span> + (i+<span class="number">1</span>) + <span class="string">"!"</span>);</span><br><span class="line">      &#125;;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">makeTorpedoAssigner</span> (<span class="params"> passengerArray </span>) </span>&#123;</span><br><span class="line">  <span class="keyword">return</span> <span class="function"><span class="keyword">function</span> (<span class="params"> name </span>) </span>&#123;</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">var</span> i = <span class="number">0</span>; i&lt;passengerArray.length; i++) &#123;</span><br><span class="line">      <span class="keyword">if</span> (passengerArray[i] == name) &#123;</span><br><span class="line">        alert(<span class="string">"Ahoy, "</span> + name + <span class="string">"!\n"</span> +</span><br><span class="line">              <span class="string">"Man your post at Torpedo #"</span> + (i+<span class="number">1</span>) + <span class="string">"!"</span>);</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h1 id="Hoisting"><a href="#Hoisting" class="headerlink" title="Hoisting"></a>Hoisting</h1><ul>
+<li><p>Ensuring that every line of code can execute when it’s needed</p>
+<p><img src="/images/program_load_order.png" alt="program_load_order"></p>
+</li>
+</ul>
+<ul>
+<li><p>First, memory is set aside for all necessary variables and declared functions. Then the operations in order.</p>
+<p> <img src="/images/stuff_declare.png" alt="stuff_declare"></p>
+</li>
+</ul>
+<ul>
+<li>Some examples of the impact of hoisting<img src="/images/the_impact_of_hoisting.png" alt="the_impact_of_hoisting"></li>
+</ul>
+<ul>
+<li><p>Function Expressions are never hoisted! They are treated as assignments.</p>
+<p><img src="/images/function_expressions_are_never_hoisted.png" alt="function_expressions_are_never_hoisted"></p>
+<p><img src="/images/function_expressions_are_never_hoisted_2.png" alt="function_expressions_are_never_hoisted_2"></p>
+</li>
+</ul>
+<p><strong>Example</strong> <img src="/images/how_might_this_affect_our_EARLIER_train_system.png" alt="how_might_this_affect_our_EARLIER_train_system"></p>
+<p><img src="/images/how_might_this_affect_our_EARLIER_train_system_result.png" alt="how_might_this_affect_our_EARLIER_train_system_result"></p>
+<p><strong>Solution</strong></p>
+<ul>
+<li>Exchange the order<img src="/images/how_might_this_affect_our_EARLIER_train_system_solution_1.png" alt="how_might_this_affect_our_EARLIER_train_system_solution_1"></li>
+</ul>
+<ul>
+<li>Don’t use function expression <img src="/images/how_might_this_affect_our_EARLIER_train_system_solution_2.png" alt="how_might_this_affect_our_EARLIER_train_system_solution_2"></li>
+</ul>
+
+      
+    </div>
+    
+    <div>
+      
+        
+      
+    </div>
+
+    <div>
+      
+        
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2016/04/09/hello-world/" rel="next" title="Hello World">
+                <i class="fa fa-chevron-left"></i> Hello World
+              </a>
+            
+          </div>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            Overview
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel ">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/default_avatar.jpg"
+               alt="Yusu Pan" />
+          <p class="site-author-name" itemprop="name">Yusu Pan</p>
+          <p class="site-description motion-element" itemprop="description"></p>
+        </div>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/archives">
+              <span class="site-state-item-count">2</span>
+              <span class="site-state-item-name">posts</span>
+            </a>
+          </div>
+
+          
+
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+        
+        
+
+        
+        <div class="links-of-blogroll motion-element">
+          
+        </div>
+
+      </section>
+
+      
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+            
+              
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Closures"><span class="nav-number">1.</span> <span class="nav-text">Closures</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Hoisting"><span class="nav-number">2.</span> <span class="nav-text">Hoisting</span></a></li></ol></div>
+            
+          </div>
+        </section>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2016</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Yusu Pan</span>
+</div>
+
+<div class="powered-by">
+  Powered by <a class="theme-link" href="http://hexo.io">Hexo</a>
+</div>
+
+<div class="theme-info">
+  Theme -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Muse
+  </a>
+</div>
+
+
+
+      </div>
+    </footer>
+
+    <div class="back-to-top">
+      <i class="fa fa-arrow-up"></i>
+    </div>
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+  <script type="text/javascript" src="/vendors/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/vendors/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.0.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.0.1"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.0.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.0.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.0.1"></script>
+
+
+
+  
+
+
+
+  
+
+
+
+  
+  
+  
+
+  
+
+  
+
+</body>
+</html>
