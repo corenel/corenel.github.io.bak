@@ -80,19 +80,43 @@
 
 
 
-<meta name="description" content="Welcome to Hexo! This is your very first post. Check documentation for more info. If you get any problems when using Hexo, you can find the answer in troubleshooting or you can ask me on GitHub.
-Quick">
+<meta name="description" content="添加README.md文件由于Hexo会将source/目录下的所有.md文件渲染成.html文件，因此需要将README.md排除在外。幸好，Hexo在3.0以上的版本中提供了skip_render参数。
+
+在source/里创建README.md
+
+在_config.yml中修改
+12skip_render:    - README.md
+
+
+
+skip_render: Paths not t">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Hello World">
-<meta property="og:url" content="http://www.yuthon.com/2016/04/09/hello-world/index.html">
+<meta property="og:title" content="Tips for Hexo configuration">
+<meta property="og:url" content="http://www.yuthon.com/2016/04/11/Tips-for-Hexo-configuration/index.html">
 <meta property="og:site_name" content="Yuthon's blog">
-<meta property="og:description" content="Welcome to Hexo! This is your very first post. Check documentation for more info. If you get any problems when using Hexo, you can find the answer in troubleshooting or you can ask me on GitHub.
-Quick">
-<meta property="og:updated_time" content="2016-04-08T16:05:24.788Z">
+<meta property="og:description" content="添加README.md文件由于Hexo会将source/目录下的所有.md文件渲染成.html文件，因此需要将README.md排除在外。幸好，Hexo在3.0以上的版本中提供了skip_render参数。
+
+在source/里创建README.md
+
+在_config.yml中修改
+12skip_render:    - README.md
+
+
+
+skip_render: Paths not t">
+<meta property="og:updated_time" content="2016-04-10T16:53:32.600Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Hello World">
-<meta name="twitter:description" content="Welcome to Hexo! This is your very first post. Check documentation for more info. If you get any problems when using Hexo, you can find the answer in troubleshooting or you can ask me on GitHub.
-Quick">
+<meta name="twitter:title" content="Tips for Hexo configuration">
+<meta name="twitter:description" content="添加README.md文件由于Hexo会将source/目录下的所有.md文件渲染成.html文件，因此需要将README.md排除在外。幸好，Hexo在3.0以上的版本中提供了skip_render参数。
+
+在source/里创建README.md
+
+在_config.yml中修改
+12skip_render:    - README.md
+
+
+
+skip_render: Paths not t">
 
 
 
@@ -110,7 +134,7 @@ Quick">
   };
 </script>
 
-  <title> Hello World | Yuthon's blog </title>
+  <title> Tips for Hexo configuration | Yuthon's blog </title>
 </head>
 
 <body itemscope itemtype="http://schema.org/WebPage" lang="">
@@ -230,7 +254,7 @@ Quick">
             
             
               
-                Hello World
+                Tips for Hexo configuration
               
             
           </h1>
@@ -242,8 +266,8 @@ Quick">
               <i class="fa fa-calendar-o"></i>
             </span>
             <span class="post-meta-item-text">Veröffentlicht am</span>
-            <time itemprop="dateCreated" datetime="2016-04-09T00:05:24+08:00" content="2016-04-09">
-              2016-04-09
+            <time itemprop="dateCreated" datetime="2016-04-11T00:19:54+08:00" content="2016-04-11">
+              2016-04-11
             </time>
           </span>
 
@@ -270,15 +294,27 @@ Quick">
       
 
       
-        <p>Welcome to <a href="https://hexo.io/" target="_blank" rel="external">Hexo</a>! This is your very first post. Check <a href="https://hexo.io/docs/" target="_blank" rel="external">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a href="https://hexo.io/docs/troubleshooting.html" target="_blank" rel="external">troubleshooting</a> or you can ask me on <a href="https://github.com/hexojs/hexo/issues" target="_blank" rel="external">GitHub</a>.</p>
-<h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo new <span class="string">"My New Post"</span></span><br></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/writing.html" target="_blank" rel="external">Writing</a></p>
-<h3 id="Run-server"><a href="#Run-server" class="headerlink" title="Run server"></a>Run server</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo server</span><br></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/server.html" target="_blank" rel="external">Server</a></p>
-<h3 id="Generate-static-files"><a href="#Generate-static-files" class="headerlink" title="Generate static files"></a>Generate static files</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo generate</span><br></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/generating.html" target="_blank" rel="external">Generating</a></p>
-<h3 id="Deploy-to-remote-sites"><a href="#Deploy-to-remote-sites" class="headerlink" title="Deploy to remote sites"></a>Deploy to remote sites</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo deploy</span><br></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/deployment.html" target="_blank" rel="external">Deployment</a></p>
+        <h2 id="添加README-md文件"><a href="#添加README-md文件" class="headerlink" title="添加README.md文件"></a>添加<code>README.md</code>文件</h2><p>由于Hexo会将<code>source/</code>目录下的所有<code>.md</code>文件渲染成<code>.html</code>文件，因此需要将<code>README.md</code>排除在外。幸好，Hexo在3.0以上的版本中提供了<code>skip_render</code>参数。</p>
+<ol>
+<li><p>在<code>source/</code>里创建<code>README.md</code></p>
+</li>
+<li><p>在<code>_config.yml</code>中修改</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">skip_render:</span><br><span class="line">    - README.md</span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+<blockquote>
+<p>skip_render: Paths not to be rendered. You can use <a href="https://github.com/isaacs/minimatch" target="_blank" rel="external">glob expressions</a> for path matching</p>
+</blockquote>
+<a id="more"></a>
+<h2 id="源文件托管到Github"><a href="#源文件托管到Github" class="headerlink" title="源文件托管到Github"></a>源文件托管到Github</h2><p>为了保持多终端撰写Blog的便利，同时为了备份与版本管理，需要将Blog的源文件托管至Github上。目前的思路是在Github Pages的Repo上创建新的分支<code>source</code>。由于Hexo在Init之后，根目录下已经有了<code>.gitignore</code>文件，我们就不需要自己动手写。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">$ <span class="built_in">cd</span> hexo</span><br><span class="line">$ git init</span><br><span class="line">$ git checkout -b <span class="built_in">source</span></span><br><span class="line">$ git add .</span><br><span class="line">$ git commit -m <span class="string">"Initial"</span></span><br><span class="line">$ git remote add origin git@github.com:corenel/corenel.github.io.git</span><br><span class="line">$ git push origin <span class="built_in">source</span></span><br></pre></td></tr></table></figure>
+<p>针对使用<code>git clone</code>下来第三方主题目录下有<code>.git</code>文件夹的情况，其实是不推荐这样做的。因为我们往往要对第三方主题进行修改，而我们不能直接提交到第三方问题的仓库上，这样就对多终端同步主题造成了困扰。</p>
+<p>建议的方法是直接fork第三方主题，而后新建分支来作为给之后对主题修改之用，并且使用<code>git submodule</code>来管理。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">$ git submodule add git@github.com:corenel/hexo-theme-next.git themes/next</span><br><span class="line">$ git commit -am <span class="string">"Use themes/next"</span></span><br><span class="line">$ git push origin <span class="built_in">source</span></span><br></pre></td></tr></table></figure>
+<p>注意的是，在使用另一终端时，需要先初始化submodule。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ git submodule init</span><br><span class="line">$ git submodule update</span><br></pre></td></tr></table></figure>
+<p>第三方主题更新时，可以直接更新<code>master</code>分支，而后merge到自己的分支上。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ git checkout master</span><br><span class="line">$ git pull upstream master</span><br></pre></td></tr></table></figure>
 
       
     </div>
@@ -302,13 +338,13 @@ Quick">
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
+              <a href="/2016/04/10/CodeSchool-ES2015/" rel="next" title="Notes for Code School - ES2015">
+                <i class="fa fa-chevron-left"></i> Notes for Code School - ES2015
+              </a>
+            
           </div>
 
           <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2016/04/09/CodeSchool-Javascript/" rel="prev" title="Notes for Code School - JavaScript Road Trip">
-                Notes for Code School - JavaScript Road Trip <i class="fa fa-chevron-right"></i>
-              </a>
             
           </div>
         </div>
@@ -410,7 +446,7 @@ Quick">
               
             
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Quick-Start"><span class="nav-number">1.</span> <span class="nav-text">Quick Start</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Create-a-new-post"><span class="nav-number">1.1.</span> <span class="nav-text">Create a new post</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Run-server"><span class="nav-number">1.2.</span> <span class="nav-text">Run server</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Generate-static-files"><span class="nav-number">1.3.</span> <span class="nav-text">Generate static files</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Deploy-to-remote-sites"><span class="nav-number">1.4.</span> <span class="nav-text">Deploy to remote sites</span></a></li></ol></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#添加README-md文件"><span class="nav-number">1.</span> <span class="nav-text">添加README.md文件</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#源文件托管到Github"><span class="nav-number">2.</span> <span class="nav-text">源文件托管到Github</span></a></li></ol></div>
             
           </div>
         </section>

@@ -229,6 +229,112 @@
             
               
                 
+                <a class="post-title-link" href="/2016/04/11/Tips-for-Hexo-configuration/" itemprop="url">
+                  Tips for Hexo configuration
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">Veröffentlicht am</span>
+            <time itemprop="dateCreated" datetime="2016-04-11T00:19:54+08:00" content="2016-04-11">
+              2016-04-11
+            </time>
+          </span>
+
+          
+
+          
+            
+          
+
+          
+
+          
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          <h2 id="添加README-md文件"><a href="#添加README-md文件" class="headerlink" title="添加README.md文件"></a>添加<code>README.md</code>文件</h2><p>由于Hexo会将<code>source/</code>目录下的所有<code>.md</code>文件渲染成<code>.html</code>文件，因此需要将<code>README.md</code>排除在外。幸好，Hexo在3.0以上的版本中提供了<code>skip_render</code>参数。</p>
+<ol>
+<li><p>在<code>source/</code>里创建<code>README.md</code></p>
+</li>
+<li><p>在<code>_config.yml</code>中修改</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">skip_render:</span><br><span class="line">    - README.md</span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+<blockquote>
+<p>skip_render: Paths not to be rendered. You can use <a href="https://github.com/isaacs/minimatch">glob expressions</a> for path matching</p>
+</blockquote>
+          <div class="post-more-link text-center">
+            <a class="btn" href="/2016/04/11/Tips-for-Hexo-configuration/#more" rel="contents">
+              Weiterlesen &raquo;
+            </a>
+          </div>
+        
+      
+    </div>
+    
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
                 <a class="post-title-link" href="/2016/04/10/CodeSchool-ES2015/" itemprop="url">
                   Notes for Code School - ES2015
                 </a>
@@ -259,6 +365,7 @@
           
           
 
+          
         </div>
       </header>
     
@@ -356,6 +463,7 @@
           
           
 
+          
         </div>
       </header>
     
@@ -453,6 +561,7 @@
           
           
 
+          
         </div>
       </header>
     
@@ -544,7 +653,7 @@
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">3</span>
+              <span class="site-state-item-count">4</span>
               <span class="site-state-item-name">Artikel</span>
             </a>
           </div>
@@ -604,8 +713,9 @@
   </a>
 </div>
 
+        
 
-
+        
       </div>
     </footer>
 
