@@ -1,7 +1,13 @@
 ---
 title: Notes for Code School - ES2015
 date: 2016-04-10 12:09:29
+categories:
+- Notes
 tags:
+  - CodeSchool
+  - JavaScript
+  - ES2015
+
 ---
 
 # Declaration

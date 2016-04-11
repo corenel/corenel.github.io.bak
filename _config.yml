@@ -5,12 +5,13 @@
 # Site
 title: Yuthon's blog
 subtitle:
-description:
+description: We've been gaining one good thing through losing another.
 author: Yusu Pan
-language:
+avatar: /uploads/avatar.png
+language: en
 timezone:
 
-# URL
+# URLmcm
 ## If your site is put in a subdirectory, set url as 'http://yoursite.com/child' and root as '/child/'
 url: http://www.yuthon.com
 root: /

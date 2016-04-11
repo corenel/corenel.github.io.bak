@@ -1,7 +1,11 @@
 ---
 title: Notes for Code School - JavaScript Road Trip
 date: 2016-04-09 12:37:07
+categories:
+- Notes
 tags:
+  - CodeSchool
+  - JavaScript
 ---
 
 # Closures
@@ -239,7 +243,7 @@ Object.prototype .isPrototypeOf(magicShoe); //true
     }
     ```
 
-*  Use constructor
+* Use constructor
 
   * JavaScript's ?new' keyword produces a new Object of the class, or "instantiates" the class
 

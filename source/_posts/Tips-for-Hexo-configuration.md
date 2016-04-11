@@ -2,6 +2,7 @@
 title: Tips for Hexo configuration
 date: 2016-04-11 00:19:54
 tags:
+  - hexo
 ---
 
 ## 添加`README.md`文件
