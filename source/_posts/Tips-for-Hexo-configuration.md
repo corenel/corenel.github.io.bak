@@ -22,7 +22,7 @@ tags:
 
 <!-- more -->
 
-## 源文件托管到Github
+## 将源文件托管到Github
 
 为了保持多终端撰写Blog的便利，同时为了备份与版本管理，需要将Blog的源文件托管至Github上。目前的思路是在Github Pages的Repo上创建新的分支`source`。由于Hexo在Init之后，根目录下已经有了`.gitignore`文件，我们就不需要自己动手写。
 
@@ -60,3 +60,57 @@ $ git checkout master
 $ git pull upstream master
 ```
 
+##  使用gulp压缩静态资源
+
+Hexo引擎在解析md时生成html的代码里会包含大量的无用空白，为了提高加载速度，用gulp压缩public目录的静态资源。
+
+当然你也可以用[hexo-all-minifier](https://github.com/unhealthy/hexo-all-minifier)来精简。
+
+1. 安装gulp及其插件
+
+   ```bash
+   $ npm install gulp -g
+   $ npm install gulp-minify-css gulp-uglify gulp-htmlmin gulp-htmlclean --save
+   ```
+
+2. 编写gulpfile.js
+
+   ```javascript
+   var gulp = require('gulp');
+   var minifycss = require('gulp-minify-css');
+   var uglify = require('gulp-uglify');
+   var htmlmin = require('gulp-htmlmin');
+   var htmlclean = require('gulp-htmlclean');
+
+   gulp.task('minify-css', function() {
+       return gulp.src(["public/**/*.css","!public/**/*.min.css"])
+           .pipe(minifycss({compatibility: 'ie8'}))
+           .pipe(gulp.dest('./public'));
+   });
+
+   gulp.task('minify-html', function() {
+     return gulp.src("public/**/*.html")
+       .pipe(htmlclean())
+       .pipe(htmlmin({
+            removeComments: true,
+            minifyJS: true,
+            minifyCSS: true,
+            minifyURLs: true,
+       }))
+       .pipe(gulp.dest('./public'))
+   });
+
+   gulp.task('minify-js', function() {
+       return gulp.src(["public/**/*.js","!public/**/*.min.js"])
+           .pipe(uglify())
+           .pipe(gulp.dest('./public'));
+   });
+
+   gulp.task('default', [
+       'minify-html','minify-css','minify-js'
+   ],function(){
+       console.log("gulp task ok!");
+   });
+   ```
+
+之后在使用`hexo g`生成静态页面后，再执行`gulp`即可对静态资源进行压缩，压缩完成后再用`hexo d`部署即可。
