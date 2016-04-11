@@ -4,6 +4,30 @@
 
     
   <url>
+    <loc>http://www.yuthon.com/2016/04/10/CodeSchool-ES2015/</loc>
+    <lastmod>2016-04-11T16:46:22.653Z</lastmod>
+    <data>
+        <display>
+        <title>Notes for Code School - ES2015</title>
+        <pubTime>2016-04-10T04:09:29.000Z</pubTime>
+        
+        <tag>CodeSchool</tag>
+         
+        <tag>JavaScript</tag>
+         
+        <tag>ES2015</tag>
+         
+         
+           
+             
+              <breadCrumb title="Notes" url="http://www.yuthon.com/categories/Notes/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
     <loc>http://www.yuthon.com/2016/04/11/Tips-for-Hexo-configuration/</loc>
     <lastmod>2016-04-11T04:14:39.644Z</lastmod>
     <data>
@@ -33,30 +57,6 @@
         <tag>CodeSchool</tag>
          
         <tag>JavaScript</tag>
-         
-         
-           
-             
-              <breadCrumb title="Notes" url="http://www.yuthon.com/categories/Notes/"/>
-          
-        </display>
-    </data>
-    </url>
-
-    
-  <url>
-    <loc>http://www.yuthon.com/2016/04/10/CodeSchool-ES2015/</loc>
-    <lastmod>2016-04-11T02:05:32.430Z</lastmod>
-    <data>
-        <display>
-        <title>Notes for Code School - ES2015</title>
-        <pubTime>2016-04-10T04:09:29.000Z</pubTime>
-        
-        <tag>CodeSchool</tag>
-         
-        <tag>JavaScript</tag>
-         
-        <tag>ES2015</tag>
          
          
            
