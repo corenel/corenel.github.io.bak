@@ -357,8 +357,10 @@ We need a way to convert an Array into individual arguments upon a function call
 
 ```javascript
 getRequest("/topics/17/tags", function( ){
-  let tags = data.tags;  // tags is an Array, e.g., ["programming", "web", "HTML"] ...
-  displayTags(tags); // but displayTags expects to be called with individual arguments
+  // tags is an Array, e.g., ["programming", "web", "HTML"] ...
+  let tags = data.tags;
+  // but displayTags expects to be called with individual arguments
+  displayTags(tags);
 })
 ```
 
@@ -369,7 +371,9 @@ The spread operator allows us to split an Array argument into individual element
 ```javascript
 getRequest("/topics/17/tags", function( ){
   let tags = data.tags;
-  displayTags(...tags);  // The displayTags function is now receiving individual arguments, not an Array
+  // The displayTags function is now receiving individual arguments, 
+  // not an Array
+  displayTags(...tags);
 })
 ```
 
@@ -389,7 +393,8 @@ function TagComponent(target, urlPath){
   this.urlPath = urlPath;
 }.
 
-// The scope of the TagComponent object is not the same as the scope of the anonymous function
+// The scope of the TagComponent object is not the same as 
+// the scope of the anonymous function
 TagComponent.prototype.render = function(){
   getRequest(this.urlPath, function(data){
     let tags = data.tags;
@@ -422,5 +427,225 @@ TagComponent.prototype.render = function(){
 
 let tagComponent = new TagComponent(targetDiv, "/topics/17/tags");
 tagComponent.render();
+```
+
+
+
+# Objects, Strings, and Object.assign
+
+## Objects
+
+**The Object Initializer Shorthand**
+
+We can remove duplicate variable names from object properties when those properties have the same name as the variables being assigned to them.
+
+```javascript
+function buildUser(first, last){
+  let fullName = first + " " + last;
+  return { first, last, fullName };
+  // EQUAL TO
+  // return { first: first, last: last, fullName: fullName};
+}
+```
+
+**Object Destructuring**
+
+We can use shorthand to assign properties from objects to local variables with the same name.
+
+```javascript
+let { first, last, fullName } = buildUser("Sam", "Williams");
+// EQUAL TO
+// let user = buildUser("Sam", "Williams");
+// let first = user.first;
+// let last = user.last;
+// let fullName = user.fullName;
+
+// Destructuring Selected Elements
+let { fullName } = buildUser("Sam", "Williams");
+```
+
+**Using the Method Initializer Shorthand**
+
+A new shorthand notation is available for adding a method to an object where the keyword function is no longer necessary.
+
+```javascript
+function buildUser(first, last, postCount){
+  let fullName = first + " " + last;
+  const ACTIVE_POST_COUNT = 10;
+  return {
+    first,
+    last,
+    fullName, 
+    isActive(){ // EQUAL TO isActive: function(){}
+      return postCount >= ACTIVE_POST_COUNT;
+    }
+  }
+}
+```
+
+## Strings
+
+**Template Strings**
+
+Template strings are string literals allowing embedded expressions. This allows for a much better way to do string interpolation.
+
+```javascript
+function buildUser(first, last, postCount){
+  let fullName = `${first} ${last}`;
+  // EQUAL TO
+  // let fullName = first + " " + last;
+  const ACTIVE_POST_COUNT = 10;
+  //...
+}
+```
+
+**Writing Multi-line Strings**
+
+Template strings offer a new - and much better - way to write multi-line strings.
+
+```javascript
+let userName = "Sam";
+let admin = { fullName: "Alex Williams" };
+let veryLongText = `Hi ${userName},
+  this is a very
+  very
+  veeeery
+  long text.
+  Regards,
+    ${admin.fullName}
+`;
+```
+
+> Template Strings use **back-ticks (\`\`)** rather than the single or double quotes we're used to with regular strings.
+
+## Object.assign
+
+**Using Too Many Arguments Is Bad**
+
+For functions that need to be used across different applications, it's okay to accept an options object instead of using named parameters
+
+```javascript
+// Too many named arguments make this function harder to read
+function countdownTimer(target, timeLeft,
+                         { container, timeUnit, clonedDataAttribute,
+                         timeoutClass, timeoutSoonClass, timeoutSoonSeconds 
+                         } = {}){
+  //...
+}
+
+// Easier to customize to different applications
+function countdownTimer(target, timeLeft, options = {}){
+  //...
+}
+```
+
+**Using Local Values and || Is Bad for Defaults**
+
+Some options might not be specified by the caller, so we need to have default values.
+
+```javascript
+function countdownTimer(target, timeLeft, options = {}){
+  // Default strings and numbers are all over the place... Yikes!
+  let container = options.container || ".timer-display";
+  let timeUnit = options.timeUnit || "seconds";
+  let clonedDataAttribute = options.clonedDataAttribute || "cloned";
+  let timeoutClass = options.timeoutClass || ".is-timeout";
+  let timeoutSoonClass = options.timeoutSoonClass || ".is-timeout-soon";
+  let timeoutSoonTime = options.timeoutSoonSeconds || 10;
+  //...
+}
+```
+
+**Using a Local Object to Group Defaults**
+
+Using a local object to group default values for user options is a common practice and can help write more idiomatic JavaScript.
+
+```javascript
+function countdownTimer(target, timeLeft, options = {}){
+  let defaults = {
+    container: ".timer-display",
+    timeUnit: "seconds",
+    clonedDataAttribute: "cloned",
+    timeoutClass: ".is-timeout",
+    timeoutSoonClass: ".is-timeout-soon",
+    timeoutSoonTime: 10
+  };
+  //...
+}
+```
+
+**Merging Values With Object.assign**
+
+The `Object.assign` method copies properties from one or more source objects to a target object specified as the very first argument.
+
+```javascript
+function countdownTimer(target, timeLeft, options = {}){
+  let defaults = {
+    //...
+  };
+
+  // Merged properties from defaults and options
+  // Target object is modified and used as return value
+  // Source objects remain unchanged
+  let settings = Object.assign({}, defaults, options);
+  //...
+}
+```
+
+**Merging Objects With Duplicate Properties**
+
+In case of duplicate properties on source objects, the value from the last object on the chain always prevails.
+
+```javascript
+function countdownTimer(target, timeLeft, options = {}){
+  let defaults = {
+    //...
+  };
+
+  // Duplicate properties from options3 override those on options2, 
+  // which override those on options, etc.
+  let settings = Object.assign({}, defaults, options, options2, options3);
+  //...
+}
+```
+
+**Using Object.assign**
+
+There are a couple incorrect ways we might see Object.assign being used.
+
+```javascript
+// NOT recommanded
+// defaults is mutated, so we can't go back and access original default
+// values after the merge
+Object.assign(defaults, options);
+
+// Recommanded
+// Can access original default values and looks functional
+let settings = Object.assign({}, defaults, options);
+
+// NOT recommanded
+// Default values are not changed, but settings is passed as a reference
+let settings = {};
+// Not reading return value
+Object.assign(settings, defaults, options);
+```
+
+**Reading Initial Default Values**
+
+Preserving the original default values gives us the ability to compare them with the options passed and act accordingly when necessary.
+
+```javascript
+function countdownTimer(target, timeLeft, options = {}){
+  let defaults = {
+    //...
+  };
+  
+  let settings = Object.assign({}, defaults, options);
+  
+  // Runs when value passed as argument for timeUnit is different than the original value
+  if(settings.timeUnit !== defaults.timeUnit){
+    _conversionFunction(timeLeft, settings.timeUnit)
+  }
+}
 ```
 
