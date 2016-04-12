@@ -1085,7 +1085,7 @@ sponsorWidget.render();
 
 We can use class inheritance to reduce code repetition. Child classes inherit and specialize behavior defined in parent classes.
 
-![cass_inheritance](/images/cass_inheritance.png)
+![cass_inheritance](/images/class_inheritance.png)
 
 **Using extends to Inherit From Base Class**
 
@@ -1358,5 +1358,212 @@ import { FlashMessage } from './flash-message';
 let flash = new FlashMessage("Hello");
 flash.renderAlert();
 flash.renderLog();
+```
+
+# Promises, Iterators, and Generators
+
+## Promises
+
+**Fetching Poll Results From the Server**
+
+It?s very important to understand how to work with JavaScript?s single-thread model.
+
+Otherwise, we might accidentally freeze the entire app, to the detriment of user experience.
+
+![fetching-poll-results-from-the-server](/images/fetching-poll-results-from-the-server.png)
+
+**Avoiding Code That Blocks**
+
+Once the browser blocks executing a script, it stops running other scripts, rendering elements, and responding to user events like keyboard and mouse interactions.
+
+```javascript
+// Synchronous style functions wait for return values
+// Page freezes until a value is returned from this function
+let results = getPollResultsFromServer("Sass vs. LESS");
+ui.renderSidebar(results);
+```
+
+In order to avoid blocking the main thread of execution, we write non-blocking code like this:
+
+```javascript
+// Asynchronous style functions pass callbacks
+getPollResultsFromServer("Sass vs. Less", function(results){
+  ui.renderSidebar(results);
+});
+```
+
+**Passing Callbacks to Continue Execution**
+
+In continuation-passing style (CPS) async programming, we tell a function how to continue execution by passing callbacks. It can grow to complicated nested code.
+
+```javascript
+// When nested callbacks start to grow, our code becomes harder to understand
+getPollResultsFromServer(pollName, function(error, results){
+  if(error){ //.. handle error }
+    //...
+    ui.renderSidebar(results, function(error){
+      if(error){ //.. handle error }
+        //...
+        sendNotificationToServer(pollName, results, function(error, response){
+          if(error){ //.. handle error }
+            //...
+            doSomethingElseNonBlocking(response, function(error){
+              if(error){ //.. handle error }
+                //...
+            })
+        });
+    });
+});
+```
+
+**Using Promises**
+
+A Promise is a new abstraction that allows us to write async code in an easier way.
+
+```javascript
+// Still non-blocking, but not using nested callbacks anymore
+getPollResultsFromServer("Sass vs. LESS")
+  .then(ui.renderSidebar)
+  .then(sendNotificationToServer)
+  .then(doSomethingElseNonBlocking)
+  .catch(function(error){
+    console.log("Error: ", error);
+  });
+```
+
+**The Lifecycle of a Promise Object**
+
+Creating a new Promise automatically sets it to the pending state. Then, it can do 1 of 2 things: become fulfilled or rejected.
+
+![the-lifecycle-of a promise-object](/images/the-lifecycle-of a promise-object.png)
+
+**Creating a New Promise Object**
+
+The Promise constructor function takes an anonymous function with 2 callback arguments known as handlers.
+
+```javascript
+function getPollResultsFromServer(pollName){
+  // Handlers are responsible for either resolving or rejecting the Promise
+  return new Promise( function(resolve, reject) {
+    //...
+    // Called when the non-blocking code is done executing
+    resolve(someValue);
+    //...
+    // Called when an error occurs
+    reject(someValue);
+  });
+};
+```
+
+**Resolving a Promise**
+
+Let?s wrap the XMLHttpRequest object API within a Promise. Calling the resolve() handler moves the Promise to a fulfilled state.
+
+```javascript
+function getPollResultsFromServer(pollName){
+  return new Promise(function(resolve, reject){
+    let url = `/results/${pollName}`;
+    let request = new XMLHttpRequest();
+    request.open('GET', url, true);
+    request.onload = function() {
+      if (request.status >= 200 && request.status < 400) {
+        // We call the resolve() handler upon a successful response
+        // Resolving a Promise moves it to a fulfilled state
+        resolve(JSON.parse(request.response));
+      }
+    };
+    //...
+    request.send();
+  });
+};
+```
+
+**Reading Results From a Promise**
+
+We can use the then() method to read results from the Promise once it?s resolved. This method takes a function that will only be invoked once the Promise is resolved.
+
+```javascript
+getPollResultsFromServer("Sass vs. Less")
+  .then(function(results){ 
+    ui.renderSidebar(results);
+  });
+```
+
+**Chaining Multiple Thens**
+
+We can also chain multiple calls to then() ? the return value from 1 call is passed as argument to the next.
+
+```javascript
+getPollResultsFromServer("Sass vs. Less")
+  .then(function(results){
+    // Only returns poll results from Orlando
+    return results.filter((result) => result.city === "Orlando");
+  })
+  // The return value from one call to then
+  // becomes the argument to the following call to then.
+  .then(function(resultsFromOrlando){
+    ui.renderSidebar(resultsFromOrlando);
+  });
+```
+
+**Rejecting a Promise**
+
+```javascript
+function getPollResultsFromServer(pollName){
+  return new Promise(function(resolve, reject){
+    //...
+    request.onload = function() {
+      if (request.status >= 200 && request.status < 400) {
+        resolve(request.response);
+      } else {
+        // We call the reject() handler,passing it a new Error object
+        // Rejecting a Promise moves it to a rejected state
+        reject(new Error(request.status));
+      }
+    };
+    request.onerror = function() {
+      reject(new Error("Error Fetching Results"));
+    };
+    //...
+```
+
+**Catching Rejected Promises**
+
+Once an error occurs, execution moves immediately to the catch() function. None of the remaining then() functions are invoked.
+
+```javascript
+// When an error occurs here
+getPollResultsFromServer("Sass vs. Less")
+  // then none of these run
+  .then(function(results){
+    return results.filter((result) => result.city === "Orlando");
+  })
+  .then(function(resultsFromOrlando){
+    ui.renderSidebar(resultsFromOrlando);
+  })
+  // and execution moves straight here.
+  .catch(function(error){
+    console.log("Error: ", error);
+  });
+```
+
+**Passing Functions as Arguments**
+
+We can make our code more succinct by passing function arguments to then, instead of using anonymous functions.
+
+```javascript
+function filterResults(results){ //... }
+let ui = {
+  renderSidebar(filteredResults){ //... }
+};
+  
+getPollResultsFromServer("Sass vs. Less")
+  // Passing function arguments make this code easier to read
+  .then(filterResults)
+  .then(ui.renderSidebar)
+  // Still catches all errors from previous calls
+  .catch(function(error){
+    console.log("Error: ", error);
+  });
 ```
 
