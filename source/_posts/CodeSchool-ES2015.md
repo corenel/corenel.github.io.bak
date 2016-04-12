@@ -1366,7 +1366,7 @@ flash.renderLog();
 
 **Fetching Poll Results From the Server**
 
-It?s very important to understand how to work with JavaScript?s single-thread model.
+It's very important to understand how to work with JavaScript's single-thread model.
 
 Otherwise, we might accidentally freeze the entire app, to the detriment of user experience.
 
@@ -1457,7 +1457,7 @@ function getPollResultsFromServer(pollName){
 
 **Resolving a Promise**
 
-Let?s wrap the XMLHttpRequest object API within a Promise. Calling the resolve() handler moves the Promise to a fulfilled state.
+Let's wrap the XMLHttpRequest object API within a Promise. Calling the resolve() handler moves the Promise to a fulfilled state.
 
 ```javascript
 function getPollResultsFromServer(pollName){
@@ -1480,7 +1480,7 @@ function getPollResultsFromServer(pollName){
 
 **Reading Results From a Promise**
 
-We can use the then() method to read results from the Promise once it?s resolved. This method takes a function that will only be invoked once the Promise is resolved.
+We can use the then() method to read results from the Promise once it's resolved. This method takes a function that will only be invoked once the Promise is resolved.
 
 ```javascript
 getPollResultsFromServer("Sass vs. Less")
@@ -1565,5 +1565,112 @@ getPollResultsFromServer("Sass vs. Less")
   .catch(function(error){
     console.log("Error: ", error);
   });
+```
+
+## Iterators
+
+ **Iterables Return Iterators**
+
+Iterables return an iterator object. This object knows how to access items from a collection 1 at a time, while keeping track of its current position within the sequence.
+
+![iterables-return-iterators](/images/iterables-return-iterators.png)
+
+**Understanding the next Method**
+
+Each time next() is called, it returns an object with 2 specific properties: done and value.
+
+Here's how values from these 2 properties work:
+
+* `done (boolean)`
+  * Will be `false` if the iterator is able to return a value from the collection
+  * Will be `true` if the iterator is past the end of the collection
+* `value (any)`
+  * Any value returned by the iterator. When done is true, this returns `undefined`.
+
+**Custom Iterator**
+
+```javascript
+let post = { }; //...
+post[Symbol.iterator] = function(){
+  // Returns an array with property names
+  let properties = Object.keys(this);
+  let count = 0;
+  let isDone = false;
+  
+  let next = () => {
+    // Ends the loop after reaching the last property
+    if(count >= properties.length){
+      isDone = true;
+    }
+    // Fetches the value for the next property
+    // ++ only increments count after it's read
+    return { done: isDone, value: this[properties[count++]] };
+  }
+  return { next };
+};
+```
+
+## Generator
+
+**Generator Functions**
+
+The function * declaration defines generator functions. These are special functions from which we can use the yield keyword to return iterator objects.
+
+```javascript
+function *nameList(){
+  yield "Sam";
+  yield "Tyler";
+}.
+```
+
+> Doesn't matter where we place the star, as long as it's the first thing after the function keyword
+>
+> * function *nameList(){
+>
+>
+> * function* nameList(){
+>
+>
+> * function * nameList(){
+
+**Generator Objects and for...of**
+
+Generator functions return objects that provide the same next method expected by for...of, the spread operator, and the destructuring assignment.
+
+```javascript
+function *nameList(){
+  yield "Sam";
+  yield "Tyler";
+}
+
+for(let name of nameList()){
+  console.log( name );
+}
+// Sam
+// Tyler
+
+let names = [...nameList()];
+console.log( names ); // ["Sam", "Tyler"]
+
+let [first, second] = nameList();
+console.log( first, second ); //  Sam Tyler
+```
+
+**Replacing Manual Iterator Objects**
+
+```javascript
+let post = { title: "New Features in JS", replies: 19 };
+post[Symbol.iterator] = function *(){
+  let properties = Object.keys(this);
+  for(let p of properties){
+    yield this[p];
+  }
+}
+
+for(let p of post){
+  console.log( p );
+}
+// New Features in JS
+// 19
 ```
 
