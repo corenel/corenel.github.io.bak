@@ -649,3 +649,271 @@ function countdownTimer(target, timeLeft, options = {}){
 }
 ```
 
+
+
+# Arrays, Maps, and Sets
+
+## Arrays
+
+### Array Destructuring
+
+**Reading Values With Array Destructuring**
+
+We can use destructuring to assign multiple values from an array to local variables.
+
+```javascript
+let users = ["Sam", "Tyler", "Brook"];
+let a b c [ ] , , = users;
+console.log( a, b, c ); // Sam Tyler Brook
+```
+
+Values can be discarded
+
+```javascript
+let [a, , b] = users;
+console.log( a, b ); // Sam Brook 
+```
+
+**Combining Destructuring With Rest Params**
+
+We can combine destructuring with rest parameters to group values into other arrays.
+
+```javascript
+let users = ["Sam", "Tyler", "Brook"];
+let [ first, ...rest ] = users;
+console.log( first, rest ); // Sam ["Tyler", "Brook"] 
+```
+
+**Destructuring Arrays From Return Values**
+
+When returning arrays from functions, we can assign to multiple variables at once.
+
+```javascript
+function activeUsers(){
+  let users = ["Sam", "Alex", "Brook"];
+  return users;
+}
+
+let active = activeUsers();
+console.log( active ); // ["Sam", "Alex", "Brook"] 
+
+let [a, b, c] = activeUsers();
+console.log( a, b, c ); // Sam Alex Brook 
+```
+
+### for...of
+
+**Using for...of to Loop Over Arrays**
+
+The for...of statement iterates over property values, and it?s a better way to loop over arrays and other iterable objects.
+
+```javascript
+let names = ["Sam", "Tyler", "Brook"];
+
+// Uses index to read actual element
+for(let index in names){
+  console.log( names[index] ); // Sam Tyler Brook 
+}
+
+// Reads element directly and with less code involved
+for(let name of names){
+  console.log( name ); // Sam Tyler Brook 
+}
+```
+
+**Limitations of  for...of and Objects**
+
+The for...of statement cannot be used to iterate over properties in plain JavaScript objects out-of-the-box.
+
+In order to work with for...of, objects need a special function assigned to the Symbol.iterator 
+property. The presence of this property allows us to know whether an object is iterable.
+
+```javascript
+// Objects That Work With for...of
+let names = ["Sam", "Tyler", "Brook"];
+console.log( typeof names[Symbol.iterator] ); // function
+for(let name of names){
+  console.log( name ); // Sam Tyler Brook 
+}
+
+// Objects That Don?t Work With for...of
+let post = {
+  title: "New Features in JS",
+  replies: 19,
+  lastReplyFrom: "Sam"
+};
+console.log( typeof post[Symbol.iterator] ); // undefined
+for(let property of post){
+  console.log( property );
+  // TypeError: post[Symbol.iterator] is not a function
+}
+```
+
+### Array.find
+
+**Finding an Element in an Array**
+
+Array.find returns the first element in the array that satisfies a provided testing function.
+
+```javascript
+let users = [
+  { login: "Sam",   admin: false },
+  { login: "Brook", admin: true  },
+  { login: "Tyler", admin: true  }
+];
+
+// Returns first object for which user.admin is true
+let admin = users.find( (user) => {
+  return user.admin;
+});
+console.log( admin ); // { "login" : "Brook", "admin" : true }
+
+// One-liner arrow function
+let admin = users.find( user => user.admin );
+console.log( admin ); // { "login" : "Brook", "admin" : true }
+```
+
+## Maps
+
+### Maps and Objects
+
+**The Map Data Structure**
+
+![the_map_data_strcture](/images/the_map_data_strcture.png)
+
+**Issues With Using Objects as Maps**
+
+When using Objects as maps, its keys are always converted to strings.
+
+```javascript
+// Two different objects
+let user1 = { name: "Sam" };
+let user2 = { name: "Tyler" };
+
+// Both objects are converted to the string "[object Object]"
+let totalReplies = {};
+totalReplies[user1] = 5;
+totalReplies[user2] = 42;
+
+console.log( totalReplies[user1] ); // 42
+console.log( totalReplies[user2] ); // 42
+console.log( Object.keys(totalReplies) ); //  ["[object Object]"]
+```
+
+**Storing Key/Values With Map**
+
+The Map object is a simple key/value data structure. Any value may be used as either a key or a value, and objects are not converted to strings.
+
+```javascript
+let user1 = { name: "Sam" };
+let user2 = { name: "Tyler" };
+
+let totalReplies = new Map();
+totalReplies.set( user1, 5 );
+totalReplies.set( user2, 42 );
+
+console.log( totalReplies.get(user1) ); // 5
+console.log( totalReplies.get(user2) ); // 42
+```
+
+> We use the `get()` and `set()` methods to access values in Maps
+
+**Use Maps When Keys Are Unknown Until Runtime**
+
+```javascript
+let recentPosts = new Map();
+createPost(newPost, (data) => {
+  // Keys unknown until runtime, so... Map!
+  recentPosts.set( data.author, data.message );
+});
+
+const POSTS_PER_PAGE = 15;
+let userSettings = {
+  // Keys are previously defined, so... Object!
+  perPage: POSTS_PER_PAGE,
+  showRead: true,
+};
+```
+
+**Use Maps When Types Are the Same**
+
+```javascript
+let recentPosts = new Map();
+createPost(newPost, (data) => {
+  recentPosts.set( data.author, data.message );
+});
+// ...somewhere else in the code
+socket.on('new post', function(data){
+  // All keys are the same type, 
+  // and all values are the same type, so Map!
+  recentPosts.set( data.author, data.message );
+});
+
+const POSTS_PER_PAGE = 15;
+let userSettings = {
+  // Some values are numeric, others are boolean, so Object!
+  perPage: POSTS_PER_PAGE,
+  showRead: true,
+};
+```
+
+**Iterating Maps With for...of**
+
+Maps are iterable, so they can be used in a for?of loop. Each run of the loop returns a [key, value] pair for an entry in the Map.
+
+```javascript
+let mapSettings = new Map();
+
+mapSettings.set( "user", "Sam" );
+mapSettings.set( "topic", "ES2015" );
+mapSettings.set( "replies", ["Can't wait!", "So Cool"] );
+
+for(let [key, value] of mapSettings){
+  console.log(`${key} = ${value}`);
+  // user = Sam
+  // topic = ES2015
+  // replies = Can't wait!,So Cool
+}
+```
+
+### WeakMap
+
+The WeakMap is a type of Map where only objects can be passed as keys. Primitive data types - such as strings, numbers, booleans, etc. - are not allowed.
+
+```javascript
+let user = {};
+let comment = {};
+
+let mapSettings = new WeakMap();
+mapSettings.set( user, "user" );
+mapSettings.set( comment, "comment" );
+
+console.log( mapSettings.get(user) ); //  user
+console.log( mapSettings.get(comment) ); // comment
+
+mapSettings.set("title", "ES2015"); // Invalid value used as weak map key
+```
+
+* All available methods on a WeakMap require access to an object used as a key.
+
+  ```javascript
+  let user = {};
+
+  let mapSettings = new WeakMap();
+  mapSettings.set( user, );
+
+  console.log( mapSettings.get(user) ); // ES2015
+  console.log( mapSettings.has(user) ); // true
+  console.log( mapSettings.delete(user) ); // true
+  ```
+
+* WeakMaps are not iterable, therefore they can?t be used with for...of
+
+  ```javascript
+  for(let [key,value] of mapSettings){
+    console.log(`${key} = ${value}`);
+    // mapSettings[Symbol.iterator] is not a function
+  }
+  ```
+
+  ?
