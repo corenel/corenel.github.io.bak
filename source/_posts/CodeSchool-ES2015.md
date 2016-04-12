@@ -705,7 +705,7 @@ console.log( a, b, c ); // Sam Alex Brook
 
 **Using for...of to Loop Over Arrays**
 
-The for...of statement iterates over property values, and it?s a better way to loop over arrays and other iterable objects.
+The for...of statement iterates over property values, and it's a better way to loop over arrays and other iterable objects.
 
 ```javascript
 let names = ["Sam", "Tyler", "Brook"];
@@ -736,7 +736,7 @@ for(let name of names){
   console.log( name ); // Sam Tyler Brook 
 }
 
-// Objects That Don?t Work With for...of
+// Objects That Don't Work With for...of
 let post = {
   title: "New Features in JS",
   replies: 19,
@@ -859,7 +859,7 @@ let userSettings = {
 
 **Iterating Maps With for...of**
 
-Maps are iterable, so they can be used in a for?of loop. Each run of the loop returns a [key, value] pair for an entry in the Map.
+`Maps` are iterable, so they can be used in a `for...of` loop. Each run of the loop returns a [key, value] pair for an entry in the Map.
 
 ```javascript
 let mapSettings = new Map();
@@ -894,7 +894,7 @@ console.log( mapSettings.get(comment) ); // comment
 mapSettings.set("title", "ES2015"); // Invalid value used as weak map key
 ```
 
-* All available methods on a WeakMap require access to an object used as a key.
+* **All available methods on a WeakMap require access to an object used as a key.**
 
   ```javascript
   let user = {};
@@ -907,7 +907,7 @@ mapSettings.set("title", "ES2015"); // Invalid value used as weak map key
   console.log( mapSettings.delete(user) ); // true
   ```
 
-* WeakMaps are not iterable, therefore they can?t be used with for...of
+* **WeakMaps are not iterable, therefore they can't be used with for...of**
 
   ```javascript
   for(let [key,value] of mapSettings){
@@ -916,4 +916,447 @@ mapSettings.set("title", "ES2015"); // Invalid value used as weak map key
   }
   ```
 
-  ?
+* **WeakMaps Are Better With Memory**
+
+  Individual entries in a WeakMap can be garbage collected while the WeakMap itself still exists.
+
+## Sets
+
+### Sets and Arrays
+
+**Limitations With Arrays**
+
+Arrays don't enforce uniqueness of items. Duplicate entries are allowed.
+
+```javascript
+let tags = [];
+
+tags.push( "JavaScript" );
+tags.push( "Programming" );
+tags.push( "Web" );
+tags.push( "Web" ); // Duplicate entry
+
+console.log( "Total items ", tags.length ); // Total items 4
+```
+
+**Using Set**
+
+The `Set` object stores unique values of any type, whether primitive values or object references.
+
+```javascript
+let tags = new Set();
+
+tags.add("JavaScript");
+// Both primitive values and objects are allowed
+tags.add("Programming");
+tags.add({ version: "2015" });
+tags.add("Web");
+tags.add("Web"); // Duplicate entries are ignored
+
+console.log("Total items ", tags.size); // Total items 4
+```
+
+**Using Set as Enumerable Object**
+
+`Set` objects are iterable, which means they can be used with `for...of` and destructuring.
+
+```javascript
+let tags = new Set();
+
+tags.add("JavaScript");
+tags.add("Programming");
+tags.add({ version: "2015" });
+tags.add("Web");
+
+for(let tag of tags){
+  console.log(tag);
+}
+// OUTPUTS:
+// JavaScript
+// Programming
+// { version: '2015' }
+// Web
+
+let [a,b,c,d] = tags;
+console.log(a, b, c, d);
+// OUTPUTS:
+// JavaScript Programming { version: '2015' } Web
+```
+
+### WeakSet
+
+* The `WeakSet` is a type of Set where **only objects** are allowed to be stored.
+
+
+* `WeakSets` don't prevent the garbage collector from collecting entries that are no longer used in other parts of the system
+
+
+* `WeakSets` cannot be used with `for...of` and they offer **no methods for reading values from it**.
+
+**Using WeakSets to Show Unread Posts**
+
+* We want to add a different background color to posts that have not yet been read.
+
+
+* We can use WeakSets to create special groups from existing objects without mutating them.
+
+
+* Favoring immutable objects allows for much simpler code with no unexpected side effects.
+
+```javascript
+let readPosts = new WeakSet();
+
+//...when post is clicked on
+postList.addEventListener('click', (event) => {
+  // ...
+  // Adds object to a group of read posts
+  readPosts.add(post);
+});
+
+// ...rendering posts
+for(let post of postArray){
+  // The has() method checks whether 
+  // an object is present in the WeakSet
+  if(!readPosts.has(post)){
+    _addNewPostClass(post.element);
+  }
+}
+```
+
+
+
+# Classes and Modules
+
+## Classes
+
+**Using a Function Approach**
+
+A common approach to encapsulation in JavaScript is using a constructor function.
+
+```javascript
+function SponsorWidget(name, description, url){
+  this.name = name;
+  this.description = description;
+  this.url = url;
+}
+
+// Too verbose!
+SponsorWidget.prototype.render = function(){
+  //...
+};
+
+// Invoking the SponsorWidget function looks like this:
+let sponsorWidget = new SponsorWidget(name, description, url);
+sponsorWidget.render();
+```
+
+**Using the New Class Syntax**
+
+To define a class, we use the class keyword followed by the name of the class. The body of a class is the part between curly braces.
+
+```javascript
+class SponsorWidget {
+  // Runs every time a new instance is created with the new operator
+  constructor(name, description, url){
+    // ...
+    // Don't forget to use this to access instance properties and methods
+    this.url = url;
+  }
+  
+  // Can access previously assigned instance variables
+  render(){
+    let link = this._buildLink(this.url);
+    // ...
+  }
+
+  // Prefixing a method with an underscore is a
+  // convention for indicating that it should not
+  // be invoked from the public API
+  _buildLink(url){
+    // ...
+  }
+}
+
+let sponsorWidget = new SponsorWidget(name, description, url);
+sponsorWidget.render();
+```
+
+**Class Inheritance**
+
+We can use class inheritance to reduce code repetition. Child classes inherit and specialize behavior defined in parent classes.
+
+![cass_inheritance](/images/cass_inheritance.png)
+
+**Using extends to Inherit From Base Class**
+
+The `extends` keyword is used to create a class that inherits methods and properties from another class. The `super` method runs the constructor function from the parent class.
+
+```javascript
+// Parent Class
+class Widget {
+  constructor(){
+    this.baseCSS = "site-widget";
+  }
+  parse(value){
+    //...
+  }
+}
+
+// Child Class
+class SponsorWidget extends Widget {
+  constructor(name, description, url){
+    // runs parent's setup code
+    super();
+    //...
+  }
+  render(){
+    let parsedName = this.parse(this.name);
+    let css = this._buildCSS(this.baseCSS);
+    //...
+  }
+}
+```
+
+**Overriding Inherited Methods**
+
+Child classes can invoke methods from their parent classes via the super object.
+
+```javascript
+// Parent Class
+class Widget {
+  constructor(){
+    this.baseCSS = "site-widget";
+  }
+  parse(value){
+    //...
+  }
+}
+
+// Child Class
+class SponsorWidget extends Widget {
+  constructor(name, description, url){
+    super();
+    //...
+  }
+  parse(){
+    // Calls the parent version of the parse() method
+    let parsedName = super.parse(this.name);
+    return `Sponsor: ${parsedName}`;
+  }
+  render(){
+    //...
+  }
+}
+```
+
+## Modules
+
+### Function Modules
+
+**Polluting the Global Namespace**
+
+The common solution for modularizing code relies on using global variables. This increases the chances of unexpected side effects and potential naming conflicts.
+
+```html
+<!DOCTYPE html>
+<body>
+  <!-- Libraries add to the global namespace -->
+  <script src="./jquery.js"></script>
+  <script src="./underscore.js"></script>
+  <script src="./flash-message.js"></script>
+</body>
+```
+
+```javascript
+// Global variables can cause naming conflicts
+let element = $("...").find(...);
+let filtered = _.each(...);
+flashMessage("Hello");
+```
+
+**Creating Modules**
+
+```javascript
+// flash-message.js
+// The export keyword exposes this function to the module system
+// The default type export is the simplest way to export a function
+export default function(message){
+  alert(message);
+}
+  
+// app.js
+// Can be named anything because it's default export
+import flashMessage from './flash-message';
+flashMessage("Hello");
+```
+
+```html
+<!DOCTYPE html>
+<body>
+  <!-- Not adding to the global namespace -->
+  <script src="./flash-message.js"></script>
+  <script src="./app.js"></script>
+</body>
+```
+
+**Using Named Exports**
+
+In order to export multiple functions from a single module, we can use the named export.
+
+```javascript
+// flash-message.js
+export function (message){
+  alert(message);
+}
+export function logMessage(message){
+  console.log(message);
+}
+
+// app.js
+import { alertMessage, logMessage } from './flash-message';
+alertMessage('Hello from alert');
+logMessage('Hello from log');
+```
+
+**Importing a Module as an Object**
+
+```javascript
+// app.js
+import * as flash from './flash-message';
+
+flash.alertMessage('Hello from alert');
+falsh.logMessage('Hello from log');
+```
+
+**Removing Repeated Export Statements**
+
+```javascript
+// flash-message.js
+function alertMessage(message){
+  alert(message);
+}
+function logMessage(message){
+  console.log(message);
+}
+// export can take multiple function names between curly braces
+export { alertMessage, logMessage };
+
+// app.js
+// Imported just like before
+import { alertMessage, logMessage } from './flash-message';
+alertMessage('Hello from alert');
+logMessage('Hello from log');
+```
+
+### Export and import Constants
+
+**Extracting Hardcoded Constants**
+
+Redefining constants across our application is unnecessary repetition and can lead to bugs.
+
+```javascript
+// load-profiles.js
+function loadProfiles(userNames){
+  const MAX_USERS = 3;
+  if(userNames.length > MAX_USERS){
+    //...
+  }
+  const MAX_REPLIES = 3;
+  if(someElement > MAX_REPLIES){
+    //...
+  }
+}
+export { loadProfiles }
+
+// list-replies.js
+function listReplies(replies=[]){
+  const MAX_REPLIES = 3;
+  if(replies.length > MAX_REPLIES){
+    //...
+  }
+}
+export { listReplies }
+
+// display-watchers.js
+function displayWatchers(watchers=[]){
+  const MAX_USERS = 3;
+  if(watchers.length > MAX_USERS){
+    //...
+  }
+}
+export { displayWatchers }
+```
+
+**Export Constants**
+
+Placing constants on their own module allows them to be reused across other modules and hides implementation details (a.k.a., encapsulation).
+
+```javascript
+// constants.js
+const MAX_USERS = 3;
+const MAX_REPLIES = 3;
+export { MAX_USERS, MAX_REPLIES };
+```
+
+**Import Constants**
+
+To import constants, we can use the exact same syntax for importing functions.
+
+We can now import and use our constants from other places in our application.
+
+```javascript
+// load-profiles.js
+import { MAX_REPLIES, MAX_USERS } from './constants';
+function loadProfiles(userNames){
+  if(userNames.length > MAX_USERS){
+    //...
+  }
+  if(someElement > MAX_REPLIES){
+    //...
+  }
+}
+
+// list-replies.js
+import { MAX_REPLIES } from './constants';
+function listReplies(replies = []){
+  if(replies.length > MAX_REPLIES){
+    //...
+  }
+}
+
+// display-watchers.js
+import { MAX_USERS } from './constants';
+function displayWatchers(watchers = []){
+  if(watchers.length > MAX_USERS){
+    //...
+  }
+}
+```
+
+### Class Modules
+
+* Exporting Class Modules With Default Export
+* Using Class Modules With Named Export
+
+```javascript
+// flash-message.js
+class FlashMessage {
+  constructor(message){
+    this.message = message;
+  }
+  renderAlert(){
+    alert(`${this.message} from alert`);
+  }
+  renderLog(){
+    console.log(`${this.message} from log`);
+  }
+}
+export { FlashMessage }
+
+// app.js
+import { FlashMessage } from './flash-message';
+let flash = new FlashMessage("Hello");
+flash.renderAlert();
+flash.renderLog();
+```
+
