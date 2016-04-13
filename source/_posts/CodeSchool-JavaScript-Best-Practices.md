@@ -6,7 +6,6 @@ categories:
 tags:
   - CodeSchool
   - JavaScript
-  - ES2015
 ---
 
 # The Sword of Syntax
