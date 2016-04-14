@@ -346,3 +346,214 @@ $(document).ready(function() {
 });
 ```
 
+**Using slideDown to Show Elements**
+
+* `.slideDown()`
+* `.slideUp()`
+* `.slideToggle()`
+  * Display or hide the matched elements with a sliding motion.
+
+## Expanding on on()
+
+What if we also want to show the ticket when they hover over the `<h3>` tag?
+
+```javascript
+function showTicket() {
+  $('this').closest('.confirmation').find('.ticket').slideDown();
+}
+$(document).ready(function() {
+  // Don't add () at the end - that would execute the function immediately
+  $('.confirmation').on('click', 'button', showTicket);
+  $('.confirmation').on('mouseenter', 'h3', showTicket);
+});
+```
+
+**Mouse Event**
+
+* `click`
+* `dblclick`
+* `focusin`
+* `focusout`
+* `mousedown`
+* `mouseup`
+* `mousemove`
+* `mouseout`
+* `mouseover`
+* `mouseleave`
+* `mouseenter`
+
+## Keyboard Events
+
+Changing this "Tickets "input field should recalculate the total price.
+
+```html
+<div class="vacation" data-price='399.99'>
+  <h3>Hawaiian Vacation</h3>
+  <p>$399.99 per ticket</p>
+  <p>
+    Tickets:
+    <!-- When this updates... -->
+    <input type='number' class='quantity' value='1' />
+  </p>
+</div>
+<!-- ...we'll update the calculated price here -->
+<p>Total Price: $<span id='total'>399.99</span></p>
+```
+
+**Keyboard and Form Events**
+
+Keyboard Events
+
+* `keypress`
+* `keydown`
+* `keyup`
+
+Form Events
+
+* `blur`
+* `select`
+* `change`
+* `focus`
+* `submit`
+
+```javascript
+$(document).ready(function() {
+  $('.vacation').on('keyup', '.quantity', function() {
+    // Use + to convert the string to a number
+    var price = +$(this).closest('.vacation').data('price');
+    var quantity = +$(this).val();
+    // You can pass a number or a string to the .text() method
+    $('#total').text(price * quantity);
+  });
+});
+```
+
+## Link Layover
+
+Clicking Show Comments will cause them to fade in
+
+```html
+<!-- index.html -->
+<a href='#' class='expand'>Show Comments</a>
+```
+
+```css
+/* application.css */
+.comments {
+  display: none;
+}
+```
+
+```javascript
+// application.js
+$(document).ready(function() {
+  $('.vacation').on('click', '.expand',function(event) {
+    // The click event will "bubble up? but the browser won't handle it
+    event.preventDefault();
+    $(this).closest('.vacation')
+    .find('.comments')
+    .fadeToggle();
+  }
+ );
+});
+```
+
+**event.stopPropagation()**
+
+The browser will still handle the click event but will prevent it from "bubbling up? to each parent node.
+
+**event.preventDefault()**
+
+The click event will "bubble up? but the browser won't handle it
+
+# Styling
+
+## Taming CSS
+
+**Changing the Style**
+
+```javascript
+// application.js
+$(document).ready(function() {
+  $('#vacations').on('click', '.vacation', function() {
+    // NOT RECOMMENDED
+    // $(this).css('background-color', '#252b30');
+    // $(this).css('border-color', '1px solid #967');
+    // $(this).css('background-color', '#252b30')
+    //        .css('border-color', '1px solid #967');
+    
+    // Passing in a JavaScript Object as an argument is a common jQuery pattern
+    $(this).css({'background-color': '#252b30',
+                 'border-color': '1px solid #967'});
+    // Same as CSS syntax, but easier to read and understand
+    // $(this).find('.price').css('display', 'block');
+    $(this).find('.price').show();
+  });
+});
+```
+
+jQuery Object Methods
+
+* `.css(<attr>, <value>)`
+* `.css(<attr>)`
+* `.css(<object>)`
+* `.show()`
+* `.hide()`
+
+**Moving Styles to External CSS**
+
+```css
+/* application.css */
+.highlighted {
+  background-color:#563;
+  border-color: 1px solid #967;
+}
+.highlighted .price {
+  display: block;
+}
+```
+
+```javascript
+// application.js
+$(document).ready(function() {
+  $('#vacations').on('click', '.vacation', function() {
+    $(this).toggleClass('highlighted');
+  });
+});
+```
+
+jQuery Object Methods
+
+* `.toggleClass()`
+* `.addClass(<class>)`
+* `.removeClass(<class>)`
+
+## Animation
+
+What can we do to add a bit more movement to this?
+
+```javascript
+$(document).ready(function() {
+  $('#vacations').on('click', '.vacation', function() {
+    $(this).toggleClass('highlighted');
+    // Our vacation package will move up and down
+    if ($(this).hasClass('highlighted')) {
+      $(this).animate({'top': '-10px'});
+    } else {
+      $(this).animate({'top': '0px'});
+    }
+  });
+});
+```
+
+ **Changing the Speed**
+
+```javascript
+// Default speed is 400
+$(this).animate({'top': '-10px'}, 400);
+// 'fast' equals to 200
+$(this).animate({'top': '-10px'}, 'fast');
+// 'slow' equals to 600
+$(this).animate({'top': '-10px'}, 'slow');
+```
+
