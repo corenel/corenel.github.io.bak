@@ -115,3 +115,7 @@ console.log("Current weapon: " + (isArthur ? "Excalibur" : "Longsword")); // Lon
                        isArcher ? (weapon = "Longbow", helmet = "Mail Helm")
                                 : ( weapon = "Longsword", helmet = "Iron Helm" );
   ```
+
+
+
+To be continued.
