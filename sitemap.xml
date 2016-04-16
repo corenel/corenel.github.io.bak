@@ -2,16 +2,23 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
-    <loc>http://www.yuthon.com/2016/04/13/CodeSchool-Try-jQuery/</loc>
+    <loc>http://www.yuthon.com/2016/04/14/CodeSchool-Shaping-up-with-Angular.js/</loc>
     
-    <lastmod>2016-04-14T12:18:17.005Z</lastmod>
+    <lastmod>2016-04-16T07:56:05.549Z</lastmod>
     
   </url>
   
   <url>
     <loc>http://www.yuthon.com/2016/04/12/CodeSchool-JavaScript-Best-Practices/</loc>
     
-    <lastmod>2016-04-13T09:24:47.760Z</lastmod>
+    <lastmod>2016-04-14T13:36:32.529Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://www.yuthon.com/2016/04/13/CodeSchool-Try-jQuery/</loc>
+    
+    <lastmod>2016-04-14T13:18:43.051Z</lastmod>
     
   </url>
   
