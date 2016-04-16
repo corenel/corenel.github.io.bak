@@ -246,7 +246,10 @@ var gems = [
 
 # Build-in Directives
 
-## Filters
+## Filters and a new Directive
+
+### Filters
+
 {% raw %}
 {{ data | filter:options }}
 {% endraw %}
@@ -284,6 +287,196 @@ Using Angular Expressions inside a src attribute causes an error! Because the br
     </li>
   </ul>
 </body>
+```
+
+## Tabs Inside Out
+
+* `ng-click`
+* `ng-init`
+* `ng-class`
+
+```html
+<section ng-conrtoller="PanelController as panel">
+  <ul class="nav nav-pills">
+    <li ng-class="{active:panel.isSelected(1)}">
+      <a herf ng-click="panel.selectTab(1)">Description</a>
+    </li>
+    <li ng-class="{active:panel.isSelected(3)}">
+      <a herf ng-click="panel.selectTab(1)">Specifications</a>
+    </li>
+    <li ng-class="{active:panel.isSelected(3)}">
+      <a herf ng-click="panel.selectTab(3)">Reviews</a>
+    </li> 
+  </ul>
+  <div class="panel" ng-show="panel.isSelected(1)">
+    <h4>Description </h4>
+    <p>{{product.description}}</p>
+  </div>
+</section>
+```
+
+```javascript
+app.controller("PanelController", function(){
+  this.tab = 1;
+  this.selectTab = function(setTab) {
+    this.tab = setTab;
+  };
+  this.isSelected = function(checkTab){
+    return this.tab === checkTab;
+  };
+});
+```
+
+
+
+# Forms, Models, and Validations
+
+## Forms and Models
+
+### Introducing ng-model
+
+`ng-model` binds the form element value to the property.
+
+So we can have live previrew.
+
+```html
+<form name="reviewForm">
+  <blockquote>
+    <b>Stars: {{review.stars}}</b>
+    {{review.body}} 
+    <cite>by: {{review.author}}</cite> 
+  </blockquote>
+  <select ng-model="review.stars">
+    <option value="1">1 star</option>
+    <option value="2">2 stars</option>
+    . . .
+  </select>
+  <textarea ></textarea>
+  <label>by:</label>
+  <input ng-model="review.body" type="email" />
+  <input ng-model="review.author" type="submit" value="Submit" />
+</form>
+```
+
+**Two More Binding Examples**
+
+```html
+<!-- With a Checkbox -->
+<!-- Sets value to true or false -->
+<input ng-model="review.terms" type="checkbox" /> I agree to the terms
+
+<!-- With Radio Buttons -->
+<!-- Sets the proper value based on which is selected -->
+What color would you like? 
+<input ng-model="review.color" type="radio" value="red" /> Red 
+<input ng-model="review.color" type="radio" value="blue" /> Blue 
+<input ng-model="review.color" type="radio" value="green" /> Green
+```
+
+## Accepting Submissions
+
+`ng-submit` directive.
+
+```javascript
+app.controller("ReviewController", function(){
+  this.review = {};
+  this.addReview = function(product) {
+    product.reviews.push(this.review);
+    this.review = {};
+  };
+});
+```
+
+```html
+<form name="reviewForm" ng-controller="ReviewController as reviewCtrl"
+ng-submit="reviewCtrl.addReview(product)">
+  <blockquote>
+    <b>Stars: {{reviewCtrl.review.stars}}</b>
+    {{reviewCtrl.review.body}}
+    <cite>by: {{reviewCtrl.review.author}}</cite>
+  </blockquote>
+```
+
+## Form Validations 101
+
+We don?t want the form to submit when it?s invalid.
+
+**Turn Off Default HTML Validation**
+
+* `novalidate`: Turn Off Default HTML Validation
+* `required`: Mark Required Fields
+
+```html
+<form name="reviewForm" ng-controller="ReviewController as reviewCtrl"
+ng-submit="reviewCtrl.addReview(product)" >
+  <select ng-model="reviewCtrl.review.stars" required>
+    <option value="1">1 star</option>
+    ...
+  </select>
+  
+  <textarea name="body" ng-model="reviewCtrl.review.body" required></textarea>
+  <label>by:</label>
+  <input name="author" ng-model="reviewCtrl.review.author" type="email" required/>
+  <div> reviewForm is {{reviewForm.$valid}} </div>
+  <input type="submit" value="Submit" />
+</form>
+```
+
+**Preventing the Submit**
+
+If valid is `false` , then `addReview` is never called.
+
+```html
+<form name="reviewForm" ng-controller="ReviewController as reviewCtrl"
+ng-submit="reviewForm.$valid && reviewCtrl.addReview(product)" novalidate>
+```
+
+**Doesn?t Submit an Invalid Form**
+
+How might we give a hint to the user why their form is invalid?
+
+```html
+<input name="author" ng-model="reviewCtrl.review.author" type="email" required />
+```
+
+```css
+.ng-invalid.ng-dirty {
+  border-color: #FA787E;
+}
+
+.ng-valid.ng-dirty {
+  border-color: #78FA89;
+}
+```
+
+* Source before typing email
+
+  ```html
+  <input name="author" . . . class="ng-pristine ng-invalid">
+  ```
+
+* Source after typing, with invalid email
+
+  ```html
+  <input name="author". . . class="ng-dirty ng-invalid">
+  ```
+
+* Source after typing, with valid email
+
+  ```html
+  <input name="author" . . . class="ng-dirty ng-valid">
+  ```
+
+**HTML5-based type validations**
+
+Web forms usually have rules around valid input:
+
+* Angular JS has built-in validations for common input types:
+
+```html
+<input type="email" name="email">
+<input type="url" name="homepage">
+<input type="number" min=1 max=10 name="quantity">
 ```
 
 
