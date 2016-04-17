@@ -1,3 +1,3 @@
 # Yuthon's blog
 
-Personal blog powered by Hexo.
+[Personal blog](http://www.yuthon.com/) powered by Hexo.
