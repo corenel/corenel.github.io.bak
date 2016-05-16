@@ -13,7 +13,12 @@ gulp.task('minify-css', function() {
 
 gulp.task('minify-images', function() {
     return gulp.src(["public/**/*.{gif,jpg,png,svg}"])
-        .pipe(imagemin())
+        .pipe(imagemin({
+            optimizationLevel: 5,
+            progressive: true,
+            interlaced: true,
+            multipass: true
+        }))
         .pipe(gulp.dest('./public/'));
 });
 
