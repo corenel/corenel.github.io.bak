@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://www.yuthon.com/"/>
-  <updated>2016-04-16T14:39:03.981Z</updated>
+  <updated>2016-05-16T13:51:56.000Z</updated>
   <id>http://www.yuthon.com/</id>
   
   <author>
@@ -16,11 +16,37 @@
   <generator uri="http://hexo.io/">Hexo</generator>
   
   <entry>
+    <title>OS X 10.11.4 on XPS 15 9550</title>
+    <link href="http://www.yuthon.com/2016/05/16/OS-X-10-11-4-on-XPS-15-9550/"/>
+    <id>http://www.yuthon.com/2016/05/16/OS-X-10-11-4-on-XPS-15-9550/</id>
+    <published>2016-05-16T12:20:08.000Z</published>
+    <updated>2016-05-16T13:51:56.000Z</updated>
+    
+    <content type="html">&lt;p&gt;Thanks to the &lt;a href=&quot;http://www.tonymacx86.com/threads/guide-wip-dell-xps-15-9550-skylake-gtx960m-ssd-via-clover-uefi.192598/&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;guide&lt;/a&gt; and its participants, I successfully installed OS X 10.11.4 on my XPS 15 9550.&lt;/p&gt;
+&lt;p&gt; &lt;img src=&quot;/images/OS-X-10-11-4-on-XPS-15-9550.png&quot; alt=&quot;OS-X-10-11-4-on-XPS-15-9550&quot;&gt;&lt;/p&gt;
+&lt;p&gt;The guide is considerably perfect. Just follow the steps and you’ll get a well-done Hackintosh.&lt;/p&gt;
+&lt;p&gt;My Clover directory, DSDT &amp;amp; SSDT and Kexts are uploaded to &lt;a href=&quot;https://github.com/corenel/XPS9550-OSX&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;Github&lt;/a&gt;, for reference only. &lt;/p&gt;
+</content>
+    
+    <summary type="html">
+    
+      &lt;p&gt;Thanks to the &lt;a href=&quot;http://www.tonymacx86.com/threads/guide-wip-dell-xps-15-9550-skylake-gtx960m-ssd-via-clover-uefi.192598/&quot; target=&quot;
+    
+    </summary>
+    
+    
+      <category term="OS X" scheme="http://www.yuthon.com/tags/OS-X/"/>
+    
+      <category term="XPS" scheme="http://www.yuthon.com/tags/XPS/"/>
+    
+  </entry>
+  
+  <entry>
     <title>Notes for Code School - Shaping up with Angular.js</title>
     <link href="http://www.yuthon.com/2016/04/14/CodeSchool-Shaping-up-with-Angular.js/"/>
     <id>http://www.yuthon.com/2016/04/14/CodeSchool-Shaping-up-with-Angular.js/</id>
     <published>2016-04-14T13:19:22.000Z</published>
-    <updated>2016-04-16T14:39:03.981Z</updated>
+    <updated>2016-05-16T11:51:43.000Z</updated>
     
     <content type="html">&lt;h1 id=&quot;Flatlander’s-Gem-Store&quot;&gt;&lt;a href=&quot;#Flatlander’s-Gem-Store&quot; class=&quot;headerlink&quot; title=&quot;Flatlander’s Gem Store&quot;&gt;&lt;/a&gt;Flatlander’s Gem Store&lt;/h1&gt;&lt;h2 id=&quot;Ramp-up&quot;&gt;&lt;a href=&quot;#Ramp-up&quot; class=&quot;headerlink&quot; title=&quot;Ramp up&quot;&gt;&lt;/a&gt;Ramp up&lt;/h2&gt;&lt;p&gt;&lt;strong&gt;Why Angular?&lt;/strong&gt;&lt;/p&gt;
 &lt;p&gt;If you?re using JavaScript to create a dynamic website, Angular is a good choice.&lt;/p&gt;
@@ -143,7 +169,7 @@
     <link href="http://www.yuthon.com/2016/04/13/CodeSchool-Try-jQuery/"/>
     <id>http://www.yuthon.com/2016/04/13/CodeSchool-Try-jQuery/</id>
     <published>2016-04-13T09:24:09.000Z</published>
-    <updated>2016-04-14T13:18:43.051Z</updated>
+    <updated>2016-05-16T11:51:43.000Z</updated>
     
     <content type="html">&lt;h1 id=&quot;Introduction-to-jQuery&quot;&gt;&lt;a href=&quot;#Introduction-to-jQuery&quot; class=&quot;headerlink&quot; title=&quot;Introduction to jQuery&quot;&gt;&lt;/a&gt;Introduction to jQuery&lt;/h1&gt;&lt;h2 id=&quot;What’s-jQuery&quot;&gt;&lt;a href=&quot;#What’s-jQuery&quot; class=&quot;headerlink&quot; title=&quot;What’s jQuery&quot;&gt;&lt;/a&gt;What’s jQuery&lt;/h2&gt;&lt;p&gt;&lt;strong&gt;jQuery makes it easy to&lt;/strong&gt;&lt;/p&gt;
 &lt;ul&gt;
@@ -337,7 +363,7 @@
     <link href="http://www.yuthon.com/2016/04/12/CodeSchool-JavaScript-Best-Practices/"/>
     <id>http://www.yuthon.com/2016/04/12/CodeSchool-JavaScript-Best-Practices/</id>
     <published>2016-04-12T10:19:54.000Z</published>
-    <updated>2016-04-14T13:36:32.529Z</updated>
+    <updated>2016-05-16T11:51:43.000Z</updated>
     
     <content type="html">&lt;h1 id=&quot;The-Sword-of-Syntax&quot;&gt;&lt;a href=&quot;#The-Sword-of-Syntax&quot; class=&quot;headerlink&quot; title=&quot;The Sword of Syntax&quot;&gt;&lt;/a&gt;The Sword of Syntax&lt;/h1&gt;&lt;h2 id=&quot;Ternary-Conditionals&quot;&gt;&lt;a href=&quot;#Ternary-Conditionals&quot; class=&quot;headerlink&quot; title=&quot;Ternary Conditionals&quot;&gt;&lt;/a&gt;Ternary Conditionals&lt;/h2&gt;&lt;p&gt;The ternary conditional provides a shortcut over lengthier conditional blocks.&lt;/p&gt;
 &lt;figure class=&quot;highlight javascript&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;someCondition ? pickThisIfTrue : pickThisIfFalse;&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
@@ -395,7 +421,7 @@
     <link href="http://www.yuthon.com/2016/04/11/Tips-for-Hexo-configuration/"/>
     <id>http://www.yuthon.com/2016/04/11/Tips-for-Hexo-configuration/</id>
     <published>2016-04-10T16:19:54.000Z</published>
-    <updated>2016-04-11T04:14:39.644Z</updated>
+    <updated>2016-05-16T11:51:43.000Z</updated>
     
     <content type="html">&lt;h2 id=&quot;添加README-md文件&quot;&gt;&lt;a href=&quot;#添加README-md文件&quot; class=&quot;headerlink&quot; title=&quot;添加README.md文件&quot;&gt;&lt;/a&gt;添加&lt;code&gt;README.md&lt;/code&gt;文件&lt;/h2&gt;&lt;p&gt;由于Hexo会将&lt;code&gt;source/&lt;/code&gt;目录下的所有&lt;code&gt;.md&lt;/code&gt;文件渲染成&lt;code&gt;.html&lt;/code&gt;文件，因此需要将&lt;code&gt;README.md&lt;/code&gt;排除在外。幸好，Hexo在3.0以上的版本中提供了&lt;code&gt;skip_render&lt;/code&gt;参数。&lt;/p&gt;
 &lt;ol&gt;
@@ -457,7 +483,7 @@
     <link href="http://www.yuthon.com/2016/04/10/CodeSchool-ES2015/"/>
     <id>http://www.yuthon.com/2016/04/10/CodeSchool-ES2015/</id>
     <published>2016-04-10T04:09:29.000Z</published>
-    <updated>2016-04-12T10:12:02.761Z</updated>
+    <updated>2016-05-16T12:39:07.000Z</updated>
     
     <content type="html">&lt;h1 id=&quot;Declaration&quot;&gt;&lt;a href=&quot;#Declaration&quot; class=&quot;headerlink&quot; title=&quot;Declaration&quot;&gt;&lt;/a&gt;Declaration&lt;/h1&gt;&lt;h2 id=&quot;Using-let&quot;&gt;&lt;a href=&quot;#Using-let&quot; class=&quot;headerlink&quot; title=&quot;Using let&quot;&gt;&lt;/a&gt;Using let&lt;/h2&gt;&lt;p&gt;&lt;strong&gt;Understanding Hoisting&lt;/strong&gt;&lt;/p&gt;
 &lt;p&gt;Prior to executing our code, JavaScript moves var declarations all the way up to the top of the scope. This is known as hoisting.&lt;/p&gt;
@@ -839,7 +865,7 @@
     <link href="http://www.yuthon.com/2016/04/09/CodeSchool-Javascript/"/>
     <id>http://www.yuthon.com/2016/04/09/CodeSchool-Javascript/</id>
     <published>2016-04-09T04:37:07.000Z</published>
-    <updated>2016-04-11T02:05:39.014Z</updated>
+    <updated>2016-05-16T11:51:43.000Z</updated>
     
     <content type="html">&lt;h1 id=&quot;Closures&quot;&gt;&lt;a href=&quot;#Closures&quot; class=&quot;headerlink&quot; title=&quot;Closures&quot;&gt;&lt;/a&gt;Closures&lt;/h1&gt;&lt;p&gt;&lt;strong&gt;Closures help in function “construction zones”&lt;/strong&gt;&lt;/p&gt;
 &lt;p&gt;A closure can make the creation of very similar functions ultra-efficient.&lt;/p&gt;
@@ -1018,33 +1044,6 @@
       <category term="CodeSchool" scheme="http://www.yuthon.com/tags/CodeSchool/"/>
     
       <category term="JavaScript" scheme="http://www.yuthon.com/tags/JavaScript/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>Hello World</title>
-    <link href="http://www.yuthon.com/2016/04/09/hello-world/"/>
-    <id>http://www.yuthon.com/2016/04/09/hello-world/</id>
-    <published>2016-04-08T16:05:24.788Z</published>
-    <updated>2016-04-08T16:05:24.788Z</updated>
-    
-    <content type="html">&lt;p&gt;Welcome to &lt;a href=&quot;https://hexo.io/&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;Hexo&lt;/a&gt;! This is your very first post. Check &lt;a href=&quot;https://hexo.io/docs/&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;documentation&lt;/a&gt; for more info. If you get any problems when using Hexo, you can find the answer in &lt;a href=&quot;https://hexo.io/docs/troubleshooting.html&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;troubleshooting&lt;/a&gt; or you can ask me on &lt;a href=&quot;https://github.com/hexojs/hexo/issues&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;GitHub&lt;/a&gt;.&lt;/p&gt;
-&lt;h2 id=&quot;Quick-Start&quot;&gt;&lt;a href=&quot;#Quick-Start&quot; class=&quot;headerlink&quot; title=&quot;Quick Start&quot;&gt;&lt;/a&gt;Quick Start&lt;/h2&gt;&lt;h3 id=&quot;Create-a-new-post&quot;&gt;&lt;a href=&quot;#Create-a-new-post&quot; class=&quot;headerlink&quot; title=&quot;Create a new post&quot;&gt;&lt;/a&gt;Create a new post&lt;/h3&gt;&lt;figure class=&quot;highlight bash&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;$ hexo new &lt;span class=&quot;string&quot;&gt;&quot;My New Post&quot;&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
-&lt;p&gt;More info: &lt;a href=&quot;https://hexo.io/docs/writing.html&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;Writing&lt;/a&gt;&lt;/p&gt;
-&lt;h3 id=&quot;Run-server&quot;&gt;&lt;a href=&quot;#Run-server&quot; class=&quot;headerlink&quot; title=&quot;Run server&quot;&gt;&lt;/a&gt;Run server&lt;/h3&gt;&lt;figure class=&quot;highlight bash&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;$ hexo server&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
-&lt;p&gt;More info: &lt;a href=&quot;https://hexo.io/docs/server.html&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;Server&lt;/a&gt;&lt;/p&gt;
-&lt;h3 id=&quot;Generate-static-files&quot;&gt;&lt;a href=&quot;#Generate-static-files&quot; class=&quot;headerlink&quot; title=&quot;Generate static files&quot;&gt;&lt;/a&gt;Generate static files&lt;/h3&gt;&lt;figure class=&quot;highlight bash&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;$ hexo generate&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
-&lt;p&gt;More info: &lt;a href=&quot;https://hexo.io/docs/generating.html&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;Generating&lt;/a&gt;&lt;/p&gt;
-&lt;h3 id=&quot;Deploy-to-remote-sites&quot;&gt;&lt;a href=&quot;#Deploy-to-remote-sites&quot; class=&quot;headerlink&quot; title=&quot;Deploy to remote sites&quot;&gt;&lt;/a&gt;Deploy to remote sites&lt;/h3&gt;&lt;figure class=&quot;highlight bash&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;$ hexo deploy&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
-&lt;p&gt;More info: &lt;a href=&quot;https://hexo.io/docs/deployment.html&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;Deployment&lt;/a&gt;&lt;/p&gt;
-</content>
-    
-    <summary type="html">
-    
-      &lt;p&gt;Welcome to &lt;a href=&quot;https://hexo.io/&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;Hexo&lt;/a&gt;! This is your very first post. Check &lt;a href=&quot;https://hexo.
-    
-    </summary>
-    
     
   </entry>
   
