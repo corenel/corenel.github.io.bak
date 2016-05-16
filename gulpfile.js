@@ -3,11 +3,18 @@ var minifycss = require('gulp-minify-css');
 var uglify = require('gulp-uglify');
 var htmlmin = require('gulp-htmlmin');
 var htmlclean = require('gulp-htmlclean');
+var imagemin = require('gulp-imagemin');
 
 gulp.task('minify-css', function() {
     return gulp.src(["public/**/*.css","!public/**/*.min.css"])
         .pipe(minifycss({compatibility: 'ie8'}))
         .pipe(gulp.dest('./public'));
+});
+
+gulp.task('minify-images', function() {
+    return gulp.src(["public/**/*.{gif,jpg,png,svg}"])
+        .pipe(imagemin())
+        .pipe(gulp.dest('./public/'));
 });
 
 gulp.task('minify-html', function() {
@@ -29,7 +36,7 @@ gulp.task('minify-js', function() {
 });
 
 gulp.task('default', [
-    'minify-html','minify-css','minify-js'
+    'minify-images', 'minify-html','minify-css','minify-js'
 ],function(){
     console.log("gulp task ok!");
 });
