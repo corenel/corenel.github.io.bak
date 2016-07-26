@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://www.yuthon.com/"/>
-  <updated>2016-07-26T03:59:38.000Z</updated>
+  <updated>2016-07-26T13:15:18.000Z</updated>
   <id>http://www.yuthon.com/</id>
   
   <author>
@@ -20,9 +20,9 @@
     <link href="http://www.yuthon.com/2016/07/26/Coursera-Machine-Learning-Week-1/"/>
     <id>http://www.yuthon.com/2016/07/26/Coursera-Machine-Learning-Week-1/</id>
     <published>2016-07-26T03:55:36.000Z</published>
-    <updated>2016-07-26T03:59:38.000Z</updated>
+    <updated>2016-07-26T13:15:18.000Z</updated>
     
-    <content type="html">&lt;h1 id=&quot;Machine-Learning&quot;&gt;&lt;a href=&quot;#Machine-Learning&quot; class=&quot;headerlink&quot; title=&quot;Machine Learning&quot;&gt;&lt;/a&gt;Machine Learning&lt;/h1&gt;&lt;h2 id=&quot;Week-1&quot;&gt;&lt;a href=&quot;#Week-1&quot; class=&quot;headerlink&quot; title=&quot;Week 1&quot;&gt;&lt;/a&gt;Week 1&lt;/h2&gt;&lt;h3 id=&quot;Linear-Regression-with-One-Variable&quot;&gt;&lt;a href=&quot;#Linear-Regression-with-One-Variable&quot; class=&quot;headerlink&quot; title=&quot;Linear Regression with One Variable&quot;&gt;&lt;/a&gt;Linear Regression with One Variable&lt;/h3&gt;&lt;h4 id=&quot;Model-Representation&quot;&gt;&lt;a href=&quot;#Model-Representation&quot; class=&quot;headerlink&quot; title=&quot;Model Representation&quot;&gt;&lt;/a&gt;Model Representation&lt;/h4&gt;&lt;ul&gt;
+    <content type="html">&lt;h1 id=&quot;Linear-Regression-with-One-Variable&quot;&gt;&lt;a href=&quot;#Linear-Regression-with-One-Variable&quot; class=&quot;headerlink&quot; title=&quot;Linear Regression with One Variable&quot;&gt;&lt;/a&gt;Linear Regression with One Variable&lt;/h1&gt;&lt;h2 id=&quot;Model-and-Cost-Function&quot;&gt;&lt;a href=&quot;#Model-and-Cost-Function&quot; class=&quot;headerlink&quot; title=&quot;Model and Cost Function&quot;&gt;&lt;/a&gt;Model and Cost Function&lt;/h2&gt;&lt;h3 id=&quot;Model-Representation&quot;&gt;&lt;a href=&quot;#Model-Representation&quot; class=&quot;headerlink&quot; title=&quot;Model Representation&quot;&gt;&lt;/a&gt;Model Representation&lt;/h3&gt;&lt;ul&gt;
 &lt;li&gt;&lt;strong&gt;Supervised Learning (监督学习)&lt;/strong&gt;: Given the “right answer” for each example in the data.&lt;ul&gt;
 &lt;li&gt;&lt;strong&gt;Regression Problem (回归问题)&lt;/strong&gt;: Predict real-valued output. &lt;/li&gt;
 &lt;li&gt;&lt;strong&gt;Classification Problem (分类问题)&lt;/strong&gt;: Predict discrete-valued output.&lt;/li&gt;
@@ -32,8 +32,8 @@
 &lt;li&gt;&lt;strong&gt;m&lt;/strong&gt;: number of training examples&lt;/li&gt;
 &lt;li&gt;&lt;strong&gt;x&lt;/strong&gt;‘s: “input” variable / features&lt;/li&gt;
 &lt;li&gt;&lt;strong&gt;y&lt;/strong&gt;‘s: “output” variable / “target” variable&lt;/li&gt;
-&lt;li&gt;&lt;strong&gt;(x, y)&lt;/strong&gt;: one training example&lt;/li&gt;
-&lt;li&gt;&lt;strong&gt;($x^i$, $y^i$)&lt;/strong&gt;: $i^{th}$ training example&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;$(x, y)$&lt;/strong&gt;: one training example&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;$(x^i, y^i)$&lt;/strong&gt;: $i^{th}$ training example&lt;/li&gt;
 &lt;/ul&gt;
 &lt;/li&gt;
 &lt;/ul&gt;
@@ -55,11 +55,107 @@
 &lt;/li&gt;
 &lt;/ul&gt;
 &lt;a id=&quot;more&quot;&gt;&lt;/a&gt;
-&lt;h4 id=&quot;Cost-function&quot;&gt;&lt;a href=&quot;#Cost-function&quot; class=&quot;headerlink&quot; title=&quot;Cost function&quot;&gt;&lt;/a&gt;Cost function&lt;/h4&gt;</content>
+&lt;h3 id=&quot;Cost-Function&quot;&gt;&lt;a href=&quot;#Cost-Function&quot; class=&quot;headerlink&quot; title=&quot;Cost Function&quot;&gt;&lt;/a&gt;Cost Function&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;&lt;p&gt;&lt;strong&gt;Hypothesis&lt;/strong&gt;: $h_\theta (x) = \theta_0 + \theta_1 x$&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;$\theta_i$’s: Parameters (模型参数)&lt;/li&gt;
+&lt;li&gt;How to choose $\theta_i$’s ?&lt;ul&gt;
+&lt;li&gt;Idea: Choose $\theta_0, \theta&lt;em&gt;1$ so that $h&lt;/em&gt;\theta (x)$ is close to $y$ for our training example $(x,y)$&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;Cost function (代价函数)&lt;/strong&gt;&lt;ul&gt;
+&lt;li&gt;$J(\theta_0, \theta&lt;em&gt;1) = \frac{1}{2m} \sum&lt;/em&gt;{i=1}^m \left(h_\theta(x^{(i)})-y^{(i)}\right)^2$&lt;/li&gt;
+&lt;li&gt;Sometimes called Square error function (平方误差代价函数)&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;ul&gt;
+&lt;li&gt;Goal: minimise $J(\theta_0, \theta_1)$&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&quot;Parameter-Learning&quot;&gt;&lt;a href=&quot;#Parameter-Learning&quot; class=&quot;headerlink&quot; title=&quot;Parameter Learning&quot;&gt;&lt;/a&gt;Parameter Learning&lt;/h2&gt;&lt;h3 id=&quot;Gradient-Descent&quot;&gt;&lt;a href=&quot;#Gradient-Descent&quot; class=&quot;headerlink&quot; title=&quot;Gradient Descent&quot;&gt;&lt;/a&gt;Gradient Descent&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;&lt;p&gt;&lt;strong&gt;Gradient Descent (梯度下降)&lt;/strong&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Goal&lt;ul&gt;
+&lt;li&gt;Have some function $J(\theta_0, \theta_1)$&lt;/li&gt;
+&lt;li&gt;Want $\theta_0, \theta_1$ of $min J(\theta_0, \theta_1)$&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;Outline&lt;ul&gt;
+&lt;li&gt;Start with some $\theta_0, \theta_1$, usually all set to $0$.&lt;/li&gt;
+&lt;li&gt;Keep changing $\theta_0, \theta_1$ to reduce $J(\theta_0, \theta_1)$ until we hopefully end up at minimum&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;Gradient descent algorithm&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;repeat until convergence (收敛) {&lt;br&gt;​    $\theta_j := \theta_j - \alpha \frac{\partial}{\partial \theta_j} J(\theta_0, \theta_j)$  (for $j=0$ and $j=1$)&lt;br&gt;}&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;p&gt;&lt;code&gt;:=&lt;/code&gt; denotes assignment&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;$\alpha$ denotes learning rate&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;if too small, gradient descent can be slow&lt;/li&gt;
+&lt;li&gt;If too large, gradient descent can overshoot the minimum. It may fail to converge or even diverge.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;You should &lt;u&gt;simultaneously&lt;/u&gt; update $\theta_0$ and $\theta_1$&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;p&gt;That is, you should compute the right-hand sides of $\theta_0$ and $\theta_1$, then save them to temporary variables, and finally update $\theta_0$ and $\theta_1$.&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;$temp0 := \theta_0 - \alpha \frac{\partial}{\partial \theta_0} J(\theta_0, \theta_j)$&lt;/p&gt;
+&lt;p&gt;$temp1 := \theta_1 - \alpha \frac{\partial}{\partial \theta_1} J(\theta_0, \theta_j)$&lt;/p&gt;
+&lt;p&gt;$\theta_0 := temp0$&lt;/p&gt;
+&lt;p&gt;$\theta_1 :=temp1$&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&quot;Intuition&quot;&gt;&lt;a href=&quot;#Intuition&quot; class=&quot;headerlink&quot; title=&quot;Intuition&quot;&gt;&lt;/a&gt;Intuition&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;&lt;p&gt;If $\theta_1$ at local optima, it leaves $\theta_1$ unchanged.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;&lt;u&gt;gradient descent can converge to a local minimum, even with the learning rate $\alpha$ fixed.&lt;/u&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;As we approach a local minimum, gradient descent will automatically take smaller steps. So, no need to decrease $\alpha$ over time.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&quot;Gradient-Descent-For-Linear-Regression&quot;&gt;&lt;a href=&quot;#Gradient-Descent-For-Linear-Regression&quot; class=&quot;headerlink&quot; title=&quot;Gradient Descent For Linear Regression&quot;&gt;&lt;/a&gt;Gradient Descent For Linear Regression&lt;/h3&gt;&lt;p&gt;We can compute that&lt;/p&gt;
+&lt;p&gt;$\frac{\partial}{\partial \theta_0} J(\theta_0, \theta_1) = \frac{1}{m} \sum^m_{i=1}\left(h_\theta(x^{(i)})-y^{(i)}\right)$&lt;/p&gt;
+&lt;p&gt;$\frac{\partial}{\partial \theta_1} J(\theta_0, \theta_1) = \frac{1}{m} \sum^m_{i=1}\left(h_\theta(x^{(i)})-y^{(i)}\right) \cdot x^{(i)}$&lt;/p&gt;
+&lt;p&gt;Thus the Gradient descent algorithm can be expressed as&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt; repeat until convergence {&lt;br&gt;   $\theta_0 := \theta_0 - \alpha \frac{1}{m} \sum^m_{i=1}\left(h_\theta(x^{(i)})-y^{(i)}\right)​$&lt;/p&gt;
+&lt;p&gt;   $\theta_1 := \theta_1 - \alpha \frac{1}{m} \sum^m_{i=1}\left(h_\theta(x^{(i)})-y^{(i)}\right) \cdot x^{(i)}$&lt;br&gt; }&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;And the cost funciton of linear refression is always a convex function (凸函数), or called Bowl-shaped function (弓形函数). &lt;u&gt;It doesn’t have any local optima except for the one global optimum.&lt;/u&gt;&lt;/p&gt;
+&lt;h4 id=&quot;“Batch”-Gradient-Descent&quot;&gt;&lt;a href=&quot;#“Batch”-Gradient-Descent&quot; class=&quot;headerlink&quot; title=&quot;“Batch” Gradient Descent&quot;&gt;&lt;/a&gt;“Batch” Gradient Descent&lt;/h4&gt;&lt;ul&gt;
+&lt;li&gt;The algorithm that we just went over is sometimes called &lt;strong&gt;Batch Gradient Descent (批量梯度下降)&lt;/strong&gt;.&lt;/li&gt;
+&lt;li&gt;“Batch”: Each step of gradient descent uses all th etraining examples.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h1 id=&quot;Linear-Algebra-Review&quot;&gt;&lt;a href=&quot;#Linear-Algebra-Review&quot; class=&quot;headerlink&quot; title=&quot;Linear Algebra Review&quot;&gt;&lt;/a&gt;Linear Algebra Review&lt;/h1&gt;&lt;h2 id=&quot;Matrices-and-Vectors&quot;&gt;&lt;a href=&quot;#Matrices-and-Vectors&quot; class=&quot;headerlink&quot; title=&quot;Matrices and Vectors&quot;&gt;&lt;/a&gt;Matrices and Vectors&lt;/h2&gt;&lt;ul&gt;
+&lt;li&gt;Matrix: Rectangular array of numbers&lt;ul&gt;
+&lt;li&gt;Dimension of matrix: number of rows x number of columns&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;Matrix Elements&lt;ul&gt;
+&lt;li&gt;$A_{ij}$ = “i, j entry” in the $i^{th}$ row, $j^{th}$ column.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+</content>
     
     <summary type="html">
     
-      &lt;h1 id=&quot;Machine-Learning&quot;&gt;&lt;a href=&quot;#Machine-Learning&quot; class=&quot;headerlink&quot; title=&quot;Machine Learning&quot;&gt;&lt;/a&gt;Machine Learning&lt;/h1&gt;&lt;h2 id=&quot;Week-1&quot;&gt;&lt;a href=&quot;#Week-1&quot; class=&quot;headerlink&quot; title=&quot;Week 1&quot;&gt;&lt;/a&gt;Week 1&lt;/h2&gt;&lt;h3 id=&quot;Linear-Regression-with-One-Variable&quot;&gt;&lt;a href=&quot;#Linear-Regression-with-One-Variable&quot; class=&quot;headerlink&quot; title=&quot;Linear Regression with One Variable&quot;&gt;&lt;/a&gt;Linear Regression with One Variable&lt;/h3&gt;&lt;h4 id=&quot;Model-Representation&quot;&gt;&lt;a href=&quot;#Model-Representation&quot; class=&quot;headerlink&quot; title=&quot;Model Representation&quot;&gt;&lt;/a&gt;Model Representation&lt;/h4&gt;&lt;ul&gt;
+      &lt;h1 id=&quot;Linear-Regression-with-One-Variable&quot;&gt;&lt;a href=&quot;#Linear-Regression-with-One-Variable&quot; class=&quot;headerlink&quot; title=&quot;Linear Regression with One Variable&quot;&gt;&lt;/a&gt;Linear Regression with One Variable&lt;/h1&gt;&lt;h2 id=&quot;Model-and-Cost-Function&quot;&gt;&lt;a href=&quot;#Model-and-Cost-Function&quot; class=&quot;headerlink&quot; title=&quot;Model and Cost Function&quot;&gt;&lt;/a&gt;Model and Cost Function&lt;/h2&gt;&lt;h3 id=&quot;Model-Representation&quot;&gt;&lt;a href=&quot;#Model-Representation&quot; class=&quot;headerlink&quot; title=&quot;Model Representation&quot;&gt;&lt;/a&gt;Model Representation&lt;/h3&gt;&lt;ul&gt;
 &lt;li&gt;&lt;strong&gt;Supervised Learning (监督学习)&lt;/strong&gt;: Given the “right answer” for each example in the data.&lt;ul&gt;
 &lt;li&gt;&lt;strong&gt;Regression Problem (回归问题)&lt;/strong&gt;: Predict real-valued output. &lt;/li&gt;
 &lt;li&gt;&lt;strong&gt;Classification Problem (分类问题)&lt;/strong&gt;: Predict discrete-valued output.&lt;/li&gt;
@@ -69,8 +165,8 @@
 &lt;li&gt;&lt;strong&gt;m&lt;/strong&gt;: number of training examples&lt;/li&gt;
 &lt;li&gt;&lt;strong&gt;x&lt;/strong&gt;‘s: “input” variable / features&lt;/li&gt;
 &lt;li&gt;&lt;strong&gt;y&lt;/strong&gt;‘s: “output” variable / “target” variable&lt;/li&gt;
-&lt;li&gt;&lt;strong&gt;(x, y)&lt;/strong&gt;: one training example&lt;/li&gt;
-&lt;li&gt;&lt;strong&gt;($x^i$, $y^i$)&lt;/strong&gt;: $i^{th}$ training example&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;$(x, y)$&lt;/strong&gt;: one training example&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;$(x^i, y^i)$&lt;/strong&gt;: $i^{th}$ training example&lt;/li&gt;
 &lt;/ul&gt;
 &lt;/li&gt;
 &lt;/ul&gt;
