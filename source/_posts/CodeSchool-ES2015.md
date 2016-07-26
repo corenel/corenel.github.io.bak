@@ -667,7 +667,7 @@ let a b c [ ] , , = users;
 console.log( a, b, c ); // Sam Tyler Brook
 ```
 
-Values can be discarded
+ValuesÂ can be discarded
 
 ```javascript
 let [a, , b] = users;
