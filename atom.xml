@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://www.yuthon.com/"/>
-  <updated>2016-05-16T13:51:56.000Z</updated>
+  <updated>2016-07-26T03:59:38.000Z</updated>
   <id>http://www.yuthon.com/</id>
   
   <author>
@@ -16,16 +16,105 @@
   <generator uri="http://hexo.io/">Hexo</generator>
   
   <entry>
+    <title>Notes for Machine Learning - Week 1</title>
+    <link href="http://www.yuthon.com/2016/07/26/Coursera-Machine-Learning-Week-1/"/>
+    <id>http://www.yuthon.com/2016/07/26/Coursera-Machine-Learning-Week-1/</id>
+    <published>2016-07-26T03:55:36.000Z</published>
+    <updated>2016-07-26T03:59:38.000Z</updated>
+    
+    <content type="html">&lt;h1 id=&quot;Machine-Learning&quot;&gt;&lt;a href=&quot;#Machine-Learning&quot; class=&quot;headerlink&quot; title=&quot;Machine Learning&quot;&gt;&lt;/a&gt;Machine Learning&lt;/h1&gt;&lt;h2 id=&quot;Week-1&quot;&gt;&lt;a href=&quot;#Week-1&quot; class=&quot;headerlink&quot; title=&quot;Week 1&quot;&gt;&lt;/a&gt;Week 1&lt;/h2&gt;&lt;h3 id=&quot;Linear-Regression-with-One-Variable&quot;&gt;&lt;a href=&quot;#Linear-Regression-with-One-Variable&quot; class=&quot;headerlink&quot; title=&quot;Linear Regression with One Variable&quot;&gt;&lt;/a&gt;Linear Regression with One Variable&lt;/h3&gt;&lt;h4 id=&quot;Model-Representation&quot;&gt;&lt;a href=&quot;#Model-Representation&quot; class=&quot;headerlink&quot; title=&quot;Model Representation&quot;&gt;&lt;/a&gt;Model Representation&lt;/h4&gt;&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;Supervised Learning (监督学习)&lt;/strong&gt;: Given the “right answer” for each example in the data.&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;Regression Problem (回归问题)&lt;/strong&gt;: Predict real-valued output. &lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Classification Problem (分类问题)&lt;/strong&gt;: Predict discrete-valued output.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Training set (训练集)&lt;/strong&gt;&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;m&lt;/strong&gt;: number of training examples&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;x&lt;/strong&gt;‘s: “input” variable / features&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;y&lt;/strong&gt;‘s: “output” variable / “target” variable&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;(x, y)&lt;/strong&gt;: one training example&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;($x^i$, $y^i$)&lt;/strong&gt;: $i^{th}$ training example&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;ul&gt;
+&lt;li&gt;Training Set -&amp;gt; Learning Algorithm -&amp;gt; &lt;strong&gt;h(hypothesis, 假设)&lt;/strong&gt;&lt;ul&gt;
+&lt;li&gt;h is a function maps from x’s to y’s&lt;/li&gt;
+&lt;li&gt;e.g. Size of house -&amp;gt; h -&amp;gt; Estimated price&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;Linear regression with one variable&lt;/strong&gt;&lt;ul&gt;
+&lt;li&gt;$h_\theta (x) = \theta_0 + \theta_1 x$&lt;ul&gt;
+&lt;li&gt;Shorthand: $h(x)$&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;Or named Univariate linear regression (单变量线性回归)&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;a id=&quot;more&quot;&gt;&lt;/a&gt;
+&lt;h4 id=&quot;Cost-function&quot;&gt;&lt;a href=&quot;#Cost-function&quot; class=&quot;headerlink&quot; title=&quot;Cost function&quot;&gt;&lt;/a&gt;Cost function&lt;/h4&gt;</content>
+    
+    <summary type="html">
+    
+      &lt;h1 id=&quot;Machine-Learning&quot;&gt;&lt;a href=&quot;#Machine-Learning&quot; class=&quot;headerlink&quot; title=&quot;Machine Learning&quot;&gt;&lt;/a&gt;Machine Learning&lt;/h1&gt;&lt;h2 id=&quot;Week-1&quot;&gt;&lt;a href=&quot;#Week-1&quot; class=&quot;headerlink&quot; title=&quot;Week 1&quot;&gt;&lt;/a&gt;Week 1&lt;/h2&gt;&lt;h3 id=&quot;Linear-Regression-with-One-Variable&quot;&gt;&lt;a href=&quot;#Linear-Regression-with-One-Variable&quot; class=&quot;headerlink&quot; title=&quot;Linear Regression with One Variable&quot;&gt;&lt;/a&gt;Linear Regression with One Variable&lt;/h3&gt;&lt;h4 id=&quot;Model-Representation&quot;&gt;&lt;a href=&quot;#Model-Representation&quot; class=&quot;headerlink&quot; title=&quot;Model Representation&quot;&gt;&lt;/a&gt;Model Representation&lt;/h4&gt;&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;Supervised Learning (监督学习)&lt;/strong&gt;: Given the “right answer” for each example in the data.&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;Regression Problem (回归问题)&lt;/strong&gt;: Predict real-valued output. &lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Classification Problem (分类问题)&lt;/strong&gt;: Predict discrete-valued output.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Training set (训练集)&lt;/strong&gt;&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;m&lt;/strong&gt;: number of training examples&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;x&lt;/strong&gt;‘s: “input” variable / features&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;y&lt;/strong&gt;‘s: “output” variable / “target” variable&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;(x, y)&lt;/strong&gt;: one training example&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;($x^i$, $y^i$)&lt;/strong&gt;: $i^{th}$ training example&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;ul&gt;
+&lt;li&gt;Training Set -&amp;gt; Learning Algorithm -&amp;gt; &lt;strong&gt;h(hypothesis, 假设)&lt;/strong&gt;&lt;ul&gt;
+&lt;li&gt;h is a function maps from x’s to y’s&lt;/li&gt;
+&lt;li&gt;e.g. Size of house -&amp;gt; h -&amp;gt; Estimated price&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;Linear regression with one variable&lt;/strong&gt;&lt;ul&gt;
+&lt;li&gt;$h_\theta (x) = \theta_0 + \theta_1 x$&lt;ul&gt;
+&lt;li&gt;Shorthand: $h(x)$&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;Or named Univariate linear regression (单变量线性回归)&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+    
+    </summary>
+    
+      <category term="Notes" scheme="http://www.yuthon.com/categories/Notes/"/>
+    
+    
+      <category term="Coursera" scheme="http://www.yuthon.com/tags/Coursera/"/>
+    
+      <category term="Machine Learning" scheme="http://www.yuthon.com/tags/Machine-Learning/"/>
+    
+  </entry>
+  
+  <entry>
     <title>OS X 10.11.4 on XPS 15 9550</title>
     <link href="http://www.yuthon.com/2016/05/16/OS-X-10-11-4-on-XPS-15-9550/"/>
     <id>http://www.yuthon.com/2016/05/16/OS-X-10-11-4-on-XPS-15-9550/</id>
     <published>2016-05-16T12:20:08.000Z</published>
-    <updated>2016-05-16T13:51:56.000Z</updated>
+    <updated>2016-07-26T03:52:32.000Z</updated>
     
     <content type="html">&lt;p&gt;Thanks to the &lt;a href=&quot;http://www.tonymacx86.com/threads/guide-wip-dell-xps-15-9550-skylake-gtx960m-ssd-via-clover-uefi.192598/&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;guide&lt;/a&gt; and its participants, I successfully installed OS X 10.11.4 on my XPS 15 9550.&lt;/p&gt;
-&lt;p&gt; &lt;img src=&quot;/images/OS-X-10-11-4-on-XPS-15-9550.png&quot; alt=&quot;OS-X-10-11-4-on-XPS-15-9550&quot;&gt;&lt;/p&gt;
+&lt;p&gt; &lt;img src=&quot;/images/OS-X-10-11-4-on-XPS-15-9550.jpg&quot; alt=&quot;OS-X-10-11-4-on-XPS-15-9550&quot;&gt;&lt;/p&gt;
 &lt;p&gt;The guide is considerably perfect. Just follow the steps and you’ll get a well-done Hackintosh.&lt;/p&gt;
 &lt;p&gt;My Clover directory, DSDT &amp;amp; SSDT and Kexts are uploaded to &lt;a href=&quot;https://github.com/corenel/XPS9550-OSX&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;Github&lt;/a&gt;, for reference only. &lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;Update&lt;/strong&gt;: Now I upgrade to 10.11.5, and everything is fine.&lt;/p&gt;
 </content>
     
     <summary type="html">
@@ -483,7 +572,7 @@
     <link href="http://www.yuthon.com/2016/04/10/CodeSchool-ES2015/"/>
     <id>http://www.yuthon.com/2016/04/10/CodeSchool-ES2015/</id>
     <published>2016-04-10T04:09:29.000Z</published>
-    <updated>2016-05-16T12:39:07.000Z</updated>
+    <updated>2016-07-26T03:56:32.000Z</updated>
     
     <content type="html">&lt;h1 id=&quot;Declaration&quot;&gt;&lt;a href=&quot;#Declaration&quot; class=&quot;headerlink&quot; title=&quot;Declaration&quot;&gt;&lt;/a&gt;Declaration&lt;/h1&gt;&lt;h2 id=&quot;Using-let&quot;&gt;&lt;a href=&quot;#Using-let&quot; class=&quot;headerlink&quot; title=&quot;Using let&quot;&gt;&lt;/a&gt;Using let&lt;/h2&gt;&lt;p&gt;&lt;strong&gt;Understanding Hoisting&lt;/strong&gt;&lt;/p&gt;
 &lt;p&gt;Prior to executing our code, JavaScript moves var declarations all the way up to the top of the scope. This is known as hoisting.&lt;/p&gt;
@@ -640,7 +729,7 @@
 &lt;h1 id=&quot;Arrays-Maps-and-Sets&quot;&gt;&lt;a href=&quot;#Arrays-Maps-and-Sets&quot; class=&quot;headerlink&quot; title=&quot;Arrays, Maps, and Sets&quot;&gt;&lt;/a&gt;Arrays, Maps, and Sets&lt;/h1&gt;&lt;h2 id=&quot;Arrays&quot;&gt;&lt;a href=&quot;#Arrays&quot; class=&quot;headerlink&quot; title=&quot;Arrays&quot;&gt;&lt;/a&gt;Arrays&lt;/h2&gt;&lt;h3 id=&quot;Array-Destructuring&quot;&gt;&lt;a href=&quot;#Array-Destructuring&quot; class=&quot;headerlink&quot; title=&quot;Array Destructuring&quot;&gt;&lt;/a&gt;Array Destructuring&lt;/h3&gt;&lt;p&gt;&lt;strong&gt;Reading Values With Array Destructuring&lt;/strong&gt;&lt;/p&gt;
 &lt;p&gt;We can use destructuring to assign multiple values from an array to local variables.&lt;/p&gt;
 &lt;figure class=&quot;highlight javascript&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;2&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;3&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;let&lt;/span&gt; users = [&lt;span class=&quot;string&quot;&gt;&quot;Sam&quot;&lt;/span&gt;, &lt;span class=&quot;string&quot;&gt;&quot;Tyler&quot;&lt;/span&gt;, &lt;span class=&quot;string&quot;&gt;&quot;Brook&quot;&lt;/span&gt;];&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;let&lt;/span&gt; a b c [ ] , , = users;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;span class=&quot;built_in&quot;&gt;console&lt;/span&gt;.log( a, b, c ); &lt;span class=&quot;comment&quot;&gt;// Sam Tyler Brook&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
-&lt;p&gt;Values�can be discarded&lt;/p&gt;
+&lt;p&gt;Values can be discarded&lt;/p&gt;
 &lt;figure class=&quot;highlight javascript&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;2&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;let&lt;/span&gt; [a, , b] = users;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;span class=&quot;built_in&quot;&gt;console&lt;/span&gt;.log( a, b ); &lt;span class=&quot;comment&quot;&gt;// Sam Brook&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
 &lt;p&gt;&lt;strong&gt;Combining Destructuring With Rest Params&lt;/strong&gt;&lt;/p&gt;
 &lt;p&gt;We can combine destructuring with rest parameters to group values into other arrays.&lt;/p&gt;
