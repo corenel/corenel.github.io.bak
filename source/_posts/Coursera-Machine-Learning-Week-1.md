@@ -121,13 +121,3 @@ And the cost funciton of linear refression is always a convex function (凸函�
 * The algorithm that we just went over is sometimes called **Batch Gradient Descent (批量梯度下降)**.
 * "Batch": Each step of gradient descent uses all th etraining examples.
 
-
-
-# Linear Algebra Review
-
-## Matrices and Vectors
-
-* Matrix: Rectangular array of numbers
-  * Dimension of matrix: number of rows x number of columns
-* Matrix Elements
-  * $A_{ij}$ = "i, j entry" in the $i^{th}$ row, $j^{th}$ column.
