@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://www.yuthon.com/"/>
-  <updated>2016-07-26T13:15:18.000Z</updated>
+  <updated>2016-07-27T05:08:48.000Z</updated>
   <id>http://www.yuthon.com/</id>
   
   <author>
@@ -16,11 +16,95 @@
   <generator uri="http://hexo.io/">Hexo</generator>
   
   <entry>
+    <title>Notes for Machine Learning - Week 2</title>
+    <link href="http://www.yuthon.com/2016/07/27/Coursera-Machine-Learning-Week-2/"/>
+    <id>http://www.yuthon.com/2016/07/27/Coursera-Machine-Learning-Week-2/</id>
+    <published>2016-07-27T02:30:35.000Z</published>
+    <updated>2016-07-27T05:08:48.000Z</updated>
+    
+    <content type="html">&lt;h1 id=&quot;Linear-Regression-with-Multiple-Variables&quot;&gt;&lt;a href=&quot;#Linear-Regression-with-Multiple-Variables&quot; class=&quot;headerlink&quot; title=&quot;Linear Regression with Multiple Variables&quot;&gt;&lt;/a&gt;Linear Regression with Multiple Variables&lt;/h1&gt;&lt;h2 id=&quot;Multivariate-Linear-Regression&quot;&gt;&lt;a href=&quot;#Multivariate-Linear-Regression&quot; class=&quot;headerlink&quot; title=&quot;Multivariate Linear Regression&quot;&gt;&lt;/a&gt;Multivariate Linear Regression&lt;/h2&gt;&lt;ul&gt;
+&lt;li&gt;Multiple features (variables)&lt;ul&gt;
+&lt;li&gt;$n$ = number of features&lt;/li&gt;
+&lt;li&gt;$x^{(i)}$ = input (features) of $i^{th}$ training example.&lt;/li&gt;
+&lt;li&gt;$x^{(i)}_j$ = value of feature $j$ in $i^{th}$ training example.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;Hypotesis&lt;ul&gt;
+&lt;li&gt;Previously: $h_\theta (x) = \theta_0 + \theta_1 x$&lt;/li&gt;
+&lt;li&gt;$h_\theta (x) = \theta_0 + \theta_1 x_1 + \theta_2 x_2 + \cdots + \theta_n x_n$&lt;ul&gt;
+&lt;li&gt;For convenience of notation, define $x_0=1$&lt;/li&gt;
+&lt;li&gt;$x=\begin{bmatrix}x_0 \\ x_1 \\ x_2 \\ \vdots \\ x_n \end{bmatrix}, \theta = \begin{bmatrix}\theta_0 \\ \theta_1 \\ \theta_2 \\ \vdots \\ \theta_n \end{bmatrix}, h_\theta (x) = \theta^T x$&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;a id=&quot;more&quot;&gt;&lt;/a&gt;
+&lt;h2 id=&quot;Gradient-Descent-for-Multiple-Variables&quot;&gt;&lt;a href=&quot;#Gradient-Descent-for-Multiple-Variables&quot; class=&quot;headerlink&quot; title=&quot;Gradient Descent for Multiple Variables&quot;&gt;&lt;/a&gt;Gradient Descent for Multiple Variables&lt;/h2&gt;&lt;ul&gt;
+&lt;li&gt;&lt;p&gt;Hypothesis: $h_\theta(x)=\theta^Tx=\theta_0 x_0 + \theta_1 x_1 + \theta_2 x_2 + \cdots + \theta_n x_n$&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;Parameters: $\theta_0, \theta_1, \dots ,\theta_n$&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;Cost function: $J(\theta_0, \theta_1, \dots, \theta_n) = \frac{1}{2m} \sum^m_{i=1}\left(h_\theta (x^{(i)})-y^{(i)}\right)^2$&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;or $J(\theta) = \frac{1}{2m}\sum_{i=1}^{m}(\theta^T x^{(i)} - y^{(i)})^2$&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;Gradient descent&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;repeat {&lt;/p&gt;
+&lt;p&gt;  $\theta_j := \theta_j - \alpha \frac{\partial}{\partial \theta_j} J(\theta_0, \dots ,\theta_n)$&lt;/p&gt;
+&lt;p&gt;  (simultaneously update for every $j=0,\dots,n$)&lt;/p&gt;
+&lt;p&gt;}&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;or&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;repeat {&lt;/p&gt;
+&lt;p&gt;  $\theta_j := \theta_j - \alpha \frac{1}{m} \sum^m_{i=1}\left(h_\theta(x^{(i)})-y^{(i)}\right) x^{(i)}_j$ &lt;/p&gt;
+&lt;p&gt;  (simultaneously update for every $j=0,\dots,n$)&lt;/p&gt;
+&lt;p&gt;}&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+</content>
+    
+    <summary type="html">
+    
+      &lt;h1 id=&quot;Linear-Regression-with-Multiple-Variables&quot;&gt;&lt;a href=&quot;#Linear-Regression-with-Multiple-Variables&quot; class=&quot;headerlink&quot; title=&quot;Linear Regression with Multiple Variables&quot;&gt;&lt;/a&gt;Linear Regression with Multiple Variables&lt;/h1&gt;&lt;h2 id=&quot;Multivariate-Linear-Regression&quot;&gt;&lt;a href=&quot;#Multivariate-Linear-Regression&quot; class=&quot;headerlink&quot; title=&quot;Multivariate Linear Regression&quot;&gt;&lt;/a&gt;Multivariate Linear Regression&lt;/h2&gt;&lt;ul&gt;
+&lt;li&gt;Multiple features (variables)&lt;ul&gt;
+&lt;li&gt;$n$ = number of features&lt;/li&gt;
+&lt;li&gt;$x^{(i)}$ = input (features) of $i^{th}$ training example.&lt;/li&gt;
+&lt;li&gt;$x^{(i)}_j$ = value of feature $j$ in $i^{th}$ training example.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;Hypotesis&lt;ul&gt;
+&lt;li&gt;Previously: $h_\theta (x) = \theta_0 + \theta_1 x$&lt;/li&gt;
+&lt;li&gt;$h_\theta (x) = \theta_0 + \theta_1 x_1 + \theta_2 x_2 + \cdots + \theta_n x_n$&lt;ul&gt;
+&lt;li&gt;For convenience of notation, define $x_0=1$&lt;/li&gt;
+&lt;li&gt;$x=\begin{bmatrix}x_0 \\ x_1 \\ x_2 \\ \vdots \\ x_n \end{bmatrix}, \theta = \begin{bmatrix}\theta_0 \\ \theta_1 \\ \theta_2 \\ \vdots \\ \theta_n \end{bmatrix}, h_\theta (x) = \theta^T x$&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+    
+    </summary>
+    
+      <category term="Notes" scheme="http://www.yuthon.com/categories/Notes/"/>
+    
+    
+      <category term="Coursera" scheme="http://www.yuthon.com/tags/Coursera/"/>
+    
+      <category term="Machine Learning" scheme="http://www.yuthon.com/tags/Machine-Learning/"/>
+    
+  </entry>
+  
+  <entry>
     <title>Notes for Machine Learning - Week 1</title>
     <link href="http://www.yuthon.com/2016/07/26/Coursera-Machine-Learning-Week-1/"/>
     <id>http://www.yuthon.com/2016/07/26/Coursera-Machine-Learning-Week-1/</id>
     <published>2016-07-26T03:55:36.000Z</published>
-    <updated>2016-07-26T13:15:18.000Z</updated>
+    <updated>2016-07-27T02:31:27.000Z</updated>
     
     <content type="html">&lt;h1 id=&quot;Linear-Regression-with-One-Variable&quot;&gt;&lt;a href=&quot;#Linear-Regression-with-One-Variable&quot; class=&quot;headerlink&quot; title=&quot;Linear Regression with One Variable&quot;&gt;&lt;/a&gt;Linear Regression with One Variable&lt;/h1&gt;&lt;h2 id=&quot;Model-and-Cost-Function&quot;&gt;&lt;a href=&quot;#Model-and-Cost-Function&quot; class=&quot;headerlink&quot; title=&quot;Model and Cost Function&quot;&gt;&lt;/a&gt;Model and Cost Function&lt;/h2&gt;&lt;h3 id=&quot;Model-Representation&quot;&gt;&lt;a href=&quot;#Model-Representation&quot; class=&quot;headerlink&quot; title=&quot;Model Representation&quot;&gt;&lt;/a&gt;Model Representation&lt;/h3&gt;&lt;ul&gt;
 &lt;li&gt;&lt;strong&gt;Supervised Learning (监督学习)&lt;/strong&gt;: Given the “right answer” for each example in the data.&lt;ul&gt;
@@ -140,16 +224,6 @@
 &lt;h4 id=&quot;“Batch”-Gradient-Descent&quot;&gt;&lt;a href=&quot;#“Batch”-Gradient-Descent&quot; class=&quot;headerlink&quot; title=&quot;“Batch” Gradient Descent&quot;&gt;&lt;/a&gt;“Batch” Gradient Descent&lt;/h4&gt;&lt;ul&gt;
 &lt;li&gt;The algorithm that we just went over is sometimes called &lt;strong&gt;Batch Gradient Descent (批量梯度下降)&lt;/strong&gt;.&lt;/li&gt;
 &lt;li&gt;“Batch”: Each step of gradient descent uses all th etraining examples.&lt;/li&gt;
-&lt;/ul&gt;
-&lt;h1 id=&quot;Linear-Algebra-Review&quot;&gt;&lt;a href=&quot;#Linear-Algebra-Review&quot; class=&quot;headerlink&quot; title=&quot;Linear Algebra Review&quot;&gt;&lt;/a&gt;Linear Algebra Review&lt;/h1&gt;&lt;h2 id=&quot;Matrices-and-Vectors&quot;&gt;&lt;a href=&quot;#Matrices-and-Vectors&quot; class=&quot;headerlink&quot; title=&quot;Matrices and Vectors&quot;&gt;&lt;/a&gt;Matrices and Vectors&lt;/h2&gt;&lt;ul&gt;
-&lt;li&gt;Matrix: Rectangular array of numbers&lt;ul&gt;
-&lt;li&gt;Dimension of matrix: number of rows x number of columns&lt;/li&gt;
-&lt;/ul&gt;
-&lt;/li&gt;
-&lt;li&gt;Matrix Elements&lt;ul&gt;
-&lt;li&gt;$A_{ij}$ = “i, j entry” in the $i^{th}$ row, $j^{th}$ column.&lt;/li&gt;
-&lt;/ul&gt;
-&lt;/li&gt;
 &lt;/ul&gt;
 </content>
     
