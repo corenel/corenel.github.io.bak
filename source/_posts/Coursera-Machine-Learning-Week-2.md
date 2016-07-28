@@ -20,7 +20,7 @@ tags:
   * Previously: $h_\theta (x) = \theta_0 + \theta_1 x$
   * $h_\theta (x) = \theta_0 + \theta_1 x_1 + \theta_2 x_2 + \cdots + \theta_n x_n$
     * For convenience of notation, define $x_0=1$
-    * $x=\begin{bmatrix}x_0 \\\\ x_1 \\\\ x_2 \\\\ \vdots \\\\ x_n \end{bmatrix}, \theta = \begin{bmatrix}\theta_0 \\\\ \theta_1 \\\\ \theta_2 \\\\ \vdots \\\\ \theta_n \end{bmatrix}, h_\theta (x) = \theta^T x$
+    * $x=\begin{bmatrix}x_0 \\\\ x_1 \\\\ x_2 \\\\ \vdots \\\\ x_n \end{bmatrix}, \theta = \begin{bmatrix}\theta_0 \\\\ \theta_1 \\\\ \theta_2 \\\\ \vdots \\\\ \theta\_n \end{bmatrix}, h\_\theta (x) = \theta^T x$
 
 <!-- more -->
 
@@ -53,3 +53,8 @@ tags:
   >   (simultaneously update for every $j=0,\dots,n$)
   >
   > }
+
+## Gradient Descent in Practice
+
+### Feature Scaling
+
