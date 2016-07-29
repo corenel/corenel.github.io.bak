@@ -116,9 +116,24 @@ Our hypothesis function need not be linear (a straight line) if that does not fi
 
 * We can **change the behavior or curve** of our hypothesis function by making it a quadratic, cubic or square root function (or any other form).
   * For example, if our hypothesis function is $h_\theta(x) = \theta_0 + \theta_1 x_1$ then we can create additional features based on $x\_1$, to get the quadratic function $h_\theta(x) = \theta_0 + \theta_1 x_1 + \theta_2 x\_1^2$ or the cubic function $h\_\theta(x) = \theta_0 + \theta_1 x_1 + \theta_2 x_1^2 + \theta_3 x_1^3$.
+
   * In the cubic version, we have created new features $x_2$ and $x_3$ where $x_2 = x_1^2$ and $x_3=x^3_1$.
+
   * To make it a square root function, we could do: $h_\theta(x) = \theta_0 + \theta_1 x_1 + \theta_2 \sqrt{x_1}$
+
   * Note that at 2:52 and through 6:22 in the "Features and Polynomial Regression" video, the curve that Prof Ng discusses about "doesn't ever come back down" is in reference to the hypothesis function that uses the `sqrt()` function (shown by the solid purple line), not the one that uses $size^2$ (shown with the dotted blue line). The quadratic form of the hypothesis function would have the shape shown with the blue dotted line if $\theta _2$ was negative.
+
+    ![polynomial_regression](/images/polynomial_regression.png)
 * One important thing to keep in mind is, if you choose your features this way then **feature scaling becomes very important**.
   * E.g. if $x_1$ has range $1 - 1000$ then range of $x^2_1$ becomes $1 - 1000000$ and that of $x^3_1$ becomes $1 - 1000000000$
   * So you should scale $x_1$ before using polynomial regression.
+
+## Computing Parameters Analytically
+
+### Normal Equation
+
+Method to solve for $\theta$ analytically
+
+#### Intuition
+
+* $\theta \in R^{n+1}$
