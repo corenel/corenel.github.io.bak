@@ -41,7 +41,7 @@ gulp.task('minify-js', function() {
 });
 
 gulp.task('default', [
-    'minify-images', 'minify-html','minify-css','minify-js'
+    'minify-html','minify-css','minify-js'
 ],function(){
     console.log("gulp task ok!");
 });
