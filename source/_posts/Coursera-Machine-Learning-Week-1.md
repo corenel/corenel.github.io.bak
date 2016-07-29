@@ -43,11 +43,11 @@ tags:
 
   * $\theta_i$'s: Parameters (模型参数)
   * How to choose $\theta_i$'s ?
-    * Idea: Choose $\theta_0, \theta_1$ so that $h_\theta (x)$ is close to $y$ for our training example $(x,y)$
+    * Idea: Choose $\theta_0, \theta\_1$ so that $h\_\theta (x)$ is close to $y$ for our training example $(x,y)$
 
 
 * **Cost function (代价函数)**
-  * $J(\theta_0, \theta_1) = \frac{1}{2m} \sum_{i=1}^m \left(h_\theta(x^{(i)})-y^{(i)}\right)^2$
+  * $J(\theta_0, \theta\_1) = \frac{1}{2m} \sum\_{i=1}^m \left(h_\theta(x^{(i)})-y^{(i)}\right)^2$
   * Sometimes called Square error function (平方误差代价函数)
 
 
