@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://www.yuthon.com/"/>
-  <updated>2016-07-28T15:55:27.000Z</updated>
+  <updated>2016-07-29T08:18:36.000Z</updated>
   <id>http://www.yuthon.com/</id>
   
   <author>
@@ -20,7 +20,7 @@
     <link href="http://www.yuthon.com/2016/07/27/Coursera-Machine-Learning-Week-2/"/>
     <id>http://www.yuthon.com/2016/07/27/Coursera-Machine-Learning-Week-2/</id>
     <published>2016-07-27T02:30:35.000Z</published>
-    <updated>2016-07-28T15:55:27.000Z</updated>
+    <updated>2016-07-29T08:18:36.000Z</updated>
     
     <content type="html">&lt;h1 id=&quot;Linear-Regression-with-Multiple-Variables&quot;&gt;&lt;a href=&quot;#Linear-Regression-with-Multiple-Variables&quot; class=&quot;headerlink&quot; title=&quot;Linear Regression with Multiple Variables&quot;&gt;&lt;/a&gt;Linear Regression with Multiple Variables&lt;/h1&gt;&lt;h2 id=&quot;Multivariate-Linear-Regression&quot;&gt;&lt;a href=&quot;#Multivariate-Linear-Regression&quot; class=&quot;headerlink&quot; title=&quot;Multivariate Linear Regression&quot;&gt;&lt;/a&gt;Multivariate Linear Regression&lt;/h2&gt;&lt;ul&gt;
 &lt;li&gt;Multiple features (variables)&lt;ul&gt;
@@ -33,7 +33,7 @@
 &lt;li&gt;Previously: $h_\theta (x) = \theta_0 + \theta_1 x$&lt;/li&gt;
 &lt;li&gt;$h_\theta (x) = \theta_0 + \theta_1 x_1 + \theta_2 x_2 + \cdots + \theta_n x_n$&lt;ul&gt;
 &lt;li&gt;For convenience of notation, define $x_0=1$&lt;/li&gt;
-&lt;li&gt;$x=\begin{bmatrix}x_0 \\ x_1 \\ x_2 \\ \vdots \\ x_n \end{bmatrix}, \theta = \begin{bmatrix}\theta_0 \\ \theta_1 \\ \theta_2 \\ \vdots \\ \theta_n \end{bmatrix}, h_\theta (x) = \theta^T x$&lt;/li&gt;
+&lt;li&gt;$X=\begin{bmatrix}x_0 \\ x_1 \\ x_2 \\ \vdots \\ x_n \end{bmatrix}, \theta = \begin{bmatrix}\theta_0 \\ \theta_1 \\ \theta_2 \\ \vdots \\ \theta_n \end{bmatrix}, h_\theta (x) = \theta^T x$&lt;/li&gt;
 &lt;/ul&gt;
 &lt;/li&gt;
 &lt;/ul&gt;
@@ -66,7 +66,74 @@
 &lt;/blockquote&gt;
 &lt;/li&gt;
 &lt;/ul&gt;
-&lt;h2 id=&quot;Gradient-Descent-in-Practice&quot;&gt;&lt;a href=&quot;#Gradient-Descent-in-Practice&quot; class=&quot;headerlink&quot; title=&quot;Gradient Descent in Practice&quot;&gt;&lt;/a&gt;Gradient Descent in Practice&lt;/h2&gt;&lt;h3 id=&quot;Feature-Scaling&quot;&gt;&lt;a href=&quot;#Feature-Scaling&quot; class=&quot;headerlink&quot; title=&quot;Feature Scaling&quot;&gt;&lt;/a&gt;Feature Scaling&lt;/h3&gt;</content>
+&lt;h2 id=&quot;Gradient-Descent-in-Practice&quot;&gt;&lt;a href=&quot;#Gradient-Descent-in-Practice&quot; class=&quot;headerlink&quot; title=&quot;Gradient Descent in Practice&quot;&gt;&lt;/a&gt;Gradient Descent in Practice&lt;/h2&gt;&lt;h3 id=&quot;Feature-Normalization&quot;&gt;&lt;a href=&quot;#Feature-Normalization&quot; class=&quot;headerlink&quot; title=&quot;Feature Normalization&quot;&gt;&lt;/a&gt;Feature Normalization&lt;/h3&gt;&lt;p&gt;Idea: Make sure featueres are on a similar scale.&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;We can speed up gradient descent by having each of our input values in roughly the same range. This is because $\theta$ will descend quickly on small ranges and slowly on large ranges, and so will oscillate inefficiently down to the optimum when the variables are very uneven.&lt;/li&gt;
+&lt;li&gt;The way to prevent this is to modify the ranges of our input variables so that they are all roughly the same.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h4 id=&quot;Example&quot;&gt;&lt;a href=&quot;#Example&quot; class=&quot;headerlink&quot; title=&quot;Example&quot;&gt;&lt;/a&gt;Example&lt;/h4&gt;&lt;ul&gt;
+&lt;li&gt;$x_1$ = size (0-2000 $feet^2$)&lt;/li&gt;
+&lt;li&gt;$x_2$ = number of bedrooms (1-5)&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;$x_1$ has a much larger range of values than $x_2$. So the $J(\theta_1, \theta_2)$ can be a very very skewed elliptical shape. And if you run gradient descents on this cost function, your gradients may end up taking a long time and can oscillate back and forth and take a long time before it can finally find its way to the global minimum. &lt;/p&gt;
+&lt;h4 id=&quot;Feature-scaling&quot;&gt;&lt;a href=&quot;#Feature-scaling&quot; class=&quot;headerlink&quot; title=&quot;Feature scaling&quot;&gt;&lt;/a&gt;Feature scaling&lt;/h4&gt;&lt;p&gt;Get every feature into approcimately $-1\le x_i \le 1$ range.&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Feature scaling involves dividing the input values by the range (i.e. the maximum value minus the minimum value) of the input variable, resulting in a new range of just 1.&lt;/li&gt;
+&lt;li&gt;These aren’t exact requirements; we are only trying to speed things up.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;ul&gt;
+&lt;li&gt;$-3\le x_i \le 3$ or $ -\frac{1}{3} \le x_i \le \frac{1}{3}$ just is fine.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h4 id=&quot;Mean-normalization&quot;&gt;&lt;a href=&quot;#Mean-normalization&quot; class=&quot;headerlink&quot; title=&quot;Mean normalization&quot;&gt;&lt;/a&gt;Mean normalization&lt;/h4&gt;&lt;p&gt;Replace $x_i$ with $x_i - \mu _i$ to make features have approximately zero mean (Do not apply to $x_0 = 1$)&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;E.g. $x_1 = \frac{size -1000}{2000}, x_2 = \frac{bedrooms - 2}{5}$&lt;/li&gt;
+&lt;li&gt;$x_i = \frac{x_i - \mu _i}{s_i}$&lt;ul&gt;
+&lt;li&gt;$\mu _i$ is the average value of $x_i$ in training set.&lt;/li&gt;
+&lt;li&gt;$s_i$ is the range ($x_{imax}-x_{imin}$) or standard deviation ($\sigma$)&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&quot;Learning-Rate&quot;&gt;&lt;a href=&quot;#Learning-Rate&quot; class=&quot;headerlink&quot; title=&quot;Learning Rate&quot;&gt;&lt;/a&gt;Learning Rate&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;“Debugging”: &lt;strong&gt;How to make sure gradient descent is working correctly&lt;/strong&gt;&lt;ul&gt;
+&lt;li&gt;Make a plot with &lt;em&gt;number of iterations&lt;/em&gt; on the x-axis. Now plot the cost function, $J(\theta)$ over the number of iterations of gradient descent.&lt;ul&gt;
+&lt;li&gt;For sufficient small $\alpha$, $J(\theta)$ should decreases on every iteration.&lt;/li&gt;
+&lt;li&gt;But if $\alpha$ is too small, gradient descent can be slow to converge.&lt;/li&gt;
+&lt;li&gt;If $J(\theta)$ ever increases, then you probably need to use smaller $\alpha$.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;Example automatic convergence test&lt;ul&gt;
+&lt;li&gt;Declare convergence if $J(\theta)$ decreases by less than $\epsilon$ (e.g., $10^{-3})$ in one iteration.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;How to choose learing rate $\alpha$&lt;/strong&gt;&lt;ul&gt;
+&lt;li&gt;So just try running gradient descent with a range of values for $\alpha$, like 0.001 and 0.01. And for these different values of $\alpha$ are just plot $J(\theta)$ as a function of number of iterations, and then pick the value of $\alpha$ that seems to be causing $J(\theta)$to decrease rapidly.&lt;/li&gt;
+&lt;li&gt;Andrew Ng recommends decreasing $\alpha$ by multiples of 3. And then try to pick the largest possible value, or just something slightly smaller than the largest reasonable value.&lt;/li&gt;
+&lt;li&gt;E.g. $\dots, 0.001, 0.003, 0.01, 0.03, 0.1, 0.3, 1, \dots$&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&quot;Features-and-Polynomial-Regression&quot;&gt;&lt;a href=&quot;#Features-and-Polynomial-Regression&quot; class=&quot;headerlink&quot; title=&quot;Features and Polynomial Regression&quot;&gt;&lt;/a&gt;Features and Polynomial Regression&lt;/h2&gt;&lt;h3 id=&quot;Choice-of-features&quot;&gt;&lt;a href=&quot;#Choice-of-features&quot; class=&quot;headerlink&quot; title=&quot;Choice of features&quot;&gt;&lt;/a&gt;Choice of features&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;We can improve our features and the form of our hypothesis function in a couple different ways.&lt;/li&gt;
+&lt;li&gt;We can &lt;strong&gt;combine&lt;/strong&gt; multiple features into one. For example, we can combine $x_1​$ and $x_2​$ into a new feature $x_3​$ by taking $x_1\cdot x_2​$. (E.g. $House Area = Frontage \times Depth​$)&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&quot;Polynomial-Regression&quot;&gt;&lt;a href=&quot;#Polynomial-Regression&quot; class=&quot;headerlink&quot; title=&quot;Polynomial Regression&quot;&gt;&lt;/a&gt;Polynomial Regression&lt;/h3&gt;&lt;p&gt;Our hypothesis function need not be linear (a straight line) if that does not fit the data well.&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;We can &lt;strong&gt;change the behavior or curve&lt;/strong&gt; of our hypothesis function by making it a quadratic, cubic or square root function (or any other form).&lt;ul&gt;
+&lt;li&gt;For example, if our hypothesis function is $h_\theta(x) = \theta_0 + \theta_1 x_1$ then we can create additional features based on $x_1$, to get the quadratic function $h_\theta(x) = \theta_0 + \theta_1 x_1 + \theta_2 x_1^2$ or the cubic function $h_\theta(x) = \theta_0 + \theta_1 x_1 + \theta_2 x_1^2 + \theta_3 x_1^3$.&lt;/li&gt;
+&lt;li&gt;In the cubic version, we have created new features $x_2$ and $x_3$ where $x_2 = x_1^2$ and $x_3=x^3_1$.&lt;/li&gt;
+&lt;li&gt;To make it a square root function, we could do: $h_\theta(x) = \theta_0 + \theta_1 x_1 + \theta_2 \sqrt{x_1}$&lt;/li&gt;
+&lt;li&gt;Note that at 2:52 and through 6:22 in the “Features and Polynomial Regression” video, the curve that Prof Ng discusses about “doesn’t ever come back down” is in reference to the hypothesis function that uses the &lt;code&gt;sqrt()&lt;/code&gt; function (shown by the solid purple line), not the one that uses $size^2$ (shown with the dotted blue line). The quadratic form of the hypothesis function would have the shape shown with the blue dotted line if $\theta _2$ was negative.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;One important thing to keep in mind is, if you choose your features this way then &lt;strong&gt;feature scaling becomes very important&lt;/strong&gt;.&lt;ul&gt;
+&lt;li&gt;E.g. if $x_1$ has range $1 - 1000$ then range of $x^2_1$ becomes $1 - 1000000$ and that of $x^3_1$ becomes $1 - 1000000000$&lt;/li&gt;
+&lt;li&gt;So you should scale $x_1$ before using polynomial regression.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+</content>
     
     <summary type="html">
     
@@ -81,7 +148,7 @@
 &lt;li&gt;Previously: $h_\theta (x) = \theta_0 + \theta_1 x$&lt;/li&gt;
 &lt;li&gt;$h_\theta (x) = \theta_0 + \theta_1 x_1 + \theta_2 x_2 + \cdots + \theta_n x_n$&lt;ul&gt;
 &lt;li&gt;For convenience of notation, define $x_0=1$&lt;/li&gt;
-&lt;li&gt;$x=\begin{bmatrix}x_0 \\ x_1 \\ x_2 \\ \vdots \\ x_n \end{bmatrix}, \theta = \begin{bmatrix}\theta_0 \\ \theta_1 \\ \theta_2 \\ \vdots \\ \theta_n \end{bmatrix}, h_\theta (x) = \theta^T x$&lt;/li&gt;
+&lt;li&gt;$X=\begin{bmatrix}x_0 \\ x_1 \\ x_2 \\ \vdots \\ x_n \end{bmatrix}, \theta = \begin{bmatrix}\theta_0 \\ \theta_1 \\ \theta_2 \\ \vdots \\ \theta_n \end{bmatrix}, h_\theta (x) = \theta^T x$&lt;/li&gt;
 &lt;/ul&gt;
 &lt;/li&gt;
 &lt;/ul&gt;
