@@ -171,7 +171,7 @@
     <link href="http://www.yuthon.com/2016/07/26/Coursera-Machine-Learning-Week-1/"/>
     <id>http://www.yuthon.com/2016/07/26/Coursera-Machine-Learning-Week-1/</id>
     <published>2016-07-26T03:55:36.000Z</published>
-    <updated>2016-07-27T02:31:27.000Z</updated>
+    <updated>2016-07-29T08:21:27.000Z</updated>
     
     <content type="html">&lt;h1 id=&quot;Linear-Regression-with-One-Variable&quot;&gt;&lt;a href=&quot;#Linear-Regression-with-One-Variable&quot; class=&quot;headerlink&quot; title=&quot;Linear Regression with One Variable&quot;&gt;&lt;/a&gt;Linear Regression with One Variable&lt;/h1&gt;&lt;h2 id=&quot;Model-and-Cost-Function&quot;&gt;&lt;a href=&quot;#Model-and-Cost-Function&quot; class=&quot;headerlink&quot; title=&quot;Model and Cost Function&quot;&gt;&lt;/a&gt;Model and Cost Function&lt;/h2&gt;&lt;h3 id=&quot;Model-Representation&quot;&gt;&lt;a href=&quot;#Model-Representation&quot; class=&quot;headerlink&quot; title=&quot;Model Representation&quot;&gt;&lt;/a&gt;Model Representation&lt;/h3&gt;&lt;ul&gt;
 &lt;li&gt;&lt;strong&gt;Supervised Learning (监督学习)&lt;/strong&gt;: Given the “right answer” for each example in the data.&lt;ul&gt;
@@ -211,7 +211,7 @@
 &lt;ul&gt;
 &lt;li&gt;$\theta_i$’s: Parameters (模型参数)&lt;/li&gt;
 &lt;li&gt;How to choose $\theta_i$’s ?&lt;ul&gt;
-&lt;li&gt;Idea: Choose $\theta_0, \theta&lt;em&gt;1$ so that $h&lt;/em&gt;\theta (x)$ is close to $y$ for our training example $(x,y)$&lt;/li&gt;
+&lt;li&gt;Idea: Choose $\theta_0, \theta_1$ so that $h_\theta (x)$ is close to $y$ for our training example $(x,y)$&lt;/li&gt;
 &lt;/ul&gt;
 &lt;/li&gt;
 &lt;/ul&gt;
@@ -219,7 +219,7 @@
 &lt;/ul&gt;
 &lt;ul&gt;
 &lt;li&gt;&lt;strong&gt;Cost function (代价函数)&lt;/strong&gt;&lt;ul&gt;
-&lt;li&gt;$J(\theta_0, \theta&lt;em&gt;1) = \frac{1}{2m} \sum&lt;/em&gt;{i=1}^m \left(h_\theta(x^{(i)})-y^{(i)}\right)^2$&lt;/li&gt;
+&lt;li&gt;$J(\theta_0, \theta_1) = \frac{1}{2m} \sum_{i=1}^m \left(h_\theta(x^{(i)})-y^{(i)}\right)^2$&lt;/li&gt;
 &lt;li&gt;Sometimes called Square error function (平方误差代价函数)&lt;/li&gt;
 &lt;/ul&gt;
 &lt;/li&gt;
