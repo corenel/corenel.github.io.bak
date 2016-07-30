@@ -4,8 +4,25 @@
 
     
   <url>
+    <loc>http://www.yuthon.com/2016/04/11/Tips-for-Hexo-configuration/</loc>
+    <lastmod>2016-07-30T14:56:44.000Z</lastmod>
+    <data>
+        <display>
+        <title>Tips for Hexo configuration</title>
+        <pubTime>2016-04-10T16:19:54.000Z</pubTime>
+        
+        <tag>hexo</tag>
+         
+         
+           
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
     <loc>http://www.yuthon.com/2016/07/27/Coursera-Machine-Learning-Week-2/</loc>
-    <lastmod>2016-07-30T14:07:18.000Z</lastmod>
+    <lastmod>2016-07-30T14:52:52.000Z</lastmod>
     <data>
         <display>
         <title>Notes for Machine Learning - Week 2</title>
@@ -91,12 +108,12 @@
 
     
   <url>
-    <loc>http://www.yuthon.com/2016/04/13/CodeSchool-Try-jQuery/</loc>
+    <loc>http://www.yuthon.com/2016/04/12/CodeSchool-JavaScript-Best-Practices/</loc>
     <lastmod>2016-05-16T11:51:43.000Z</lastmod>
     <data>
         <display>
-        <title>Notes for Code School - Try jQuery</title>
-        <pubTime>2016-04-13T09:24:09.000Z</pubTime>
+        <title>Notes for Code School - JavaScript Best Practices</title>
+        <pubTime>2016-04-12T10:19:54.000Z</pubTime>
         
         <tag>CodeSchool</tag>
          
@@ -135,28 +152,6 @@
 
     
   <url>
-    <loc>http://www.yuthon.com/2016/04/12/CodeSchool-JavaScript-Best-Practices/</loc>
-    <lastmod>2016-05-16T11:51:43.000Z</lastmod>
-    <data>
-        <display>
-        <title>Notes for Code School - JavaScript Best Practices</title>
-        <pubTime>2016-04-12T10:19:54.000Z</pubTime>
-        
-        <tag>CodeSchool</tag>
-         
-        <tag>JavaScript</tag>
-         
-         
-           
-             
-              <breadCrumb title="Notes" url="http://www.yuthon.com/categories/Notes/"/>
-          
-        </display>
-    </data>
-    </url>
-
-    
-  <url>
     <loc>http://www.yuthon.com/2016/04/14/CodeSchool-Shaping-up-with-Angular.js/</loc>
     <lastmod>2016-05-16T11:51:43.000Z</lastmod>
     <data>
@@ -179,17 +174,22 @@
 
     
   <url>
-    <loc>http://www.yuthon.com/2016/04/11/Tips-for-Hexo-configuration/</loc>
+    <loc>http://www.yuthon.com/2016/04/13/CodeSchool-Try-jQuery/</loc>
     <lastmod>2016-05-16T11:51:43.000Z</lastmod>
     <data>
         <display>
-        <title>Tips for Hexo configuration</title>
-        <pubTime>2016-04-10T16:19:54.000Z</pubTime>
+        <title>Notes for Code School - Try jQuery</title>
+        <pubTime>2016-04-13T09:24:09.000Z</pubTime>
         
-        <tag>hexo</tag>
+        <tag>CodeSchool</tag>
+         
+        <tag>JavaScript</tag>
          
          
            
+             
+              <breadCrumb title="Notes" url="http://www.yuthon.com/categories/Notes/"/>
+          
         </display>
     </data>
     </url>

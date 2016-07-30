@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://www.yuthon.com/"/>
-  <updated>2016-07-30T14:07:18.000Z</updated>
+  <updated>2016-07-30T14:52:52.000Z</updated>
   <id>http://www.yuthon.com/</id>
   
   <author>
@@ -20,7 +20,7 @@
     <link href="http://www.yuthon.com/2016/07/27/Coursera-Machine-Learning-Week-2/"/>
     <id>http://www.yuthon.com/2016/07/27/Coursera-Machine-Learning-Week-2/</id>
     <published>2016-07-27T02:30:35.000Z</published>
-    <updated>2016-07-30T14:07:18.000Z</updated>
+    <updated>2016-07-30T14:52:52.000Z</updated>
     
     <content type="html"><![CDATA[<h1 id="Linear-Regression-with-Multiple-Variables"><a href="#Linear-Regression-with-Multiple-Variables" class="headerlink" title="Linear Regression with Multiple Variables"></a>Linear Regression with Multiple Variables</h1><h2 id="Multivariate-Linear-Regression"><a href="#Multivariate-Linear-Regression" class="headerlink" title="Multivariate Linear Regression"></a>Multivariate Linear Regression</h2><ul>
 <li>Multiple features (variables)<ul>
@@ -851,14 +851,14 @@
     <link href="http://www.yuthon.com/2016/04/11/Tips-for-Hexo-configuration/"/>
     <id>http://www.yuthon.com/2016/04/11/Tips-for-Hexo-configuration/</id>
     <published>2016-04-10T16:19:54.000Z</published>
-    <updated>2016-05-16T11:51:43.000Z</updated>
+    <updated>2016-07-30T14:56:44.000Z</updated>
     
     <content type="html"><![CDATA[<h2 id="添加README-md文件"><a href="#添加README-md文件" class="headerlink" title="添加README.md文件"></a>添加<code>README.md</code>文件</h2><p>由于Hexo会将<code>source/</code>目录下的所有<code>.md</code>文件渲染成<code>.html</code>文件，因此需要将<code>README.md</code>排除在外。幸好，Hexo在3.0以上的版本中提供了<code>skip_render</code>参数。</p>
 <ol>
 <li><p>在<code>source/</code>里创建<code>README.md</code></p>
 </li>
 <li><p>在<code>_config.yml</code>中修改</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">skip_render:</div><div class="line">    - README.md</div></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">skip_render:</div><div class="line">  - README.md</div></pre></td></tr></table></figure>
 </li>
 </ol>
 <blockquote>
@@ -873,7 +873,7 @@
 <p>注意的是，在使用另一终端时，需要先初始化submodule。</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">$ git submodule init</div><div class="line">$ git submodule update</div></pre></td></tr></table></figure>
 <p>第三方主题更新时，可以直接更新<code>master</code>分支，而后merge到自己的分支上。</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">$ git checkout master</div><div class="line">$ git pull upstream master</div></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">$ git remote add upstream git@github.com:iissnan/hexo-theme-next.git</div><div class="line">$ git checkout yuthon</div><div class="line">$ git pull upstream master</div></pre></td></tr></table></figure>
 <h2 id="使用gulp压缩静态资源"><a href="#使用gulp压缩静态资源" class="headerlink" title="使用gulp压缩静态资源"></a>使用gulp压缩静态资源</h2><p>Hexo引擎在解析md时生成html的代码里会包含大量的无用空白，为了提高加载速度，用gulp压缩public目录的静态资源。</p>
 <p>当然你也可以用<a href="https://github.com/unhealthy/hexo-all-minifier" target="_blank" rel="external">hexo-all-minifier</a>来精简。</p>
 <ol>
@@ -885,6 +885,14 @@
 </li>
 </ol>
 <p>之后在使用<code>hexo g</code>生成静态页面后，再执行<code>gulp</code>即可对静态资源进行压缩，压缩完成后再用<code>hexo d</code>部署即可。</p>
+<h2 id="给-Next-主题添加文章更新时间"><a href="#给-Next-主题添加文章更新时间" class="headerlink" title="给 Next 主题添加文章更新时间"></a>给 Next 主题添加文章更新时间</h2><p>修改<code>themes/next/layout/_macro/post.swig</code>文件，在<code>&lt;span class=&quot;post-time&quot;&gt;</code>标签后（即对应的<code>&lt;/span&gt;</code>后）添加</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">&#123;%if post.updated and post.updated &gt; post.date%&#125;</div><div class="line">  &lt;span class=&quot;post-updated&quot;&gt;</div><div class="line">	&amp;nbsp; | &amp;nbsp; &#123;&#123; __(&apos;post.updated&apos;) &#125;&#125;</div><div class="line">	&lt;time itemprop=&quot;dateUpdated&quot; datetime=&quot;&#123;&#123; moment(post.updated).format() &#125;&#125;&quot; content=&quot;&#123;&#123; date(post.updated, config.date_format) &#125;&#125;&quot;&gt;</div><div class="line">	  &#123;&#123; date(post.updated, config.date_format) &#125;&#125;</div><div class="line">	&lt;/time&gt;</div><div class="line">  &lt;/span&gt;</div><div class="line">&#123;% endif %&#125;</div></pre></td></tr></table></figure>
+<p>而后修改语言配置文件<code>themes/next/languages/en.yml</code>（根据语言环境，文件有所不同）</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">post:</div><div class="line">  updated: Updated on</div></pre></td></tr></table></figure>
+<p>修改主题配置文件<code>themes/next/_config.yml</code>，增加一行</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">display_updated: true</div></pre></td></tr></table></figure>
+<p>之后即可直接在文章开头设置更新时间（默认用文章<code>.md</code>文档的修改时间）</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">updated: 2016-07-30 22:52:54</div></pre></td></tr></table></figure>
 ]]></content>
     
     <summary type="html">
@@ -894,7 +902,7 @@
 &lt;li&gt;&lt;p&gt;在&lt;code&gt;source/&lt;/code&gt;里创建&lt;code&gt;README.md&lt;/code&gt;&lt;/p&gt;
 &lt;/li&gt;
 &lt;li&gt;&lt;p&gt;在&lt;code&gt;_config.yml&lt;/code&gt;中修改&lt;/p&gt;
-&lt;figure class=&quot;highlight plain&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;div class=&quot;line&quot;&gt;1&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;2&lt;/div&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;div class=&quot;line&quot;&gt;skip_render:&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;    - README.md&lt;/div&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
+&lt;figure class=&quot;highlight plain&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;div class=&quot;line&quot;&gt;1&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;2&lt;/div&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;div class=&quot;line&quot;&gt;skip_render:&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;  - README.md&lt;/div&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
 &lt;/li&gt;
 &lt;/ol&gt;
 &lt;blockquote&gt;
