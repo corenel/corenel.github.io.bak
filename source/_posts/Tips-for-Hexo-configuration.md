@@ -15,8 +15,10 @@ tags:
 
    ```
    skip_render:
-       - README.md
+     - README.md
    ```
+
+
 
 > skip_render: Paths not to be rendered. You can use [glob expressions](https://github.com/isaacs/minimatch) for path matching
 
@@ -56,7 +58,8 @@ $ git submodule update
 第三方主题更新时，可以直接更新`master`分支，而后merge到自己的分支上。
 
 ```bash
-$ git checkout master
+$ git remote add upstream git@github.com:iissnan/hexo-theme-next.git
+$ git checkout yuthon
 $ git pull upstream master
 ```
 
@@ -114,3 +117,38 @@ Hexo引擎在解析md时生成html的代码里会包含大量的无用空白，�
    ```
 
 之后在使用`hexo g`生成静态页面后，再执行`gulp`即可对静态资源进行压缩，压缩完成后再用`hexo d`部署即可。
+
+## 给 Next 主题添加文章更新时间
+
+修改`themes/next/layout/_macro/post.swig`文件，在`<span class="post-time">`标签后（即对应的`</span>`后）添加
+
+```
+{%if post.updated and post.updated > post.date%}
+  <span class="post-updated">
+	&nbsp; | &nbsp; {{ __('post.updated') }}
+	<time itemprop="dateUpdated" datetime="{{ moment(post.updated).format() }}" content="{{ date(post.updated, config.date_format) }}">
+	  {{ date(post.updated, config.date_format) }}
+	</time>
+  </span>
+{% endif %}
+```
+
+而后修改语言配置文件`themes/next/languages/en.yml`（根据语言环境，文件有所不同）
+
+```
+post:
+  updated: Updated on
+```
+
+修改主题配置文件`themes/next/_config.yml`，增加一行
+
+```
+display_updated: true
+```
+
+之后即可直接在文章开头设置更新时间（默认用文章`.md`文档的修改时间）
+
+```
+updated: 2016-07-30 22:52:54
+```
+
