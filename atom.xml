@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://www.yuthon.com/"/>
-  <updated>2016-07-29T14:21:12.000Z</updated>
+  <updated>2016-07-30T05:19:37.000Z</updated>
   <id>http://www.yuthon.com/</id>
   
   <author>
@@ -20,7 +20,7 @@
     <link href="http://www.yuthon.com/2016/07/27/Coursera-Machine-Learning-Week-2/"/>
     <id>http://www.yuthon.com/2016/07/27/Coursera-Machine-Learning-Week-2/</id>
     <published>2016-07-27T02:30:35.000Z</published>
-    <updated>2016-07-29T14:21:12.000Z</updated>
+    <updated>2016-07-30T05:19:37.000Z</updated>
     
     <content type="html"><![CDATA[<h1 id="Linear-Regression-with-Multiple-Variables"><a href="#Linear-Regression-with-Multiple-Variables" class="headerlink" title="Linear Regression with Multiple Variables"></a>Linear Regression with Multiple Variables</h1><h2 id="Multivariate-Linear-Regression"><a href="#Multivariate-Linear-Regression" class="headerlink" title="Multivariate Linear Regression"></a>Multivariate Linear Regression</h2><ul>
 <li>Multiple features (variables)<ul>
@@ -139,11 +139,84 @@
 </ul>
 </li>
 </ul>
-<h2 id="Computing-Parameters-Analytically"><a href="#Computing-Parameters-Analytically" class="headerlink" title="Computing Parameters Analytically"></a>Computing Parameters Analytically</h2><h3 id="Normal-Equation"><a href="#Normal-Equation" class="headerlink" title="Normal Equation"></a>Normal Equation</h3><p>Method to solve for $\theta$ analytically</p>
+<h2 id="Computing-Parameters-Analytically"><a href="#Computing-Parameters-Analytically" class="headerlink" title="Computing Parameters Analytically"></a>Computing Parameters Analytically</h2><h3 id="Normal-Equation"><a href="#Normal-Equation" class="headerlink" title="Normal Equation"></a>Normal Equation</h3><p>The “Normal Equation” (正规方程) is a method of finding the optimum $\theta$ <strong>without iteration.</strong></p>
+<blockquote>
+<p>There is <strong>no need</strong> to do feature scaling with the normal equation.</p>
+</blockquote>
 <h4 id="Intuition"><a href="#Intuition" class="headerlink" title="Intuition"></a>Intuition</h4><ul>
-<li>$\theta \in R^{n+1}$</li>
+<li>$\theta \in R^{n+1} , J(\theta _0, \theta _1, \dots , \theta_m) = \frac{1}{2m} \sum ^m_{i=1} \left( h_\theta (x^{(i)}) - y^{(i)} \right) ^2$</li>
+<li>Set $\frac{\partial }{\partial \theta _j} J(\theta ) = \cdots = 0$ (for every $j$), solve for $\theta _0, \theta _1, \dots , \theta _m$</li>
 </ul>
-]]></content>
+<h4 id="Method"><a href="#Method" class="headerlink" title="Method"></a>Method</h4><p>We have $m$ examples $(x^{(1)}, y^{(1)}), \dots , (x^{(m)}, y^{(m)})$ and $n$ features. (Note that $x^{(i)}_0 = 0$)</p>
+<p>$$x^{(i)} = \begin{bmatrix}x^{(i)}_0 \\ x^{(i)}_1 \\ x^{(i)}_2 \\ \vdots \\ x^{(i)}_n \end{bmatrix}$$</p>
+<p>And construct the $m \times (n+1)$ matrix $X$</p>
+<p>$$X = \begin{bmatrix} (x^{(1)})^T \\ (x^{(2)})^T \\ \vdots \\ (x^{(m)})^T \end{bmatrix}$$</p>
+<p>And the $m$-dimension vector $y$</p>
+<p>$$y = \begin{bmatrix}y^{(i)} \\ y^{(i)} \\ y^{(i)} \\ \vdots \\ y^{(m)} \end{bmatrix}$$</p>
+<p>Finally, we can get</p>
+<p>$$ \theta = (X^T X)^{-1}X^T y $$</p>
+<h4 id="Example-1"><a href="#Example-1" class="headerlink" title="Example"></a>Example</h4><p>Suppose you have the training in the table below:</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">age ($x_1$)</th>
+<th style="text-align:center">height in cm ($x_2$)</th>
+<th style="text-align:center">weight in kg ($y$)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">4</td>
+<td style="text-align:center">89</td>
+<td style="text-align:center">16</td>
+</tr>
+<tr>
+<td style="text-align:center">9</td>
+<td style="text-align:center">124</td>
+<td style="text-align:center">28</td>
+</tr>
+<tr>
+<td style="text-align:center">5</td>
+<td style="text-align:center">103</td>
+<td style="text-align:center">20</td>
+</tr>
+</tbody>
+</table>
+<p>You would like to predict a child’s weight as a function of his age and height with the model</p>
+<p>$$weight = \theta _0 + \theta _1 age + \theta _2 height$$</p>
+<p>Then you can construct $X$ and $y$</p>
+<p>$$X = \begin{bmatrix} 1 &amp; 4 &amp; 89 \\ 1 &amp; 9 &amp; 124 \\ 1 &amp; 5 &amp; 103 \end{bmatrix}$$</p>
+<p>$$Y = \begin{bmatrix} 16 \\ 28 \\ 20 \end{bmatrix}$$</p>
+<h4 id="Usage-in-Octave"><a href="#Usage-in-Octave" class="headerlink" title="Usage in Octave"></a>Usage in Octave</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">pinv (X&apos;*X)*X&apos;*y</div></pre></td></tr></table></figure>
+<h4 id="Comparison-of-gradient-descent-and-the-normal-equation"><a href="#Comparison-of-gradient-descent-and-the-normal-equation" class="headerlink" title="Comparison of gradient descent and the normal equation"></a>Comparison of gradient descent and the normal equation</h4><p>$m$ training examples and $n$ features.</p>
+<table>
+<thead>
+<tr>
+<th>Gradient Descent</th>
+<th>Normal Equation</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Need to choose $\alpha$</td>
+<td>No need to choose $\alpha$</td>
+</tr>
+<tr>
+<td>Needs many iterations</td>
+<td>No need to iterate</td>
+</tr>
+<tr>
+<td>$O (kn^2)$</td>
+<td>$O (n^3)$, need to calculate  $(X^TX)^{-1}$</td>
+</tr>
+<tr>
+<td>Works well when $n$ is large</td>
+<td>Slow if $n$ is very large</td>
+</tr>
+</tbody>
+</table>
+<p>With the normal equation, computing the inversion has complexity $O(n^3)$. So if we have a very large number of features, the normal equation will be slow. In practice, <strong>when $n$ exceeds 10,000 it might be a good time to go from a normal solution to an iterative process.</strong></p>
+<h3 id="Normal-Equation-Noninvertibility"><a href="#Normal-Equation-Noninvertibility" class="headerlink" title="Normal Equation Noninvertibility"></a>Normal Equation Noninvertibility</h3>]]></content>
     
     <summary type="html">
     
