@@ -132,8 +132,71 @@ Our hypothesis function need not be linear (a straight line) if that does not fi
 
 ### Normal Equation
 
-Method to solve for $\theta$ analytically
+The "Normal Equation" (正规方程) is a method of finding the optimum $\theta$ **without iteration.**
+
+> There is **no need** to do feature scaling with the normal equation.
 
 #### Intuition
 
-* $\theta \in R^{n+1}$
+* $\theta \in R^{n+1} , J(\theta _0, \theta _1, \dots , \theta\_m) = \frac{1}{2m} \sum ^m\_{i=1} \left( h_\theta (x^{(i)}) - y^{(i)} \right) ^2$
+* Set $\frac{\partial }{\partial \theta _j} J(\theta ) = \cdots = 0$ (for every $j$), solve for $\theta _0, \theta _1, \dots , \theta _m$
+
+#### Method
+
+We have $m$ examples $(x^{(1)}, y^{(1)}), \dots , (x^{(m)}, y^{(m)})$ and $n$ features. (Note that $x^{(i)}_0 = 0$)
+
+$$x^{(i)} = \begin{bmatrix}x^{(i)}_0 \\\\ x^{(i)}_1 \\\\ x^{(i)}_2 \\\\ \vdots \\\\ x^{(i)}_n \end{bmatrix}$$
+
+And construct the $m \times (n+1)$ matrix $X$
+
+$$X = \begin{bmatrix} (x^{(1)})^T \\\\ (x^{(2)})^T \\\\ \vdots \\\\ (x^{(m)})^T \end{bmatrix}$$
+
+And the $m$-dimension vector $y$
+
+$$y = \begin{bmatrix}y^{(i)} \\\\ y^{(i)} \\\\ y^{(i)} \\\\ \vdots \\\\ y^{(m)} \end{bmatrix}$$
+
+Finally, we can get
+
+$$ \theta = (X^T X)^{-1}X^T y $$
+
+#### Example
+
+Suppose you have the training in the table below:
+
+| age ($x_1$) | height in cm ($x_2$) | weight in kg ($y$) |
+| :---------: | :------------------: | :----------------: |
+|      4      |          89          |         16         |
+|      9      |         124          |         28         |
+|      5      |         103          |         20         |
+
+You would like to predict a child's weight as a function of his age and height with the model
+
+$$weight = \theta _0 + \theta _1 age + \theta _2 height$$
+
+Then you can construct $X$ and $y$
+
+$$X = \begin{bmatrix} 1 & 4 & 89 \\\\ 1 & 9 & 124 \\\\ 1 & 5 & 103 \end{bmatrix}$$
+
+$$Y = \begin{bmatrix} 16 \\\\ 28 \\\\ 20 \end{bmatrix}$$
+
+#### Usage in Octave
+
+```octave
+pinv (X'*X)*X'*y
+```
+
+#### Comparison of gradient descent and the normal equation
+
+$m$ training examples and $n$ features.
+
+| Gradient Descent             | Normal Equation                          |
+| ---------------------------- | ---------------------------------------- |
+| Need to choose $\alpha$      | No need to choose $\alpha$               |
+| Needs many iterations        | No need to iterate                       |
+| $O (kn^2)$                   | $O (n^3)$, need to calculate  $(X^TX)^{-1}$ |
+| Works well when $n$ is large | Slow if $n$ is very large                |
+
+With the normal equation, computing the inversion has complexity $O(n^3)$. So if we have a very large number of features, the normal equation will be slow. In practice, **when $n$ exceeds 10,000 it might be a good time to go from a normal solution to an iterative process.**
+
+### Normal Equation Noninvertibility
+
