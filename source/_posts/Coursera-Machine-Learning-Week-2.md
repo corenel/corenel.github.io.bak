@@ -200,3 +200,15 @@ With the normal equation, computing the inversion has complexity $O(n^3)$. So if
 
 ### Normal Equation Noninvertibility
 
+$$ \theta = (X^T X)^{-1}X^T y $$
+
+* What if $X^TX$ is non-invertible (不可逆的) ? (singular/ degenerate)
+* Octave: `pinv(X'*X)*X"*y`
+  * There's two functions in Octave for inverting matrices, `pinv` (pseudo-inverse, 伪逆) and `inv` (inverse).
+  * As long as you use the `pinv` function then this will actually compute the value of data that you want even if X transpose X is non-invertible.
+  * So when implementing the normal equation in octave we want to use the `pinv` function rather than `inv`.
+* $X^TX$ may be **noninvertible**. The common causes are:
+  * Redundant features, where two features are very closely related (i.e. they are linearly dependent)
+    * E.g. $x_1$ = size in $feet^2$, and $x_2$ = size in $m^2$. So you'll always have $x_1 = (3.28)^2 x_2$
+  * Too many features (e.g. $m\le n$). 
+    * In this case, delete some features or use "regularization".
