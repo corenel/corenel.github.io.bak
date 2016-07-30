@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://www.yuthon.com/"/>
-  <updated>2016-07-30T05:19:37.000Z</updated>
+  <updated>2016-07-30T14:07:18.000Z</updated>
   <id>http://www.yuthon.com/</id>
   
   <author>
@@ -20,7 +20,7 @@
     <link href="http://www.yuthon.com/2016/07/27/Coursera-Machine-Learning-Week-2/"/>
     <id>http://www.yuthon.com/2016/07/27/Coursera-Machine-Learning-Week-2/</id>
     <published>2016-07-27T02:30:35.000Z</published>
-    <updated>2016-07-30T05:19:37.000Z</updated>
+    <updated>2016-07-30T14:07:18.000Z</updated>
     
     <content type="html"><![CDATA[<h1 id="Linear-Regression-with-Multiple-Variables"><a href="#Linear-Regression-with-Multiple-Variables" class="headerlink" title="Linear Regression with Multiple Variables"></a>Linear Regression with Multiple Variables</h1><h2 id="Multivariate-Linear-Regression"><a href="#Multivariate-Linear-Regression" class="headerlink" title="Multivariate Linear Regression"></a>Multivariate Linear Regression</h2><ul>
 <li>Multiple features (variables)<ul>
@@ -216,7 +216,28 @@
 </tbody>
 </table>
 <p>With the normal equation, computing the inversion has complexity $O(n^3)$. So if we have a very large number of features, the normal equation will be slow. In practice, <strong>when $n$ exceeds 10,000 it might be a good time to go from a normal solution to an iterative process.</strong></p>
-<h3 id="Normal-Equation-Noninvertibility"><a href="#Normal-Equation-Noninvertibility" class="headerlink" title="Normal Equation Noninvertibility"></a>Normal Equation Noninvertibility</h3>]]></content>
+<h3 id="Normal-Equation-Noninvertibility"><a href="#Normal-Equation-Noninvertibility" class="headerlink" title="Normal Equation Noninvertibility"></a>Normal Equation Noninvertibility</h3><p>$$ \theta = (X^T X)^{-1}X^T y $$</p>
+<ul>
+<li>What if $X^TX$ is non-invertible (不可逆的) ? (singular/ degenerate)</li>
+<li>Octave: <code>pinv(X&#39;*X)*X&quot;*y</code><ul>
+<li>There’s two functions in Octave for inverting matrices, <code>pinv</code> (pseudo-inverse, 伪逆) and <code>inv</code> (inverse).</li>
+<li>As long as you use the <code>pinv</code> function then this will actually compute the value of data that you want even if X transpose X is non-invertible.</li>
+<li>So when implementing the normal equation in octave we want to use the <code>pinv</code> function rather than <code>inv</code>.</li>
+</ul>
+</li>
+<li>$X^TX$ may be <strong>noninvertible</strong>. The common causes are:<ul>
+<li>Redundant features, where two features are very closely related (i.e. they are linearly dependent)<ul>
+<li>E.g. $x_1$ = size in $feet^2$, and $x_2$ = size in $m^2$. So you’ll always have $x_1 = (3.28)^2 x_2$</li>
+</ul>
+</li>
+<li>Too many features (e.g. $m\le n$). <ul>
+<li>In this case, delete some features or use “regularization”.</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+]]></content>
     
     <summary type="html">
     
