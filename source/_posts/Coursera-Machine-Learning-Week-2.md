@@ -212,3 +212,58 @@ $$ \theta = (X^T X)^{-1}X^T y $$
     * E.g. $x_1$ = size in $feet^2$, and $x_2$ = size in $m^2$. So you'll always have $x_1 = (3.28)^2 x_2$
   * Too many features (e.g. $m\le n$). 
     * In this case, delete some features or use "regularization".
+
+# Octave/Matlab Tutorial
+
+## Basic Operations
+
+* Print specific decimals: `disp(sprintf('6 decimals: %0.6f', a)) // 6 decimals: 3.141593`
+* `v = 1:0.2:2 // [1.0 1.2 1.4 1.6 1.8 2.0]`
+* `ones`, `zeros`, `rand`, `randn` (生成正态分布的随机数矩阵), `eye` (生成单位矩阵)
+* `hist` (直方图，第二个参数课自定义条数)
+* `size` (返回矩阵的行数与列数 [m n] )
+* `length` (返回向量的维数)
+
+## Moving Data Around
+
+* Use `load` to load data set.
+
+  ```octave
+  load featureX.dat
+  load('priceY.dat')
+  ```
+
+* Use `who` to show all variables in Octave workspace
+
+  * `whos` for detail information
+
+  * `clear` to delete a variable
+
+    ```octave
+    clear featureX
+    ```
+
+* Get first ten elements of a matrix
+
+  ```octave
+  v = priceY(1:10)
+  ```
+
+* Use `save` to save your variable
+
+  ```octave
+  save hello.mat v
+  ```
+
+  * By default the data is saved in binary. You can save it to ASCII by
+
+    ```octave
+    save hello.txt v -ascii
+    ```
+
+* Use `A(3, 2)` to get $A_{32}$, or `A(2, :)` to get every element along the second row
+
+  * `A([1, 3], :)` to get everything in the first and third rows
+  * `A(:, 2) = [10; 11; 12]` to change the value of elements in second column.
+  * `A = [A, [100; 101; 102]]` to append another column vector to right
+  * `A(:)` to put all elements of $A$ into a single vector
