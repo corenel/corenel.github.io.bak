@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://www.yuthon.com/"/>
-  <updated>2016-07-30T14:52:52.000Z</updated>
+  <updated>2016-07-31T14:32:08.000Z</updated>
   <id>http://www.yuthon.com/</id>
   
   <author>
@@ -20,7 +20,7 @@
     <link href="http://www.yuthon.com/2016/07/27/Coursera-Machine-Learning-Week-2/"/>
     <id>http://www.yuthon.com/2016/07/27/Coursera-Machine-Learning-Week-2/</id>
     <published>2016-07-27T02:30:35.000Z</published>
-    <updated>2016-07-30T14:52:52.000Z</updated>
+    <updated>2016-07-31T14:32:08.000Z</updated>
     
     <content type="html"><![CDATA[<h1 id="Linear-Regression-with-Multiple-Variables"><a href="#Linear-Regression-with-Multiple-Variables" class="headerlink" title="Linear Regression with Multiple Variables"></a>Linear Regression with Multiple Variables</h1><h2 id="Multivariate-Linear-Regression"><a href="#Multivariate-Linear-Regression" class="headerlink" title="Multivariate Linear Regression"></a>Multivariate Linear Regression</h2><ul>
 <li>Multiple features (variables)<ul>
@@ -234,6 +234,47 @@
 <li>In this case, delete some features or use “regularization”.</li>
 </ul>
 </li>
+</ul>
+</li>
+</ul>
+<h1 id="Octave-Matlab-Tutorial"><a href="#Octave-Matlab-Tutorial" class="headerlink" title="Octave/Matlab Tutorial"></a>Octave/Matlab Tutorial</h1><h2 id="Basic-Operations"><a href="#Basic-Operations" class="headerlink" title="Basic Operations"></a>Basic Operations</h2><ul>
+<li>Print specific decimals: <code>disp(sprintf(&#39;6 decimals: %0.6f&#39;, a)) // 6 decimals: 3.141593</code></li>
+<li><code>v = 1:0.2:2 // [1.0 1.2 1.4 1.6 1.8 2.0]</code></li>
+<li><code>ones</code>, <code>zeros</code>, <code>rand</code>, <code>randn</code> (生成正态分布的随机数矩阵), <code>eye</code> (生成单位矩阵)</li>
+<li><code>hist</code> (直方图，第二个参数课自定义条数)</li>
+<li><code>size</code> (返回矩阵的行数与列数 [m n] )</li>
+<li><code>length</code> (返回向量的维数)</li>
+</ul>
+<h2 id="Moving-Data-Around"><a href="#Moving-Data-Around" class="headerlink" title="Moving Data Around"></a>Moving Data Around</h2><ul>
+<li><p>Use <code>load</code> to load data set.</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">load featureX.dat</div><div class="line">load(&apos;priceY.dat&apos;)</div></pre></td></tr></table></figure>
+</li>
+<li><p>Use <code>who</code> to show all variables in Octave workspace</p>
+<ul>
+<li><p><code>whos</code> for detail information</p>
+</li>
+<li><p><code>clear</code> to delete a variable</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">clear featureX</div></pre></td></tr></table></figure>
+</li>
+</ul>
+</li>
+<li><p>Get first ten elements of a matrix</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">v = priceY(1:10)</div></pre></td></tr></table></figure>
+</li>
+<li><p>Use <code>save</code> to save your variable</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">save hello.mat v</div></pre></td></tr></table></figure>
+<ul>
+<li><p>By default the data is saved in binary. You can save it to ASCII by</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">save hello.txt v -ascii</div></pre></td></tr></table></figure>
+</li>
+</ul>
+</li>
+<li><p>Use <code>A(3, 2)</code> to get $A_{32}$, or <code>A(2, :)</code> to get every element along the second row</p>
+<ul>
+<li><code>A([1, 3], :)</code> to get everything in the first and third rows</li>
+<li><code>A(:, 2) = [10; 11; 12]</code> to change the value of elements in second column.</li>
+<li><code>A = [A, [100; 101; 102]]</code> to append another column vector to right</li>
+<li><code>A(:)</code> to put all elements of $A$ into a single vector</li>
 </ul>
 </li>
 </ul>

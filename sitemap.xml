@@ -2,16 +2,16 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
-    <loc>http://www.yuthon.com/2016/04/11/Tips-for-Hexo-configuration/</loc>
+    <loc>http://www.yuthon.com/2016/07/27/Coursera-Machine-Learning-Week-2/</loc>
     
-    <lastmod>2016-07-30T14:56:44.000Z</lastmod>
+    <lastmod>2016-07-31T14:32:08.000Z</lastmod>
     
   </url>
   
   <url>
-    <loc>http://www.yuthon.com/2016/07/27/Coursera-Machine-Learning-Week-2/</loc>
+    <loc>http://www.yuthon.com/2016/04/11/Tips-for-Hexo-configuration/</loc>
     
-    <lastmod>2016-07-30T14:52:52.000Z</lastmod>
+    <lastmod>2016-07-30T14:56:44.000Z</lastmod>
     
   </url>
   
@@ -37,20 +37,6 @@
   </url>
   
   <url>
-    <loc>http://www.yuthon.com/2016/04/12/CodeSchool-JavaScript-Best-Practices/</loc>
-    
-    <lastmod>2016-05-16T11:51:43.000Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>http://www.yuthon.com/2016/04/09/CodeSchool-Javascript/</loc>
-    
-    <lastmod>2016-05-16T11:51:43.000Z</lastmod>
-    
-  </url>
-  
-  <url>
     <loc>http://www.yuthon.com/2016/04/14/CodeSchool-Shaping-up-with-Angular.js/</loc>
     
     <lastmod>2016-05-16T11:51:43.000Z</lastmod>
@@ -59,6 +45,20 @@
   
   <url>
     <loc>http://www.yuthon.com/2016/04/13/CodeSchool-Try-jQuery/</loc>
+    
+    <lastmod>2016-05-16T11:51:43.000Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://www.yuthon.com/2016/04/12/CodeSchool-JavaScript-Best-Practices/</loc>
+    
+    <lastmod>2016-05-16T11:51:43.000Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://www.yuthon.com/2016/04/09/CodeSchool-Javascript/</loc>
     
     <lastmod>2016-05-16T11:51:43.000Z</lastmod>
     
