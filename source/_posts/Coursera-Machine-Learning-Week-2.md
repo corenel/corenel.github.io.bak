@@ -20,7 +20,7 @@ tags:
   * Previously: $h_\theta (x) = \theta_0 + \theta_1 x$
   * $h_\theta (x) = \theta_0 + \theta_1 x_1 + \theta_2 x_2 + \cdots + \theta_n x_n$
     * For convenience of notation, define $x_0=1$
-    * $X=\begin{bmatrix}x_0 \\\\ x_1 \\\\ x_2 \\\\ \vdots \\\\ x_n \end{bmatrix}, \theta = \begin{bmatrix}\theta_0 \\\\ \theta_1 \\\\ \theta_2 \\\\ \vdots \\\\ \theta\_n \end{bmatrix}, h\_\theta (x) = \theta^T x$
+    * $x=\begin{bmatrix}x_0 \\\\ x_1 \\\\ x_2 \\\\ \vdots \\\\ x_n \end{bmatrix}, \theta = \begin{bmatrix}\theta_0 \\\\ \theta_1 \\\\ \theta_2 \\\\ \vdots \\\\ \theta\_n \end{bmatrix}, h\_\theta (x) = \theta^T x​$
 
 <!-- more -->
 
@@ -267,3 +267,66 @@ $$ \theta = (X^T X)^{-1}X^T y $$
   * `A(:, 2) = [10; 11; 12]` to change the value of elements in second column.
   * `A = [A, [100; 101; 102]]` to append another column vector to right
   * `A(:)` to put all elements of $A$ into a single vector
+
+## Computing on Data
+
+* Use `max` to get the largest element in a vector
+
+  ```
+  a = [1 15 2 0.5];
+  [val, ind] = max(a); // val = 15, ind = 2
+  ```
+
+  * If you do `max(A)`, where $A$ is a matrix, what this does is this actually does the column wise maximum.
+
+    ```
+    A = [1 2; 3 4; 5 6];
+    max(A) // [5 6]
+
+    A = [8 1 6; 3 5 7; 4 9 2];
+    max(A, [], 1) // [8 9 7] (get the column wise maximum)
+    max(A, [], 2) // [8 7 9] (get the row wise maximum)
+    max(max(A)) // 9
+    max(A(:)) // 9
+    ```
+
+* `a < 3`  does the element wise operation, you'll get `[1 0 1 1]`
+
+  * `find(a<3)` gets `[1 3 4]`
+
+* `magic(3)` gets a 3x3 magic matrix
+
+* `sum`, `prod`, `floor`, `ceil`, `flipud`
+
+## Plotting Data
+
+* `plot`
+* `hold on`, `figure`, `subplot`
+* `xlabel`, `ylabel`, `legend`, `title`, `axis`
+* `print -dpng 'myPlot.png'`
+* `imagesc(A)` to visualize a matrix
+  * `imagesc(A), colorer, colormap gray` to be in gray scale.
+
+## Control Statements: for, while, if statement
+
+## Vectorization
+
+Vectorization is the process of taking code that relies on **loops** and converting it into **matrix operations**. It is more efficient, more elegant, and more concise.
+
+As an example, let's compute our prediction from a hypothesis. Theta is the vector of fields for the hypothesis and x is a vector of variables.
+
+With loops ($h_\theta (x) =\theta_0 x_0 + \theta_1 x_1 + \theta_2 x_2 + \cdots + \theta_n x_n$):
+
+```
+prediction = 0.0;
+for j = 1:n+1,
+  prediction += theta(j) * x(j);
+end;
+
+```
+
+With vectorization ($h_\theta (x) = \theta^T x$):
+
+```
+prediction = theta' * x;
+```
