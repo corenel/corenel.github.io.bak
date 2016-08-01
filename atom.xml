@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://www.yuthon.com/"/>
-  <updated>2016-07-31T14:32:08.000Z</updated>
+  <updated>2016-08-01T13:40:40.000Z</updated>
   <id>http://www.yuthon.com/</id>
   
   <author>
@@ -20,7 +20,7 @@
     <link href="http://www.yuthon.com/2016/07/27/Coursera-Machine-Learning-Week-2/"/>
     <id>http://www.yuthon.com/2016/07/27/Coursera-Machine-Learning-Week-2/</id>
     <published>2016-07-27T02:30:35.000Z</published>
-    <updated>2016-07-31T14:32:08.000Z</updated>
+    <updated>2016-08-01T13:40:40.000Z</updated>
     
     <content type="html"><![CDATA[<h1 id="Linear-Regression-with-Multiple-Variables"><a href="#Linear-Regression-with-Multiple-Variables" class="headerlink" title="Linear Regression with Multiple Variables"></a>Linear Regression with Multiple Variables</h1><h2 id="Multivariate-Linear-Regression"><a href="#Multivariate-Linear-Regression" class="headerlink" title="Multivariate Linear Regression"></a>Multivariate Linear Regression</h2><ul>
 <li>Multiple features (variables)<ul>
@@ -33,7 +33,7 @@
 <li>Previously: $h_\theta (x) = \theta_0 + \theta_1 x$</li>
 <li>$h_\theta (x) = \theta_0 + \theta_1 x_1 + \theta_2 x_2 + \cdots + \theta_n x_n$<ul>
 <li>For convenience of notation, define $x_0=1$</li>
-<li>$X=\begin{bmatrix}x_0 \\ x_1 \\ x_2 \\ \vdots \\ x_n \end{bmatrix}, \theta = \begin{bmatrix}\theta_0 \\ \theta_1 \\ \theta_2 \\ \vdots \\ \theta_n \end{bmatrix}, h_\theta (x) = \theta^T x$</li>
+<li>$x=\begin{bmatrix}x_0 \\ x_1 \\ x_2 \\ \vdots \\ x_n \end{bmatrix}, \theta = \begin{bmatrix}\theta_0 \\ \theta_1 \\ \theta_2 \\ \vdots \\ \theta_n \end{bmatrix}, h_\theta (x) = \theta^T x​$</li>
 </ul>
 </li>
 </ul>
@@ -278,7 +278,41 @@
 </ul>
 </li>
 </ul>
-]]></content>
+<h2 id="Computing-on-Data"><a href="#Computing-on-Data" class="headerlink" title="Computing on Data"></a>Computing on Data</h2><ul>
+<li><p>Use <code>max</code> to get the largest element in a vector</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">a = [1 15 2 0.5];</div><div class="line">[val, ind] = max(a); // val = 15, ind = 2</div></pre></td></tr></table></figure>
+<ul>
+<li><p>If you do <code>max(A)</code>, where $A$ is a matrix, what this does is this actually does the column wise maximum.</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">A = [1 2; 3 4; 5 6];</div><div class="line">max(A) // [5 6]</div><div class="line"></div><div class="line">A = [8 1 6; 3 5 7; 4 9 2];</div><div class="line">max(A, [], 1) // [8 9 7] (get the column wise maximum)</div><div class="line">max(A, [], 2) // [8 7 9] (get the row wise maximum)</div><div class="line">max(max(A)) // 9</div><div class="line">max(A(:)) // 9</div></pre></td></tr></table></figure>
+</li>
+</ul>
+</li>
+<li><p><code>a &lt; 3</code>  does the element wise operation, you’ll get <code>[1 0 1 1]</code></p>
+<ul>
+<li><code>find(a&lt;3)</code> gets <code>[1 3 4]</code></li>
+</ul>
+</li>
+<li><p><code>magic(3)</code> gets a 3x3 magic matrix</p>
+</li>
+<li><p><code>sum</code>, <code>prod</code>, <code>floor</code>, <code>ceil</code>, <code>flipud</code></p>
+</li>
+</ul>
+<h2 id="Plotting-Data"><a href="#Plotting-Data" class="headerlink" title="Plotting Data"></a>Plotting Data</h2><ul>
+<li><code>plot</code></li>
+<li><code>hold on</code>, <code>figure</code>, <code>subplot</code></li>
+<li><code>xlabel</code>, <code>ylabel</code>, <code>legend</code>, <code>title</code>, <code>axis</code></li>
+<li><code>print -dpng &#39;myPlot.png&#39;</code></li>
+<li><code>imagesc(A)</code> to visualize a matrix<ul>
+<li><code>imagesc(A), colorer, colormap gray</code> to be in gray scale.</li>
+</ul>
+</li>
+</ul>
+<h2 id="Control-Statements-for-while-if-statement"><a href="#Control-Statements-for-while-if-statement" class="headerlink" title="Control Statements: for, while, if statement"></a>Control Statements: for, while, if statement</h2><h2 id="Vectorization"><a href="#Vectorization" class="headerlink" title="Vectorization"></a>Vectorization</h2><p>Vectorization is the process of taking code that relies on <strong>loops</strong> and converting it into <strong>matrix operations</strong>. It is more efficient, more elegant, and more concise.</p>
+<p>As an example, let’s compute our prediction from a hypothesis. Theta is the vector of fields for the hypothesis and x is a vector of variables.</p>
+<p>With loops ($h_\theta (x) =\theta_0 x_0 + \theta_1 x_1 + \theta_2 x_2 + \cdots + \theta_n x_n$):</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">prediction = 0.0;</div><div class="line">for j = 1:n+1,</div><div class="line">  prediction += theta(j) * x(j);</div><div class="line">end;</div></pre></td></tr></table></figure>
+<p>With vectorization ($h_\theta (x) = \theta^T x$):</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">prediction = theta&apos; * x;</div></pre></td></tr></table></figure>]]></content>
     
     <summary type="html">
     
@@ -293,7 +327,7 @@
 &lt;li&gt;Previously: $h_\theta (x) = \theta_0 + \theta_1 x$&lt;/li&gt;
 &lt;li&gt;$h_\theta (x) = \theta_0 + \theta_1 x_1 + \theta_2 x_2 + \cdots + \theta_n x_n$&lt;ul&gt;
 &lt;li&gt;For convenience of notation, define $x_0=1$&lt;/li&gt;
-&lt;li&gt;$X=\begin{bmatrix}x_0 \\ x_1 \\ x_2 \\ \vdots \\ x_n \end{bmatrix}, \theta = \begin{bmatrix}\theta_0 \\ \theta_1 \\ \theta_2 \\ \vdots \\ \theta_n \end{bmatrix}, h_\theta (x) = \theta^T x$&lt;/li&gt;
+&lt;li&gt;$x=\begin{bmatrix}x_0 \\ x_1 \\ x_2 \\ \vdots \\ x_n \end{bmatrix}, \theta = \begin{bmatrix}\theta_0 \\ \theta_1 \\ \theta_2 \\ \vdots \\ \theta_n \end{bmatrix}, h_\theta (x) = \theta^T x​$&lt;/li&gt;
 &lt;/ul&gt;
 &lt;/li&gt;
 &lt;/ul&gt;
