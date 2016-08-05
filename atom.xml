@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://www.yuthon.com/"/>
-  <updated>2016-08-01T13:40:40.000Z</updated>
+  <updated>2016-08-05T04:15:55.000Z</updated>
   <id>http://www.yuthon.com/</id>
   
   <author>
@@ -14,6 +14,31 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>Exercise in Machine Learning</title>
+    <link href="http://www.yuthon.com/2016/08/05/Coursera-Machine-Learning-Exercise/"/>
+    <id>http://www.yuthon.com/2016/08/05/Coursera-Machine-Learning-Exercise/</id>
+    <published>2016-08-05T04:12:54.000Z</published>
+    <updated>2016-08-05T04:15:55.000Z</updated>
+    
+    <content type="html"><![CDATA[<p>My exercise files and notes are put in <a href="https://github.com/corenel/Notes-for-Machine-Learning-in-Coursera" target="_blank" rel="external">Github</a>.</p>
+]]></content>
+    
+    <summary type="html">
+    
+      &lt;p&gt;My exercise files and notes are put in &lt;a href=&quot;https://github.com/corenel/Notes-for-Machine-Learning-in-Coursera&quot; target=&quot;_blank&quot; rel=&quot;e
+    
+    </summary>
+    
+      <category term="Notes" scheme="http://www.yuthon.com/categories/Notes/"/>
+    
+    
+      <category term="Coursera" scheme="http://www.yuthon.com/tags/Coursera/"/>
+    
+      <category term="Machine Learning" scheme="http://www.yuthon.com/tags/Machine-Learning/"/>
+    
+  </entry>
   
   <entry>
     <title>Notes for Machine Learning - Week 2</title>
