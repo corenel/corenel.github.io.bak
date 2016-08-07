@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://www.yuthon.com/"/>
-  <updated>2016-08-05T04:15:55.000Z</updated>
+  <updated>2016-08-07T13:36:43.000Z</updated>
   <id>http://www.yuthon.com/</id>
   
   <author>
@@ -14,6 +14,42 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>Notes for Machine Learning - Week 3</title>
+    <link href="http://www.yuthon.com/2016/08/05/Coursera-Machine-Learning-Week-3/"/>
+    <id>http://www.yuthon.com/2016/08/05/Coursera-Machine-Learning-Week-3/</id>
+    <published>2016-08-05T04:16:08.000Z</published>
+    <updated>2016-08-07T13:36:43.000Z</updated>
+    
+    <content type="html"><![CDATA[<h1 id="Logistic-Regression"><a href="#Logistic-Regression" class="headerlink" title="Logistic Regression"></a>Logistic Regression</h1><h2 id="Classification"><a href="#Classification" class="headerlink" title="Classification"></a>Classification</h2><ul>
+<li>Calssification Problem<ul>
+<li>$y\in {0,1}$<ul>
+<li>0: “Negative Class”,  负类</li>
+<li>1: “Positive Class”, 正类</li>
+</ul>
+</li>
+<li>One method is to use linear regression and map all predictions greater than 0.5 as a 1 and all less than 0.5 as a 0. This method doesn’t work well because classification is not actually a linear function.</li>
+</ul>
+</li>
+<li>Logistic Regression (逻辑回归) : $0\le h_\theta \le 1$</li>
+</ul>
+]]></content>
+    
+    <summary type="html">
+    
+      &lt;h1 id=&quot;Logistic-Regression&quot;&gt;&lt;a href=&quot;#Logistic-Regression&quot; class=&quot;headerlink&quot; title=&quot;Logistic Regression&quot;&gt;&lt;/a&gt;Logistic Regression&lt;/h1&gt;&lt;h2 i
+    
+    </summary>
+    
+      <category term="Notes" scheme="http://www.yuthon.com/categories/Notes/"/>
+    
+    
+      <category term="Coursera" scheme="http://www.yuthon.com/tags/Coursera/"/>
+    
+      <category term="Machine Learning" scheme="http://www.yuthon.com/tags/Machine-Learning/"/>
+    
+  </entry>
   
   <entry>
     <title>Exercise in Machine Learning</title>
