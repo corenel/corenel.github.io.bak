@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://www.yuthon.com/"/>
-  <updated>2016-08-07T13:36:43.000Z</updated>
+  <updated>2016-08-10T12:39:52.000Z</updated>
   <id>http://www.yuthon.com/</id>
   
   <author>
@@ -20,7 +20,7 @@
     <link href="http://www.yuthon.com/2016/08/05/Coursera-Machine-Learning-Week-3/"/>
     <id>http://www.yuthon.com/2016/08/05/Coursera-Machine-Learning-Week-3/</id>
     <published>2016-08-05T04:16:08.000Z</published>
-    <updated>2016-08-07T13:36:43.000Z</updated>
+    <updated>2016-08-10T12:39:52.000Z</updated>
     
     <content type="html"><![CDATA[<h1 id="Logistic-Regression"><a href="#Logistic-Regression" class="headerlink" title="Logistic Regression"></a>Logistic Regression</h1><h2 id="Classification"><a href="#Classification" class="headerlink" title="Classification"></a>Classification</h2><ul>
 <li>Calssification Problem<ul>
@@ -34,11 +34,49 @@
 </li>
 <li>Logistic Regression (逻辑回归) : $0\le h_\theta \le 1$</li>
 </ul>
-]]></content>
+<a id="more"></a>
+<h2 id="Hypothesis-Representation"><a href="#Hypothesis-Representation" class="headerlink" title="Hypothesis Representation"></a>Hypothesis Representation</h2><h3 id="Logistic-Regression-Model"><a href="#Logistic-Regression-Model" class="headerlink" title="Logistic Regression Model"></a>Logistic Regression Model</h3><p>$h_\theta (x) = \frac{1}{1+e^{-\theta ^T x}}$</p>
+<ul>
+<li><p>Want $0\le h_\theta(x)\le 1$</p>
+<ul>
+<li><p>$h_\theta (x) = g(\theta ^T x)$</p>
+</li>
+<li><p>$g(z) = \frac{1}{1+e^{-z}}$</p>
+<ul>
+<li><p>Called “Sigmod function” or “Logistic function”</p>
+<p><img src="/images/sigmod_function.png" alt="sigmod function"></p>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h3 id="Interpretation-of-Hypothesis-Output"><a href="#Interpretation-of-Hypothesis-Output" class="headerlink" title="Interpretation of Hypothesis Output"></a>Interpretation of Hypothesis Output</h3><ul>
+<li>$h_\theta (x)$ = estimated probability that $y=1$ on input $x$<ul>
+<li>$h_\theta (x) = P(y=1|x; \theta)$<ul>
+<li>probability that $y=1$, given $x$, parameterised by $\theta$.</li>
+</ul>
+</li>
+<li>$P(y=0|x;\theta ) = 1 - P(y=1|x;\theta )$</li>
+</ul>
+</li>
+</ul>
+<h2 id="Decision-Boundary"><a href="#Decision-Boundary" class="headerlink" title="Decision Boundary"></a>Decision Boundary</h2>]]></content>
     
     <summary type="html">
     
-      &lt;h1 id=&quot;Logistic-Regression&quot;&gt;&lt;a href=&quot;#Logistic-Regression&quot; class=&quot;headerlink&quot; title=&quot;Logistic Regression&quot;&gt;&lt;/a&gt;Logistic Regression&lt;/h1&gt;&lt;h2 i
+      &lt;h1 id=&quot;Logistic-Regression&quot;&gt;&lt;a href=&quot;#Logistic-Regression&quot; class=&quot;headerlink&quot; title=&quot;Logistic Regression&quot;&gt;&lt;/a&gt;Logistic Regression&lt;/h1&gt;&lt;h2 id=&quot;Classification&quot;&gt;&lt;a href=&quot;#Classification&quot; class=&quot;headerlink&quot; title=&quot;Classification&quot;&gt;&lt;/a&gt;Classification&lt;/h2&gt;&lt;ul&gt;
+&lt;li&gt;Calssification Problem&lt;ul&gt;
+&lt;li&gt;$y\in {0,1}$&lt;ul&gt;
+&lt;li&gt;0: “Negative Class”,  负类&lt;/li&gt;
+&lt;li&gt;1: “Positive Class”, 正类&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;One method is to use linear regression and map all predictions greater than 0.5 as a 1 and all less than 0.5 as a 0. This method doesn’t work well because classification is not actually a linear function.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;Logistic Regression (逻辑回归) : $0\le h_\theta \le 1$&lt;/li&gt;
+&lt;/ul&gt;
     
     </summary>
     
