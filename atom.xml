@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://www.yuthon.com/"/>
-  <updated>2016-08-10T12:39:52.000Z</updated>
+  <updated>2016-08-12T03:47:50.000Z</updated>
   <id>http://www.yuthon.com/</id>
   
   <author>
@@ -20,7 +20,7 @@
     <link href="http://www.yuthon.com/2016/08/05/Coursera-Machine-Learning-Week-3/"/>
     <id>http://www.yuthon.com/2016/08/05/Coursera-Machine-Learning-Week-3/</id>
     <published>2016-08-05T04:16:08.000Z</published>
-    <updated>2016-08-10T12:39:52.000Z</updated>
+    <updated>2016-08-12T03:47:50.000Z</updated>
     
     <content type="html"><![CDATA[<h1 id="Logistic-Regression"><a href="#Logistic-Regression" class="headerlink" title="Logistic Regression"></a>Logistic Regression</h1><h2 id="Classification"><a href="#Classification" class="headerlink" title="Classification"></a>Classification</h2><ul>
 <li>Calssification Problem<ul>
@@ -61,7 +61,26 @@
 </ul>
 </li>
 </ul>
-<h2 id="Decision-Boundary"><a href="#Decision-Boundary" class="headerlink" title="Decision Boundary"></a>Decision Boundary</h2>]]></content>
+<h2 id="Decision-Boundary"><a href="#Decision-Boundary" class="headerlink" title="Decision Boundary"></a>Decision Boundary</h2><p>In order to get our discrete 0 or 1 classification, we can suppose</p>
+<ul>
+<li>$h_\theta(x) \geq 0.5 \rightarrow y = 1$</li>
+<li>$h_\theta(x) &lt; 0.5 \rightarrow y = 0$</li>
+</ul>
+<p>The way our logistic function $g$ behaves is that when its input is greater than or equal to zero, its output is greater than or equal to 0.5:</p>
+<ul>
+<li>$g(z) \ge 0.5$ when $z\ge 0$, i.e., $\theta ^T x \ge 0$</li>
+</ul>
+<p>In conclusion, we can now say:</p>
+<ul>
+<li>$\theta^T x \geq 0 \Rightarrow y = 1$</li>
+<li>$\theta^T x &lt; 0 \Rightarrow y = 0$</li>
+</ul>
+<h3 id="Decision-boundaries"><a href="#Decision-boundaries" class="headerlink" title="Decision boundaries"></a>Decision boundaries</h3><p>The <strong>decision boundary</strong> is the line that separates the area where $y=0​$ and where $y=1​$. It is created by our hypothesis function $\theta^T x = 0​$.</p>
+<p><img src="/images/dicision_boundary.png" alt="Disicion Boundary"></p>
+<p>The decision boundary is a property, not of the trading set, but of the hypothesis $h_\theta(x)$ under the parameters. As long as we’re given parameter vector $\theta$, that defines the decision boundary. <u>But the training set is not what we use to define the decision boundary.</u></p>
+<h3 id="Non-linear-decision-boundaries"><a href="#Non-linear-decision-boundaries" class="headerlink" title="Non-linear decision boundaries"></a>Non-linear decision boundaries</h3><p>The input to the sigmoid function $g(z)$ (e.g. $\theta ^T x$) doesn’t need to be linear, and could be a function that describes a circle (e.g. $z = \theta_0 + \theta _1 x_1 + \theta _2 x_2 + \theta _3 x_1^2 + \theta _4 x_2^2$) or any shape to fit our data.</p>
+<p><img src="/images/nonlinear_decision_boundary.png" alt="nonlinear decision boundary.png"></p>
+]]></content>
     
     <summary type="html">
     
