@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://www.yuthon.com/"/>
-  <updated>2016-08-13T09:01:20.000Z</updated>
+  <updated>2016-08-14T12:56:56.000Z</updated>
   <id>http://www.yuthon.com/</id>
   
   <author>
@@ -20,9 +20,9 @@
     <link href="http://www.yuthon.com/2016/08/05/Coursera-Machine-Learning-Week-3/"/>
     <id>http://www.yuthon.com/2016/08/05/Coursera-Machine-Learning-Week-3/</id>
     <published>2016-08-05T04:16:08.000Z</published>
-    <updated>2016-08-13T09:01:20.000Z</updated>
+    <updated>2016-08-14T12:56:56.000Z</updated>
     
-    <content type="html"><![CDATA[<h1 id="Logistic-Regression"><a href="#Logistic-Regression" class="headerlink" title="Logistic Regression"></a>Logistic Regression</h1><h2 id="Classification"><a href="#Classification" class="headerlink" title="Classification"></a>Classification</h2><ul>
+    <content type="html"><![CDATA[<h1 id="Logistic-Regression"><a href="#Logistic-Regression" class="headerlink" title="Logistic Regression"></a>Logistic Regression</h1><h2 id="Classification-and-Representation"><a href="#Classification-and-Representation" class="headerlink" title="Classification and Representation"></a>Classification and Representation</h2><h3 id="Classification"><a href="#Classification" class="headerlink" title="Classification"></a>Classification</h3><ul>
 <li>Calssification Problem<ul>
 <li>$y\in {0,1}$<ul>
 <li>0: “Negative Class”,  负类</li>
@@ -35,7 +35,7 @@
 <li>Logistic Regression (逻辑回归) : $0\le h_\theta \le 1$</li>
 </ul>
 <a id="more"></a>
-<h2 id="Hypothesis-Representation"><a href="#Hypothesis-Representation" class="headerlink" title="Hypothesis Representation"></a>Hypothesis Representation</h2><h3 id="Logistic-Regression-Model"><a href="#Logistic-Regression-Model" class="headerlink" title="Logistic Regression Model"></a>Logistic Regression Model</h3><p>$h_\theta (x) = \frac{1}{1+e^{-\theta ^T x}}$</p>
+<h3 id="Hypothesis-Representation"><a href="#Hypothesis-Representation" class="headerlink" title="Hypothesis Representation"></a>Hypothesis Representation</h3><h4 id="Logistic-Regression-Model"><a href="#Logistic-Regression-Model" class="headerlink" title="Logistic Regression Model"></a>Logistic Regression Model</h4><p>$h_\theta (x) = \frac{1}{1+e^{-\theta ^T x}}​$</p>
 <ul>
 <li><p>Want $0\le h_\theta(x)\le 1$</p>
 <ul>
@@ -51,7 +51,7 @@
 </ul>
 </li>
 </ul>
-<h3 id="Interpretation-of-Hypothesis-Output"><a href="#Interpretation-of-Hypothesis-Output" class="headerlink" title="Interpretation of Hypothesis Output"></a>Interpretation of Hypothesis Output</h3><ul>
+<h4 id="Interpretation-of-Hypothesis-Output"><a href="#Interpretation-of-Hypothesis-Output" class="headerlink" title="Interpretation of Hypothesis Output"></a>Interpretation of Hypothesis Output</h4><ul>
 <li>$h_\theta (x)$ = estimated probability that $y=1$ on input $x$<ul>
 <li>$h_\theta (x) = P(y=1|x; \theta)$<ul>
 <li>probability that $y=1$, given $x$, parameterised by $\theta$.</li>
@@ -61,7 +61,7 @@
 </ul>
 </li>
 </ul>
-<h2 id="Decision-Boundary"><a href="#Decision-Boundary" class="headerlink" title="Decision Boundary"></a>Decision Boundary</h2><p>In order to get our discrete 0 or 1 classification, we can suppose</p>
+<h3 id="Decision-Boundary"><a href="#Decision-Boundary" class="headerlink" title="Decision Boundary"></a>Decision Boundary</h3><p>In order to get our discrete 0 or 1 classification, we can suppose</p>
 <ul>
 <li>$h_\theta(x) \geq 0.5 \rightarrow y = 1$</li>
 <li>$h_\theta(x) &lt; 0.5 \rightarrow y = 0$</li>
@@ -75,16 +75,16 @@
 <li>$\theta^T x \geq 0 \Rightarrow y = 1$</li>
 <li>$\theta^T x &lt; 0 \Rightarrow y = 0$</li>
 </ul>
-<h3 id="Decision-boundaries"><a href="#Decision-boundaries" class="headerlink" title="Decision boundaries"></a>Decision boundaries</h3><p>The <strong>decision boundary</strong> is the line that separates the area where $y=0$ and where $y=1$. It is created by our hypothesis function $\theta^T x = 0$.</p>
+<h4 id="Decision-boundaries"><a href="#Decision-boundaries" class="headerlink" title="Decision boundaries"></a>Decision boundaries</h4><p>The <strong>decision boundary</strong> is the line that separates the area where $y=0$ and where $y=1$. It is created by our hypothesis function $\theta^T x = 0$.</p>
 <p><img src="/images/dicision_boundary.png" alt="Disicion Boundary"></p>
 <p>The decision boundary is a property, not of the trading set, but of the hypothesis $h_\theta(x)$ under the parameters. As long as we’re given parameter vector $\theta$, that defines the decision boundary. <u>But the training set is not what we use to define the decision boundary.</u></p>
-<h3 id="Non-linear-decision-boundaries"><a href="#Non-linear-decision-boundaries" class="headerlink" title="Non-linear decision boundaries"></a>Non-linear decision boundaries</h3><p>The input to the sigmoid function $g(z)$ (e.g. $\theta ^T x$) doesn’t need to be linear, and could be a function that describes a circle (e.g. $z = \theta_0 + \theta _1 x_1 + \theta _2 x_2 + \theta _3 x_1^2 + \theta _4 x_2^2$) or any shape to fit our data.</p>
+<h4 id="Non-linear-decision-boundaries"><a href="#Non-linear-decision-boundaries" class="headerlink" title="Non-linear decision boundaries"></a>Non-linear decision boundaries</h4><p>The input to the sigmoid function $g(z)$ (e.g. $\theta ^T x$) doesn’t need to be linear, and could be a function that describes a circle (e.g. $z = \theta_0 + \theta _1 x_1 + \theta _2 x_2 + \theta _3 x_1^2 + \theta _4 x_2^2$) or any shape to fit our data.</p>
 <p><img src="/images/nonlinear_decision_boundary.png" alt="nonlinear decision boundary"></p>
-<h2 id="Cost-Function"><a href="#Cost-Function" class="headerlink" title="Cost Function"></a>Cost Function</h2><p>We cannot use the same cost function that we use for linear regression because the Logistic Function will cause the output to be wavy, causing many local optima. In other words, it will not be a convex function (凸函数).</p>
+<h2 id="Logistic-Regression-Model-1"><a href="#Logistic-Regression-Model-1" class="headerlink" title="Logistic Regression Model"></a>Logistic Regression Model</h2><h3 id="Cost-Function"><a href="#Cost-Function" class="headerlink" title="Cost Function"></a>Cost Function</h3><p>We cannot use the same cost function that we use for linear regression because the Logistic Function will cause the output to be wavy, causing many local optima. In other words, it will not be a convex function (凸函数).</p>
 <p><img src="/images/non-convex_and_convex_function.png" alt="non-convex and convex function"></p>
 <p>Instead, our cost function for logistic regression looks like:</p>
-<p>$J(\theta) = \dfrac{1}{m} \sum_{i=1}^m \mathrm{Cost}(h_\theta(x^{(i)}),y^{(i)})$</p>
-<p>$\mathrm{Cost}(h_\theta(x),y) = \begin{cases}-\log(h_\theta(x)) ,&amp;\text{if y = 1}\newline -\log(1-h_\theta(x)) ,&amp;\text{if y = 0}\end{cases}$</p>
+<p>$J(\theta) = \dfrac{1}{m} \sum<em>{i=1}^m \mathrm{Cost}(h</em>\theta(x^{(i)}),y^{(i)})$</p>
+<p>$\mathrm{Cost}(h<em>\theta(x),y) = \begin{cases}-\log(h</em>\theta(x)) ,&amp;\text{if y = 1}\newline -\log(1-h_\theta(x)) ,&amp;\text{if y = 0}\end{cases}$</p>
 <ul>
 <li>$\mathrm{Cost} = 0$ if $y=1, h_\theta (x)=1$</li>
 <li>But as $h_\theta (x) \to 0, \mathrm{Cost} \to \infty$<ul>
@@ -94,11 +94,62 @@
 </ul>
 <p><img src="/images/Logistic_regression_cost_function_positive_class.png" alt="Logistic_regression_cost_function_positive_class"></p>
 <p><img src="/images/Logistic_regression_cost_function_negative_class.png" alt="Logistic_regression_cost_function_negative_class"></p>
-<h2 id="Simplified-Cost-Function-and-Gradient-Descent"><a href="#Simplified-Cost-Function-and-Gradient-Descent" class="headerlink" title="Simplified Cost Function and Gradient Descent"></a>Simplified Cost Function and Gradient Descent</h2>]]></content>
+<h3 id="Simplified-Cost-Function-and-Gradient-Descent"><a href="#Simplified-Cost-Function-and-Gradient-Descent" class="headerlink" title="Simplified Cost Function and Gradient Descent"></a>Simplified Cost Function and Gradient Descent</h3><h4 id="Simplified-Cost-Function"><a href="#Simplified-Cost-Function" class="headerlink" title="Simplified Cost Function"></a>Simplified Cost Function</h4><p>We can compress our cost function’s two conditional cases into one case:</p>
+<p>$\mathrm{Cost}(h_\theta(x),y) = - y \log(h_\theta(x)) - (1 - y) \log(1 - h_\theta(x))$</p>
+<p>We can fully write out our entire cost function as follows:</p>
+<p>$J(\theta) = - \frac{1}{m} \sum_{i=1}^m [y^{(i)}\log (h_\theta (x^{(i)})) + (1 - y^{(i)})\log (1 - h_\theta(x^{(i)}))]$</p>
+<ul>
+<li>This cost function can be derived from statistics using the principle of maximum likelihood estimation (极大似然估计). Which is an idea in statistics for how to efficiently find parameters’ data for different models.</li>
+<li>And it also has a nice property that it is convex.</li>
+</ul>
+<p>A vectorized implementation is:</p>
+<p>$h = g(X\theta)$</p>
+<p>$ J(\theta)  = \frac{1}{m} \cdot \left(-y^{T}\log(h)-(1-y)^{T}\log(1-h)\right)$</p>
+<h4 id="Gradient-Descent"><a href="#Gradient-Descent" class="headerlink" title="Gradient Descent"></a>Gradient Descent</h4><p>$Repeat \lbrace \\ \theta_j := \theta_j - \alpha \dfrac{\partial}{\partial \theta_j}J(\theta)= \theta_j - \frac{\alpha}{m} \sum_{i=1}^m (h_\theta(x^{(i)}) - y^{(i)}) x_j^{(i)} \\ \rbrace$</p>
+<ul>
+<li><p>Notice that this algorithm is identical to the one we used in linear regression (only $h_\theta (x)$ changes). We still have to simultaneously update all values in theta.</p>
+</li>
+<li><p>A vectorized implementation is:</p>
+<p>$\theta := \theta - \frac{\alpha}{m} X^{T} (g(X \theta ) - \vec{y})$</p>
+</li>
+<li><p>To make sure th learning rate $\alpha$ is set properly, you can plot $J(\theta)$ as a function of the number of iterations and make sure $J(\theta )$ is decreasing on every iteration.</p>
+</li>
+</ul>
+<h3 id="Advanced-Optimization"><a href="#Advanced-Optimization" class="headerlink" title="Advanced Optimization"></a>Advanced Optimization</h3><p>Optimization algorithms</p>
+<ul>
+<li>Gradient descent</li>
+<li>Conjugate gradient</li>
+<li>BFGS</li>
+<li>L-BFGS</li>
+</ul>
+<p>The avdantage of last three algorithms:</p>
+<ul>
+<li>No need to manually pick $\alpha$</li>
+<li>Often faster than gradient descent</li>
+</ul>
+<p>Disadvantages:</p>
+<ul>
+<li>More complex</li>
+</ul>
+<h4 id="Example"><a href="#Example" class="headerlink" title="Example"></a>Example</h4><p>We first need to provide a function that evaluates the following two functions for a given input value $\theta$ :</p>
+<ul>
+<li>$J(\theta )$</li>
+<li>$\frac{\partial}{\partial \theta _j} J(\theta )$</li>
+</ul>
+<p>We can write a single function that returns both of these:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">function [jVal, gradient] = costFunction(theta)</div><div class="line">  jVal = [...code to compute J(theta)...];</div><div class="line">  gradient = [...code to compute derivative of J(theta)...];</div><div class="line">end</div></pre></td></tr></table></figure>
+<p>Then we can use octave’s “fminunc()” optimization algorithm along with the “optimset()” function that creates an object containing the options we want to send to “fminunc()”.</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">options = optimset(&apos;GradObj&apos;, &apos;on&apos;, &apos;MaxIter&apos;, 100);</div><div class="line">initialTheta = zeros(2,1);</div><div class="line">[optTheta, functionVal, exitFlag] = fminunc(@costFunction, initialTheta, options);</div></pre></td></tr></table></figure>
+<h2 id="Multiclass-Classification-One-vs-all"><a href="#Multiclass-Classification-One-vs-all" class="headerlink" title="Multiclass Classification: One-vs-all"></a>Multiclass Classification: One-vs-all</h2><p>Instead of $y = {0,1}$, we will expand our definition so that $y = {1,2…n}$. In this case we divide our problem into $n$ binary classification problems; in each one, we predict the probability that ‘y’ is a member of one of our classes.</p>
+<p>That is, we can train a logistic regression classifier $h_\theta ^{(i)} (x)$ for each class $i$ to predict the probability that $y=i$.</p>
+<p>$h_\theta^{(i)}(x) = P(y = i | x ; \theta)\ \ \ \  (i=1,2,3,\dots , n+1)$</p>
+<p>On a new input $x$, to make a prediction, pick the class $i$ that maximizes $h_\theta ^{(i)} (x)$.</p>
+<p><img src="/images/one_vs_all.png" alt="One-vs-all"></p>
+]]></content>
     
     <summary type="html">
     
-      &lt;h1 id=&quot;Logistic-Regression&quot;&gt;&lt;a href=&quot;#Logistic-Regression&quot; class=&quot;headerlink&quot; title=&quot;Logistic Regression&quot;&gt;&lt;/a&gt;Logistic Regression&lt;/h1&gt;&lt;h2 id=&quot;Classification&quot;&gt;&lt;a href=&quot;#Classification&quot; class=&quot;headerlink&quot; title=&quot;Classification&quot;&gt;&lt;/a&gt;Classification&lt;/h2&gt;&lt;ul&gt;
+      &lt;h1 id=&quot;Logistic-Regression&quot;&gt;&lt;a href=&quot;#Logistic-Regression&quot; class=&quot;headerlink&quot; title=&quot;Logistic Regression&quot;&gt;&lt;/a&gt;Logistic Regression&lt;/h1&gt;&lt;h2 id=&quot;Classification-and-Representation&quot;&gt;&lt;a href=&quot;#Classification-and-Representation&quot; class=&quot;headerlink&quot; title=&quot;Classification and Representation&quot;&gt;&lt;/a&gt;Classification and Representation&lt;/h2&gt;&lt;h3 id=&quot;Classification&quot;&gt;&lt;a href=&quot;#Classification&quot; class=&quot;headerlink&quot; title=&quot;Classification&quot;&gt;&lt;/a&gt;Classification&lt;/h3&gt;&lt;ul&gt;
 &lt;li&gt;Calssification Problem&lt;ul&gt;
 &lt;li&gt;$y\in {0,1}$&lt;ul&gt;
 &lt;li&gt;0: “Negative Class”,  负类&lt;/li&gt;
