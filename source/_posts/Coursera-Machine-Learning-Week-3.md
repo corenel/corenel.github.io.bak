@@ -10,7 +10,9 @@ tags:
 
 # Logistic Regression
 
-## Classification
+## Classification and Representation
+
+### Classification
 
 * Calssification Problem
   * $y\in {0,1}$
@@ -22,11 +24,11 @@ tags:
 
 <!-- more -->
 
-## Hypothesis Representation
+### Hypothesis Representation
 
-### Logistic Regression Model
+#### Logistic Regression Model
 
-$h_\theta (x) = \frac{1}{1+e^{-\theta ^T x}}$
+$h_\theta (x) = \frac{1}{1+e^{-\theta ^T x}}​$
 
 * Want $0\le h_\theta(x)\le 1$
 
@@ -38,14 +40,14 @@ $h_\theta (x) = \frac{1}{1+e^{-\theta ^T x}}$
 
       ![sigmod function](/images/sigmod_function.png)
 
-### Interpretation of Hypothesis Output
+#### Interpretation of Hypothesis Output
 
 * $h_\theta (x)$ = estimated probability that $y=1$ on input $x$
   * $h_\theta (x) = P(y=1|x; \theta)$
     * probability that $y=1$, given $x$, parameterised by $\theta$.
   * $P(y=0|x;\theta ) = 1 - P(y=1|x;\theta )$
 
-## Decision Boundary
+### Decision Boundary
 
 In order to get our discrete 0 or 1 classification, we can suppose
 
@@ -61,7 +63,7 @@ In conclusion, we can now say:
 * $\theta^T x \geq 0 \Rightarrow y = 1$
 * $\theta^T x < 0 \Rightarrow y = 0$
 
-### Decision boundaries
+#### Decision boundaries
 
 The **decision boundary** is the line that separates the area where $y=0$ and where $y=1$. It is created by our hypothesis function $\theta^T x = 0$.
 
@@ -69,13 +71,14 @@ The **decision boundary** is the line that separates the area where $y=0$ and 
 
 The decision boundary is a property, not of the trading set, but of the hypothesis $h_\theta(x)$ under the parameters. As long as we're given parameter vector $\theta$, that defines the decision boundary. <u>But the training set is not what we use to define the decision boundary.</u>
 
-### Non-linear decision boundaries
+#### Non-linear decision boundaries
 
 The input to the sigmoid function $g(z)$ (e.g. $\theta ^T x$) doesn't need to be linear, and could be a function that describes a circle (e.g. $z = \theta_0 + \theta _1 x_1 + \theta _2 x_2 + \theta _3 x_1^2 + \theta _4 x_2^2$) or any shape to fit our data.
 
 ![nonlinear decision boundary](/images/nonlinear_decision_boundary.png)
 
-## Cost Function
+## Logistic Regression Model
+### Cost Function
 
 We cannot use the same cost function that we use for linear regression because the Logistic Function will cause the output to be wavy, causing many local optima. In other words, it will not be a convex function (凸函数).
 
@@ -83,9 +86,9 @@ We cannot use the same cost function that we use for linear regression because t
 
 Instead, our cost function for logistic regression looks like:
 
-$J(\theta) = \dfrac{1}{m} \sum\_{i=1}^m \mathrm{Cost}(h\_\theta(x^{(i)}),y^{(i)})$
+$J(\theta) = \dfrac{1}{m} \sum_{i=1}^m \mathrm{Cost}(h_\theta(x^{(i)}),y^{(i)})$
 
-$\mathrm{Cost}(h\_\theta(x),y) = \begin{cases}-\log(h\_\theta(x)) ,&\text{if y = 1}\newline -\log(1-h_\theta(x)) ,&\text{if y = 0}\end{cases}$
+$\mathrm{Cost}(h_\theta(x),y) = \begin{cases}-\log(h_\theta(x)) ,&\text{if y = 1}\newline -\log(1-h_\theta(x)) ,&\text{if y = 0}\end{cases}$
 
 * $\mathrm{Cost} = 0$ if $y=1, h_\theta (x)=1$
 * But as $h_\theta (x) \to 0, \mathrm{Cost} \to \infty$
@@ -95,5 +98,89 @@ $\mathrm{Cost}(h\_\theta(x),y) = \begin{cases}-\log(h\_\theta(x)) ,&\text{if y =
 
 ![Logistic_regression_cost_function_negative_class](/images/Logistic_regression_cost_function_negative_class.png)
 
-## Simplified Cost Function and Gradient Descent
+### Simplified Cost Function and Gradient Descent
 
+#### Simplified Cost Function
+
+We can compress our cost function's two conditional cases into one case:
+
+$\mathrm{Cost}(h\_\theta(x),y) = - y \log(h\_\theta(x)) - (1 - y) \log(1 - h_\theta(x))$
+
+We can fully write out our entire cost function as follows:
+
+$J(\theta) = - \frac{1}{m} \sum\_{i=1}^m [y^{(i)}\log (h\_\theta (x^{(i)})) + (1 - y^{(i)})\log (1 - h\_\theta(x^{(i)}))]$
+
+* This cost function can be derived from statistics using the principle of maximum likelihood estimation (极大似然估计). Which is an idea in statistics for how to efficiently find parameters' data for different models.
+* And it also has a nice property that it is convex.
+
+A vectorized implementation is:
+
+$h = g(X\theta)$
+
+$ J(\theta)  = \frac{1}{m} \cdot \left(-y^{T}\log(h)-(1-y)^{T}\log(1-h)\right)$
+
+#### Gradient Descent
+
+$Repeat \lbrace \\\\ \theta_j := \theta_j - \alpha \dfrac{\partial}{\partial \theta\_j}J(\theta)= \theta\_j - \frac{\alpha}{m} \sum\_{i=1}^m (h_\theta(x^{(i)}) - y^{(i)}) x_j^{(i)} \\\\ \rbrace$
+
+* Notice that this algorithm is identical to the one we used in linear regression (only $h_\theta (x)$ changes). We still have to simultaneously update all values in theta.
+
+* A vectorized implementation is:
+
+  $\theta := \theta - \frac{\alpha}{m} X^{T} (g(X \theta ) - \vec{y})$
+
+* To make sure th learning rate $\alpha$ is set properly, you can plot $J(\theta)$ as a function of the number of iterations and make sure $J(\theta )$ is decreasing on every iteration.
+
+### Advanced Optimization
+
+Optimization algorithms
+
+* Gradient descent
+* Conjugate gradient
+* BFGS
+* L-BFGS
+
+The avdantage of last three algorithms:
+
+* No need to manually pick $\alpha$
+* Often faster than gradient descent
+
+Disadvantages:
+
+* More complex
+
+#### Example
+
+We first need to provide a function that evaluates the following two functions for a given input value $\theta$ :
+
+* $J(\theta )$
+* $\frac{\partial}{\partial \theta _j} J(\theta )$
+
+We can write a single function that returns both of these:
+
+```octave
+function [jVal, gradient] = costFunction(theta)
+  jVal = [...code to compute J(theta)...];
+  gradient = [...code to compute derivative of J(theta)...];
+end
+```
+
+Then we can use octave's "fminunc()" optimization algorithm along with the "optimset()" function that creates an object containing the options we want to send to "fminunc()".
+
+```octave
+options = optimset('GradObj', 'on', 'MaxIter', 100);
+initialTheta = zeros(2,1);
+[optTheta, functionVal, exitFlag] = fminunc(@costFunction, initialTheta, options);
+```
+
+## Multiclass Classification: One-vs-all
+
+Instead of $y = {0,1}$, we will expand our definition so that $y = {1,2…n}$. In this case we divide our problem into $n$ binary classification problems; in each one, we predict the probability that 'y' is a member of one of our classes.
+
+That is, we can train a logistic regression classifier $h_\theta ^{(i)} (x)$ for each class $i$ to predict the probability that $y=i$.
+
+$h_\theta^{(i)}(x) = P(y = i | x ; \theta)\ \ \ \  (i=1,2,3,\dots , n+1)$
+
+On a new input $x$, to make a prediction, pick the class $i$ that maximizes $h_\theta ^{(i)} (x)$.
+
+![One-vs-all](/images/one_vs_all.png)
