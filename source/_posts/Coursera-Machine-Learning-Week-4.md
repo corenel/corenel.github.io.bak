@@ -38,3 +38,39 @@ There is evidence that the brain uses only one "learning algorithm" for all its 
 ![The "one learning algorithm" hypothesis](/images/The_one_learning_algorithm_hypothesis.png)
 
 ![Sensor representations in the brain](/images/sensor_representations_in_the_brain.png)
+
+## Neural Networks
+
+### Model Representation I
+
+#### Neuron in the brain
+
+At a very simple level, neurons are basically computational units that take input (**dendrites**, 树突) as electrical input (called "spikes") that are channeled to outputs (**axons**, 轴突).
+
+![neruon_in_the_brain](/images/neruon_in_the_brain.png)
+
+#### Neuron model: Logistic unit
+
+* In our model, our dendrites are like the input features ($x\_1 \cdots x\_n$), and the output is the result of our hypothesis function $h\_\theta (x)$:
+* In this model our $x_0$ input node is sometimes called the "**bias unit**." It is always equal to 1.
+* In neural networks, we use the same logistic function as in classification: $\frac{1}{1 + e^{-\theta^Tx}}$. In neural networks however we sometimes call it a sigmoid (logistic) **activation function**.
+* Our $\theta$ parameters are sometimes instead called "**weights**" in the neural networks model.
+
+![neuron_model_logistic_unit](/images/neuron_model_logistic_unit.png)
+
+#### Neural Network
+
+* The first layer is called the "**input layer**" and the final layer the "**output layer**", which gives the final value computed on the hypothesis.
+* We can have intermediate layers of nodes between the input and output layers called the "**hidden layer**".
+* $a_i^{(j)}$ = "activation" of unit $i$ in layer $j$
+  * $a\_1^{(2)} = g(\Theta\_{10}^{(1)}x\_0 + \Theta\_{11}^{(1)}x\_1 + \Theta\_{12}^{(1)}x\_2 + \Theta\_{13}^{(1)}x\_3)$
+  * $a\_2^{(2)} = g(\Theta\_{20}^{(1)}x\_0 + \Theta\_{21}^{(1)}x\_1 + \Theta\_{22}^{(1)}x\_2 + \Theta\_{23}^{(1)}x\_3)$
+  * $a\_3^{(2)} = g(\Theta\_{30}^{(1)}x\_0 + \Theta\_{31}^{(1)}x\_1 + \Theta\_{32}^{(1)}x\_2 + \Theta\_{33}^{(1)}x\_3)$
+  * $h\_\Theta(x) = a\_1^{(3)} = g(\Theta\_{10}^{(2)}a\_0^{(2)} + \Theta\_{11}^{(2)}a\_1^{(2)} + \Theta\_{12}^{(2)}a\_2^{(2)} + \Theta\_{13}^{(2)}a\_3^{(2)})$
+* $\Theta^{(j)}$ = matrix of weights controlling function mapping from layer $j$ to layer $j+1$
+  * If network has $s\_j$ units in layer $j$ and $s\_{j+1}$ units in layer $j+1$, then $\Theta ^{(j)}$ will be of dimension $s\_{j+1}×(s\_{j}+1)$.
+
+![neural_network](/images/neural_network.png)
+
+### Model Representation II
+
