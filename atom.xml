@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://www.yuthon.com/"/>
-  <updated>2016-08-16T03:48:22.000Z</updated>
+  <updated>2016-08-16T11:22:21.000Z</updated>
   <id>http://www.yuthon.com/</id>
   
   <author>
@@ -20,7 +20,7 @@
     <link href="http://www.yuthon.com/2016/08/15/Coursera-Machine-Learning-Week-4/"/>
     <id>http://www.yuthon.com/2016/08/15/Coursera-Machine-Learning-Week-4/</id>
     <published>2016-08-15T09:05:54.000Z</published>
-    <updated>2016-08-16T03:48:22.000Z</updated>
+    <updated>2016-08-16T11:22:21.000Z</updated>
     
     <content type="html"><![CDATA[<h1 id="Neural-Networks-Representation"><a href="#Neural-Networks-Representation" class="headerlink" title="Neural Networks: Representation"></a>Neural Networks: Representation</h1><h2 id="Motivations"><a href="#Motivations" class="headerlink" title="Motivations"></a>Motivations</h2><h3 id="Non-linear-Hypotheses"><a href="#Non-linear-Hypotheses" class="headerlink" title="Non-linear Hypotheses"></a>Non-linear Hypotheses</h3><p><u>Performing linear regression with a complex set of data with many features is very unwieldy.</u> For 100 features, if we wanted to make them quadratic we would get 5050 resulting new features.</p>
 <p>We can approximate the growth of the number of new features we get with all quadratic terms with $\mathcal{O}(n^2/2)$. And if you wanted to include all cubic terms in your hypothesis, the features would grow asymptotically at $\mathcal{O}(n^3)$. <u>These are very steep growths, so as the number of our features increase, the number of quadratic or cubic features increase very rapidly and becomes quickly impractical</u>.</p>
@@ -35,7 +35,32 @@
 <h4 id="The-“one-learning-algorithm”-hypothesis"><a href="#The-“one-learning-algorithm”-hypothesis" class="headerlink" title="The “one learning algorithm” hypothesis"></a>The “one learning algorithm” hypothesis</h4><p>There is evidence that the brain uses only one “learning algorithm” for all its different functions. Scientists have tried cutting (in an animal brain) the connection between the ears and the auditory cortex and rewiring the optical nerve with the auditory cortex to find that the auditory cortex literally learns to see.</p>
 <p><img src="/images/The_one_learning_algorithm_hypothesis.png" alt="The &quot;one learning algorithm&quot; hypothesis"></p>
 <p><img src="/images/sensor_representations_in_the_brain.png" alt="Sensor representations in the brain"></p>
-]]></content>
+<h2 id="Neural-Networks"><a href="#Neural-Networks" class="headerlink" title="Neural Networks"></a>Neural Networks</h2><h3 id="Model-Representation-I"><a href="#Model-Representation-I" class="headerlink" title="Model Representation I"></a>Model Representation I</h3><h4 id="Neuron-in-the-brain"><a href="#Neuron-in-the-brain" class="headerlink" title="Neuron in the brain"></a>Neuron in the brain</h4><p>At a very simple level, neurons are basically computational units that take input (<strong>dendrites</strong>, 树突) as electrical input (called “spikes”) that are channeled to outputs (<strong>axons</strong>, 轴突).</p>
+<p><img src="/images/neruon_in_the_brain.png" alt="neruon_in_the_brain"></p>
+<h4 id="Neuron-model-Logistic-unit"><a href="#Neuron-model-Logistic-unit" class="headerlink" title="Neuron model: Logistic unit"></a>Neuron model: Logistic unit</h4><ul>
+<li>In our model, our dendrites are like the input features ($x_1 \cdots x_n$), and the output is the result of our hypothesis function $h_\theta (x)$:</li>
+<li>In this model our $x_0$ input node is sometimes called the “<strong>bias unit</strong>.” It is always equal to 1.</li>
+<li>In neural networks, we use the same logistic function as in classification: $\frac{1}{1 + e^{-\theta^Tx}}$. In neural networks however we sometimes call it a sigmoid (logistic) <strong>activation function</strong>.</li>
+<li>Our $\theta$ parameters are sometimes instead called “<strong>weights</strong>“ in the neural networks model.</li>
+</ul>
+<p><img src="/images/neuron_model_logistic_unit.png" alt="neuron_model_logistic_unit"></p>
+<h4 id="Neural-Network"><a href="#Neural-Network" class="headerlink" title="Neural Network"></a>Neural Network</h4><ul>
+<li>The first layer is called the “<strong>input layer</strong>“ and the final layer the “<strong>output layer</strong>“, which gives the final value computed on the hypothesis.</li>
+<li>We can have intermediate layers of nodes between the input and output layers called the “<strong>hidden layer</strong>“.</li>
+<li>$a_i^{(j)}$ = “activation” of unit $i$ in layer $j$<ul>
+<li>$a_1^{(2)} = g(\Theta_{10}^{(1)}x_0 + \Theta_{11}^{(1)}x_1 + \Theta_{12}^{(1)}x_2 + \Theta_{13}^{(1)}x_3)$</li>
+<li>$a_2^{(2)} = g(\Theta_{20}^{(1)}x_0 + \Theta_{21}^{(1)}x_1 + \Theta_{22}^{(1)}x_2 + \Theta_{23}^{(1)}x_3)$</li>
+<li>$a_3^{(2)} = g(\Theta_{30}^{(1)}x_0 + \Theta_{31}^{(1)}x_1 + \Theta_{32}^{(1)}x_2 + \Theta_{33}^{(1)}x_3)$</li>
+<li>$h_\Theta(x) = a_1^{(3)} = g(\Theta_{10}^{(2)}a_0^{(2)} + \Theta_{11}^{(2)}a_1^{(2)} + \Theta_{12}^{(2)}a_2^{(2)} + \Theta_{13}^{(2)}a_3^{(2)})$</li>
+</ul>
+</li>
+<li>$\Theta^{(j)}$ = matrix of weights controlling function mapping from layer $j$ to layer $j+1$<ul>
+<li>If network has $s_j$ units in layer $j$ and $s_{j+1}$ units in layer $j+1$, then $\Theta ^{(j)}$ will be of dimension $s_{j+1}×(s_{j}+1)$.</li>
+</ul>
+</li>
+</ul>
+<p><img src="/images/neural_network.png" alt="neural_network"></p>
+<h3 id="Model-Representation-II"><a href="#Model-Representation-II" class="headerlink" title="Model Representation II"></a>Model Representation II</h3>]]></content>
     
     <summary type="html">
     
