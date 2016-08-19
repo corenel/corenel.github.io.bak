@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://www.yuthon.com/"/>
-  <updated>2016-08-16T14:21:51.000Z</updated>
+  <updated>2016-08-19T04:46:28.000Z</updated>
   <id>http://www.yuthon.com/</id>
   
   <author>
@@ -14,6 +14,62 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>Notes for Machine Learning - Week 5</title>
+    <link href="http://www.yuthon.com/2016/08/17/Coursera-Machine-Learning-Week-5/"/>
+    <id>http://www.yuthon.com/2016/08/17/Coursera-Machine-Learning-Week-5/</id>
+    <published>2016-08-17T03:57:03.000Z</published>
+    <updated>2016-08-19T04:46:28.000Z</updated>
+    
+    <content type="html"><![CDATA[<h1 id="Neural-Networks-Learning"><a href="#Neural-Networks-Learning" class="headerlink" title="Neural Networks: Learning"></a>Neural Networks: Learning</h1><h2 id="Cost-Function-and-Backpropagation"><a href="#Cost-Function-and-Backpropagation" class="headerlink" title="Cost Function and Backpropagation"></a>Cost Function and Backpropagation</h2><h3 id="Cost-Function"><a href="#Cost-Function" class="headerlink" title="Cost Function"></a>Cost Function</h3><p>Let’s first define a few variables that we will need to use:</p>
+<ul>
+<li>$L$ = total number of layers in the network</li>
+<li>$s_l$ = number of units (not counting bias unit) in layer $l$</li>
+<li>$K$ = number of output units/classes</li>
+</ul>
+<p>Recall that the cost function for regularized logistic regression was:</p>
+<p>$J(\theta) = - \frac{1}{m} \sum_{i=1}^m \large[ y^{(i)}\ \log (h_\theta (x^{(i)})) + (1 - y^{(i)})\ \log (1 - h_\theta(x^{(i)}))\large] + \frac{\lambda}{2m}\sum_{j=1}^n \theta_j^2$</p>
+<p>For neural networks, it is going to be slightly more complicated:</p>
+<p>$J(\Theta) = - \frac{1}{m} \sum_{i=1}^m \sum_{k=1}^K \left[y^{(i)}_k \log ((h_\Theta (x^{(i)}))_k) + (1 - y^{(i)}_k)\log (1 - (h_\Theta(x^{(i)}))_k)\right] + \frac{\lambda}{2m}\sum_{l=1}^{L-1} \sum_{i=1}^{s_l} \sum_{j=1}^{s_{l+1}} ( \Theta_{j,i}^{(l)})^2$</p>
+<a id="more"></a>
+<ul>
+<li>$h_\Theta (x) \in R^K$, $(h_\Theta (x))_i$ = $i^{th}$ output</li>
+<li><u>In the first part of the equation</u>, the double sum simply adds up the logistic regression costs calculated for each cell in the output layer</li>
+<li><u>In the regularization part</u>, the triple sum simply adds up the squares of all the individual $\Theta$s in the entire network.<ul>
+<li><u>The number of columns</u> in our current theta matrix is equal to the number of nodes in our current layer (<u>including</u> the bias unit).</li>
+<li><u>The number of rows</u> in our current theta matrix is equal to the number of nodes in the next layer (<u>excluding</u> the bias unit).<ul>
+<li>This is like a bias unit and by analogy to what we were doing for logistic progression, we won’t sum over those terms in our regularization term because <u>we don’t want to regularize them</u> and string their values as zero. </li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+]]></content>
+    
+    <summary type="html">
+    
+      &lt;h1 id=&quot;Neural-Networks-Learning&quot;&gt;&lt;a href=&quot;#Neural-Networks-Learning&quot; class=&quot;headerlink&quot; title=&quot;Neural Networks: Learning&quot;&gt;&lt;/a&gt;Neural Networks: Learning&lt;/h1&gt;&lt;h2 id=&quot;Cost-Function-and-Backpropagation&quot;&gt;&lt;a href=&quot;#Cost-Function-and-Backpropagation&quot; class=&quot;headerlink&quot; title=&quot;Cost Function and Backpropagation&quot;&gt;&lt;/a&gt;Cost Function and Backpropagation&lt;/h2&gt;&lt;h3 id=&quot;Cost-Function&quot;&gt;&lt;a href=&quot;#Cost-Function&quot; class=&quot;headerlink&quot; title=&quot;Cost Function&quot;&gt;&lt;/a&gt;Cost Function&lt;/h3&gt;&lt;p&gt;Let’s first define a few variables that we will need to use:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;$L$ = total number of layers in the network&lt;/li&gt;
+&lt;li&gt;$s_l$ = number of units (not counting bias unit) in layer $l$&lt;/li&gt;
+&lt;li&gt;$K$ = number of output units/classes&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;Recall that the cost function for regularized logistic regression was:&lt;/p&gt;
+&lt;p&gt;$J(\theta) = - \frac{1}{m} \sum_{i=1}^m \large[ y^{(i)}\ \log (h_\theta (x^{(i)})) + (1 - y^{(i)})\ \log (1 - h_\theta(x^{(i)}))\large] + \frac{\lambda}{2m}\sum_{j=1}^n \theta_j^2$&lt;/p&gt;
+&lt;p&gt;For neural networks, it is going to be slightly more complicated:&lt;/p&gt;
+&lt;p&gt;$J(\Theta) = - \frac{1}{m} \sum_{i=1}^m \sum_{k=1}^K \left[y^{(i)}_k \log ((h_\Theta (x^{(i)}))_k) + (1 - y^{(i)}_k)\log (1 - (h_\Theta(x^{(i)}))_k)\right] + \frac{\lambda}{2m}\sum_{l=1}^{L-1} \sum_{i=1}^{s_l} \sum_{j=1}^{s_{l+1}} ( \Theta_{j,i}^{(l)})^2$&lt;/p&gt;
+    
+    </summary>
+    
+      <category term="Notes" scheme="http://www.yuthon.com/categories/Notes/"/>
+    
+    
+      <category term="Coursera" scheme="http://www.yuthon.com/tags/Coursera/"/>
+    
+      <category term="Machine Learning" scheme="http://www.yuthon.com/tags/Machine-Learning/"/>
+    
+  </entry>
   
   <entry>
     <title>Notes for Machine Learning - Week 4</title>
