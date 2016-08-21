@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://www.yuthon.com/"/>
-  <updated>2016-08-19T04:46:28.000Z</updated>
+  <updated>2016-08-21T07:54:47.000Z</updated>
   <id>http://www.yuthon.com/</id>
   
   <author>
@@ -20,7 +20,7 @@
     <link href="http://www.yuthon.com/2016/08/17/Coursera-Machine-Learning-Week-5/"/>
     <id>http://www.yuthon.com/2016/08/17/Coursera-Machine-Learning-Week-5/</id>
     <published>2016-08-17T03:57:03.000Z</published>
-    <updated>2016-08-19T04:46:28.000Z</updated>
+    <updated>2016-08-21T07:54:47.000Z</updated>
     
     <content type="html"><![CDATA[<h1 id="Neural-Networks-Learning"><a href="#Neural-Networks-Learning" class="headerlink" title="Neural Networks: Learning"></a>Neural Networks: Learning</h1><h2 id="Cost-Function-and-Backpropagation"><a href="#Cost-Function-and-Backpropagation" class="headerlink" title="Cost Function and Backpropagation"></a>Cost Function and Backpropagation</h2><h3 id="Cost-Function"><a href="#Cost-Function" class="headerlink" title="Cost Function"></a>Cost Function</h3><p>Let’s first define a few variables that we will need to use:</p>
 <ul>
@@ -45,6 +45,61 @@
 </ul>
 </li>
 </ul>
+<h3 id="Backpropagation-Algorithm"><a href="#Backpropagation-Algorithm" class="headerlink" title="Backpropagation Algorithm"></a>Backpropagation Algorithm</h3><p><strong>“Backpropagation” (后向搜索)</strong> is neural-network terminology for minimizing our cost function, just like what we were doing with gradient descent in logistic and linear regression.</p>
+<p>Our goal is try to find parameters $\Theta$ to try to minimize $J(\Theta)$. </p>
+<p>In order to use either gradient descent or one of the advance optimization algorithms. What we need to do therefore is to write code that takes this input the parameters theta and computes $J(\Theta)$ and $\dfrac{\partial}{\partial \Theta_{i,j}^{(l)}}J(\Theta)$.</p>
+<h4 id="Gradient-compuation"><a href="#Gradient-compuation" class="headerlink" title="Gradient compuation"></a>Gradient compuation</h4><p>Given one training example $(x,y)$</p>
+<p><img src="/images/gradient_computation.png" alt="gradient_computation"></p>
+<p>Forward propagation:</p>
+<ul>
+<li>$a^{(1)} = x$</li>
+<li>$z^{(2)} = \Theta ^{(1)} a ^{(1)}$</li>
+<li>$a^{(2)} = g(z^{(2)})\ (add\ a^{(2)}_0)$</li>
+<li>$z^{(3)} = \Theta ^{(1)} a ^{(2)}$</li>
+<li>$a^{(3)} = g(z^{(3)})\ (add\ a^{(3)}_0)$</li>
+<li>$z^{(4)} = \Theta ^{(3)} a ^{(3)}$</li>
+<li>$a^{(2)} = h_\Theta (x) =  g(z^{(3)})$</li>
+</ul>
+<p>In backpropagation we’re going to compute for every node:</p>
+<p>$\delta_j^{(l)}$ = “error” of node j in layer $l$ ($s_{l+1}$ elements vector)</p>
+<p>For each output unit (layer $L = 4$):</p>
+<p>$\delta ^{(4)} = a^{(4)} - y$</p>
+<p>To get the delta values of the layers before the last layer, we can use an equation that steps us back from right to left:</p>
+<p>$\delta^{(l)} = ((\Theta^{(l)})^T \delta^{(l+1)})\ .*\ g’(z^{(l)})$</p>
+<p>The g-prime derivative terms can also be written out as:</p>
+<p>$g’(z^{(l)}) = a^{(l)}\ .*\ (1 - a^{(l)})$</p>
+<p>There is no $\delta ^{(1)}$ term, because the first layer corresponds to the input layer and that’s just the feature we observed in our training sets, so that doesn’t have any error associated with that.</p>
+<p>It’s possible to prove that if you ignore regularation, then the partial derivative terms you want are exactly given by the activations and these delta terms. </p>
+<p>$\dfrac{\partial J(\Theta)}{\partial \Theta_{i,j}^{(l)}} = a^{(i)}_j \delta^{(l+1)}_i\ (\text{ignoring }\lambda)$</p>
+<h4 id="Backpropagation-Algorithm-1"><a href="#Backpropagation-Algorithm-1" class="headerlink" title="Backpropagation Algorithm"></a>Backpropagation Algorithm</h4><ul>
+<li>Training set $\lbrace (x^{(1)}, y^{(1)}) \cdots (x^{(m)}, y^{(m)})\rbrace$</li>
+<li>Set $\Delta^{(l)}_{i,j} := 0$ (for all $l, i, j$)</li>
+<li>For $i=1$ to $m$<ul>
+<li>Set $a^{(1)} := x^{(t)}$</li>
+<li>Perform forward propagation to compute $a^{(l)}$ for $l = 2,3,\dots ,L$</li>
+<li>Using $y^{(i)}$, compute $\delta^{(L)} = a^{(L)} - y^{(t)}$</li>
+<li>Compute $\delta^{(L-1)}, \delta^{(L-2)},\dots,\delta^{(2)}$</li>
+<li>$\Delta^{(l)}_{i,j} := \Delta^{(l)}_{i,j} + a_j^{(l)} \delta_i^{(l+1)}$  or with vectorization, $\Delta^{(l)} := \Delta^{(l)} + \delta^{(l+1)}(a^{(l)})^T$</li>
+</ul>
+</li>
+<li>$D^{(l)}_{i,j} := \dfrac{1}{m}\left(\Delta^{(l)}_{i,j} + \lambda\Theta^{(l)}_{i,j}\right)$ <strong>If</strong> $j\ne 0$ </li>
+<li>$D^{(l)}_{i,j} := \dfrac{1}{m}\Delta^{(l)}_{i,j}$ <strong>If</strong> $j = 0$</li>
+</ul>
+<p>The capital-delta matrix is used as an “accumulator” to add up our values as we go along and eventually compute our partial derivative.</p>
+<p> the $D_{i,j}^{(l)}$ terms are the partial derivatives and the results we are looking for:</p>
+<p>$\dfrac{\partial J(\Theta)}{\partial \Theta_{i,j}^{(l)}} = D_{i,j}^{(l)}$</p>
+<h3 id="Backpropagation-Intuition"><a href="#Backpropagation-Intuition" class="headerlink" title="Backpropagation Intuition"></a>Backpropagation Intuition</h3><h4 id="Forward-propagation"><a href="#Forward-propagation" class="headerlink" title="Forward propagation"></a>Forward propagation</h4><p><img src="/images/forward_propagation_intuition.png" alt="forward_propagation_intuition.png"></p>
+<h4 id="What’s-backpropagation-doing"><a href="#What’s-backpropagation-doing" class="headerlink" title="What’s backpropagation doing?"></a>What’s backpropagation doing?</h4><p>The cost function is:</p>
+<p>$J(\theta) = - \frac{1}{m} \sum_{t=1}^m\sum_{k=1}^K  \left[ y^{(t)}_k \ \log (h_\theta (x^{(t)}))_k + (1 - y^{(t)}_k)\ \log (1 - h_\theta(x^{(t)})_k)\right] + \frac{\lambda}{2m}\sum_{l=1}^{L-1} \sum_{i=1}^{s_l} \sum_{j=1}^{s_l+1} ( \theta_{j,i}^{(l)})^2$</p>
+<p>Focusing on  a single example $x^{(i)}, y^{(i)}$, the case of 1 output unit, and ignoring regularization ($\lambda = 0$), </p>
+<p>$cost(t) =y^{(t)} \ \log (h_\theta (x^{(t)})) + (1 - y^{(t)})\ \log (1 - h_\theta(x^{(t)}))$</p>
+<p>Intuitively, $\theta ^{(l)}_j$ is the “error” for $a ^{(l)}_j$ (unit $j$ in layer $l$). More formally, the delta values are actually the derivative of the cost function:</p>
+<p>$\delta_j^{(l)} = \dfrac{\partial}{\partial z_j^{(l)}} cost(t)$</p>
+<p><img src="/images/backward_propagation_intuition.png" alt="backward_propagation_intuition.png"></p>
+<p>In above, we can compute</p>
+<p>$\delta ^{(4)}_1 = y^{(i)} - a^{(4)}_1$</p>
+<p>$\delta ^{(3)}_2 = \Theta ^{(3)}_{12} \delta^{(4)}_1$</p>
+<p>$\delta ^{(2)}_2 = \Theta ^{(2)}_{12} \delta^{(3)}_1 + \Theta ^{(2)}_{22} \delta^{(3)}_2$</p>
 ]]></content>
     
     <summary type="html">
