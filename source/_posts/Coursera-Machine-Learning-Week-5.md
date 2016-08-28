@@ -134,3 +134,31 @@ $\delta ^{(3)}\_2 = \Theta ^{(3)}\_{12} \delta^{(4)}\_1$
 
 $\delta ^{(2)}\_2 = \Theta ^{(2)}\_{12} \delta^{(3)}\_1 + \Theta ^{(2)}\_{22} \delta^{(3)}\_2$
 
+## Backpropagation in Practice
+
+### Implementation Note: Unrolling Parameters
+
+We use following code to get the optimisation theta.
+
+```octave
+function [jVal, gradient] = costFunction(theta)
+  ...
+optTheta = fminunc(@costFunction, initialTheta, options)
+```
+
+Where `gradient`, `theta`, `initialTheta` are vectors of $n+1$ dimension.
+
+In order to use optimizing functions such as `fminunc()`, we will want to "unroll" all the elements and put them into one long vector:
+
+```octave
+thetaVec = [Theta1(:); Theta2(:); Theta3(:)];
+DVec = [D1(:); D2(:); D3(:)];
+```
+
+If the dimensions of `Theta1` is $10\times11$, `Theta2` is $101\times 1$ and `Theta3` is $1\times 11$, then we can get back our original matrices from the "unrolled" versions as follows:
+
+```octave
+Theta1 = reshape(thetaVector(1:110),10,11)
+Theta2 = reshape(thetaVector(111:220),10,11)
+Theta3 = reshape(thetaVector(221:231),1,11)
+```
