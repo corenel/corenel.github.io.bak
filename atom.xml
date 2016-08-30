@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://www.yuthon.com/"/>
-  <updated>2016-08-29T01:46:16.000Z</updated>
+  <updated>2016-08-30T09:20:39.000Z</updated>
   <id>http://www.yuthon.com/</id>
   
   <author>
@@ -20,7 +20,7 @@
     <link href="http://www.yuthon.com/2016/08/17/Coursera-Machine-Learning-Week-5/"/>
     <id>http://www.yuthon.com/2016/08/17/Coursera-Machine-Learning-Week-5/</id>
     <published>2016-08-17T03:57:03.000Z</published>
-    <updated>2016-08-29T01:46:16.000Z</updated>
+    <updated>2016-08-30T09:20:39.000Z</updated>
     
     <content type="html"><![CDATA[<h1 id="Neural-Networks-Learning"><a href="#Neural-Networks-Learning" class="headerlink" title="Neural Networks: Learning"></a>Neural Networks: Learning</h1><h2 id="Cost-Function-and-Backpropagation"><a href="#Cost-Function-and-Backpropagation" class="headerlink" title="Cost Function and Backpropagation"></a>Cost Function and Backpropagation</h2><h3 id="Cost-Function"><a href="#Cost-Function" class="headerlink" title="Cost Function"></a>Cost Function</h3><p>Let’s first define a few variables that we will need to use:</p>
 <ul>
@@ -107,7 +107,28 @@
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">thetaVec = [Theta1(:); Theta2(:); Theta3(:)];</div><div class="line">DVec = [D1(:); D2(:); D3(:)];</div></pre></td></tr></table></figure>
 <p>If the dimensions of <code>Theta1</code> is $10\times11$, <code>Theta2</code> is $10\times 11$ and <code>Theta3</code> is $1\times 11$, then we can get back our original matrices from the “unrolled” versions as follows:</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">Theta1 = reshape(thetaVector(1:110),10,11)</div><div class="line">Theta2 = reshape(thetaVector(111:220),10,11)</div><div class="line">Theta3 = reshape(thetaVector(221:231),1,11)</div></pre></td></tr></table></figure>
-<h3 id="Gradient-Checking"><a href="#Gradient-Checking" class="headerlink" title="Gradient Checking"></a>Gradient Checking</h3><h1 id="Quiz"><a href="#Quiz" class="headerlink" title="Quiz"></a>Quiz</h1><ol>
+<h3 id="Gradient-Checking"><a href="#Gradient-Checking" class="headerlink" title="Gradient Checking"></a>Gradient Checking</h3><p>Gradient checking will assure that our backpropagation works as intended.</p>
+<h4 id="Numerical-estimation-of-gradients"><a href="#Numerical-estimation-of-gradients" class="headerlink" title="Numerical estimation of gradients"></a>Numerical estimation of gradients</h4><p><img src="/images/numerical_estimation_of_gradients.png" alt="numerical_estimation_of_gradients.png"></p>
+<p>We can approximate the derivative of our cost function with:</p>
+<p>$\dfrac{\partial}{\partial\Theta}J(\Theta) \approx \dfrac{J(\Theta + \epsilon) - J(\Theta - \epsilon)}{2\epsilon}$</p>
+<p><strong>Implement</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">gradApprox = (J(theta + EPSILON) - J(theta - EPSILON)) / (@ * EPSILON);</div></pre></td></tr></table></figure>
+<h4 id="Gradient-Checking-1"><a href="#Gradient-Checking-1" class="headerlink" title="Gradient Checking"></a>Gradient Checking</h4><p>With multiple theta matrices, we can approximate the derivative <strong>with respect to</strong> $\Theta _J$ as follows:</p>
+<p>$\dfrac{\partial}{\partial\Theta_j}J(\Theta) \approx \dfrac{J(\Theta_1, \dots, \Theta_j + \epsilon, \dots, \Theta_n) - J(\Theta_1, \dots, \Theta_j - \epsilon, \dots, \Theta_n)}{2\epsilon}$</p>
+<p>A good small value for ϵ (epsilon), guarantees the math above to become true. If the value be much smaller, may we will end up with numerical problems. The professor Andrew usually uses the value $\epsilon = 10^{-4}$.</p>
+<p><strong>Implement</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">epsilon = 1e-4;</div><div class="line">for i = 1 : n,</div><div class="line">  thetaPlus = theta;</div><div class="line">  thetaPlus(i) += epsilon;</div><div class="line">  thetaMinus = theta;</div><div class="line">  thetaMinus(i) -= epsilon;</div><div class="line">  gradApprox(i) = (J(thetaPlus) - J(thetaMinus))/(2*epsilon)</div><div class="line">end;</div></pre></td></tr></table></figure>
+<p>We then want to check that <code>gradApprox</code> $\approx$ <code>deltaVector</code>.</p>
+<h4 id="Implement-Note"><a href="#Implement-Note" class="headerlink" title="Implement Note"></a>Implement Note</h4><ul>
+<li>Implement backprop to compute <code>DVec</code> (unrolled $D^{(1)}, D^{(2)}, D^{(3)}$).</li>
+<li>Implement numerical gradient check to compute <code>gradApprox</code>.</li>
+<li>Make sure they give similar values.</li>
+<li>Turn off gradient checking. Using backprop code for learning.</li>
+</ul>
+<h4 id="Important"><a href="#Important" class="headerlink" title="Important"></a>Important</h4><ul>
+<li>Be sure to disable your gradient checking code before training your classifier. If you run numerical gradient computation on every iteration of gradient descent (or in the inner loop of <code>costFunction(...)</code>), your code will be <u>very</u> slow.</li>
+</ul>
+<h1 id="Quiz"><a href="#Quiz" class="headerlink" title="Quiz"></a>Quiz</h1><ol>
 <li>You are training a three layer neural network and would like to use backpropagation to compute the gradient of the cost function. In the backpropagation algorithm, one of the steps is to update $\Delta^{(2)}_{ij} := \Delta^{(2)}_{ij} +  \delta^{(3)}_i * (a^{(2)})_j$ for every $i,j$. Which of the following is a correct vectorization of this step?<ul>
 <li>$\Delta(2) :=\Delta(2)+(a(3))^T \ast\delta(2)$</li>
 <li>$\Delta(2) :=\Delta(2)+\delta(3) \ast (a(3))^T$</li>
