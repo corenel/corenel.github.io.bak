@@ -165,7 +165,55 @@ Theta3 = reshape(thetaVector(221:231),1,11)
 
 ### Gradient Checking
 
+Gradient checking will assure that our backpropagation works as intended.
 
+#### Numerical estimation of gradients
+
+![numerical_estimation_of_gradients.png](/images/numerical_estimation_of_gradients.png)
+
+We can approximate the derivative of our cost function with:
+
+$\dfrac{\partial}{\partial\Theta}J(\Theta) \approx \dfrac{J(\Theta + \epsilon) - J(\Theta - \epsilon)}{2\epsilon}$
+
+**Implement**
+
+```octave
+gradApprox = (J(theta + EPSILON) - J(theta - EPSILON)) / (@ * EPSILON);
+```
+
+#### Gradient Checking
+
+With multiple theta matrices, we can approximate the derivative **with respect to** $\Theta _J$ as follows:
+
+$\dfrac{\partial}{\partial\Theta\_j}J(\Theta) \approx \dfrac{J(\Theta\_1, \dots, \Theta\_j + \epsilon, \dots, \Theta\_n) - J(\Theta\_1, \dots, \Theta\_j - \epsilon, \dots, \Theta\_n)}{2\epsilon}$
+
+A good small value for ϵ (epsilon), guarantees the math above to become true. If the value be much smaller, may we will end up with numerical problems. The professor Andrew usually uses the value $\epsilon = 10^{-4}$.
+
+**Implement**
+
+```octave
+epsilon = 1e-4;
+for i = 1 : n,
+  thetaPlus = theta;
+  thetaPlus(i) += epsilon;
+  thetaMinus = theta;
+  thetaMinus(i) -= epsilon;
+  gradApprox(i) = (J(thetaPlus) - J(thetaMinus))/(2*epsilon)
+end;
+```
+
+We then want to check that `gradApprox` $\approx$ `deltaVector`.
+
+#### Implement Note
+
+* Implement backprop to compute `DVec` (unrolled $D^{(1)}, D^{(2)}, D^{(3)}$).
+* Implement numerical gradient check to compute `gradApprox`.
+* Make sure they give similar values.
+* Turn off gradient checking. Using backprop code for learning.
+
+#### Important
+
+* Be sure to disable your gradient checking code before training your classifier. If you run numerical gradient computation on every iteration of gradient descent (or in the inner loop of `costFunction(...)`), your code will be <u>very</u> slow.
 
 # Quiz
 
