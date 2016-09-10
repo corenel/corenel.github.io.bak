@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://www.yuthon.com/"/>
-  <updated>2016-08-30T09:20:39.000Z</updated>
+  <updated>2016-09-10T08:05:16.000Z</updated>
   <id>http://www.yuthon.com/</id>
   
   <author>
@@ -16,11 +16,54 @@
   <generator uri="http://hexo.io/">Hexo</generator>
   
   <entry>
+    <title>Notes for Machine Learning - Week 6</title>
+    <link href="http://www.yuthon.com/2016/09/10/Coursera-Machine-Learning-Week-6/"/>
+    <id>http://www.yuthon.com/2016/09/10/Coursera-Machine-Learning-Week-6/</id>
+    <published>2016-09-10T07:18:41.000Z</published>
+    <updated>2016-09-10T08:05:16.000Z</updated>
+    
+    <content type="html"><![CDATA[<h1 id="Advice-for-Applying-Machine-Learning"><a href="#Advice-for-Applying-Machine-Learning" class="headerlink" title="Advice for Applying Machine Learning"></a>Advice for Applying Machine Learning</h1><h2 id="Evaluating-a-Learning-Algorithm"><a href="#Evaluating-a-Learning-Algorithm" class="headerlink" title="Evaluating a Learning Algorithm"></a>Evaluating a Learning Algorithm</h2><h3 id="Deciding-What-to-Try-Next"><a href="#Deciding-What-to-Try-Next" class="headerlink" title="Deciding What to Try Next"></a>Deciding What to Try Next</h3><p>Errors in your predictions can be troubleshooted by:</p>
+<ul>
+<li>Getting more training examples</li>
+<li>Trying smaller sets of features</li>
+<li>Trying additional features</li>
+<li>Trying adding polynomial features</li>
+<li>Increasing or decreasing $\lambda$</li>
+</ul>
+<p>Don’t just pick one of these avenues at random. We’ll explore diagnostic techniques for choosing one of the above solutions in the following sections.</p>
+<p>In the next few sections, We’ll first talk about how evaluate your learning algorithms and after that we’ll talk about some of these diagnostics which will hopefully let you much more effectively select more of the useful things to try mixing if your goal to improve the machine learning system. </p>
+<a id="more"></a>]]></content>
+    
+    <summary type="html">
+    
+      &lt;h1 id=&quot;Advice-for-Applying-Machine-Learning&quot;&gt;&lt;a href=&quot;#Advice-for-Applying-Machine-Learning&quot; class=&quot;headerlink&quot; title=&quot;Advice for Applying Machine Learning&quot;&gt;&lt;/a&gt;Advice for Applying Machine Learning&lt;/h1&gt;&lt;h2 id=&quot;Evaluating-a-Learning-Algorithm&quot;&gt;&lt;a href=&quot;#Evaluating-a-Learning-Algorithm&quot; class=&quot;headerlink&quot; title=&quot;Evaluating a Learning Algorithm&quot;&gt;&lt;/a&gt;Evaluating a Learning Algorithm&lt;/h2&gt;&lt;h3 id=&quot;Deciding-What-to-Try-Next&quot;&gt;&lt;a href=&quot;#Deciding-What-to-Try-Next&quot; class=&quot;headerlink&quot; title=&quot;Deciding What to Try Next&quot;&gt;&lt;/a&gt;Deciding What to Try Next&lt;/h3&gt;&lt;p&gt;Errors in your predictions can be troubleshooted by:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Getting more training examples&lt;/li&gt;
+&lt;li&gt;Trying smaller sets of features&lt;/li&gt;
+&lt;li&gt;Trying additional features&lt;/li&gt;
+&lt;li&gt;Trying adding polynomial features&lt;/li&gt;
+&lt;li&gt;Increasing or decreasing $\lambda$&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;Don’t just pick one of these avenues at random. We’ll explore diagnostic techniques for choosing one of the above solutions in the following sections.&lt;/p&gt;
+&lt;p&gt;In the next few sections, We’ll first talk about how evaluate your learning algorithms and after that we’ll talk about some of these diagnostics which will hopefully let you much more effectively select more of the useful things to try mixing if your goal to improve the machine learning system. &lt;/p&gt;
+    
+    </summary>
+    
+      <category term="Notes" scheme="http://www.yuthon.com/categories/Notes/"/>
+    
+    
+      <category term="Coursera" scheme="http://www.yuthon.com/tags/Coursera/"/>
+    
+      <category term="Machine Learning" scheme="http://www.yuthon.com/tags/Machine-Learning/"/>
+    
+  </entry>
+  
+  <entry>
     <title>Notes for Machine Learning - Week 5</title>
     <link href="http://www.yuthon.com/2016/08/17/Coursera-Machine-Learning-Week-5/"/>
     <id>http://www.yuthon.com/2016/08/17/Coursera-Machine-Learning-Week-5/</id>
     <published>2016-08-17T03:57:03.000Z</published>
-    <updated>2016-08-30T09:20:39.000Z</updated>
+    <updated>2016-09-10T07:20:49.000Z</updated>
     
     <content type="html"><![CDATA[<h1 id="Neural-Networks-Learning"><a href="#Neural-Networks-Learning" class="headerlink" title="Neural Networks: Learning"></a>Neural Networks: Learning</h1><h2 id="Cost-Function-and-Backpropagation"><a href="#Cost-Function-and-Backpropagation" class="headerlink" title="Cost Function and Backpropagation"></a>Cost Function and Backpropagation</h2><h3 id="Cost-Function"><a href="#Cost-Function" class="headerlink" title="Cost Function"></a>Cost Function</h3><p>Let’s first define a few variables that we will need to use:</p>
 <ul>
@@ -128,8 +171,39 @@
 <h4 id="Important"><a href="#Important" class="headerlink" title="Important"></a>Important</h4><ul>
 <li>Be sure to disable your gradient checking code before training your classifier. If you run numerical gradient computation on every iteration of gradient descent (or in the inner loop of <code>costFunction(...)</code>), your code will be <u>very</u> slow.</li>
 </ul>
+<h3 id="Random-Initialization"><a href="#Random-Initialization" class="headerlink" title="Random Initialization"></a>Random Initialization</h3><p>Initializing all theta weights to zero does not work with neural networks. When we backpropagate, all nodes will update to the same value repeatedly.</p>
+<p>Instead we can randomly initialize our weights to break symmetry.</p>
+<ul>
+<li>Initialize each $\Theta^{(l)}_{ij}$ to a random value between $[-\epsilon, \epsilon]$<ul>
+<li>$\epsilon = \dfrac{\sqrt{6}}{\sqrt{\mathrm{Loutput} + \mathrm{Linput}}}$</li>
+<li>$\Theta^{(l)} = 2\epsilon\ rand(Loutput, Linput+1)-\epsilon$</li>
+</ul>
+</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">% If the dimensions of Theta1 is 10x11, Theta2 is 10x11 and Theta3 is 1x11.</div><div class="line"></div><div class="line">Theta1 = rand(10,11) * (2 * INIT_EPSILON) - INIT_EPSILON;</div><div class="line">Theta2 = rand(10,11) * (2 * INIT_EPSILON) - INIT_EPSILON;</div><div class="line">Theta3 = rand(1,11) * (2 * INIT_EPSILON) - INIT_EPSILON;</div></pre></td></tr></table></figure>
+<blockquote>
+<p>Note: this epsilon is unrelated to the epsilon from Gradient Checking</p>
+</blockquote>
+<h3 id="Putting-It-Together"><a href="#Putting-It-Together" class="headerlink" title="Putting It Together"></a>Putting It Together</h3><p>First, pick a network architecture; choose the layout of your neural network, including how many hidden units in each layer and how many layers total.</p>
+<ul>
+<li>Number of input units = dimension of features $x^{(i)}$</li>
+<li>Number of output units = number of classes</li>
+<li>Number of hidden units per layer = usually more the better (must balance with cost of computation as it increases with more hidden units)</li>
+<li>Defaults: 1 hidden layer. If more than 1 hidden layer, then the same number of units in every hidden layer.</li>
+</ul>
+<p><strong>Training a Neural Network</strong></p>
+<ol>
+<li>Randomly initialize the weights</li>
+<li>Implement forward propagation to get $h_\theta(x^{(i)})$</li>
+<li>Implement the cost function</li>
+<li>Implement backpropagation to compute partial derivatives</li>
+<li>Use gradient checking to confirm that your backpropagation works. Then disable gradient checking.</li>
+<li>Use gradient descent or a built-in optimization function to minimize the cost function with the weights in theta.</li>
+</ol>
+<p>When we perform forward and back propagation, we loop on every training example:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">for i = 1:m,</div><div class="line">   Perform forward propagation and backpropagation using example (x(i),y(i))</div><div class="line">   (Get activations a(l) and delta terms d(l) for l = 2,...,L</div></pre></td></tr></table></figure>
 <h1 id="Quiz"><a href="#Quiz" class="headerlink" title="Quiz"></a>Quiz</h1><ol>
-<li>You are training a three layer neural network and would like to use backpropagation to compute the gradient of the cost function. In the backpropagation algorithm, one of the steps is to update $\Delta^{(2)}_{ij} := \Delta^{(2)}_{ij} +  \delta^{(3)}_i * (a^{(2)})_j$ for every $i,j$. Which of the following is a correct vectorization of this step?<ul>
+<li>You are training a three layer neural network and would like to use backpropagation to compute the gradient of the cost function. In the backpropagation algorithm, one of the steps is to update $\Delta^{(2)}<em>{ij} := \Delta^{(2)}</em>{ij} +  \delta^{(3)}_i * (a^{(2)})_j$ for every $i,j$. Which of the following is a correct vectorization of this step?<ul>
 <li>$\Delta(2) :=\Delta(2)+(a(3))^T \ast\delta(2)$</li>
 <li>$\Delta(2) :=\Delta(2)+\delta(3) \ast (a(3))^T$</li>
 <li>$\Delta(2) :=\Delta(2)+(a(2))^T \ast \delta(3)$</li>
