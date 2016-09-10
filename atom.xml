@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://www.yuthon.com/"/>
-  <updated>2016-09-10T08:05:16.000Z</updated>
+  <updated>2016-09-10T12:13:46.000Z</updated>
   <id>http://www.yuthon.com/</id>
   
   <author>
@@ -20,7 +20,7 @@
     <link href="http://www.yuthon.com/2016/09/10/Coursera-Machine-Learning-Week-6/"/>
     <id>http://www.yuthon.com/2016/09/10/Coursera-Machine-Learning-Week-6/</id>
     <published>2016-09-10T07:18:41.000Z</published>
-    <updated>2016-09-10T08:05:16.000Z</updated>
+    <updated>2016-09-10T12:13:46.000Z</updated>
     
     <content type="html"><![CDATA[<h1 id="Advice-for-Applying-Machine-Learning"><a href="#Advice-for-Applying-Machine-Learning" class="headerlink" title="Advice for Applying Machine Learning"></a>Advice for Applying Machine Learning</h1><h2 id="Evaluating-a-Learning-Algorithm"><a href="#Evaluating-a-Learning-Algorithm" class="headerlink" title="Evaluating a Learning Algorithm"></a>Evaluating a Learning Algorithm</h2><h3 id="Deciding-What-to-Try-Next"><a href="#Deciding-What-to-Try-Next" class="headerlink" title="Deciding What to Try Next"></a>Deciding What to Try Next</h3><p>Errors in your predictions can be troubleshooted by:</p>
 <ul>
@@ -32,7 +32,33 @@
 </ul>
 <p>Don’t just pick one of these avenues at random. We’ll explore diagnostic techniques for choosing one of the above solutions in the following sections.</p>
 <p>In the next few sections, We’ll first talk about how evaluate your learning algorithms and after that we’ll talk about some of these diagnostics which will hopefully let you much more effectively select more of the useful things to try mixing if your goal to improve the machine learning system. </p>
-<a id="more"></a>]]></content>
+<a id="more"></a>
+<h3 id="Evaluating-a-Hypothesis"><a href="#Evaluating-a-Hypothesis" class="headerlink" title="Evaluating a Hypothesis"></a>Evaluating a Hypothesis</h3><p>A hypothesis may have low error for the training examples but still be inaccurate (because of overfitting). And it may fail to generalize to new examples not in training set.</p>
+<p>With a given dataset of training examples, we can split up the data into two sets: a <strong>training set</strong> and a <strong>test set</strong>.</p>
+<p>The training/testing procedure using these two sets is then:</p>
+<ol>
+<li><p>Learn $\Theta$ and minimize $J_{train}(\Theta)$ using the training set</p>
+</li>
+<li><p>Compute the test set error $J_{test}(\Theta)$</p>
+<ul>
+<li><p>For linear regression: $J_{test}(\Theta) = \dfrac{1}{2m_{test}} \sum_{i=1}^{m_{test}}(h_\Theta(x^{(i)}_{test}) - y^{(i)}_{test})^2$</p>
+</li>
+<li><p>For classification ~ Misclassification error (aka 0/1 misclassification error): </p>
+<p>$err(h_\Theta(x),y) = \begin{cases} 1 &amp; \mbox{if } h_\Theta(x) \geq 0.5\ and\ y = 0\ or\ h_\Theta(x) &lt; 0.5\ and\ y = 1 \\ 0 &amp; otherwise \end{cases}$</p>
+<ul>
+<li>This gives us a binary 0 or 1 error result based on a misclassification.</li>
+</ul>
+</li>
+<li><p>The average test error for the test set is</p>
+<p>$\text{Test Error} = \dfrac{1}{m_{test}} \sum^{m_{test}}_{i=1} err(h_\Theta(x^{(i)}_{test}), y^{(i)}_{test})$</p>
+<ul>
+<li>This gives us the proportion of the test data that was misclassified.</li>
+</ul>
+</li>
+</ul>
+</li>
+</ol>
+]]></content>
     
     <summary type="html">
     
