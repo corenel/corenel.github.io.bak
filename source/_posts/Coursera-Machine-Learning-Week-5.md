@@ -215,9 +215,55 @@ We then want to check that `gradApprox` $\approx$ `deltaVector`.
 
 * Be sure to disable your gradient checking code before training your classifier. If you run numerical gradient computation on every iteration of gradient descent (or in the inner loop of `costFunction(...)`), your code will be <u>very</u> slow.
 
+### Random Initialization
+
+Initializing all theta weights to zero does not work with neural networks. When we backpropagate, all nodes will update to the same value repeatedly.
+
+Instead we can randomly initialize our weights to break symmetry.
+
+* Initialize each $\Theta^{(l)}_{ij}$ to a random value between $[-\epsilon, \epsilon]$
+  * $\epsilon = \dfrac{\sqrt{6}}{\sqrt{\mathrm{Loutput} + \mathrm{Linput}}}$
+  * $\Theta^{(l)} = 2\epsilon\ rand(Loutput, Linput+1)-\epsilon$
+
+```octave
+% If the dimensions of Theta1 is 10x11, Theta2 is 10x11 and Theta3 is 1x11.
+
+Theta1 = rand(10,11) * (2 * INIT_EPSILON) - INIT_EPSILON;
+Theta2 = rand(10,11) * (2 * INIT_EPSILON) - INIT_EPSILON;
+Theta3 = rand(1,11) * (2 * INIT_EPSILON) - INIT_EPSILON;
+```
+
+> Note: this epsilon is unrelated to the epsilon from Gradient Checking
+
+### Putting It Together
+
+First, pick a network architecture; choose the layout of your neural network, including how many hidden units in each layer and how many layers total.
+
+* Number of input units = dimension of features $x^{(i)}$
+* Number of output units = number of classes
+* Number of hidden units per layer = usually more the better (must balance with cost of computation as it increases with more hidden units)
+* Defaults: 1 hidden layer. If more than 1 hidden layer, then the same number of units in every hidden layer.
+
+**Training a Neural Network**
+
+1. Randomly initialize the weights
+2. Implement forward propagation to get $h_\theta(x^{(i)})$
+3. Implement the cost function
+4. Implement backpropagation to compute partial derivatives
+5. Use gradient checking to confirm that your backpropagation works. Then disable gradient checking.
+6. Use gradient descent or a built-in optimization function to minimize the cost function with the weights in theta.
+
+When we perform forward and back propagation, we loop on every training example:
+
+```
+for i = 1:m,
+   Perform forward propagation and backpropagation using example (x(i),y(i))
+   (Get activations a(l) and delta terms d(l) for l = 2,...,L
+```
+
 # Quiz
 
-1. You are training a three layer neural network and would like to use backpropagation to compute the gradient of the cost function. In the backpropagation algorithm, one of the steps is to update $\Delta^{(2)}\_{ij} := \Delta^{(2)}\_{ij} +  \delta^{(3)}\_i * (a^{(2)})\_j$ for every $i,j$. Which of the following is a correct vectorization of this step?
+1. You are training a three layer neural network and would like to use backpropagation to compute the gradient of the cost function. In the backpropagation algorithm, one of the steps is to update $\Delta^{(2)}_{ij} := \Delta^{(2)}_{ij} +  \delta^{(3)}_i * (a^{(2)})_j$ for every $i,j$. Which of the following is a correct vectorization of this step?
    * $\Delta(2) :=\Delta(2)+(a(3))^T \ast\delta(2)$
    * $\Delta(2) :=\Delta(2)+\delta(3) \ast (a(3))^T$
    * $\Delta(2) :=\Delta(2)+(a(2))^T \ast \delta(3)$
