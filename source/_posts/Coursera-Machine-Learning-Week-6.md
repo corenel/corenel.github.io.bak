@@ -93,7 +93,9 @@ This way, <u>the degree of the polynomial d has not been trained using the tes
 
 > Be aware that using the CV set to select 'd' means that we cannot also use it for the validation curve process of setting the lambda value.
 
-## Diagnosing Bias vs. Variance
+## Bias vs. Variance
+
+### Diagnosing Bias vs. Variance
 
 We'll examine the relationship between the degree of the polynomial $d$ and the underfitting or overfitting of our hypothesis.
 
@@ -110,3 +112,27 @@ At the same time, the cross validation error will tend to **decrease** as we i
 
 ![Features-and-polynom-degree](/images/Features-and-polynom-degree.png)
 
+### Regularization and Bias/Variance
+
+The relationship of $\lambda$ to the training set and the variance set is as follows:
+
+* **Low $\lambda$ (High variance, overfitting)**: $J\_{train}(\Theta)$ is low and $J\_{CV}(\Theta)$ is high (high variance/overfitting).
+* **Intermediate λ**: $J\_{train}(\Theta)$ and $J\_{CV}(\Theta)$ are somewhat low and Jtrain(Θ)≈JCV(Θ).
+* **Large $\lambda$ (High bias, underfitting)**: both $J\_{train}(\Theta)$ and $J\_{CV}(\Theta)$ will be high (underfitting/high bias)
+  * A large lambda heavily penalizes all the $\Theta$ parameters, which greatly simplifies the line of our resulting function, so causes underfitting.
+
+![Features-and-polynom-degree-fix.png](/images/Features-and-polynom-degree-fix.png)
+
+In order to choose the model and the regularization $\lambda$, we need:
+
+1. Create a list of lambda (i.e. $\lambda \in \{0,0.01,0.02,0.04,0.08,0.16,0.32,0.64,1.28,2.56,5.12,10.24\}$);
+2. Select a lambda to compute;
+3. Create a model set like degree of the polynomial or others;
+4. Select a model to learn $\Theta$;
+5. Learn the parameter $\Theta$ for the model selected, using $J\_{train}(\Theta)$ **with** $\lambda$ selected (this will learn $\Theta$ for the next step);
+6. Compute the train error using the learned $\Theta$ (computed with λ ) on the $J\_{train}(\Theta)$ **without** regularization or $\lambda = 0$;
+7. Compute the cross validation error using the learned $\Theta$ (computed with λ) on the $J\_{CV}(\Theta)​$ **without** regularization or $\lambda = 0$;
+8. Do this for the entire model set and lambdas, then <u>select the best combo that produces the lowest error on the cross validation set</u>;
+9. Now if you need visualize to help you understand your decision, you can plot to the figure like above with: ($\lambda$ x Cost $J\_{train}(\Theta)$) and ($\lambda$ x Cost $J\_{CV}(\Theta)$);
+10. Now using the best combo $\Theta$ and $\lambda$, apply it on Jtest(Θ) to see if it has a good generalization of the problem.
+11. To help decide the best polynomial degree and $\lambda$ to use, we can diagnose with the learning curves, that is the next subject.
