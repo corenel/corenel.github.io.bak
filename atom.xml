@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://www.yuthon.com/"/>
-  <updated>2016-09-11T04:02:30.000Z</updated>
+  <updated>2016-09-11T06:17:49.000Z</updated>
   <id>http://www.yuthon.com/</id>
   
   <author>
@@ -20,7 +20,7 @@
     <link href="http://www.yuthon.com/2016/09/10/Coursera-Machine-Learning-Week-6/"/>
     <id>http://www.yuthon.com/2016/09/10/Coursera-Machine-Learning-Week-6/</id>
     <published>2016-09-10T07:18:41.000Z</published>
-    <updated>2016-09-11T04:02:30.000Z</updated>
+    <updated>2016-09-11T06:17:49.000Z</updated>
     
     <content type="html"><![CDATA[<h1 id="Advice-for-Applying-Machine-Learning"><a href="#Advice-for-Applying-Machine-Learning" class="headerlink" title="Advice for Applying Machine Learning"></a>Advice for Applying Machine Learning</h1><h2 id="Evaluating-a-Learning-Algorithm"><a href="#Evaluating-a-Learning-Algorithm" class="headerlink" title="Evaluating a Learning Algorithm"></a>Evaluating a Learning Algorithm</h2><h3 id="Deciding-What-to-Try-Next"><a href="#Deciding-What-to-Try-Next" class="headerlink" title="Deciding What to Try Next"></a>Deciding What to Try Next</h3><p>Errors in your predictions can be troubleshooted by:</p>
 <ul>
@@ -90,6 +90,18 @@
 <blockquote>
 <p>Be aware that using the CV set to select ‘d’ means that we cannot also use it for the validation curve process of setting the lambda value.</p>
 </blockquote>
+<h2 id="Diagnosing-Bias-vs-Variance"><a href="#Diagnosing-Bias-vs-Variance" class="headerlink" title="Diagnosing Bias vs. Variance"></a>Diagnosing Bias vs. Variance</h2><p>We’ll examine the relationship between the degree of the polynomial $d$ and the underfitting or overfitting of our hypothesis.</p>
+<ul>
+<li>We need to distinguish whether <strong>bias</strong> (偏差) or <strong>variance</strong> (方差) is the problem contributing to bad predictions.</li>
+<li><u>High bias is underfitting and high variance is overfitting.</u> We need to find a golden mean between these two.</li>
+</ul>
+<p>The training error will tend to <strong>decrease</strong> as we increase the degree d of the polynomial.</p>
+<p>At the same time, the cross validation error will tend to <strong>decrease</strong> as we increase d up to a point, and then it will <strong>increase</strong> as d is increased, forming a convex curve.</p>
+<ul>
+<li><strong>High bias (underfitting)</strong>: both $J_{train}(\Theta)$ and $J_{CV}(\Theta)$ will be high, and $J_{CV}(\Theta) \approx J_{train}(\Theta)$.</li>
+<li><strong>High variance (overfitting)</strong>: $J_{train}(\Theta)$ will be low but $J_{CV}(\Theta)$ will be high. And $J_{CV}(\Theta) \gg J_{train}(\Theta)$.</li>
+</ul>
+<p><img src="/images/Features-and-polynom-degree.png" alt="Features-and-polynom-degree"></p>
 ]]></content>
     
     <summary type="html">
