@@ -93,5 +93,20 @@ This way, <u>the degree of the polynomial d has not been trained using the tes
 
 > Be aware that using the CV set to select 'd' means that we cannot also use it for the validation curve process of setting the lambda value.
 
+## Diagnosing Bias vs. Variance
 
+We'll examine the relationship between the degree of the polynomial $d$ and the underfitting or overfitting of our hypothesis.
+
+* We need to distinguish whether **bias** (偏差) or **variance** (方差) is the problem contributing to bad predictions.
+* <u>High bias is underfitting and high variance is overfitting.</u> We need to find a golden mean between these two.
+
+The training error will tend to **decrease** as we increase the degree d of the polynomial.
+
+At the same time, the cross validation error will tend to **decrease** as we increase d up to a point, and then it will **increase** as d is increased, forming a convex curve.
+
+* **High bias (underfitting)**: both $J\_{train}(\Theta)$ and $J\_{CV}(\Theta)$ will be high, and $J\_{CV}(\Theta) \approx J\_{train}(\Theta)$.
+* **High variance (overfitting)**: $J\_{train}(\Theta)$ will be low but $J\_{CV}(\Theta)$ will be high. And $J\_{CV}(\Theta) \gg J\_{train}(\Theta)$.
+
+
+![Features-and-polynom-degree](/images/Features-and-polynom-degree.png)
 
