@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://www.yuthon.com/"/>
-  <updated>2016-09-11T06:17:49.000Z</updated>
+  <updated>2016-09-11T12:40:53.000Z</updated>
   <id>http://www.yuthon.com/</id>
   
   <author>
@@ -20,7 +20,7 @@
     <link href="http://www.yuthon.com/2016/09/10/Coursera-Machine-Learning-Week-6/"/>
     <id>http://www.yuthon.com/2016/09/10/Coursera-Machine-Learning-Week-6/</id>
     <published>2016-09-10T07:18:41.000Z</published>
-    <updated>2016-09-11T06:17:49.000Z</updated>
+    <updated>2016-09-11T12:40:53.000Z</updated>
     
     <content type="html"><![CDATA[<h1 id="Advice-for-Applying-Machine-Learning"><a href="#Advice-for-Applying-Machine-Learning" class="headerlink" title="Advice for Applying Machine Learning"></a>Advice for Applying Machine Learning</h1><h2 id="Evaluating-a-Learning-Algorithm"><a href="#Evaluating-a-Learning-Algorithm" class="headerlink" title="Evaluating a Learning Algorithm"></a>Evaluating a Learning Algorithm</h2><h3 id="Deciding-What-to-Try-Next"><a href="#Deciding-What-to-Try-Next" class="headerlink" title="Deciding What to Try Next"></a>Deciding What to Try Next</h3><p>Errors in your predictions can be troubleshooted by:</p>
 <ul>
@@ -90,7 +90,7 @@
 <blockquote>
 <p>Be aware that using the CV set to select ‘d’ means that we cannot also use it for the validation curve process of setting the lambda value.</p>
 </blockquote>
-<h2 id="Diagnosing-Bias-vs-Variance"><a href="#Diagnosing-Bias-vs-Variance" class="headerlink" title="Diagnosing Bias vs. Variance"></a>Diagnosing Bias vs. Variance</h2><p>We’ll examine the relationship between the degree of the polynomial $d$ and the underfitting or overfitting of our hypothesis.</p>
+<h2 id="Bias-vs-Variance"><a href="#Bias-vs-Variance" class="headerlink" title="Bias vs. Variance"></a>Bias vs. Variance</h2><h3 id="Diagnosing-Bias-vs-Variance"><a href="#Diagnosing-Bias-vs-Variance" class="headerlink" title="Diagnosing Bias vs. Variance"></a>Diagnosing Bias vs. Variance</h3><p>We’ll examine the relationship between the degree of the polynomial $d$ and the underfitting or overfitting of our hypothesis.</p>
 <ul>
 <li>We need to distinguish whether <strong>bias</strong> (偏差) or <strong>variance</strong> (方差) is the problem contributing to bad predictions.</li>
 <li><u>High bias is underfitting and high variance is overfitting.</u> We need to find a golden mean between these two.</li>
@@ -102,6 +102,30 @@
 <li><strong>High variance (overfitting)</strong>: $J_{train}(\Theta)$ will be low but $J_{CV}(\Theta)$ will be high. And $J_{CV}(\Theta) \gg J_{train}(\Theta)$.</li>
 </ul>
 <p><img src="/images/Features-and-polynom-degree.png" alt="Features-and-polynom-degree"></p>
+<h3 id="Regularization-and-Bias-Variance"><a href="#Regularization-and-Bias-Variance" class="headerlink" title="Regularization and Bias/Variance"></a>Regularization and Bias/Variance</h3><p>The relationship of $\lambda$ to the training set and the variance set is as follows:</p>
+<ul>
+<li><strong>Low $\lambda$ (High variance, overfitting)</strong>: $J_{train}(\Theta)$ is low and $J_{CV}(\Theta)$ is high (high variance/overfitting).</li>
+<li><strong>Intermediate λ</strong>: $J_{train}(\Theta)$ and $J_{CV}(\Theta)$ are somewhat low and Jtrain(Θ)≈JCV(Θ).</li>
+<li><strong>Large $\lambda$ (High bias, underfitting)</strong>: both $J_{train}(\Theta)$ and $J_{CV}(\Theta)$ will be high (underfitting/high bias)<ul>
+<li>A large lambda heavily penalizes all the $\Theta$ parameters, which greatly simplifies the line of our resulting function, so causes underfitting.</li>
+</ul>
+</li>
+</ul>
+<p><img src="/images/Features-and-polynom-degree-fix.png" alt="Features-and-polynom-degree-fix.png"></p>
+<p>In order to choose the model and the regularization $\lambda$, we need:</p>
+<ol>
+<li>Create a list of lambda (i.e. $\lambda \in {0,0.01,0.02,0.04,0.08,0.16,0.32,0.64,1.28,2.56,5.12,10.24}$);</li>
+<li>Select a lambda to compute;</li>
+<li>Create a model set like degree of the polynomial or others;</li>
+<li>Select a model to learn $\Theta$;</li>
+<li>Learn the parameter $\Theta$ for the model selected, using $J_{train}(\Theta)$ <strong>with</strong> $\lambda$ selected (this will learn $\Theta$ for the next step);</li>
+<li>Compute the train error using the learned $\Theta$ (computed with λ ) on the $J_{train}(\Theta)$ <strong>without</strong> regularization or $\lambda = 0$;</li>
+<li>Compute the cross validation error using the learned $\Theta$ (computed with λ) on the $J_{CV}(\Theta)​$ <strong>without</strong> regularization or $\lambda = 0$;</li>
+<li>Do this for the entire model set and lambdas, then <u>select the best combo that produces the lowest error on the cross validation set</u>;</li>
+<li>Now if you need visualize to help you understand your decision, you can plot to the figure like above with: ($\lambda$ x Cost $J_{train}(\Theta)$) and ($\lambda$ x Cost $J_{CV}(\Theta)$);</li>
+<li>Now using the best combo $\Theta$ and $\lambda$, apply it on Jtest(Θ) to see if it has a good generalization of the problem.</li>
+<li>To help decide the best polynomial degree and $\lambda$ to use, we can diagnose with the learning curves, that is the next subject.</li>
+</ol>
 ]]></content>
     
     <summary type="html">
