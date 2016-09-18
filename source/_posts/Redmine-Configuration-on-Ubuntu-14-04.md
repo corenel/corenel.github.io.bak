@@ -9,7 +9,7 @@ tags:
   - MySQL
 ---
 
-最近实验室要搞团队协作与项目管理，所以梅老板派我去装个 Redmine。不过这东西看着确实有些年头了，跟现在流行的 SPA (单页应用) 一点都不搭。当然，抱怨归抱怨，东西还是得装……
+最近实验室要搞团队协作与项目管理，所以梅老板派我去装个 Redmine。
 
 本文参考了 [HowTo Install Redmine on Ubuntu step by step]([http://www.redmine.org/projects/redmine/wiki/HowTo_Install_Redmine_on_Ubuntu_step_by_step](http://www.redmine.org/projects/redmine/wiki/HowTo_Install_Redmine_on_Ubuntu_step_by_step)) 这篇官网的文章，并且根据实际情况有所改动。
 
