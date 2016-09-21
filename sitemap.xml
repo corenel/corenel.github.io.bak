@@ -2,16 +2,16 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
-    <loc>http://www.yuthon.com/2016/09/15/Redmine-Configuration-on-Ubuntu-14-04/</loc>
+    <loc>http://www.yuthon.com/2016/09/10/Coursera-Machine-Learning-Week-6/</loc>
     
-    <lastmod>2016-09-18T03:40:37.000Z</lastmod>
+    <lastmod>2016-09-21T14:09:50.000Z</lastmod>
     
   </url>
   
   <url>
-    <loc>http://www.yuthon.com/2016/09/10/Coursera-Machine-Learning-Week-6/</loc>
+    <loc>http://www.yuthon.com/2016/09/15/Redmine-Configuration-on-Ubuntu-14-04/</loc>
     
-    <lastmod>2016-09-11T12:40:53.000Z</lastmod>
+    <lastmod>2016-09-18T03:40:37.000Z</lastmod>
     
   </url>
   
@@ -79,14 +79,7 @@
   </url>
   
   <url>
-    <loc>http://www.yuthon.com/2016/04/09/CodeSchool-Javascript/</loc>
-    
-    <lastmod>2016-05-16T11:51:43.000Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>http://www.yuthon.com/2016/04/12/CodeSchool-JavaScript-Best-Practices/</loc>
+    <loc>http://www.yuthon.com/2016/04/13/CodeSchool-Try-jQuery/</loc>
     
     <lastmod>2016-05-16T11:51:43.000Z</lastmod>
     
@@ -100,7 +93,14 @@
   </url>
   
   <url>
-    <loc>http://www.yuthon.com/2016/04/13/CodeSchool-Try-jQuery/</loc>
+    <loc>http://www.yuthon.com/2016/04/09/CodeSchool-Javascript/</loc>
+    
+    <lastmod>2016-05-16T11:51:43.000Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://www.yuthon.com/2016/04/12/CodeSchool-JavaScript-Best-Practices/</loc>
     
     <lastmod>2016-05-16T11:51:43.000Z</lastmod>
     

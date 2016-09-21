@@ -90,7 +90,7 @@
     <link href="http://www.yuthon.com/2016/09/10/Coursera-Machine-Learning-Week-6/"/>
     <id>http://www.yuthon.com/2016/09/10/Coursera-Machine-Learning-Week-6/</id>
     <published>2016-09-10T07:18:41.000Z</published>
-    <updated>2016-09-11T12:40:53.000Z</updated>
+    <updated>2016-09-21T14:09:50.000Z</updated>
     
     <content type="html"><![CDATA[<h1 id="Advice-for-Applying-Machine-Learning"><a href="#Advice-for-Applying-Machine-Learning" class="headerlink" title="Advice for Applying Machine Learning"></a>Advice for Applying Machine Learning</h1><h2 id="Evaluating-a-Learning-Algorithm"><a href="#Evaluating-a-Learning-Algorithm" class="headerlink" title="Evaluating a Learning Algorithm"></a>Evaluating a Learning Algorithm</h2><h3 id="Deciding-What-to-Try-Next"><a href="#Deciding-What-to-Try-Next" class="headerlink" title="Deciding What to Try Next"></a>Deciding What to Try Next</h3><p>Errors in your predictions can be troubleshooted by:</p>
 <ul>
@@ -196,6 +196,27 @@
 <li>Now using the best combo $\Theta$ and $\lambda$, apply it on Jtest(Θ) to see if it has a good generalization of the problem.</li>
 <li>To help decide the best polynomial degree and $\lambda$ to use, we can diagnose with the learning curves, that is the next subject.</li>
 </ol>
+<h3 id="Learning-Curves"><a href="#Learning-Curves" class="headerlink" title="Learning Curves"></a>Learning Curves</h3><p>Supposed we use $h_\theta(x) = \theta_0 + \theta_1x + \theta_2x^2$, it’s clear that when $m=1, 2, 3$, we’ll get $0$ errors because we can always find a quadratic curve that exactly touches given points.</p>
+<ul>
+<li>As the training set gets larger, the error for a quadratic function increases.</li>
+<li>The error value will plateau out after a certain m, or training set size.</li>
+</ul>
+<p><img src="/images/learning-curves-m.png" alt="learning-curves-m.png"></p>
+<p><img src="/images/typical-learning-curve.png" alt="typical-learning-curve.png"></p>
+<h4 id="High-Bias"><a href="#High-Bias" class="headerlink" title="High Bias"></a>High Bias</h4><ul>
+<li><strong>Low training set size</strong>:  $J_{train}(\Theta)$ will be low and $J_{CV}(\Theta)$ will be high.</li>
+<li><strong>Large training set size</strong>: both $J_{train}(\Theta)$ and $J_{CV}(\Theta)$ will be high with $J_{train}(\Theta) \approx J_{CV}(\Theta)$.</li>
+</ul>
+<p>If a learning algorithm is suffering from <strong>high bias</strong>, getting more training data <strong>will not (by itself) help much</strong>.</p>
+<p><img src="/images/learning-curves-high-bias.png" alt="learning-curves-high-bias"></p>
+<p><img src="/images/typical-learning-curve-for-high-bias.png" alt="typical-learning-curve-for-high-bias"></p>
+<h4 id="High-Variance"><a href="#High-Variance" class="headerlink" title="High Variance"></a>High Variance</h4><ul>
+<li><strong>Low training set size</strong>:  $J_{train}(\Theta)$ will be low and $J_{CV}(\Theta)$ will be high.</li>
+<li><strong>Large training set size</strong>: $J_{train}(\Theta)$  increases with training set size and $J_{CV}(\Theta)$ continues to decrease without leveling off. Also, $J_{train}(\Theta) &lt; J_{CV}(\Theta)$ but the difference between them remains significant.</li>
+</ul>
+<p>If a learning algorithm is suffering from <strong>high variance</strong>, getting more training data is <strong>likely to help.</strong></p>
+<p><img src="/images/learning-curves-high-variance.png" alt="learning-curves-high-variance"></p>
+<p><img src="/images/typical-learning-curve-for-high-variance.png" alt="typical-learning-curve-for-high-variance"></p>
 ]]></content>
     
     <summary type="html">
