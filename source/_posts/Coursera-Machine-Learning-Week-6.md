@@ -136,3 +136,37 @@ In order to choose the model and the regularization $\lambda$, we need:
 9. Now if you need visualize to help you understand your decision, you can plot to the figure like above with: ($\lambda$ x Cost $J\_{train}(\Theta)$) and ($\lambda$ x Cost $J\_{CV}(\Theta)$);
 10. Now using the best combo $\Theta$ and $\lambda$, apply it on Jtest(Θ) to see if it has a good generalization of the problem.
 11. To help decide the best polynomial degree and $\lambda$ to use, we can diagnose with the learning curves, that is the next subject.
+
+### Learning Curves
+
+Supposed we use $h\_\theta(x) = \theta\_0 + \theta\_1x + \theta\_2x^2$, it's clear that when $m=1, 2, 3$, we'll get $0$ errors because we can always find a quadratic curve that exactly touches given points.
+
+* As the training set gets larger, the error for a quadratic function increases.
+* The error value will plateau out after a certain m, or training set size.
+
+![learning-curves-m.png](/images/learning-curves-m.png)
+
+![typical-learning-curve.png](/images/typical-learning-curve.png)
+
+#### High Bias
+
+* **Low training set size**:  $J\_{train}(\Theta)$ will be low and $J\_{CV}(\Theta)$ will be high.
+* **Large training set size**: both $J\_{train}(\Theta)$ and $J\_{CV}(\Theta)$ will be high with $J\_{train}(\Theta) \approx J\_{CV}(\Theta)$.
+
+If a learning algorithm is suffering from **high bias**, getting more training data **will not (by itself) help much**.
+
+![learning-curves-high-bias](/images/learning-curves-high-bias.png)
+
+![typical-learning-curve-for-high-bias](/images/typical-learning-curve-for-high-bias.png)
+
+#### High Variance
+
+* **Low training set size**:  $J\_{train}(\Theta)$ will be low and $J\_{CV}(\Theta)$ will be high.
+* **Large training set size**: $J\_{train}(\Theta)$  increases with training set size and $J\_{CV}(\Theta)$ continues to decrease without leveling off. Also, $J\_{train}(\Theta) < J\_{CV}(\Theta)$ but the difference between them remains significant.
+
+If a learning algorithm is suffering from **high variance**, getting more training data is **likely to help.**
+
+![learning-curves-high-variance](/images/learning-curves-high-variance.png)
+
+![typical-learning-curve-for-high-variance](/images/typical-learning-curve-for-high-variance.png)
+
