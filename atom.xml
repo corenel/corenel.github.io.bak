@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://www.yuthon.com/"/>
-  <updated>2016-09-18T03:40:37.000Z</updated>
+  <updated>2016-10-06T08:20:05.000Z</updated>
   <id>http://www.yuthon.com/</id>
   
   <author>
@@ -14,6 +14,163 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>Notes for Algorithm Design and Analysis - Week 1</title>
+    <link href="http://www.yuthon.com/2016/10/06/Coursera-Algorithm-Design-Analysis-Week-1/"/>
+    <id>http://www.yuthon.com/2016/10/06/Coursera-Algorithm-Design-Analysis-Week-1/</id>
+    <published>2016-10-06T06:27:03.000Z</published>
+    <updated>2016-10-06T08:20:05.000Z</updated>
+    
+    <content type="html"><![CDATA[<h1 id="Introduction"><a href="#Introduction" class="headerlink" title="Introduction"></a>Introduction</h1><h2 id="Why-study-Algorithm"><a href="#Why-study-Algorithm" class="headerlink" title="Why study Algorithm?"></a>Why study Algorithm?</h2><ul>
+<li>important for all other branches of computer science</li>
+<li>plays a key role in modern technological innovation</li>
+<li>provides novel “lens” on processes outside of computer science and technology</li>
+<li>challenging (i.e., good for the brain!)</li>
+<li>fun</li>
+</ul>
+<a id="more"></a>
+<h2 id="Integer-Multiplication"><a href="#Integer-Multiplication" class="headerlink" title="Integer Multiplication"></a>Integer Multiplication</h2><ul>
+<li>Input: 2 n-digit numbers $x$ and $y$</li>
+<li>Output: product $x*y$</li>
+</ul>
+<h3 id="The-Grade-School-Algorithm"><a href="#The-Grade-School-Algorithm" class="headerlink" title="The Grade School Algorithm"></a>The Grade School Algorithm</h3><p><img src="/images/grade-school-algorithm.png" alt="The Grade School Algorithm"></p>
+<ul>
+<li>There’re roughly $n$ operations per row, and we have $n$ rows. </li>
+<li>So the number of operations overall is about $n^2$.</li>
+</ul>
+<h3 id="The-Algorithm-Designer’s-Mantra"><a href="#The-Algorithm-Designer’s-Mantra" class="headerlink" title="The Algorithm Designer’s Mantra"></a>The Algorithm Designer’s Mantra</h3><blockquote>
+<p>“Perhaps the most important principle for the good algorithm designer is to refuse to be content.”</p>
+<p>— Aho, Hopcroft, and Ullman, <em>The Design and Analysis of Computer Algorithms</em>, 1974</p>
+</blockquote>
+<p><strong>Can we do better</strong> (than the “obvious” method)?</p>
+<h2 id="Karatsuba-Multiplication"><a href="#Karatsuba-Multiplication" class="headerlink" title="Karatsuba Multiplication"></a>Karatsuba Multiplication</h2><h3 id="A-Recursive-Algorithm"><a href="#A-Recursive-Algorithm" class="headerlink" title="A Recursive Algorithm"></a>A Recursive Algorithm</h3><ul>
+<li>Write $x=10^{n/2}a+b$ and $y=10^{n/2}c+d$<ul>
+<li>Where $a,b,c,d$ are $n/2$-digit numbers</li>
+</ul>
+</li>
+<li>Then $x\cdot y = (10^{n/2}a+b)(10^{n/2}c+d) = 10^n ac + 10^{n/2} (ad+bc) +bd \ \ \ \ (*)$</li>
+</ul>
+<p><strong>Idea</strong>: recurseively compute $ac, ad, bc, bd$, then compute $(*)$ in the obvious way. </p>
+<blockquote>
+<p>Of course, simple base case should be omitted.</p>
+</blockquote>
+<h3 id="Karatsuba-Multiplication-1"><a href="#Karatsuba-Multiplication-1" class="headerlink" title="Karatsuba Multiplication"></a>Karatsuba Multiplication</h3><p>$x\cdot y = 10^n ac + 10^{n/2} (ad+bc) +bd$</p>
+<ul>
+<li>Recursively compute $ac$</li>
+<li>Recursively compute $bd$</li>
+<li>Recursively compute $(a+b)(c+d) = ac+bd+ad+bc$<ul>
+<li>Gauss’ Trick: $(3)-(1)-(2)=ad+bc$</li>
+</ul>
+</li>
+</ul>
+<p><strong>Upshot</strong>: only need 3 recursive multiplications (and some additions)</p>
+<h2 id="About-The-Course"><a href="#About-The-Course" class="headerlink" title="About The Course"></a>About The Course</h2><h3 id="Course-Topics"><a href="#Course-Topics" class="headerlink" title="Course Topics"></a>Course Topics</h3><ul>
+<li>Vocabulary for design and analysisof algorithms<ul>
+<li>E.g., “Big Oh” notation</li>
+<li>“sweet spot” for highGlevel reasoning about algorithms</li>
+</ul>
+</li>
+<li>Divide and conquer algorithm design paradigm<ul>
+<li>Will apply to: Integer multiplication, sorting, matrix multiplication, closest pair</li>
+<li>General analysis methods (“Master Method/Theorem”)</li>
+</ul>
+</li>
+<li>Randomization in algorithm design<ul>
+<li>Will apply to: QuickSort, primality testing, graph partitioning, hashing.</li>
+</ul>
+</li>
+<li>Primitives for reasoning about graphs<ul>
+<li>Connectivity information, shortest paths, structure of information and social networks.</li>
+</ul>
+</li>
+<li>Use and implementation of data structures<ul>
+<li>Heaps, balanced binary search trees, hashing and some variants (e.g., bloom ﬁlters)</li>
+</ul>
+</li>
+</ul>
+<h3 id="Topics-in-Sequel-Course"><a href="#Topics-in-Sequel-Course" class="headerlink" title="Topics in Sequel Course"></a>Topics in Sequel Course</h3><ul>
+<li>Greedy algorithm design paradigm</li>
+<li>Dynamic programming algorithm design paradigm</li>
+<li>NP-complete problems and what to do about them</li>
+<li>Fast heuristics with provable guarantees</li>
+<li>Fast exact algorithms for special cases</li>
+<li>Exact algorithms that beat brute-force search</li>
+</ul>
+<h3 id="Skills-You’ll-Lean"><a href="#Skills-You’ll-Lean" class="headerlink" title="Skills You’ll Lean"></a>Skills You’ll Lean</h3><ul>
+<li>Become a better programmer</li>
+<li>Sharpen your mathematical and analytical skills</li>
+<li>Start “thinking algorithmically”</li>
+<li>Literacy with computer science’s “greatest hits”</li>
+<li>Ace your technical interviews</li>
+</ul>
+<h3 id="Who-Are-You"><a href="#Who-Are-You" class="headerlink" title="Who Are You?"></a>Who Are You?</h3><ul>
+<li>It doesn’t really matter.    (It’s a free course, after all.)</li>
+<li>Ideally, you know some programming.</li>
+<li>Doesn’t matter which language(s) you know.<ul>
+<li>But you should be capable of translating high-level algorithm descriptions into working programs in some programming language.</li>
+</ul>
+</li>
+<li>Some (perhaps rusty) mathematical experience.<ul>
+<li>Basic discrete math, proofs by induction, etc.</li>
+</ul>
+</li>
+</ul>
+<h3 id="Supporting-Materials"><a href="#Supporting-Materials" class="headerlink" title="Supporting Materials"></a>Supporting Materials</h3><ul>
+<li>All (annotated) slides available from course site.</li>
+<li>No required textbook.A few of the many good ones:<ul>
+<li>Kleinberg/Tardos, <em>Algorithm Design</em>, 2005.</li>
+<li>Dasgupta/Papadimitriou/Vazirani, <em>Algorithms</em>, 2006.</li>
+<li>Cormen/Leiserson/Rivest/Stein, <em>Introduction to Algorithms</em>, 2009 (3rd edition).</li>
+<li>Mehlhorn/Sanders, <em>Data Structures and Algorithms: The Basic Toolbox</em>, 2008.</li>
+</ul>
+</li>
+<li>No speciﬁc development environment required.<ul>
+<li>But you should be able to write and execute programs.</li>
+</ul>
+</li>
+</ul>
+<h3 id="Assessment"><a href="#Assessment" class="headerlink" title="Assessment"></a>Assessment</h3><ul>
+<li>No grades per se. (Details on a certiﬁcate of  accomplishment TBA.)</li>
+<li>Weekly homeworks.<ul>
+<li>Test understand of material</li>
+<li>Synchronize students, greatly helps discussion forum</li>
+<li>Intellectual challenge</li>
+</ul>
+</li>
+<li>Assessment tools currently just a “1.0” technology.<ul>
+<li>We’ll do our best!</li>
+</ul>
+</li>
+<li>Will sometimes propose harder “challenge problems”<ul>
+<li>Will not be graded; discuss solutions via course forum</li>
+</ul>
+</li>
+</ul>
+<h2 id="Merge-Sort-Motivation-and-Example"><a href="#Merge-Sort-Motivation-and-Example" class="headerlink" title="Merge Sort: Motivation and Example"></a>Merge Sort: Motivation and Example</h2>]]></content>
+    
+    <summary type="html">
+    
+      &lt;h1 id=&quot;Introduction&quot;&gt;&lt;a href=&quot;#Introduction&quot; class=&quot;headerlink&quot; title=&quot;Introduction&quot;&gt;&lt;/a&gt;Introduction&lt;/h1&gt;&lt;h2 id=&quot;Why-study-Algorithm&quot;&gt;&lt;a href=&quot;#Why-study-Algorithm&quot; class=&quot;headerlink&quot; title=&quot;Why study Algorithm?&quot;&gt;&lt;/a&gt;Why study Algorithm?&lt;/h2&gt;&lt;ul&gt;
+&lt;li&gt;important for all other branches of computer science&lt;/li&gt;
+&lt;li&gt;plays a key role in modern technological innovation&lt;/li&gt;
+&lt;li&gt;provides novel “lens” on processes outside of computer science and technology&lt;/li&gt;
+&lt;li&gt;challenging (i.e., good for the brain!)&lt;/li&gt;
+&lt;li&gt;fun&lt;/li&gt;
+&lt;/ul&gt;
+    
+    </summary>
+    
+      <category term="Notes" scheme="http://www.yuthon.com/categories/Notes/"/>
+    
+    
+      <category term="Coursera" scheme="http://www.yuthon.com/tags/Coursera/"/>
+    
+      <category term="Algorithm" scheme="http://www.yuthon.com/tags/Algorithm/"/>
+    
+      <category term="Data Structure" scheme="http://www.yuthon.com/tags/Data-Structure/"/>
+    
+  </entry>
   
   <entry>
     <title>Redmine configuration on Ubuntu 14.04</title>

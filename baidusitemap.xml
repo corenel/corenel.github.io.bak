@@ -4,6 +4,30 @@
 
     
   <url>
+    <loc>http://www.yuthon.com/2016/10/06/Coursera-Algorithm-Design-Analysis-Week-1/</loc>
+    <lastmod>2016-10-06T08:20:05.000Z</lastmod>
+    <data>
+        <display>
+        <title>Notes for Algorithm Design and Analysis - Week 1</title>
+        <pubTime>2016-10-06T06:27:03.000Z</pubTime>
+        
+        <tag>Coursera</tag>
+         
+        <tag>Algorithm</tag>
+         
+        <tag>Data Structure</tag>
+         
+         
+           
+             
+              <breadCrumb title="Notes" url="http://www.yuthon.com/categories/Notes/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
     <loc>http://www.yuthon.com/2016/09/10/Coursera-Machine-Learning-Week-6/</loc>
     <lastmod>2016-09-21T14:09:50.000Z</lastmod>
     <data>
@@ -264,28 +288,6 @@
 
     
   <url>
-    <loc>http://www.yuthon.com/2016/04/14/CodeSchool-Shaping-up-with-Angular.js/</loc>
-    <lastmod>2016-05-16T11:51:43.000Z</lastmod>
-    <data>
-        <display>
-        <title>Notes for Code School - Shaping up with Angular.js</title>
-        <pubTime>2016-04-14T13:19:22.000Z</pubTime>
-        
-        <tag>CodeSchool</tag>
-         
-        <tag>JavaScript</tag>
-         
-         
-           
-             
-              <breadCrumb title="Notes" url="http://www.yuthon.com/categories/Notes/"/>
-          
-        </display>
-    </data>
-    </url>
-
-    
-  <url>
     <loc>http://www.yuthon.com/2016/04/09/CodeSchool-Javascript/</loc>
     <lastmod>2016-05-16T11:51:43.000Z</lastmod>
     <data>
@@ -314,6 +316,28 @@
         <display>
         <title>Notes for Code School - JavaScript Best Practices</title>
         <pubTime>2016-04-12T10:19:54.000Z</pubTime>
+        
+        <tag>CodeSchool</tag>
+         
+        <tag>JavaScript</tag>
+         
+         
+           
+             
+              <breadCrumb title="Notes" url="http://www.yuthon.com/categories/Notes/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://www.yuthon.com/2016/04/14/CodeSchool-Shaping-up-with-Angular.js/</loc>
+    <lastmod>2016-05-16T11:51:43.000Z</lastmod>
+    <data>
+        <display>
+        <title>Notes for Code School - Shaping up with Angular.js</title>
+        <pubTime>2016-04-14T13:19:22.000Z</pubTime>
         
         <tag>CodeSchool</tag>
          
