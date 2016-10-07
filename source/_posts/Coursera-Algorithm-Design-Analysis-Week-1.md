@@ -138,5 +138,22 @@ $x\cdot y = 10^n ac + 10^{n/2} (ad+bc) +bd$
 
 
 
+
 ## Merge Sort: Motivation and Example
 
+### Why Study Merge Sort?
+
+* Good introduction to divide & conquer
+  * Improves over Selection, Insertion, Bubble sorts
+* Calibrate your preparation
+* Motivates guiding principles for algorithm  analysis (worst-case and asymptotic analysis)
+* Analysis generalizes to “Master Method”
+
+### The Sorting Problem
+
+* **Input**: array of numbers, unsorted
+* **Output**: Same numbers, sorted in increasing or decreasing order.
+
+### Merge Sort: Example
+
+![merge-sort-example.png](/images/merge-sort-example.png)
