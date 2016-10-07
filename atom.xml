@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://www.yuthon.com/"/>
-  <updated>2016-10-07T09:34:03.000Z</updated>
+  <updated>2016-10-07T16:00:56.000Z</updated>
   <id>http://www.yuthon.com/</id>
   
   <author>
@@ -14,6 +14,64 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>B-Human Code 浅析 - LineScanner</title>
+    <link href="http://www.yuthon.com/2016/10/07/B-Human-Code-Brief-Analysis-1/"/>
+    <id>http://www.yuthon.com/2016/10/07/B-Human-Code-Brief-Analysis-1/</id>
+    <published>2016-10-07T13:58:08.000Z</published>
+    <updated>2016-10-07T16:00:56.000Z</updated>
+    
+    <content type="html"><![CDATA[<blockquote>
+<p>由于 ZJUDancer 组内需要重写视觉相关部分的代码, 因此最近开始看其他组视觉方面的实现. 而 B-Human 是标准组的老牌强队, 常年冠军, 很有借鉴价值.</p>
+<p>本系列的文章主要是根据他们的开源代码库<code>CodeRelease2015</code>以及历年的 Team Description Paper 写成. 由于个人的 C++ 水平有限, 难免有缺漏之处, 望发现后不吝赐教.</p>
+</blockquote>
+<h1 id="B-Human-Code-浅析"><a href="#B-Human-Code-浅析" class="headerlink" title="B-Human Code 浅析"></a>B-Human Code 浅析</h1><h2 id="Perception"><a href="#Perception" class="headerlink" title="Perception"></a>Perception</h2><h3 id="LineScanner"><a href="#LineScanner" class="headerlink" title="LineScanner"></a>LineScanner</h3><blockquote>
+<p>The file declares a class that creates colored regions on a single vertical scanline.</p>
+<p>The class is based on Arne Böckmann’s original implementation of this idea.</p>
+<p>@author Thomas Röfer</p>
+</blockquote>
+<p>这个类提供了以竖线的形式扫描图像, 并且找出线上具有相同颜色的区域的功能. 对于之后对场地边缘, 球, 机器人, 球门等的检测提供了基础.</p>
+<p><img src="/images/vertical_scan.png" alt="vertical_scan.png"></p>
+<a id="more"></a>
+<p>在<code>LineScanner.h</code>中的类定义:</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">class</span> LineScanner</div><div class="line">&#123;</div><div class="line"><span class="keyword">private</span>:</div><div class="line">  <span class="keyword">const</span> ColorTable&amp; colorTable;</div><div class="line">  <span class="keyword">const</span> Image&amp; image;</div><div class="line">  <span class="keyword">const</span> ScanGrid&amp; scanGrid;</div><div class="line"></div><div class="line"><span class="keyword">public</span>:</div><div class="line">  LineScanner(<span class="keyword">const</span> ColorTable&amp; colorTable,</div><div class="line">              <span class="keyword">const</span> Image&amp; image,</div><div class="line">              <span class="keyword">const</span> ScanGrid&amp; scanGrid)</div><div class="line">  : colorTable(colorTable),</div><div class="line">    image(image),</div><div class="line">    scanGrid(scanGrid) &#123;&#125;</div><div class="line"></div><div class="line">  <span class="comment">/**</span></div><div class="line">   * Scan vertically and add a new scanline with colored regions.</div><div class="line">   * @param line Description of the line to be scanned.</div><div class="line">   * @param top Upper bound for the pixels scanned (exclusive).</div><div class="line">   * @param minColorRatio The ratio of pixels of a different color that is expected </div><div class="line">   *                      after an edge (relative to the step width).</div><div class="line">   * @param scanlineRegions A new scanline containing the regions found will be added</div><div class="line">   *                        to this object.</div><div class="line">   */</div><div class="line">  <span class="function"><span class="keyword">void</span> <span class="title">scan</span><span class="params">(<span class="keyword">const</span> ScanGrid::Line&amp; line, <span class="keyword">const</span> <span class="keyword">int</span> top, <span class="keyword">const</span> <span class="keyword">float</span> minColorRatio, ScanlineRegions&amp; scanlineRegions)</span> <span class="keyword">const</span></span>;</div><div class="line">&#125;;</div></pre></td></tr></table></figure>
+<p>主要看<code>scan</code> 这个成员函数. 这个函数有四个输入参数, 分别是</p>
+<ul>
+<li>要扫描的线<code>line</code></li>
+<li>扫描的线的上界<code>top</code>(与场地边界检测有关)</li>
+<li>对于不同颜色的区分度的比值<code>minColorRatio</code>(与之后判断隔了几个不同颜色的点的两个区域是否要连在一起有关)</li>
+<li>扫描后得到的区域<code>scanlineRegions</code></li>
+</ul>
+<p>然后来看看具体的实现.首先是一些变量的指定:</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// 当前竖线的横坐标</span></div><div class="line"><span class="keyword">const</span> <span class="keyword">int</span> x = line.x;</div><div class="line"><span class="comment">// std::deque::emplace_back Appends a new element to the end of the container.</span></div><div class="line"><span class="comment">// 在区域 scanlineRegions 的 scanlines 向量容器的最后加一个用 x 初始化的元素. </span></div><div class="line">scanlineRegions.scanlines.emplace_back(x); </div><div class="line"><span class="comment">// std::array::back Returns reference to the last element in the container.</span></div><div class="line"><span class="comment">// 前面新建的元素内的 regions 向量</span></div><div class="line"><span class="keyword">auto</span>&amp; regions = scanlineRegions.scanlines.back().regions; </div><div class="line"></div><div class="line"><span class="comment">// 竖线的起始纵坐标</span></div><div class="line"><span class="keyword">auto</span> y = scanGrid.y.begin() + line.yMaxIndex;</div><div class="line"><span class="comment">// 竖线的终止纵坐标</span></div><div class="line"><span class="keyword">const</span> <span class="keyword">auto</span> yEnd = scanGrid.y.end();</div><div class="line"><span class="comment">//  扫描步长</span></div><div class="line"><span class="keyword">const</span> <span class="keyword">int</span> widthStep = image.widthStep;</div></pre></td></tr></table></figure>
+<p>(TBD… 今天要写自动化综合实验的开题报告, 头都大了)</p>
+]]></content>
+    
+    <summary type="html">
+    
+      &lt;blockquote&gt;
+&lt;p&gt;由于 ZJUDancer 组内需要重写视觉相关部分的代码, 因此最近开始看其他组视觉方面的实现. 而 B-Human 是标准组的老牌强队, 常年冠军, 很有借鉴价值.&lt;/p&gt;
+&lt;p&gt;本系列的文章主要是根据他们的开源代码库&lt;code&gt;CodeRelease2015&lt;/code&gt;以及历年的 Team Description Paper 写成. 由于个人的 C++ 水平有限, 难免有缺漏之处, 望发现后不吝赐教.&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;h1 id=&quot;B-Human-Code-浅析&quot;&gt;&lt;a href=&quot;#B-Human-Code-浅析&quot; class=&quot;headerlink&quot; title=&quot;B-Human Code 浅析&quot;&gt;&lt;/a&gt;B-Human Code 浅析&lt;/h1&gt;&lt;h2 id=&quot;Perception&quot;&gt;&lt;a href=&quot;#Perception&quot; class=&quot;headerlink&quot; title=&quot;Perception&quot;&gt;&lt;/a&gt;Perception&lt;/h2&gt;&lt;h3 id=&quot;LineScanner&quot;&gt;&lt;a href=&quot;#LineScanner&quot; class=&quot;headerlink&quot; title=&quot;LineScanner&quot;&gt;&lt;/a&gt;LineScanner&lt;/h3&gt;&lt;blockquote&gt;
+&lt;p&gt;The file declares a class that creates colored regions on a single vertical scanline.&lt;/p&gt;
+&lt;p&gt;The class is based on Arne Böckmann’s original implementation of this idea.&lt;/p&gt;
+&lt;p&gt;@author Thomas Röfer&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;这个类提供了以竖线的形式扫描图像, 并且找出线上具有相同颜色的区域的功能. 对于之后对场地边缘, 球, 机器人, 球门等的检测提供了基础.&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;/images/vertical_scan.png&quot; alt=&quot;vertical_scan.png&quot;&gt;&lt;/p&gt;
+    
+    </summary>
+    
+      <category term="Code Anaylsis" scheme="http://www.yuthon.com/categories/Code-Anaylsis/"/>
+    
+    
+      <category term="RoboCup" scheme="http://www.yuthon.com/tags/RoboCup/"/>
+    
+      <category term="C++" scheme="http://www.yuthon.com/tags/C/"/>
+    
+  </entry>
   
   <entry>
     <title>Notes for Algorithm Design and Analysis - Week 1</title>
