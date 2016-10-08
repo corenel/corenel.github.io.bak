@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://www.yuthon.com/"/>
-  <updated>2016-10-08T10:54:15.000Z</updated>
+  <updated>2016-10-08T13:08:27.000Z</updated>
   <id>http://www.yuthon.com/</id>
   
   <author>
@@ -14,6 +14,44 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>B-Human Code 浅析 - ScanGridProvider</title>
+    <link href="http://www.yuthon.com/2016/10/08/B-Human-Code-Brief-Analysis-2/"/>
+    <id>http://www.yuthon.com/2016/10/08/B-Human-Code-Brief-Analysis-2/</id>
+    <published>2016-10-08T11:18:19.000Z</published>
+    <updated>2016-10-08T13:08:27.000Z</updated>
+    
+    <content type="html"><![CDATA[<blockquote>
+<p>本系列的文章主要是根据他们的开源代码库<code>CodeRelease2015</code>以及历年的 Team Description Paper 写成. 由于个人的 C++ 水平有限, 难免有缺漏之处, 望发现后不吝赐教.</p>
+</blockquote>
+<h1 id="B-Human-Code-浅析"><a href="#B-Human-Code-浅析" class="headerlink" title="B-Human Code 浅析"></a>B-Human Code 浅析</h1><h2 id="Perception"><a href="#Perception" class="headerlink" title="Perception"></a>Perception</h2><h3 id="ScanGrid"><a href="#ScanGrid" class="headerlink" title="ScanGrid"></a>ScanGrid</h3><p>首先来看一个基础的类<code>ScanGrid</code>, 里面定义了由扫描线组成的网格. 这个类在<code>ScanGridProvider</code>以及<code>LineScanner</code> 中都有用到. </p>
+<a id="more"></a>
+<p>头文件如下:</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div></pre></td><td class="code"><pre><div class="line"><span class="meta">#<span class="meta-keyword">pragma</span> once</span></div><div class="line"></div><div class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">"../../Tools/Streams/AutoStreamable.h"</span></span></div><div class="line"></div><div class="line">STREAMABLE(ScanGrid,</div><div class="line">&#123;</div><div class="line">  STREAMABLE(Line,</div><div class="line">  &#123;</div><div class="line">    Line() = <span class="keyword">default</span>;</div><div class="line">    Line(<span class="keyword">int</span> x, <span class="keyword">int</span> y, <span class="keyword">unsigned</span> yMaxIndex),</div><div class="line"></div><div class="line">    (<span class="keyword">int</span>) x, <span class="comment">/**&lt; x coordinate of the scanline. */</span></div><div class="line">    (<span class="keyword">int</span>) yMax, <span class="comment">/**&lt; Maximum y coordinate (exclusive). */</span></div><div class="line">    (<span class="keyword">unsigned</span>) yMaxIndex, <span class="comment">/**&lt; Index of the lowest y coordinate relevant for this scanline. */</span></div><div class="line">  &#125;);</div><div class="line"></div><div class="line">  <span class="keyword">void</span> draw() <span class="keyword">const</span>,</div><div class="line"></div><div class="line">  (<span class="built_in">std</span>::<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt;) y, <span class="comment">/**&lt; All possible y coordinates of pixels to be scanned. */</span></div><div class="line">  (<span class="built_in">std</span>::<span class="built_in">vector</span>&lt;Line&gt;) lines, <span class="comment">/**&lt; Decription of all scanlines. */</span></div><div class="line">  (<span class="keyword">int</span>)(<span class="number">0</span>) fieldLimit, <span class="comment">/**&lt; Upper bound for all scanlines (exclusive). */</span></div><div class="line">  (<span class="keyword">unsigned</span>)(<span class="number">0</span>) lowResStart, <span class="comment">/**&lt; First index of low res grid. */</span></div><div class="line">  (<span class="keyword">unsigned</span>)(<span class="number">1</span>) lowResStep, <span class="comment">/**&lt; Steps between low res grid lines. */</span></div><div class="line">&#125;);</div><div class="line"></div><div class="line"><span class="keyword">inline</span> ScanGrid::Line::Line(<span class="keyword">int</span> x, <span class="keyword">int</span> yMax, <span class="keyword">unsigned</span> yMaxIndex) :</div><div class="line">  x(x), yMax(yMax), yMaxIndex(yMaxIndex)</div><div class="line">&#123;&#125;</div></pre></td></tr></table></figure>
+<p>原本的注释已经很清楚了, 我就不再多说什么.</p>
+<h3 id="ScanGridProvider"><a href="#ScanGridProvider" class="headerlink" title="ScanGridProvider"></a>ScanGridProvider</h3><p>这个模块主要是提供了一个由一堆竖线组成的扫描图像的网格. 生成的网格可供<code>LineScanner</code>使用. 头文件如下:</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div></pre></td><td class="code"><pre><div class="line"><span class="meta">#<span class="meta-keyword">pragma</span> once</span></div><div class="line"></div><div class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">"../../../Tools/Module/Module.h"</span></span></div><div class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">"../../../Representations/Configuration/FieldDimensions.h"</span></span></div><div class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">"../../../Representations/Infrastructure/CameraInfo.h"</span></span></div><div class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">"../../../Representations/Perception/BodyContour.h"</span></span></div><div class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">"../../../Representations/Perception/CameraMatrix.h"</span></span></div><div class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">"../../../Representations/Perception/ScanGrid.h"</span></span></div><div class="line"></div><div class="line">MODULE(ScanGridProvider,</div><div class="line">&#123;,</div><div class="line">  REQUIRES(BodyContour),</div><div class="line">  REQUIRES(CameraInfo),</div><div class="line">  REQUIRES(CameraMatrix),</div><div class="line">  REQUIRES(FieldDimensions),</div><div class="line">  PROVIDES(ScanGrid),</div><div class="line">  DEFINES_PARAMETERS(</div><div class="line">  &#123;,</div><div class="line">    (<span class="keyword">int</span>)(<span class="number">3</span>) minStepSize, <span class="comment">/**&lt; The minimum pixel distance between two neigboring scanlines. */</span></div><div class="line">    (<span class="keyword">int</span>)(<span class="number">25</span>) minNumOfLowResScanlines, <span class="comment">/**&lt; The minimum number of scanlines for low resolution. */</span></div><div class="line">    (<span class="keyword">float</span>)(<span class="number">0.9f</span>) lineWidthRatio, <span class="comment">/**&lt; The ratio of field line width that is sampled when scanning the image. */</span></div><div class="line">    (<span class="keyword">float</span>)(<span class="number">0.8f</span>) ballWidthRatio, <span class="comment">/**&lt; The ratio of ball width that is sampled when scanning the image. */</span></div><div class="line">  &#125;),</div><div class="line">&#125;);</div><div class="line"></div><div class="line"><span class="keyword">class</span> ScanGridProvider : <span class="keyword">public</span> ScanGridProviderBase</div><div class="line">&#123;</div><div class="line">  <span class="function"><span class="keyword">void</span> <span class="title">update</span><span class="params">(ScanGrid&amp; scanGrid)</span></span>;</div><div class="line">&#125;;</div></pre></td></tr></table></figure>
+<p>看看具体实现.</p>
+]]></content>
+    
+    <summary type="html">
+    
+      &lt;blockquote&gt;
+&lt;p&gt;本系列的文章主要是根据他们的开源代码库&lt;code&gt;CodeRelease2015&lt;/code&gt;以及历年的 Team Description Paper 写成. 由于个人的 C++ 水平有限, 难免有缺漏之处, 望发现后不吝赐教.&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;h1 id=&quot;B-Human-Code-浅析&quot;&gt;&lt;a href=&quot;#B-Human-Code-浅析&quot; class=&quot;headerlink&quot; title=&quot;B-Human Code 浅析&quot;&gt;&lt;/a&gt;B-Human Code 浅析&lt;/h1&gt;&lt;h2 id=&quot;Perception&quot;&gt;&lt;a href=&quot;#Perception&quot; class=&quot;headerlink&quot; title=&quot;Perception&quot;&gt;&lt;/a&gt;Perception&lt;/h2&gt;&lt;h3 id=&quot;ScanGrid&quot;&gt;&lt;a href=&quot;#ScanGrid&quot; class=&quot;headerlink&quot; title=&quot;ScanGrid&quot;&gt;&lt;/a&gt;ScanGrid&lt;/h3&gt;&lt;p&gt;首先来看一个基础的类&lt;code&gt;ScanGrid&lt;/code&gt;, 里面定义了由扫描线组成的网格. 这个类在&lt;code&gt;ScanGridProvider&lt;/code&gt;以及&lt;code&gt;LineScanner&lt;/code&gt; 中都有用到. &lt;/p&gt;
+    
+    </summary>
+    
+      <category term="Code Anaylsis" scheme="http://www.yuthon.com/categories/Code-Anaylsis/"/>
+    
+    
+      <category term="RoboCup" scheme="http://www.yuthon.com/tags/RoboCup/"/>
+    
+      <category term="C++" scheme="http://www.yuthon.com/tags/C/"/>
+    
+  </entry>
   
   <entry>
     <title>B-Human Code 浅析 - LineScanner</title>
