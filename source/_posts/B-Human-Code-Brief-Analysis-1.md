@@ -61,16 +61,24 @@ public:
 };
 ```
 
-主要看`scan` 这个成员函数. 这个函数有四个输入参数, 分别是
+主要看`scan` 这个成员函数. 
+
+```C++
+void LineScanner::scan(const ScanGrid::Line& line, const int top, const float minColorRatio, ScanlineRegions& scanlineRegions) const {...}
+```
+
+这个函数有四个输入参数, 分别是
 
 * 要扫描的线`line`
-* 扫描的线的上界`top`(与场地边界检测有关)
+* 扫描的上界`top`
 * 对于不同颜色的区分度的比值`minColorRatio`(与之后判断隔了几个不同颜色的点的两个区域是否要连在一起有关)
 * 扫描后得到的区域`scanlineRegions`
 
-然后来看看具体的实现.首先是一些变量的指定:
+然后来看看具体的实现. 首先是一些变量的指定:
 
 ```C++
+void LineScanner::scan(const ScanGrid::Line& line, const int top, const float minColorRatio, ScanlineRegions& scanlineRegions) const
+{
   // 当前竖线的横坐标
   const int x = line.x;
   // std::deque::emplace_back Appends a new element to the end of the container.
@@ -80,12 +88,86 @@ public:
   // 前面新建的元素内的 regions 向量
   auto& regions = scanlineRegions.scanlines.back().regions; 
 
-  // 竖线的起始纵坐标
+  // 竖线的起始纵坐标指针
   auto y = scanGrid.y.begin() + line.yMaxIndex;
-  // 竖线的终止纵坐标
+  // 竖线的终止纵坐标指针
   const auto yEnd = scanGrid.y.end();
-  //  扫描步长
+  // 扫描步长
   const int widthStep = image.widthStep;
+  
+  if(y != yEnd && *y > top && line.yMax - 1 > top) {...}
+}
 ```
 
-(TBD… 今天要写自动化综合实验的开题报告, 头都大了)
+接着是一个条件判断, 主要是看这条竖线能不能用来扫描:
+
+* 起始纵坐标指针`y` 是否已经与终止纵坐标只增` yEnd`重合
+* 起始纵坐标`*y`是否高于场地上界`top`
+* 竖线纵坐标最大值`yMax` 是否高于场地上界` top`
+
+在这个`if`语句里面, 我们开始进行对于竖线的颜色扫描与区域生成的工作.
+
+首先还是一些变量的指定, 以及操作完成之后将检测到的:
+
+```C++
+  if(y != yEnd && *y > top && line.yMax - 1 > top)
+  {
+    // 前一个点的纵坐标
+    int prevY = line.yMax - 1 > *y ? line.yMax - 1 : *y++;
+    // 当前点的纵坐标
+    int currentY = prevY + 1;
+    // 前一个点的像素信息
+    const Image::Pixel* pImg = &image[prevY][x];
+    // 前一个点的颜色分类
+    ColorTable::Colors currentColor = colorTable[*pImg];
+    
+    for(; y != yEnd && *y > top; ++y) {...}
+    
+    ASSERT(currentY > top + 1);
+    regions.emplace_back(currentY, top + 1, currentColor);
+  }
+```
+
+中间是一个` for` 循环, 用来遍历竖线上的所有点.
+
+```C++
+    for(; y != yEnd && *y > top; ++y)
+    {
+      // 下一个点的像素信息
+      pImg += (*y - prevY) * widthStep;
+
+      // 下一点的颜色分类
+      const ColorTable::Colors& color = colorTable[*pImg];
+      // If color changes, determine edge position between last and current scanpoint
+      if(color.colors != currentColor.colors)
+      {
+        // 根据minColorRatio设定不同颜色区域相隔的像素数量阈值
+        const int otherColorThreshold = std::max(static_cast<int>((prevY - *y) * minColorRatio), 1);
+        // 起始纵坐标向上移阈值个点的纵坐标
+        const int yMin = std::max(*y - otherColorThreshold + 1, 0);
+        // 不同颜色的像素数量计数器
+        int counter = 0;
+        // 前两个点的纵坐标
+        int yy = std::min(prevY - 1, line.yMax - 1);
+        // 遍历从 yy 到 yMin , 计数不同颜色像素的个数
+        for(const Image::Pixel* pImg2 = pImg + (yy - *y) * widthStep; yy >= yMin && counter < otherColorThreshold; --yy, pImg2 -= image.widthStep)
+          if(colorTable[*pImg2].colors != currentColor.colors)
+            ++counter;
+          else
+            counter = 0;
+
+        // Enough pixels of different colors were found: end previous region and start a new one.
+        // 如果发现了足够数量的不同颜色像素, 那么就结束原来的区域, 并开始记录一个新的区域
+        if(counter == otherColorThreshold)
+        {
+          yy += otherColorThreshold + 1;
+          ASSERT(currentY > yy);
+          regions.emplace_back(currentY, yy, currentColor);
+          currentColor = color;
+          currentY = yy;
+        }
+      }
+      prevY = *y;
+    }
+```
+
