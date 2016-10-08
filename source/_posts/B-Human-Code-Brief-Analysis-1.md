@@ -89,6 +89,8 @@ void LineScanner::scan(const ScanGrid::Line& line, const int top, const float mi
   auto& regions = scanlineRegions.scanlines.back().regions; 
 
   // 竖线的起始纵坐标指针
+  // ScanGridProvider.h 实现中
+  // const size_t yMaxIndex = std::upper_bound(scanGrid.y.begin(), scanGrid.y.end(), yMax + 1, std::greater<int>()) - scanGrid.y.begin();
   auto y = scanGrid.y.begin() + line.yMaxIndex;
   // 竖线的终止纵坐标指针
   const auto yEnd = scanGrid.y.end();
@@ -101,7 +103,7 @@ void LineScanner::scan(const ScanGrid::Line& line, const int top, const float mi
 
 接着是一个条件判断, 主要是看这条竖线能不能用来扫描:
 
-* 起始纵坐标指针`y` 是否已经与终止纵坐标只增` yEnd`重合
+* 起始纵坐标指针`y` 是否已经与终止纵坐标指针` yEnd`重合
 * 起始纵坐标`*y`是否高于场地上界`top`
 * 竖线纵坐标最大值`yMax` 是否高于场地上界` top`
 
@@ -113,6 +115,7 @@ void LineScanner::scan(const ScanGrid::Line& line, const int top, const float mi
   if(y != yEnd && *y > top && line.yMax - 1 > top)
   {
     // 前一个点的纵坐标
+    // ScanGridProvider.h 实现中 int yMax = std::min(yStarts2[i++], theCameraInfo.height);
     int prevY = line.yMax - 1 > *y ? line.yMax - 1 : *y++;
     // 当前点的纵坐标
     int currentY = prevY + 1;
@@ -171,3 +174,4 @@ void LineScanner::scan(const ScanGrid::Line& line, const int top, const float mi
     }
 ```
 
+(本文中略有缺陷, 待分析了`ScanGridProvider`之后再做补充)
