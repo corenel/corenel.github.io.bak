@@ -31,6 +31,8 @@ tags:
 
 课程中主要讲了Sigmoid, tanh, ReLU, Leaky ReLU, Maxout 以及 ELU 这几种激活函数. 
 
+<!-- more -->
+
 ![activation_functions](/images/activation_functions.png)
 
 * Sigmoid 由于以下原因, 基本不使用
