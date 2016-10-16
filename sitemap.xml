@@ -2,6 +2,13 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>http://www.yuthon.com/2016/10/16/Notes-for-CS231n-NN/</loc>
+    
+    <lastmod>2016-10-16T14:10:04.000Z</lastmod>
+    
+  </url>
+  
+  <url>
     <loc>http://www.yuthon.com/2016/10/08/B-Human-Code-Brief-Analysis-2/</loc>
     
     <lastmod>2016-10-09T08:36:32.000Z</lastmod>
@@ -100,7 +107,7 @@
   </url>
   
   <url>
-    <loc>http://www.yuthon.com/2016/04/09/CodeSchool-Javascript/</loc>
+    <loc>http://www.yuthon.com/2016/04/13/CodeSchool-Try-jQuery/</loc>
     
     <lastmod>2016-05-16T11:51:43.000Z</lastmod>
     
@@ -114,7 +121,7 @@
   </url>
   
   <url>
-    <loc>http://www.yuthon.com/2016/04/13/CodeSchool-Try-jQuery/</loc>
+    <loc>http://www.yuthon.com/2016/04/09/CodeSchool-Javascript/</loc>
     
     <lastmod>2016-05-16T11:51:43.000Z</lastmod>
     
