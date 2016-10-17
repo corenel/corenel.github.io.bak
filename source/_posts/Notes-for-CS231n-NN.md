@@ -68,7 +68,7 @@ tags:
 *   归一化(normalization): 使得数据所有维度的范围基本相等, 当然由于图像像素的数值范围本身基本是一致的(一般为0-255), 所以不一定要用.
 
     ```python
-            X /= np.std(X, axis=0)
+              X /= np.std(X, axis=0)
     ```
 
 *   PCA 和白化在 CNN 中并没有什么用, 就不介绍了.
@@ -155,6 +155,7 @@ w = np.random.randn(n) * sqrt(2.0/n)
 
 
 
+
 # Lecture 6
 
 ## Parameter Updates
@@ -203,7 +204,7 @@ w = np.random.randn(n) * sqrt(2.0/n)
   > * eps 取值在 1e-4 到 1e-8 之间, 主要是为了防止分母为 0.
   > * AdaGrad 通常过早停止学习, RMSProp 通过引入一个梯度平方的滑动平均改善了它.
 
-* 最后就是集上述方法之大成的 Adam
+* 最后就是集上述方法之大成的 **Adam**, 在大多数的实践中都是一个很好的选择.
 
   ```python
   # Adam
@@ -221,4 +222,80 @@ w = np.random.randn(n) * sqrt(2.0/n)
   >   some time to “warm up”. Only relevant in first few iterations when t is small.
 
 
-(To be continued...)
+### Learning rate decay
+
+主要是为了让 learning rate 随着训练时间的推移慢慢变小, 防止系统动能太大, 到最后在最优点旁边跳来跳去.
+
+* **step decay**: e.g. decay learning rate by half every few epochs.
+* **exponential decay**: $\alpha = \alpha_0 e^{-kt}$
+* **1/t decay**: $\alpha = \alpha_0 / (1+kt)$
+
+
+### Second order optimization methods
+
+主要是一些基于牛顿法的二阶最优化方法, 包括 L-BGFS 之类的. 其优点是根本就没有 learning rate 这个超参数, 而缺点则是 Hessian 矩阵实在是太大了, 非常耗费时间与空间, 因此在 DL 和 CNN 中基本不使用.
+
+## Evaluation: Model Ensembles
+
+* 训练多个独立的模型, 然后在测试的时候对其结果进行平均, 一般能得到 2% 的额外性能提升;
+
+* 平均单个模型的多个记录点 (check point) 上的参数, 也能获得一些提升
+
+* 训练的时候对参数进行平滑操作, 并用于测试集 (keep track of (and use at test time) a running average
+
+  parameter vector)
+
+  ```python
+  While True:
+      data_batch = dataset.sample_data_batch()
+      loss = network.forward(data_batch)
+      dx = network.backward()
+      x += - learning_rate * dx
+      x_test = 0.995 * x_test + 0.005 * x # use for test set
+  ```
+
+## Regularization (dropout)
+
+Dropout 算是很常用的一种方法了, 主要就是在前向传播的时候随机设置某些神经元为零 (“randomly set some neurons to zero in the forward pass”).
+
+ ![dropout](/images/dropout.png)
+
+其主要想法是让网络具有一定的冗余能力 (Forces the network to have a
+redundant representation), 或者说是训练出了一个大的集成网络 (Dropout is training a large ensemble of models (that share parameters), each binary mask is one model, gets trained on only ~one datapoint.)
+
+ ![dropout_a_good_idea](/images/dropout_a_good_idea.png)
+
+具体实现如下
+
+```python
+p = 0.5 # probability of keeping a unit active. higher = less dropout
+def train_step(X): 
+    """ X contains the datat """
+    
+    # forward pass for example 3-layer neural network
+    H1 = np.maximum(0, np.dot(W1, X) + b1) 
+    U1 = (np.random.rand(*H1.shape) < p) / p # First dropout mask. Notice /p! 
+    H1 *= U1 # drop! 
+    H2 = np.maximum(0, np.dot(W2, H1) + b2) 
+    U2 = (np.random.rand(*H2.shape) < p) / p # Second dropout mask. Notice /p!  
+    H2 *= U2 # drop! 
+    out = np.dot(W3, H2) + b3 
+    
+    # backward pass: compute geadients ... (not shown) 
+    # parameter update... (not shown) 
+
+def predict(X):
+    # ensembled forward pass 
+    H1 = np.maximum(0, np.dot(W1, X) + b1) # no scaling necessary 
+    H2 = np.maximum(0, np.dot(W2, H1) + b2) 
+    out = np.dot(W3, H2) + b3
+```
+
+## Gradient Checking
+
+主要就是通过数值法计算梯度, 然后和通过后向传播得到的解析梯度比较, 看看误差大不大, 防止手贱算错梯度导致后面算法全乱了.
+
+1. 用中心化公式$\frac{df(x)}{dx} = \frac{f(x+h - f(x-h)}{2h}$计算数值梯度, $h$取 $1e-5$ 左右.
+2. 使用相对误差$\frac{|f^{'}_a - f^{'}_n|}{max(|f^{'}_a|, |f^{'}_n|)}$
+
+同时还有些注意事项, 参见 [Gradient Checks](http://cs231n.github.io/neural-networks-3/#gradcheck).
