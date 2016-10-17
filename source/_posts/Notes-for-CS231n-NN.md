@@ -68,7 +68,7 @@ tags:
 *   归一化(normalization): 使得数据所有维度的范围基本相等, 当然由于图像像素的数值范围本身基本是一致的(一般为0-255), 所以不一定要用.
 
     ```python
-          X /= np.std(X, axis=0)
+            X /= np.std(X, axis=0)
     ```
 
 *   PCA 和白化在 CNN 中并没有什么用, 就不介绍了.
@@ -90,6 +90,10 @@ tags:
 ```python
 w = np.random.randn(n) * sqrt(2.0/n)
 ```
+
+或者 Xavier initialization:
+
+ ![xavier_init](/images/xavier_init.png)
 
 另外就是还推荐 **Batch Normalization** (批量归一化), 通常应用在全连接层之后, 激活函数之前. 具体参见论文([Ioffe and Szegedy, 2015]). 
 
@@ -148,5 +152,73 @@ w = np.random.randn(n) * sqrt(2.0/n)
 * **随机搜索优于网格搜索**
 
    ![random_search_vs_grid_search ](/images/random_search_vs_grid_search .png)
+
+
+
+# Lecture 6
+
+## Parameter Updates
+
+ 参数更新有很多种方法, 常见的如下图:![parameter_update](/images/parameter_update.png)
+
+* 最普通的就是SGD, 仅仅按照负梯度来更新
+
+  ```python
+  x += - learning_rate * dx
+  ```
+
+  ![sgd](/images/sgd.png)
+
+* 其次就是各种动量方法, 比如 **Momentum**,  以及其衍生的 **Nesterov** 方法. 其主要思想就是在任何具有持续梯度的方向上保持一个会慢慢消失的动量, 使得梯度下降更为圆滑.
+
+  ```python
+  # Momentum update
+  v = mu * v - learning_rate * dx # integrate velocity
+  x += v # integrate position
+
+  # Mesterov momentum update rewrite
+  v_prev = v
+  v = mu * v - learning_rate * dx
+  x += -mu * v_prev + (1 + mu) * v
+  ```
+
+  ![momentum_and_Nesterov](/images/momentum_and_Nesterov.png)
+
+  > * v 初始为 0
+  > * mu 一般取 0.5, 0.9 或 0.99. 有时候可以先 0.5, 然后慢慢变成 0.99
+
+* 然后就是逐步改 learning rate 的方法, 比如 AdaGrad 或者 RMSProp (Hinton 大神在 Coursera 课上提出的改进方法)
+
+  ```python
+  # AdaGrad
+  cache += dx**2
+  x += - learning_rate * dx / (np.sqrt(cache) + eps)
+
+  # RMSProp
+  cache = decay_rate * cache + (1 - decay_rate) * dx**2
+  x += - learning_rate * dx / (np.sqrt(cache) + eps)
+  ```
+
+  > * cache 尺寸与 dx 相同
+  > * eps 取值在 1e-4 到 1e-8 之间, 主要是为了防止分母为 0.
+  > * AdaGrad 通常过早停止学习, RMSProp 通过引入一个梯度平方的滑动平均改善了它.
+
+* 最后就是集上述方法之大成的 Adam
+
+  ```python
+  # Adam
+  m ,v = # ... initialize cacahe to zeros
+  for t in xrange(1, big_number):
+      dx = # ... evaluate gradient
+      m = beta1 * m + (1 - beta1) * dx # update first momentum
+      v = beta2 * v + (1 - beta2) * (dx ** 2) # update second momentum
+      mb = m / (1 - beta1 ** t) # bias correction
+      vb = v / (1 - beta2 ** t) # bias correction
+      x += - learning_rate * mb / (np.sqrt(vb) + 1e-7) # RMSProp-like
+  ```
+
+  > * The bias correction compensates for the fact that m,v are initialized at zero and need
+  >   some time to “warm up”. Only relevant in first few iterations when t is small.
+
 
 (To be continued...)
