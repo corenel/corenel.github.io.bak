@@ -68,7 +68,7 @@ tags:
 *   归一化(normalization): 使得数据所有维度的范围基本相等, 当然由于图像像素的数值范围本身基本是一致的(一般为0-255), 所以不一定要用.
 
     ```python
-      X /= np.std(X, axis=0)
+          X /= np.std(X, axis=0)
     ```
 
 *   PCA 和白化在 CNN 中并没有什么用, 就不介绍了.
@@ -129,6 +129,24 @@ w = np.random.randn(n) * sqrt(2.0/n)
 
 ## Hyperparameter Optimization
 
+* **从粗放(coarse)到细致(fine)地分段搜索**, 先大范围小周期(1-5 epoch足矣), 然后再根据结果小范围长周期
 
+  * First stage: only a few epochs to get rough idea of what params work
+  * Second stage: longer running time, finer search
+  * … (repeat as necessary)
+
+  > If the cost is ever > 3 * original cost, break out early
+
+* **在对数尺度上进行搜索**, 例如`learning_rate = 10 ** uniform(-6, 1)`. 当然有些超参数还是按原来的, 比如 `dropout = uniform(0,1)`
+
+* **小心边界上的最优值**, 否则可能会错过更好的参数搜索范围.
+
+   ![coarse_search](/images/coarse_search.png)
+
+   ![finer_search](/images/finer_search.png)
+
+* **随机搜索优于网格搜索**
+
+   ![random_search_vs_grid_search ](/images/random_search_vs_grid_search .png)
 
 (To be continued...)

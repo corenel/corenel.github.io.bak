@@ -20,9 +20,9 @@ We can approximate the growth of the number of new features we get with all quad
 
 **Example**: let our training set be a collection of 50x50 pixel black-and-white photographs, and our goal will be to classify which ones are photos of cars. Our feature set size is then n=2500 if we compare every pair of pixels (7500 if RGB). Now let's say we need to make a quadratic hypothesis function. With quadratic features, our growth is $\mathcal{O}(n^2/2)$. So our total features will be about 25002/2=3125000, which is very impractical.
 
-![car example](/images/car-examle.png)
-
 <!-- more -->
+
+![car example](/images/car-examle.png)
 
 ### Neurons and the Brain
 

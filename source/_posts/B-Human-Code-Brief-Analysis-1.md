@@ -26,9 +26,9 @@ tags:
 
 这个类提供了以竖线的形式扫描图像, 并且找出线上具有相同颜色的区域的功能. 对于之后对场地边缘, 球, 机器人, 球门等的检测提供了基础.
 
-![vertical_scan.png](/images/vertical_scan.png)
-
 <!-- more -->
+
+![vertical_scan.png](/images/vertical_scan.png)
 
 在`LineScanner.h`中的类定义:
 
