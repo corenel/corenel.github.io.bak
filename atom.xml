@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://www.yuthon.com/"/>
-  <updated>2016-10-17T10:36:56.000Z</updated>
+  <updated>2016-10-17T12:30:49.000Z</updated>
   <id>http://www.yuthon.com/</id>
   
   <author>
@@ -20,7 +20,7 @@
     <link href="http://www.yuthon.com/2016/10/16/Notes-for-CS231n-NN/"/>
     <id>http://www.yuthon.com/2016/10/16/Notes-for-CS231n-NN/</id>
     <published>2016-10-16T13:04:26.000Z</published>
-    <updated>2016-10-17T10:36:56.000Z</updated>
+    <updated>2016-10-17T12:30:49.000Z</updated>
     
     <content type="html"><![CDATA[<blockquote>
 <p>本文主要对于 CS231n 课程自带的 Lecture Notes 的一些补充与总结. 建议先看原版的 Lecture Notes:</p>
@@ -166,7 +166,7 @@
 </ul>
 </blockquote>
 </li>
-<li><p>最后就是集上述方法之大成的 Adam</p>
+<li><p>最后就是集上述方法之大成的 <strong>Adam</strong>, 在大多数的实践中都是一个很好的选择.</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># Adam</span></div><div class="line">m ,v = <span class="comment"># ... initialize cacahe to zeros</span></div><div class="line"><span class="keyword">for</span> t <span class="keyword">in</span> xrange(<span class="number">1</span>, big_number):</div><div class="line">    dx = <span class="comment"># ... evaluate gradient</span></div><div class="line">    m = beta1 * m + (<span class="number">1</span> - beta1) * dx <span class="comment"># update first momentum</span></div><div class="line">    v = beta2 * v + (<span class="number">1</span> - beta2) * (dx ** <span class="number">2</span>) <span class="comment"># update second momentum</span></div><div class="line">    mb = m / (<span class="number">1</span> - beta1 ** t) <span class="comment"># bias correction</span></div><div class="line">    vb = v / (<span class="number">1</span> - beta2 ** t) <span class="comment"># bias correction</span></div><div class="line">    x += - learning_rate * mb / (np.sqrt(vb) + <span class="number">1e-7</span>) <span class="comment"># RMSProp-like</span></div></pre></td></tr></table></figure>
 <blockquote>
 <ul>
@@ -175,7 +175,35 @@
 </blockquote>
 </li>
 </ul>
-<p>(To be continued…)</p>
+<h3 id="Learning-rate-decay"><a href="#Learning-rate-decay" class="headerlink" title="Learning rate decay"></a>Learning rate decay</h3><p>主要是为了让 learning rate 随着训练时间的推移慢慢变小, 防止系统动能太大, 到最后在最优点旁边跳来跳去.</p>
+<ul>
+<li><strong>step decay</strong>: e.g. decay learning rate by half every few epochs.</li>
+<li><strong>exponential decay</strong>: $\alpha = \alpha_0 e^{-kt}$</li>
+<li><strong>1/t decay</strong>: $\alpha = \alpha_0 / (1+kt)$</li>
+</ul>
+<h3 id="Second-order-optimization-methods"><a href="#Second-order-optimization-methods" class="headerlink" title="Second order optimization methods"></a>Second order optimization methods</h3><p>主要是一些基于牛顿法的二阶最优化方法, 包括 L-BGFS 之类的. 其优点是根本就没有 learning rate 这个超参数, 而缺点则是 Hessian 矩阵实在是太大了, 非常耗费时间与空间, 因此在 DL 和 CNN 中基本不使用.</p>
+<h2 id="Evaluation-Model-Ensembles"><a href="#Evaluation-Model-Ensembles" class="headerlink" title="Evaluation: Model Ensembles"></a>Evaluation: Model Ensembles</h2><ul>
+<li><p>训练多个独立的模型, 然后在测试的时候对其结果进行平均, 一般能得到 2% 的额外性能提升;</p>
+</li>
+<li><p>平均单个模型的多个记录点 (check point) 上的参数, 也能获得一些提升</p>
+</li>
+<li><p>训练的时候对参数进行平滑操作, 并用于测试集 (keep track of (and use at test time) a running average</p>
+<p>parameter vector)</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">While <span class="keyword">True</span>:</div><div class="line">    data_batch = dataset.sample_data_batch()</div><div class="line">    loss = network.forward(data_batch)</div><div class="line">    dx = network.backward()</div><div class="line">    x += - learning_rate * dx</div><div class="line">    x_test = <span class="number">0.995</span> * x_test + <span class="number">0.005</span> * x <span class="comment"># use for test set</span></div></pre></td></tr></table></figure>
+</li>
+</ul>
+<h2 id="Regularization-dropout"><a href="#Regularization-dropout" class="headerlink" title="Regularization (dropout)"></a>Regularization (dropout)</h2><p>Dropout 算是很常用的一种方法了, 主要就是在前向传播的时候随机设置某些神经元为零 (“randomly set some neurons to zero in the forward pass”).</p>
+<p> <img src="/images/dropout.png" alt="dropout"></p>
+<p>其主要想法是让网络具有一定的冗余能力 (Forces the network to have a<br>redundant representation), 或者说是训练出了一个大的集成网络 (Dropout is training a large ensemble of models (that share parameters), each binary mask is one model, gets trained on only ~one datapoint.)</p>
+<p> <img src="/images/dropout_a_good_idea.png" alt="dropout_a_good_idea"></p>
+<p>具体实现如下</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div></pre></td><td class="code"><pre><div class="line">p = <span class="number">0.5</span> <span class="comment"># probability of keeping a unit active. higher = less dropout</span></div><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">train_step</span><span class="params">(X)</span>:</span> </div><div class="line">    <span class="string">""" X contains the datat """</span></div><div class="line">    </div><div class="line">    <span class="comment"># forward pass for example 3-layer neural network</span></div><div class="line">    H1 = np.maximum(<span class="number">0</span>, np.dot(W1, X) + b1) </div><div class="line">    U1 = (np.random.rand(*H1.shape) &lt; p) / p <span class="comment"># First dropout mask. Notice /p! </span></div><div class="line">    H1 *= U1 <span class="comment"># drop! </span></div><div class="line">    H2 = np.maximum(<span class="number">0</span>, np.dot(W2, H1) + b2) </div><div class="line">    U2 = (np.random.rand(*H2.shape) &lt; p) / p <span class="comment"># Second dropout mask. Notice /p!  </span></div><div class="line">    H2 *= U2 <span class="comment"># drop! </span></div><div class="line">    out = np.dot(W3, H2) + b3 </div><div class="line">    </div><div class="line">    <span class="comment"># backward pass: compute geadients ... (not shown) </span></div><div class="line">    <span class="comment"># parameter update... (not shown) </span></div><div class="line"></div><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">predict</span><span class="params">(X)</span>:</span></div><div class="line">    <span class="comment"># ensembled forward pass </span></div><div class="line">    H1 = np.maximum(<span class="number">0</span>, np.dot(W1, X) + b1) <span class="comment"># no scaling necessary </span></div><div class="line">    H2 = np.maximum(<span class="number">0</span>, np.dot(W2, H1) + b2) </div><div class="line">    out = np.dot(W3, H2) + b3</div></pre></td></tr></table></figure>
+<h2 id="Gradient-Checking"><a href="#Gradient-Checking" class="headerlink" title="Gradient Checking"></a>Gradient Checking</h2><p>主要就是通过数值法计算梯度, 然后和通过后向传播得到的解析梯度比较, 看看误差大不大, 防止手贱算错梯度导致后面算法全乱了.</p>
+<ol>
+<li>用中心化公式$\frac{df(x)}{dx} = \frac{f(x+h - f(x-h)}{2h}$计算数值梯度, $h$取 $1e-5$ 左右.</li>
+<li>使用相对误差$\frac{|f^{‘}_a - f^{‘}_n|}{max(|f^{‘}_a|, |f^{‘}_n|)}$</li>
+</ol>
+<p>同时还有些注意事项, 参见 <a href="http://cs231n.github.io/neural-networks-3/#gradcheck" target="_blank" rel="external">Gradient Checks</a>.</p>
 ]]></content>
     
     <summary type="html">
