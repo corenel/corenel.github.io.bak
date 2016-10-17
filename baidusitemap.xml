@@ -4,16 +4,18 @@
 
     
   <url>
-    <loc>http://www.yuthon.com/2016/08/15/Coursera-Machine-Learning-Week-4/</loc>
-    <lastmod>2016-10-17T07:04:52.000Z</lastmod>
+    <loc>http://www.yuthon.com/2016/10/16/Notes-for-CS231n-NN/</loc>
+    <lastmod>2016-10-17T10:36:56.000Z</lastmod>
     <data>
         <display>
-        <title>Notes for Machine Learning - Week 4</title>
-        <pubTime>2016-08-15T09:05:54.000Z</pubTime>
+        <title>Notes for CS231n Neural Network</title>
+        <pubTime>2016-10-16T13:04:26.000Z</pubTime>
         
-        <tag>Coursera</tag>
+        <tag>CS231n</tag>
          
-        <tag>Machine Learning</tag>
+        <tag>Neural Network</tag>
+         
+        <tag>Deep Learning</tag>
          
          
            
@@ -26,18 +28,16 @@
 
     
   <url>
-    <loc>http://www.yuthon.com/2016/10/16/Notes-for-CS231n-NN/</loc>
-    <lastmod>2016-10-17T07:02:45.000Z</lastmod>
+    <loc>http://www.yuthon.com/2016/08/15/Coursera-Machine-Learning-Week-4/</loc>
+    <lastmod>2016-10-17T07:04:52.000Z</lastmod>
     <data>
         <display>
-        <title>Notes for CS231n Neural Network</title>
-        <pubTime>2016-10-16T13:04:26.000Z</pubTime>
+        <title>Notes for Machine Learning - Week 4</title>
+        <pubTime>2016-08-15T09:05:54.000Z</pubTime>
         
-        <tag>CS231n</tag>
+        <tag>Coursera</tag>
          
-        <tag>Neural Network</tag>
-         
-        <tag>Deep Learning</tag>
+        <tag>Machine Learning</tag>
          
          
            
@@ -378,12 +378,12 @@
 
     
   <url>
-    <loc>http://www.yuthon.com/2016/04/09/CodeSchool-Javascript/</loc>
+    <loc>http://www.yuthon.com/2016/04/12/CodeSchool-JavaScript-Best-Practices/</loc>
     <lastmod>2016-05-16T11:51:43.000Z</lastmod>
     <data>
         <display>
-        <title>Notes for Code School - JavaScript Road Trip</title>
-        <pubTime>2016-04-09T04:37:07.000Z</pubTime>
+        <title>Notes for Code School - JavaScript Best Practices</title>
+        <pubTime>2016-04-12T10:19:54.000Z</pubTime>
         
         <tag>CodeSchool</tag>
          
@@ -400,12 +400,12 @@
 
     
   <url>
-    <loc>http://www.yuthon.com/2016/04/12/CodeSchool-JavaScript-Best-Practices/</loc>
+    <loc>http://www.yuthon.com/2016/04/09/CodeSchool-Javascript/</loc>
     <lastmod>2016-05-16T11:51:43.000Z</lastmod>
     <data>
         <display>
-        <title>Notes for Code School - JavaScript Best Practices</title>
-        <pubTime>2016-04-12T10:19:54.000Z</pubTime>
+        <title>Notes for Code School - JavaScript Road Trip</title>
+        <pubTime>2016-04-09T04:37:07.000Z</pubTime>
         
         <tag>CodeSchool</tag>
          
