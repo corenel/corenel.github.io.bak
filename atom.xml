@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://www.yuthon.com/"/>
-  <updated>2016-10-17T05:51:41.000Z</updated>
+  <updated>2016-10-17T07:02:45.000Z</updated>
   <id>http://www.yuthon.com/</id>
   
   <author>
@@ -20,7 +20,7 @@
     <link href="http://www.yuthon.com/2016/10/16/Notes-for-CS231n-NN/"/>
     <id>http://www.yuthon.com/2016/10/16/Notes-for-CS231n-NN/</id>
     <published>2016-10-16T13:04:26.000Z</published>
-    <updated>2016-10-17T05:51:41.000Z</updated>
+    <updated>2016-10-17T07:02:45.000Z</updated>
     
     <content type="html"><![CDATA[<blockquote>
 <p>本文主要对于 CS231n 课程自带的 Lecture Notes 的一些补充与总结. 建议先看原版的 Lecture Notes:</p>
@@ -117,7 +117,28 @@
 </ul>
 </li>
 </ul>
-<h2 id="Hyperparameter-Optimization"><a href="#Hyperparameter-Optimization" class="headerlink" title="Hyperparameter Optimization"></a>Hyperparameter Optimization</h2><p>(To be continued…)</p>
+<h2 id="Hyperparameter-Optimization"><a href="#Hyperparameter-Optimization" class="headerlink" title="Hyperparameter Optimization"></a>Hyperparameter Optimization</h2><ul>
+<li><p><strong>从粗放(coarse)到细致(fine)地分段搜索</strong>, 先大范围小周期(1-5 epoch足矣), 然后再根据结果小范围长周期</p>
+<ul>
+<li>First stage: only a few epochs to get rough idea of what params work</li>
+<li>Second stage: longer running time, finer search</li>
+<li>… (repeat as necessary)</li>
+</ul>
+<blockquote>
+<p>If the cost is ever &gt; 3 * original cost, break out early</p>
+</blockquote>
+</li>
+<li><p><strong>在对数尺度上进行搜索</strong>, 例如<code>learning_rate = 10 ** uniform(-6, 1)</code>. 当然有些超参数还是按原来的, 比如 <code>dropout = uniform(0,1)</code></p>
+</li>
+<li><p><strong>小心边界上的最优值</strong>, 否则可能会错过更好的参数搜索范围.</p>
+<p> <img src="/images/coarse_search.png" alt="coarse_search"></p>
+<p> <img src="/images/finer_search.png" alt="finer_search"></p>
+</li>
+<li><p><strong>随机搜索优于网格搜索</strong></p>
+<p> <img src="/images/random_search_vs_grid_search .png" alt="random_search_vs_grid_search "></p>
+</li>
+</ul>
+<p>(To be continued…)</p>
 ]]></content>
     
     <summary type="html">
@@ -218,7 +239,7 @@
     <link href="http://www.yuthon.com/2016/10/07/B-Human-Code-Brief-Analysis-1/"/>
     <id>http://www.yuthon.com/2016/10/07/B-Human-Code-Brief-Analysis-1/</id>
     <published>2016-10-07T13:58:08.000Z</published>
-    <updated>2016-10-08T10:54:15.000Z</updated>
+    <updated>2016-10-17T06:02:27.000Z</updated>
     
     <content type="html"><![CDATA[<blockquote>
 <p>由于 ZJUDancer 组内需要重写视觉相关部分的代码, 因此最近开始看其他组视觉方面的实现. 而 B-Human 是标准组的老牌强队, 常年冠军, 很有借鉴价值.</p>
@@ -230,8 +251,8 @@
 <p>@author Thomas Röfer</p>
 </blockquote>
 <p>这个类提供了以竖线的形式扫描图像, 并且找出线上具有相同颜色的区域的功能. 对于之后对场地边缘, 球, 机器人, 球门等的检测提供了基础.</p>
-<p><img src="/images/vertical_scan.png" alt="vertical_scan.png"></p>
 <a id="more"></a>
+<p><img src="/images/vertical_scan.png" alt="vertical_scan.png"></p>
 <p>在<code>LineScanner.h</code>中的类定义:</p>
 <figure class="highlight c++"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">class</span> LineScanner</div><div class="line">&#123;</div><div class="line"><span class="keyword">private</span>:</div><div class="line">  <span class="keyword">const</span> ColorTable&amp; colorTable;</div><div class="line">  <span class="keyword">const</span> Image&amp; image;</div><div class="line">  <span class="keyword">const</span> ScanGrid&amp; scanGrid;</div><div class="line"></div><div class="line"><span class="keyword">public</span>:</div><div class="line">  LineScanner(<span class="keyword">const</span> ColorTable&amp; colorTable,</div><div class="line">              <span class="keyword">const</span> Image&amp; image,</div><div class="line">              <span class="keyword">const</span> ScanGrid&amp; scanGrid)</div><div class="line">  : colorTable(colorTable),</div><div class="line">    image(image),</div><div class="line">    scanGrid(scanGrid) &#123;&#125;</div><div class="line"></div><div class="line">  <span class="comment">/**</span></div><div class="line">   * Scan vertically and add a new scanline with colored regions.</div><div class="line">   * @param line Description of the line to be scanned.</div><div class="line">   * @param top Upper bound for the pixels scanned (exclusive).</div><div class="line">   * @param minColorRatio The ratio of pixels of a different color that is expected </div><div class="line">   *                      after an edge (relative to the step width).</div><div class="line">   * @param scanlineRegions A new scanline containing the regions found will be added</div><div class="line">   *                        to this object.</div><div class="line">   */</div><div class="line">  <span class="function"><span class="keyword">void</span> <span class="title">scan</span><span class="params">(<span class="keyword">const</span> ScanGrid::Line&amp; line, <span class="keyword">const</span> <span class="keyword">int</span> top, <span class="keyword">const</span> <span class="keyword">float</span> minColorRatio, ScanlineRegions&amp; scanlineRegions)</span> <span class="keyword">const</span></span>;</div><div class="line">&#125;;</div></pre></td></tr></table></figure>
 <p>主要看<code>scan</code> 这个成员函数. </p>
@@ -271,7 +292,6 @@
 &lt;p&gt;@author Thomas Röfer&lt;/p&gt;
 &lt;/blockquote&gt;
 &lt;p&gt;这个类提供了以竖线的形式扫描图像, 并且找出线上具有相同颜色的区域的功能. 对于之后对场地边缘, 球, 机器人, 球门等的检测提供了基础.&lt;/p&gt;
-&lt;p&gt;&lt;img src=&quot;/images/vertical_scan.png&quot; alt=&quot;vertical_scan.png&quot;&gt;&lt;/p&gt;
     
     </summary>
     
@@ -903,13 +923,13 @@
     <link href="http://www.yuthon.com/2016/08/15/Coursera-Machine-Learning-Week-4/"/>
     <id>http://www.yuthon.com/2016/08/15/Coursera-Machine-Learning-Week-4/</id>
     <published>2016-08-15T09:05:54.000Z</published>
-    <updated>2016-08-16T14:21:51.000Z</updated>
+    <updated>2016-10-17T07:04:52.000Z</updated>
     
     <content type="html"><![CDATA[<h1 id="Neural-Networks-Representation"><a href="#Neural-Networks-Representation" class="headerlink" title="Neural Networks: Representation"></a>Neural Networks: Representation</h1><h2 id="Motivations"><a href="#Motivations" class="headerlink" title="Motivations"></a>Motivations</h2><h3 id="Non-linear-Hypotheses"><a href="#Non-linear-Hypotheses" class="headerlink" title="Non-linear Hypotheses"></a>Non-linear Hypotheses</h3><p><u>Performing linear regression with a complex set of data with many features is very unwieldy.</u> For 100 features, if we wanted to make them quadratic we would get 5050 resulting new features.</p>
 <p>We can approximate the growth of the number of new features we get with all quadratic terms with $\mathcal{O}(n^2/2)$. And if you wanted to include all cubic terms in your hypothesis, the features would grow asymptotically at $\mathcal{O}(n^3)$. <u>These are very steep growths, so as the number of our features increase, the number of quadratic or cubic features increase very rapidly and becomes quickly impractical</u>.</p>
 <p><strong>Example</strong>: let our training set be a collection of 50x50 pixel black-and-white photographs, and our goal will be to classify which ones are photos of cars. Our feature set size is then n=2500 if we compare every pair of pixels (7500 if RGB). Now let’s say we need to make a quadratic hypothesis function. With quadratic features, our growth is $\mathcal{O}(n^2/2)$. So our total features will be about 25002/2=3125000, which is very impractical.</p>
-<p><img src="/images/car-examle.png" alt="car example"></p>
 <a id="more"></a>
+<p><img src="/images/car-examle.png" alt="car example"></p>
 <h3 id="Neurons-and-the-Brain"><a href="#Neurons-and-the-Brain" class="headerlink" title="Neurons and the Brain"></a>Neurons and the Brain</h3><p>Origins: Algorithms that try to mimic the brain.</p>
 <ul>
 <li>Was very widely used in 80s and early 90s; popularity diminished in late 90s.</li>
@@ -1144,7 +1164,6 @@
       &lt;h1 id=&quot;Neural-Networks-Representation&quot;&gt;&lt;a href=&quot;#Neural-Networks-Representation&quot; class=&quot;headerlink&quot; title=&quot;Neural Networks: Representation&quot;&gt;&lt;/a&gt;Neural Networks: Representation&lt;/h1&gt;&lt;h2 id=&quot;Motivations&quot;&gt;&lt;a href=&quot;#Motivations&quot; class=&quot;headerlink&quot; title=&quot;Motivations&quot;&gt;&lt;/a&gt;Motivations&lt;/h2&gt;&lt;h3 id=&quot;Non-linear-Hypotheses&quot;&gt;&lt;a href=&quot;#Non-linear-Hypotheses&quot; class=&quot;headerlink&quot; title=&quot;Non-linear Hypotheses&quot;&gt;&lt;/a&gt;Non-linear Hypotheses&lt;/h3&gt;&lt;p&gt;&lt;u&gt;Performing linear regression with a complex set of data with many features is very unwieldy.&lt;/u&gt; For 100 features, if we wanted to make them quadratic we would get 5050 resulting new features.&lt;/p&gt;
 &lt;p&gt;We can approximate the growth of the number of new features we get with all quadratic terms with $\mathcal{O}(n^2/2)$. And if you wanted to include all cubic terms in your hypothesis, the features would grow asymptotically at $\mathcal{O}(n^3)$. &lt;u&gt;These are very steep growths, so as the number of our features increase, the number of quadratic or cubic features increase very rapidly and becomes quickly impractical&lt;/u&gt;.&lt;/p&gt;
 &lt;p&gt;&lt;strong&gt;Example&lt;/strong&gt;: let our training set be a collection of 50x50 pixel black-and-white photographs, and our goal will be to classify which ones are photos of cars. Our feature set size is then n=2500 if we compare every pair of pixels (7500 if RGB). Now let’s say we need to make a quadratic hypothesis function. With quadratic features, our growth is $\mathcal{O}(n^2/2)$. So our total features will be about 25002/2=3125000, which is very impractical.&lt;/p&gt;
-&lt;p&gt;&lt;img src=&quot;/images/car-examle.png&quot; alt=&quot;car example&quot;&gt;&lt;/p&gt;
     
     </summary>
     

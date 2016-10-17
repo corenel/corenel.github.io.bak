@@ -2,9 +2,23 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>http://www.yuthon.com/2016/08/15/Coursera-Machine-Learning-Week-4/</loc>
+    
+    <lastmod>2016-10-17T07:04:52.000Z</lastmod>
+    
+  </url>
+  
+  <url>
     <loc>http://www.yuthon.com/2016/10/16/Notes-for-CS231n-NN/</loc>
     
-    <lastmod>2016-10-17T05:51:41.000Z</lastmod>
+    <lastmod>2016-10-17T07:02:45.000Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://www.yuthon.com/2016/10/07/B-Human-Code-Brief-Analysis-1/</loc>
+    
+    <lastmod>2016-10-17T06:02:27.000Z</lastmod>
     
   </url>
   
@@ -12,13 +26,6 @@
     <loc>http://www.yuthon.com/2016/10/08/B-Human-Code-Brief-Analysis-2/</loc>
     
     <lastmod>2016-10-09T08:36:32.000Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>http://www.yuthon.com/2016/10/07/B-Human-Code-Brief-Analysis-1/</loc>
-    
-    <lastmod>2016-10-08T10:54:15.000Z</lastmod>
     
   </url>
   
@@ -47,13 +54,6 @@
     <loc>http://www.yuthon.com/2016/08/17/Coursera-Machine-Learning-Week-5/</loc>
     
     <lastmod>2016-09-10T07:20:49.000Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>http://www.yuthon.com/2016/08/15/Coursera-Machine-Learning-Week-4/</loc>
-    
-    <lastmod>2016-08-16T14:21:51.000Z</lastmod>
     
   </url>
   
