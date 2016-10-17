@@ -25,13 +25,13 @@ tags:
 >
 > 另外, 本文主要根据讲课的 Slides 上的顺序来, 与 Lecture Notes 的顺序略有不同.
 
+<!-- more -->
+
 # Lecture 5
 
 ## Activation Functions 
 
 课程中主要讲了Sigmoid, tanh, ReLU, Leaky ReLU, Maxout 以及 ELU 这几种激活函数. 
-
-<!-- more -->
 
 ![activation_functions](/images/activation_functions.png)
 
@@ -63,15 +63,15 @@ tags:
   * Subtract the mean image (e.g.AlexNet)  (mean image = [32,32,3] array)
 
 
-  * Subtract per-channel mean (e.g.VGGNet)  (mean along each channel = 3 numbers)
+*   Subtract per-channel mean (e.g.VGGNet)  (mean along each channel = 3 numbers)
 
-* 归一化(normalization): 使得数据所有维度的范围基本相等, 当然由于图像像素的数值范围本身基本是一致的(一般为0-255), 所以不一定要用.
+*   归一化(normalization): 使得数据所有维度的范围基本相等, 当然由于图像像素的数值范围本身基本是一致的(一般为0-255), 所以不一定要用.
 
-  ```python
-  X /= np.std(X, axis=0)
-  ```
+    ```python
+      X /= np.std(X, axis=0)
+    ```
 
-* PCA 和白化在 CNN 中并没有什么用, 就不介绍了.
+*   PCA 和白化在 CNN 中并没有什么用, 就不介绍了.
 
  ![data_preprocessing](/images/data_preprocessing.png)
 
@@ -91,8 +91,7 @@ tags:
 w = np.random.randn(n) * sqrt(2.0/n)
 ```
 
-另外就是还推荐 Batch Normalization (批量归一化), 通常应用在全连接层之后, 激活函数之前. 具体参见论文([Ioffe
-and Szegedy, 2015]). 
+另外就是还推荐 **Batch Normalization** (批量归一化), 通常应用在全连接层之后, 激活函数之前. 具体参见论文([Ioffe and Szegedy, 2015]). 
 
 ![batch_normalizaition](/images/batch_normalizaition.png)
 
@@ -102,5 +101,34 @@ and Szegedy, 2015]).
 - Acts as a form of regularization in afunny way, and slightly reduces the need for dropout, maybe
 
 ## Babysitting the Learning Process
+
+### Double check that the loss is reasonable
+
+* 首先不使用 regularization, 观察 loss 是否合理(下例中对于 CIFAR-10 的初始 loss 应近似等于$log(0.1)=2.31$)
+* 然后再开启 regularization, 观察 loss 是否上升
+
+ ![loss_double_check](/images/loss_double_check.png)
+
+### Other sanity check tips
+
+* 首先在一个小数据集上进行训练(可先设 regualrization 为0), 看看是否过拟合, 确保算法的正确性.
+
+  ![overfit_on_a_small_portion_of_training_data](/images/overfit_on_a_small_portion_of_training_data.png)
+
+* 之后再从一个小的 regularization 开始, 寻找合适的能够使 loss 下降的 learning rate.
+
+  * 如果几次 epoch 后, loss 没没有下降, 说明 learning rate 太小了
+
+     ![loss_barely_changing](/images/loss_barely_changing.png)
+
+  * 如果 loss 爆炸了, 那么说明 learning rate 太大了
+
+     ![loss_exploding](/images/loss_exploding.png)
+
+  * 通常 learning rate 的范围是$[1e-3, 1e-5]$
+
+## Hyperparameter Optimization
+
+
 
 (To be continued...)
