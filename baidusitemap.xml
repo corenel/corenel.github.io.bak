@@ -5,7 +5,7 @@
     
   <url>
     <loc>http://www.yuthon.com/2016/10/16/Notes-for-CS231n-NN/</loc>
-    <lastmod>2016-10-17T05:35:39.000Z</lastmod>
+    <lastmod>2016-10-17T05:51:41.000Z</lastmod>
     <data>
         <display>
         <title>Notes for CS231n Neural Network</title>
@@ -333,7 +333,6 @@
     </url>
 
     
-    
   <url>
     <loc>http://www.yuthon.com/2016/04/13/CodeSchool-Try-jQuery/</loc>
     <lastmod>2016-05-16T11:51:43.000Z</lastmod>
@@ -400,7 +399,6 @@
     </url>
 
     
-    
   <url>
     <loc>http://www.yuthon.com/2016/04/12/CodeSchool-JavaScript-Best-Practices/</loc>
     <lastmod>2016-05-16T11:51:43.000Z</lastmod>
@@ -422,4 +420,6 @@
     </data>
     </url>
 
+    
+    
 </urlset>
