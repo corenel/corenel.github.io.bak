@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://www.yuthon.com/"/>
-  <updated>2016-10-17T12:30:49.000Z</updated>
+  <updated>2016-10-18T11:45:51.000Z</updated>
   <id>http://www.yuthon.com/</id>
   
   <author>
@@ -20,7 +20,7 @@
     <link href="http://www.yuthon.com/2016/10/16/Notes-for-CS231n-NN/"/>
     <id>http://www.yuthon.com/2016/10/16/Notes-for-CS231n-NN/</id>
     <published>2016-10-16T13:04:26.000Z</published>
-    <updated>2016-10-17T12:30:49.000Z</updated>
+    <updated>2016-10-18T11:45:51.000Z</updated>
     
     <content type="html"><![CDATA[<blockquote>
 <p>本文主要对于 CS231n 课程自带的 Lecture Notes 的一些补充与总结. 建议先看原版的 Lecture Notes:</p>
@@ -64,12 +64,11 @@
 <figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># Assume X [NxD] is data matrix, each example in a row</span></div><div class="line">X -= np.mean(X, axis=<span class="number">0</span>)</div></pre></td></tr></table></figure>
 <p>零中心化主要有两种做法(e.g. consider CIFAR-10 example with [32,32,3] images):</p>
 <ul>
-<li>Subtract the mean image (e.g.AlexNet)  (mean image = [32,32,3] array)</li>
-</ul>
+<li><p>Subtract the mean image (e.g.AlexNet)  (mean image = [32,32,3] array)</p>
+</li>
+<li><p>Subtract per-channel mean (e.g.VGGNet)  (mean along each channel = 3 numbers)</p>
 </li>
 </ul>
-<ul>
-<li><p>Subtract per-channel mean (e.g.VGGNet)  (mean along each channel = 3 numbers)</p>
 </li>
 <li><p>归一化(normalization): 使得数据所有维度的范围基本相等, 当然由于图像像素的数值范围本身基本是一致的(一般为0-255), 所以不一定要用.</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">X /= np.std(X, axis=<span class="number">0</span>)</div></pre></td></tr></table></figure>
@@ -88,12 +87,12 @@
 <figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">w = np.random.randn(n) * sqrt(<span class="number">2.0</span>/n)</div></pre></td></tr></table></figure>
 <p>或者 Xavier initialization:</p>
 <p> <img src="/images/xavier_init.png" alt="xavier_init"></p>
-<p>另外就是还推荐 <strong>Batch Normalization</strong> (批量归一化), 通常应用在全连接层之后, 激活函数之前. 具体参见论文([Ioffe and Szegedy, 2015]). </p>
+<p>另外就是还推荐 <strong>Batch Normalization</strong> (批量归一化), 通常应用在全连接层之后, 激活函数之前. 具体参见论文[Ioffe and Szegedy, 2015]. </p>
 <p><img src="/images/batch_normalizaition.png" alt="batch_normalizaition"></p>
 <ul>
 <li>Improves gradient flow through thenetwork</li>
 <li>Allows higher learning rates</li>
-<li>Reduces the strong dependence oninitialization</li>
+<li>Reduces the strong dependence on initialization</li>
 <li>Acts as a form of regularization in afunny way, and slightly reduces the need for dropout, maybe</li>
 </ul>
 <h2 id="Babysitting-the-Learning-Process"><a href="#Babysitting-the-Learning-Process" class="headerlink" title="Babysitting the Learning Process"></a>Babysitting the Learning Process</h2><h3 id="Double-check-that-the-loss-is-reasonable"><a href="#Double-check-that-the-loss-is-reasonable" class="headerlink" title="Double check that the loss is reasonable"></a>Double check that the loss is reasonable</h3><ul>
