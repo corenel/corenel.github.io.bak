@@ -62,16 +62,15 @@ tags:
 
   * Subtract the mean image (e.g.AlexNet)  (mean image = [32,32,3] array)
 
+  * Subtract per-channel mean (e.g.VGGNet)  (mean along each channel = 3 numbers)
 
-*   Subtract per-channel mean (e.g.VGGNet)  (mean along each channel = 3 numbers)
+* 归一化(normalization): 使得数据所有维度的范围基本相等, 当然由于图像像素的数值范围本身基本是一致的(一般为0-255), 所以不一定要用.
 
-*   归一化(normalization): 使得数据所有维度的范围基本相等, 当然由于图像像素的数值范围本身基本是一致的(一般为0-255), 所以不一定要用.
+  ```python
+  X /= np.std(X, axis=0)
+  ```
 
-    ```python
-              X /= np.std(X, axis=0)
-    ```
-
-*   PCA 和白化在 CNN 中并没有什么用, 就不介绍了.
+* PCA 和白化在 CNN 中并没有什么用, 就不介绍了.
 
  ![data_preprocessing](/images/data_preprocessing.png)
 
@@ -95,13 +94,13 @@ w = np.random.randn(n) * sqrt(2.0/n)
 
  ![xavier_init](/images/xavier_init.png)
 
-另外就是还推荐 **Batch Normalization** (批量归一化), 通常应用在全连接层之后, 激活函数之前. 具体参见论文([Ioffe and Szegedy, 2015]). 
+另外就是还推荐 **Batch Normalization** (批量归一化), 通常应用在全连接层之后, 激活函数之前. 具体参见论文[Ioffe and Szegedy, 2015]. 
 
 ![batch_normalizaition](/images/batch_normalizaition.png)
 
 - Improves gradient flow through thenetwork
 - Allows higher learning rates
-- Reduces the strong dependence oninitialization
+- Reduces the strong dependence on initialization
 - Acts as a form of regularization in afunny way, and slightly reduces the need for dropout, maybe
 
 ## Babysitting the Learning Process
