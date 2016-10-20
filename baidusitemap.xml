@@ -4,6 +4,30 @@
 
     
   <url>
+    <loc>http://www.yuthon.com/2016/10/19/Notes-for-CS231n-CNN/</loc>
+    <lastmod>2016-10-20T12:23:24.000Z</lastmod>
+    <data>
+        <display>
+        <title>Notes for CS231n Convolutional Neural Network</title>
+        <pubTime>2016-10-19T03:06:30.000Z</pubTime>
+        
+        <tag>CS231n</tag>
+         
+        <tag>Convolutional Neural Network</tag>
+         
+        <tag>Deep Learning</tag>
+         
+         
+           
+             
+              <breadCrumb title="Notes" url="http://www.yuthon.com/categories/Notes/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
     <loc>http://www.yuthon.com/2016/10/16/Notes-for-CS231n-NN/</loc>
     <lastmod>2016-10-18T11:45:51.000Z</lastmod>
     <data>
@@ -13,9 +37,9 @@
         
         <tag>CS231n</tag>
          
-        <tag>Neural Network</tag>
-         
         <tag>Deep Learning</tag>
+         
+        <tag>Neural Network</tag>
          
          
            
@@ -333,6 +357,7 @@
     </url>
 
     
+    
   <url>
     <loc>http://www.yuthon.com/2016/04/13/CodeSchool-Try-jQuery/</loc>
     <lastmod>2016-05-16T11:51:43.000Z</lastmod>
@@ -356,12 +381,12 @@
 
     
   <url>
-    <loc>http://www.yuthon.com/2016/04/12/CodeSchool-JavaScript-Best-Practices/</loc>
+    <loc>http://www.yuthon.com/2016/04/14/CodeSchool-Shaping-up-with-Angular.js/</loc>
     <lastmod>2016-05-16T11:51:43.000Z</lastmod>
     <data>
         <display>
-        <title>Notes for Code School - JavaScript Best Practices</title>
-        <pubTime>2016-04-12T10:19:54.000Z</pubTime>
+        <title>Notes for Code School - Shaping up with Angular.js</title>
+        <pubTime>2016-04-14T13:19:22.000Z</pubTime>
         
         <tag>CodeSchool</tag>
          
@@ -400,14 +425,13 @@
 
     
     
-    
   <url>
-    <loc>http://www.yuthon.com/2016/04/14/CodeSchool-Shaping-up-with-Angular.js/</loc>
+    <loc>http://www.yuthon.com/2016/04/12/CodeSchool-JavaScript-Best-Practices/</loc>
     <lastmod>2016-05-16T11:51:43.000Z</lastmod>
     <data>
         <display>
-        <title>Notes for Code School - Shaping up with Angular.js</title>
-        <pubTime>2016-04-14T13:19:22.000Z</pubTime>
+        <title>Notes for Code School - JavaScript Best Practices</title>
+        <pubTime>2016-04-12T10:19:54.000Z</pubTime>
         
         <tag>CodeSchool</tag>
          
