@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://www.yuthon.com/"/>
-  <updated>2016-10-20T12:23:24.000Z</updated>
+  <updated>2016-10-25T14:26:31.000Z</updated>
   <id>http://www.yuthon.com/</id>
   
   <author>
@@ -14,6 +14,165 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>CUDA and Tensorflow Installation on Ubuntu 16.04</title>
+    <link href="http://www.yuthon.com/2016/10/25/CUDA-and-Tensorflow-Installation-on-Ubuntu-16-04/"/>
+    <id>http://www.yuthon.com/2016/10/25/CUDA-and-Tensorflow-Installation-on-Ubuntu-16-04/</id>
+    <published>2016-10-25T12:53:50.000Z</published>
+    <updated>2016-10-25T14:26:31.000Z</updated>
+    
+    <content type="html"><![CDATA[<p>昨天折腾了一个下午开发环境的配置，记录一下其中遇到的坑。</p>
+<a id="more"></a>
+<h2 id="硬件配置"><a href="#硬件配置" class="headerlink" title="硬件配置"></a>硬件配置</h2><p>我的硬件配置(XPS 15 9550):</p>
+<ul>
+<li>CPU: i5 6300HQ</li>
+<li>GPU: GTX960M 2G</li>
+<li>内存: 16G DDR4 2133</li>
+<li>硬盘: 512G SM951 NVMe</li>
+</ul>
+<blockquote>
+<p>基本上就只处于玩票的状态, 实验室快给我配1080啊~~~</p>
+</blockquote>
+<p>上一个 NVIDIA 钦定的 DevBox <a href="http://www.nvidia.com/object/deep-learning-system.html" target="_blank" rel="external">配置</a>:</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:left">Name</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left">GPUs</td>
+<td>8x Tesla P100</td>
+</tr>
+<tr>
+<td style="text-align:left">TFLOPS (GPU FP16 /CPU FP32)</td>
+<td>170/3</td>
+</tr>
+<tr>
+<td style="text-align:left">GPU Memory</td>
+<td>16 GB per GPU</td>
+</tr>
+<tr>
+<td style="text-align:left">CPU</td>
+<td>Dual 20-core Intel® Xeon®E5-2698 v4 2.2 GHz</td>
+</tr>
+<tr>
+<td style="text-align:left">NVIDIA CUDA® Cores</td>
+<td>28672</td>
+</tr>
+<tr>
+<td style="text-align:left">System Memory</td>
+<td>512 GB 2133 MHz DDR4</td>
+</tr>
+<tr>
+<td style="text-align:left">Storage</td>
+<td>4x 1.92 TB SSD RAID 0</td>
+</tr>
+<tr>
+<td style="text-align:left">Network</td>
+<td>Dual 10 GbE, 4 IB EDR</td>
+</tr>
+<tr>
+<td style="text-align:left">Software</td>
+<td>Ubuntu Server Linux OSDGX-1 Recommended GPUDriver</td>
+</tr>
+<tr>
+<td style="text-align:left">System Weight</td>
+<td>134 lbs</td>
+</tr>
+<tr>
+<td style="text-align:left">System Dimensions</td>
+<td>866 D x 444 W x 131 H (mm)</td>
+</tr>
+<tr>
+<td style="text-align:left">Packing Dimensions</td>
+<td>1180 D x 730 W x 284 H (mm)</td>
+</tr>
+<tr>
+<td style="text-align:left">Maximum Power Requirements</td>
+<td>3200W</td>
+</tr>
+<tr>
+<td style="text-align:left">Operating Temperature Range</td>
+<td>10 - 30°C</td>
+</tr>
+</tbody>
+</table>
+<p>这简直是吾辈梦想神机啊… 然而要 <strong>$129000</strong> !</p>
+<h2 id="系统环境"><a href="#系统环境" class="headerlink" title="系统环境"></a>系统环境</h2><p>推荐是用 Ubuntu 最新的 LTS 版本 16.04.1, 对 Skylake 系列的 CPU 和主板的支持都很不错. 关于在 XPS 15 9550 上的详细配置过程, 我计划稍后专门写一篇.</p>
+<p>本来想在 macOS 上跑的, 奈何黑苹果不支持独显.</p>
+<h2 id="安装-CUDA"><a href="#安装-CUDA" class="headerlink" title="安装 CUDA"></a>安装 CUDA</h2><p><a href="https://developer.nvidia.com/cuda-downloads" target="_blank" rel="external">CUDA</a> 与 <a href="https://developer.nvidia.com/cudnn" target="_blank" rel="external">cuDNN</a> 的安装在 NVIDIA 与 Tensorflow的官网上都有<a href="https://www.tensorflow.org/versions/r0.11/get_started/os_setup.html#optional-install-cuda-gpus-on-linux" target="_blank" rel="external">详细说明</a>, 此处仅就一些关键环节作出说明.</p>
+<ul>
+<li><p>禁用开源的 Nouveau 驱动</p>
+<ul>
+<li><p>首先看看有没有在使用这个开源驱动:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ lsmod | grep nouveau</div></pre></td></tr></table></figure>
+</li>
+<li><p>创建<code>/etc/modprobe.d/blacklist-nouveau.conf</code>文件, 并写入以下内容</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">blacklist nouveau</div><div class="line">options nouveau modeset=0</div></pre></td></tr></table></figure>
+</li>
+<li><p>重启kernel initramfs</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ sudo update-initramfs -u</div></pre></td></tr></table></figure>
+</li>
+</ul>
+</li>
+<li><p>从ppa源下载最新版的驱动(&gt;364), 或者使用 CUDA-Toolkit 自带的驱动:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">$ sudo apt-get purge nvidia-*</div><div class="line">$ sudo add-apt-repository ppa:graphics-drivers/ppa</div><div class="line">$ sudo apt-get update</div><div class="line">$ sudo apt-get install nvidia-370</div></pre></td></tr></table></figure>
+</li>
+<li><p>下载 CUDA 的 runfile (local) 版本, 不要使用apt-get 的方式, 保证获取到的是最新的版本 (目前是8.0).</p>
+</li>
+<li><p>安装过程中, 需要<code>Ctrl+Alt+F1</code>切换到 tty 界面, 然后关闭 X server:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ sudo service lightdm stop</div></pre></td></tr></table></figure>
+<p>之后再执行安装过程</p>
+</li>
+<li><p>安装过程中, 如果是像我一样的 Intel 核显 + NVIDIA 独显的, <strong>绝对不要装 OpenCL</strong>, 否则重启后会陷入 login loop.</p>
+</li>
+<li><p>安装完成之后, 设置环境变量:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">export LD_LIBRARY_PATH=&quot;$LD_LIBRARY_PATH:/usr/local/cuda/lib64:/usr/local/cuda/extras/CUPTI/lib64&quot;</div><div class="line">export CUDA_HOME=/usr/local/cuda</div></pre></td></tr></table></figure>
+</li>
+</ul>
+<h2 id="安装-cuDNN"><a href="#安装-cuDNN" class="headerlink" title="安装 cuDNN"></a>安装 cuDNN</h2><p>从<a href="https://developer.nvidia.com/cudnn" target="_blank" rel="external">官网</a>下载之后, 执行以下命令 (目前最新版本5.1):</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">tar xvzf cudnn-8.0-linux-x64-v5.1-ga.tgz</div><div class="line">sudo cp cuda/include/cudnn.h /usr/local/cuda/include</div><div class="line">sudo cp cuda/lib64/libcudnn* /usr/local/cuda/lib64</div><div class="line">sudo chmod a+r /usr/local/cuda/include/cudnn.h /usr/local/cuda/lib64/libcudnn*</div></pre></td></tr></table></figure>
+<h2 id="安装Tensorflow"><a href="#安装Tensorflow" class="headerlink" title="安装Tensorflow"></a>安装Tensorflow</h2><p>这是最纠结的一步, 之前按照别人教程说最好从源码编译支持 GPU. 但是由于国内的网络环境, 源码编译需要下一堆的依赖包, 速度超级慢. 因此还是使用官网推荐的 pip 安装方式:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line"># Get pip</div><div class="line">$ sudo apt-get install python-pip python-dev</div><div class="line"></div><div class="line"># Ubuntu/Linux 64-bit, GPU enabled, Python 2.7</div><div class="line"># Requires CUDA toolkit 8.0 and CuDNN v5. For other versions, see &quot;Install from sources&quot; below.</div><div class="line">$ export TF_BINARY_URL=https://storage.googleapis.com/tensorflow/linux/gpu/tensorflow-0.11.0rc1-cp27-none-linux_x86_64.whl</div><div class="line"></div><div class="line"># Python 2</div><div class="line">$ sudo pip install --upgrade $TF_BINARY_URL</div></pre></td></tr></table></figure>
+<blockquote>
+<ul>
+<li>可以先把<code>tensorflow-0.11.0rc1-cp27-none-linux_x86_64.whl</code>下下来, 本地执行安装命令</li>
+<li>可以使用国内的 pip 源, 加快安装依赖的速度</li>
+</ul>
+</blockquote>
+<h2 id="测试-Tensorflow"><a href="#测试-Tensorflow" class="headerlink" title="测试 Tensorflow"></a>测试 Tensorflow</h2><p>用下面的小例子来测试下 Tensorflow 安装得成不成功:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line">$ python</div><div class="line">...</div><div class="line">&gt;&gt;&gt; import tensorflow as tf</div><div class="line">&gt;&gt;&gt; hello = tf.constant(&apos;Hello, TensorFlow!&apos;)</div><div class="line">&gt;&gt;&gt; sess = tf.Session()</div><div class="line">&gt;&gt;&gt; print(sess.run(hello))</div><div class="line">Hello, TensorFlow!</div><div class="line">&gt;&gt;&gt; a = tf.constant(10)</div><div class="line">&gt;&gt;&gt; b = tf.constant(32)</div><div class="line">&gt;&gt;&gt; print(sess.run(a + b))</div><div class="line">42</div><div class="line">&gt;&gt;&gt;</div></pre></td></tr></table></figure>
+<p>在 <code>import</code>的同时, 还会显示 CUDA 方面与 GPU 方面的信息.</p>
+<p>至此大功告成!</p>
+<h2 id="Docker-for-tensorflow"><a href="#Docker-for-tensorflow" class="headerlink" title="Docker for tensorflow"></a>Docker for tensorflow</h2><p>其实在这期间还试过直接用装了 Tensorflow 的 Docker 镜像, 也有支持 GPU 的版本. 各位如有兴趣可以试试:</p>
+<ul>
+<li><a href="https://github.com/tensorflow/tensorflow/tree/master/tensorflow/tools/docker" target="_blank" rel="external">Github - Using TensorFlow via Docker</a></li>
+<li><a href="https://github.com/saiprashanths/dl-docker" target="_blank" rel="external">Github - An all-in-one Docker image for deep learning. Contains all the popular DL frameworks (TensorFlow, Theano, Torch, Caffe, etc.)</a></li>
+</ul>
+]]></content>
+    
+    <summary type="html">
+    
+      &lt;p&gt;昨天折腾了一个下午开发环境的配置，记录一下其中遇到的坑。&lt;/p&gt;
+    
+    </summary>
+    
+      <category term="Experience" scheme="http://www.yuthon.com/categories/Experience/"/>
+    
+    
+      <category term="CUDA" scheme="http://www.yuthon.com/tags/CUDA/"/>
+    
+      <category term="Tensorflow" scheme="http://www.yuthon.com/tags/Tensorflow/"/>
+    
+      <category term="Ubuntu" scheme="http://www.yuthon.com/tags/Ubuntu/"/>
+    
+      <category term="Deep Learning" scheme="http://www.yuthon.com/tags/Deep-Learning/"/>
+    
+  </entry>
   
   <entry>
     <title>Notes for CS231n Convolutional Neural Network</title>
@@ -129,11 +288,11 @@
       <category term="Notes" scheme="http://www.yuthon.com/categories/Notes/"/>
     
     
+      <category term="Deep Learning" scheme="http://www.yuthon.com/tags/Deep-Learning/"/>
+    
       <category term="CS231n" scheme="http://www.yuthon.com/tags/CS231n/"/>
     
       <category term="Convolutional Neural Network" scheme="http://www.yuthon.com/tags/Convolutional-Neural-Network/"/>
-    
-      <category term="Deep Learning" scheme="http://www.yuthon.com/tags/Deep-Learning/"/>
     
   </entry>
   
@@ -352,9 +511,9 @@
       <category term="Notes" scheme="http://www.yuthon.com/categories/Notes/"/>
     
     
-      <category term="CS231n" scheme="http://www.yuthon.com/tags/CS231n/"/>
-    
       <category term="Deep Learning" scheme="http://www.yuthon.com/tags/Deep-Learning/"/>
+    
+      <category term="CS231n" scheme="http://www.yuthon.com/tags/CS231n/"/>
     
       <category term="Neural Network" scheme="http://www.yuthon.com/tags/Neural-Network/"/>
     
@@ -2954,193 +3113,6 @@
       <category term="JavaScript" scheme="http://www.yuthon.com/tags/JavaScript/"/>
     
       <category term="ES2015" scheme="http://www.yuthon.com/tags/ES2015/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>Notes for Code School - JavaScript Road Trip</title>
-    <link href="http://www.yuthon.com/2016/04/09/CodeSchool-Javascript/"/>
-    <id>http://www.yuthon.com/2016/04/09/CodeSchool-Javascript/</id>
-    <published>2016-04-09T04:37:07.000Z</published>
-    <updated>2016-05-16T11:51:43.000Z</updated>
-    
-    <content type="html"><![CDATA[<h1 id="Closures"><a href="#Closures" class="headerlink" title="Closures"></a>Closures</h1><p><strong>Closures help in function “construction zones”</strong></p>
-<p>A closure can make the creation of very similar functions ultra-efficient.</p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">buildCoveTicketMaker</span>(<span class="params"> transport </span>) </span>&#123;</div><div class="line">  <span class="keyword">return</span> <span class="function"><span class="keyword">function</span> (<span class="params"> name </span>) </span>&#123;</div><div class="line">    alert(<span class="string">"Here is your transportation ticket via the "</span> + transport + <span class="string">".\n"</span> + </div><div class="line">          <span class="string">"Welcome to the Cold Closures Cove, "</span> + name + <span class="string">"!"</span>);</div><div class="line">  &#125;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="keyword">var</span> getSubmarineTicket = buildCoveTicketMaker(<span class="string">"Submarine"</span>);</div><div class="line"><span class="keyword">var</span> getBattleshipTicket = buildCoveTicketMaker(<span class="string">"Battleship"</span>);</div><div class="line"><span class="keyword">var</span> getGiantSeagullTicket = buildCoveTicketMaker(<span class="string">"Giant Seagull"</span>);</div></pre></td></tr></table></figure>
-<a id="more"></a>
-<p><strong>Closure functions can even modify bound variables in the background</strong></p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">buildCoveTicketMaker</span>(<span class="params"> transport </span>) </span>&#123;</div><div class="line">  <span class="keyword">return</span> <span class="function"><span class="keyword">function</span> (<span class="params"> name </span>) </span>&#123;</div><div class="line">    alert(<span class="string">"Here is your transportation ticket via the "</span> + transport + <span class="string">".\n"</span> + </div><div class="line">          <span class="string">"Welcome to the Cold Closures Cove, "</span> + name + <span class="string">"!"</span> + </div><div class="line">          <span class="string">"You are passenger #"</span> + passengerNumber + <span class="string">"."</span> );</div><div class="line">  &#125;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="keyword">var</span> getSubmarineTicket = buildCoveTicketMaker(<span class="string">"Submarine"</span>);</div><div class="line"><span class="comment">// passengerNumber is incremented to 1.</span></div><div class="line">getSubmarineTicket(<span class="string">"Mario"</span>); </div><div class="line"><span class="comment">// Another call to getSubmarineTicket has passengerNumber incremented to 2! </span></div><div class="line"><span class="comment">// Wow, even though the function's local scope disappeared after Mario's ticket, </span></div><div class="line"><span class="comment">// it KEPT the progress of passengerNumber!</span></div><div class="line">getSubmarineTicket(<span class="string">"Toad"</span>);</div></pre></td></tr></table></figure>
-<p><strong>LOOPS WITH CLOSURES: a cautionary tale</strong></p>
-<p>We have to pay close attention to return times and final variable states.</p>
-<ul>
-<li>Way before torpedoAssignment isreturned, the i loop counter hasprogressed in value to 8 andstopped the loop.</li>
-<li>The function’s actual return is the true “moment of closure”, when the environment andall necessary variables are packaged up. </li>
-</ul>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">assignTorpedo</span> (<span class="params"> name, passengerArray </span>)</span>&#123;</div><div class="line">  <span class="keyword">var</span> torpedoAssignment;</div><div class="line">  <span class="keyword">for</span> (<span class="keyword">var</span> i = <span class="number">0</span>; i&lt;passengerArray.length; i++) &#123;</div><div class="line">    <span class="keyword">if</span> (passengerArray[i] == name) &#123;</div><div class="line">      torpedoAssignment = <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</div><div class="line">        alert(<span class="string">"Ahoy, "</span> + name + <span class="string">"!\n"</span> + <span class="string">"Man your post at Torpedo #"</span> + (i+<span class="number">1</span>) + <span class="string">"!"</span>);</div><div class="line">      &#125;;</div><div class="line">    &#125;</div><div class="line">  &#125;</div><div class="line">  <span class="keyword">return</span> torpedoAssignment;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="keyword">var</span> subPassengers = [<span class="string">"Luke"</span>, <span class="string">"Leia"</span>, <span class="string">"Han"</span>, <span class="string">"Chewie"</span>, <span class="string">"Yoda"</span>, <span class="string">"R2-D2"</span>, <span class="string">"C-3PO"</span>, <span class="string">"Boba"</span>];</div><div class="line"><span class="keyword">var</span> giveAssignment = assignTorpedo(<span class="string">"Chewie"</span>, subPassengers);</div><div class="line">giveAssignment(); </div><div class="line"><span class="comment">// Outputs:</span></div><div class="line"><span class="comment">// Ahoy, Chewie!</span></div><div class="line"><span class="comment">// Man your post at Torpedo #9!</span></div></pre></td></tr></table></figure>
-<p>Several options exist for timing closures correctly</p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">assignTorpedo</span> (<span class="params"> name, passengerArray </span>)</span>&#123;</div><div class="line">  <span class="keyword">for</span> (<span class="keyword">var</span> i = <span class="number">0</span>; i&lt;passengerArray.length; i++) &#123;</div><div class="line">    <span class="keyword">if</span> (passengerArray[i] == name) &#123;</div><div class="line">      <span class="comment">// Now the function will be immediately returned when the right name is found, locking i in place.</span></div><div class="line">      <span class="keyword">return</span> <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</div><div class="line">        alert(<span class="string">"Ahoy, "</span> + name + <span class="string">"!\n"</span> + </div><div class="line">              <span class="string">"Man your post at Torpedo #"</span> + (i+<span class="number">1</span>) + <span class="string">"!"</span>);</div><div class="line">      &#125;;</div><div class="line">    &#125;</div><div class="line">  &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">makeTorpedoAssigner</span> (<span class="params"> passengerArray </span>) </span>&#123;</div><div class="line">  <span class="keyword">return</span> <span class="function"><span class="keyword">function</span> (<span class="params"> name </span>) </span>&#123;</div><div class="line">    <span class="keyword">for</span> (<span class="keyword">var</span> i = <span class="number">0</span>; i&lt;passengerArray.length; i++) &#123;</div><div class="line">      <span class="keyword">if</span> (passengerArray[i] == name) &#123;</div><div class="line">        alert(<span class="string">"Ahoy, "</span> + name + <span class="string">"!\n"</span> +</div><div class="line">              <span class="string">"Man your post at Torpedo #"</span> + (i+<span class="number">1</span>) + <span class="string">"!"</span>);</div><div class="line">      &#125;</div><div class="line">    &#125;</div><div class="line">  &#125;;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<h1 id="Hoisting"><a href="#Hoisting" class="headerlink" title="Hoisting"></a>Hoisting</h1><ul>
-<li><p>Ensuring that every line of code can execute when it’s needed</p>
-<p><img src="/images/program_load_order.png" alt="program_load_order"></p>
-</li>
-</ul>
-<ul>
-<li><p>First, memory is set aside for all necessary variables and declared functions. Then the operations in order.</p>
-<p> <img src="/images/stuff_declare.png" alt="stuff_declare"></p>
-</li>
-</ul>
-<ul>
-<li>Some examples of the impact of hoisting<img src="/images/the_impact_of_hoisting.png" alt="the_impact_of_hoisting"></li>
-</ul>
-<ul>
-<li><p>Function Expressions are never hoisted! They are treated as assignments.</p>
-<p><img src="/images/function_expressions_are_never_hoisted.png" alt="function_expressions_are_never_hoisted"></p>
-<p><img src="/images/function_expressions_are_never_hoisted_2.png" alt="function_expressions_are_never_hoisted_2"></p>
-</li>
-</ul>
-<p><strong>Example</strong> <img src="/images/how_might_this_affect_our_EARLIER_train_system.png" alt="how_might_this_affect_our_EARLIER_train_system"></p>
-<p><img src="/images/how_might_this_affect_our_EARLIER_train_system_result.png" alt="how_might_this_affect_our_EARLIER_train_system_result"></p>
-<p><strong>Solution</strong></p>
-<ul>
-<li>Exchange the order<img src="/images/how_might_this_affect_our_EARLIER_train_system_solution_1.png" alt="how_might_this_affect_our_EARLIER_train_system_solution_1"></li>
-</ul>
-<ul>
-<li>Don’t use function expression <img src="/images/how_might_this_affect_our_EARLIER_train_system_solution_2.png" alt="how_might_this_affect_our_EARLIER_train_system_solution_2"></li>
-</ul>
-<h1 id="Prototype"><a href="#Prototype" class="headerlink" title="Prototype"></a>Prototype</h1><ul>
-<li>The Object’s parent is called its “prototype”<ul>
-<li>When a generic Object is created, its prototype passes it many important properties </li>
-</ul>
-</li>
-<li>Passing down properties is called “inheritance”<ul>
-<li>Inheritance helps avoid over-coding multiple properties and methods into similar objects.</li>
-<li>Object Prototype<ul>
-<li>valueOf()</li>
-<li>constructor()</li>
-<li>toLocaleString()</li>
-<li>toString()</li>
-<li>isPrototypeOf()</li>
-<li>propertyIsEnumerable()</li>
-<li>hasOwnProperty()</li>
-</ul>
-</li>
-<li>Array Prototype<ul>
-<li>length</li>
-<li>pop()</li>
-<li>push()</li>
-<li>shift()</li>
-<li>reverse()</li>
-<li>sort()</li>
-<li>join()</li>
-<li>reduce()</li>
-<li>slice()</li>
-</ul>
-</li>
-<li>String Prototype<ul>
-<li>length</li>
-<li>charAt()</li>
-<li>trim()</li>
-<li>concat()</li>
-<li>indexOf()</li>
-<li>replace()</li>
-<li>toLowerCase()</li>
-<li>toUpperCase()</li>
-<li>substring()</li>
-</ul>
-</li>
-<li>Number Prototype<ul>
-<li>toFixed()</li>
-<li>toExponential()</li>
-<li>toPrecision()</li>
-</ul>
-</li>
-<li>Function Prototype<ul>
-<li>name</li>
-<li>call()</li>
-<li>bind()</li>
-<li>apply()</li>
-</ul>
-</li>
-</ul>
-</li>
-<li>Though properties are inherited, they are still “owned” by prototypes, not the inheriting Object</li>
-</ul>
-<h2 id="Inheritance-and-Constructors"><a href="#Inheritance-and-Constructors" class="headerlink" title="Inheritance and Constructors"></a>Inheritance and Constructors</h2><p><strong>Adding inheritable Properties to prototypes</strong></p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line"><span class="built_in">String</span>.prototype.countAll = <span class="function"><span class="keyword">function</span> (<span class="params"></span>)</span>&#123;</div><div class="line">  <span class="keyword">var</span> letterCount = <span class="number">0</span>;</div><div class="line">  <span class="keyword">for</span> (<span class="keyword">var</span> i = <span class="number">0</span>; i&lt;<span class="keyword">this</span>.length; i++) &#123;</div><div class="line">    <span class="keyword">if</span> ( <span class="keyword">this</span>.charAt(i).toUpperCase() == letter.toUpperCase() ) &#123;</div><div class="line">      letterCount++;</div><div class="line">    &#125;</div><div class="line">  &#125;</div><div class="line">  <span class="keyword">return</span> letterCount;</div><div class="line">&#125;;</div></pre></td></tr></table></figure>
-<p><strong>Build objects using Object.create()</strong></p>
-<p>Using inheritance, we can create new Objects with our existing Objects as prototypes</p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">var</span> shoe = &#123; size: <span class="number">6</span>, gender: <span class="string">"women"</span>, construction: <span class="string">"slipper"</span>&#125;;</div><div class="line"><span class="keyword">var</span> magicShoe = <span class="built_in">Object</span>.create(shoe);</div></pre></td></tr></table></figure>
-<p><strong>Examining the inheritance</strong></p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="built_in">Object</span>.prototype .isPrototypeOf(shoe); <span class="comment">// true</span></div><div class="line">shoe.isPrototypeOf(magicShoe); <span class="comment">//true</span></div><div class="line"><span class="built_in">Object</span>.prototype .isPrototypeOf(magicShoe); <span class="comment">//true</span></div></pre></td></tr></table></figure>
-<p><strong>Build a prototype with empty properties</strong></p>
-<ul>
-<li><p>Determine common properties of a class</p>
-<ul>
-<li>A class is a set of Objects that all share and inherit from the same basic prototype.</li>
-</ul>
-</li>
-<li><p>Building a constructor function for an Object</p>
-<ul>
-<li><p>A constructor allows us to set up inheritance while also assigning specific property values.</p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">Shoe</span> (<span class="params">shoeSize, shoeColor, forGender, constructStyle</span>) </span>&#123;</div><div class="line">  <span class="keyword">this</span>.size = shoeSize;</div><div class="line">  <span class="keyword">this</span>.color = shoeColor;</div><div class="line">  <span class="keyword">this</span>.gender = forGender;</div><div class="line">  <span class="keyword">this</span>.construction = constructStyle;</div><div class="line">  <span class="keyword">this</span>.putOn = <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123; alert(<span class="string">"Shoe's on!"</span>); &#125;;</div><div class="line">  <span class="keyword">this</span>.takeOff = <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123; alert(<span class="string">"Uh, what's that smell?"</span>); &#125;;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-</li>
-</ul>
-</li>
-<li><p>Use constructor</p>
-<ul>
-<li><p>JavaScript’s ?new’ keyword produces a new Object of the class, or “instantiates” the class</p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">var</span> beachShoe = <span class="keyword">new</span> Shoe( <span class="number">10</span>, <span class="string">"blue"</span>, <span class="string">"women"</span>, <span class="string">"flipflop"</span> );</div></pre></td></tr></table></figure>
-</li>
-</ul>
-</li>
-</ul>
-<p><strong>Assigning a prototype to a constructor</strong></p>
-<p>By setting a constructor’s prototype property, every new instance will refer to it for extra properties!</p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">Shoe</span> (<span class="params">shoeSize, shoeColor, forGender, constructStyle</span>) </span>&#123;</div><div class="line">  <span class="keyword">this</span>.size = shoeSize;</div><div class="line">  <span class="keyword">this</span>.color = shoeColor;</div><div class="line">  <span class="keyword">this</span>.gender = forGender;</div><div class="line">  <span class="keyword">this</span>.construction = constructStyle;</div><div class="line">&#125;</div><div class="line"></div><div class="line">Shoe.prototype = &#123;</div><div class="line">  putOn: <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123; alert(<span class="string">"Shoe's on!"</span>); &#125;;</div><div class="line">  takeOff: <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123; alert(<span class="string">"Uh, what's that smell?"</span>); &#125;;</div><div class="line"></div><div class="line">beachShoe.hasOwnProperty(<span class="string">"construction"</span>); <span class="comment">// true</span></div></pre></td></tr></table></figure>
-<p><strong>Prototypes can also refer back to the instance</strong></p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">Shoe</span> (<span class="params">shoeSize, shoeColor, forGender, constructStyle</span>) </span>&#123;</div><div class="line">  <span class="keyword">this</span>.size = shoeSize;</div><div class="line">  <span class="keyword">this</span>.color = shoeColor;</div><div class="line">  <span class="keyword">this</span>.gender = forGender;</div><div class="line">  <span class="keyword">this</span>.construction = constructStyle;</div><div class="line">&#125;</div><div class="line"></div><div class="line">Shoe.prototype = &#123;</div><div class="line">  putOn: <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123; alert (<span class="string">"Your "</span> + <span class="keyword">this</span>.construction + <span class="string">"'s"</span> + <span class="string">"on!"</span>); &#125;,</div><div class="line">  takeOff: <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123; alert (<span class="string">"Phew! Somebody's size "</span> + <span class="keyword">this</span>.size + <span class="string">"'s"</span> + <span class="string">" are fragrant! "</span>); &#125;</div><div class="line">&#125;;</div></pre></td></tr></table></figure>
-<h2 id="Overriding-Prototypal-Methods"><a href="#Overriding-Prototypal-Methods" class="headerlink" title="Overriding Prototypal Methods"></a>Overriding Prototypal Methods</h2><h3 id="valueOf-NaN"><a href="#valueOf-NaN" class="headerlink" title="valueOf()"></a>valueOf()</h3><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">var</span> x = <span class="number">4</span>;</div><div class="line"><span class="keyword">var</span> y = <span class="string">"4"</span>;</div><div class="line"></div><div class="line">x.valueOf(); <span class="comment">// 4</span></div><div class="line">y.valueOf(); <span class="comment">// "4"</span></div><div class="line"></div><div class="line">x.valueOf() == y.valueOf(); <span class="comment">// true</span></div><div class="line">x.valueOf() === y.valueOf(); <span class="comment">// false</span></div></pre></td></tr></table></figure>
-<ul>
-<li>The “value “in <code>valueOf()</code> isn’t looking for numbers necessarily, but instead returns whatever primitive type is associated with the object</li>
-<li>Be careful! The <code>==</code> tries to help us out by using “typecoercion”, which turns a number contained within a stringinto an actual number. Here, the <code>&quot;4&quot;</code> we got back from <code>y.valueOf()</code> became <code>4</code> when the <code>==</code> examined it.</li>
-<li>The <code>===</code> operator does <strong>NOT</strong> ignore the type of thevalue, and gives us a more detailed interpretation ofequality. JavaScript experts often prefer this comparator exclusively over <code>==</code> for this reason.</li>
-</ul>
-<p><strong>valueOf( ) on custom objects</strong></p>
-<p>The <code>valueOf()</code> function for custom Objects just defaults to a list of their properties, just like logging them out.</p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">var</span> Tornado = <span class="function"><span class="keyword">function</span> (<span class="params">category, affectedAreas, windGust</span>) </span>&#123;</div><div class="line"> <span class="keyword">this</span>.category = category;</div><div class="line"> <span class="keyword">this</span>.affectedAreas = affectedAreas;</div><div class="line"> <span class="keyword">this</span>.windGust = windGust;</div><div class="line">&#125;;</div><div class="line"></div><div class="line"><span class="keyword">var</span> cities = [ [<span class="string">"Kansas City"</span>, <span class="number">464310</span>], [<span class="string">"Topeka"</span>, <span class="number">127939</span>], [<span class="string">"Lenexa"</span>, <span class="number">49398</span>] ]; </div><div class="line"><span class="keyword">var</span> twister = <span class="keyword">new</span> Tornado( <span class="string">"F5"</span>, cities, <span class="number">220</span> );</div><div class="line"></div><div class="line">twister.valueOf();</div><div class="line"><span class="comment">// Tornado &#123;category: "F5", affectedAreas: Array[3], windGust: 220&#125;</span></div></pre></td></tr></table></figure>
-<p><strong>Overriding prototypal properties</strong></p>
-<ul>
-<li><p>Many situations require special functionality that’s different from the first available property</p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">Tornado.prototype.valueOf = <span class="function"><span class="keyword">function</span>(<span class="params"> </span>) </span>&#123;</div><div class="line">  <span class="keyword">var</span> sum = <span class="number">0</span>;</div><div class="line">  <span class="keyword">for</span> (<span class="keyword">var</span> i = <span class="number">0</span>; i &lt; <span class="keyword">this</span>.affectedAreas.length; i++) &#123;</div><div class="line">    sum += <span class="keyword">this</span>.affectedAreas[i][<span class="number">1</span>];</div><div class="line">  &#125;</div><div class="line">  <span class="keyword">return</span> sum;</div><div class="line">&#125;;</div><div class="line"></div><div class="line">twister.valueOf(); <span class="comment">// 641647</span></div></pre></td></tr></table></figure>
-</li>
-<li><p>Each Tornado’s ‘affectedAreas’ property can be updated outside the object with no loss of accuracy.</p>
-</li>
-</ul>
-<h3 id="toString-NaN"><a href="#toString-NaN" class="headerlink" title="toString( )"></a>toString( )</h3><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">var</span> x = <span class="number">4</span>;</div><div class="line"><span class="keyword">var</span> y = <span class="string">"4"</span>;</div><div class="line"><span class="keyword">var</span> a = [ <span class="number">3</span>, <span class="string">"blind"</span>, <span class="string">"mice"</span> ];</div><div class="line"><span class="keyword">var</span> double = <span class="function"><span class="keyword">function</span> (<span class="params"> param </span>)</span>&#123;</div><div class="line">  <span class="keyword">return</span> param *<span class="number">2</span>;</div><div class="line">&#125;;</div><div class="line"></div><div class="line">x.toString(); <span class="comment">// "4"</span></div><div class="line">y.toString(); <span class="comment">// "4"</span></div><div class="line">a.toString(); <span class="comment">// "3,blind,mice"</span></div><div class="line">double.toString(); </div><div class="line"><span class="comment">// "function ( param )&#123;</span></div><div class="line"><span class="comment">//   return param *2;</span></div><div class="line"><span class="comment">// &#125;"</span></div></pre></td></tr></table></figure>
-<ul>
-<li>A call to <code>toString</code> on an Array will just string-ify and concatenate all the contents, separating each entry by a comma withoutany whitespace. Overriding <code>toString</code> in the Array prototype is often desirable.</li>
-</ul>
-<h3 id="Finding-constructor-and-prototype"><a href="#Finding-constructor-and-prototype" class="headerlink" title="Finding constructor and prototype"></a>Finding constructor and prototype</h3><p>Some inherited properties provide ways to find an Object’s nearest prototype ancestor</p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">var</span> cities = [ [<span class="string">"Kansas City"</span>, <span class="number">464310</span>], [<span class="string">"Topeka"</span>, <span class="number">127939</span>], [<span class="string">"Lenexa"</span>, <span class="number">49398</span>] ]; </div><div class="line"><span class="keyword">var</span> twister = <span class="keyword">new</span> Tornado( <span class="string">"F5"</span>, cities, <span class="number">220</span> );</div><div class="line">cities.push( [<span class="string">"Olathe"</span>, <span class="number">130045</span>] );</div><div class="line"></div><div class="line">twister.constructor;</div><div class="line"><span class="comment">// function (category, affectedAreas, windGust) &#123;</span></div><div class="line"><span class="comment">//   this.category = category;</span></div><div class="line"><span class="comment">//   this.affectedAreas = affectedAreas;</span></div><div class="line"><span class="comment">//   this.windGust = windGust;</span></div><div class="line"><span class="comment">//&#125;</span></div><div class="line"></div><div class="line">twister.constructor.prototype;</div><div class="line"><span class="comment">// Object &#123;valueOf: function, toString: function&#125;</span></div><div class="line"></div><div class="line">twister.__proto__;</div><div class="line"><span class="comment">// Object &#123;valueOf: function, toString: function&#125;</span></div></pre></td></tr></table></figure>
-<h3 id="HasOwnProperty"><a href="#HasOwnProperty" class="headerlink" title="HasOwnProperty()"></a>HasOwnProperty()</h3><p>Searching prototype chains for potential overridden properties becomes easy with this function</p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line"><span class="built_in">Object</span>.prototype.findOwnerOfProperty = <span class="function"><span class="keyword">function</span> (<span class="params"> propName </span>) </span>&#123;</div><div class="line">  <span class="keyword">var</span> currentObject = <span class="keyword">this</span>;</div><div class="line">  <span class="keyword">while</span> (currentObject !== <span class="literal">null</span>)&#123;</div><div class="line">    <span class="keyword">if</span> (currentObject.hasOwnProperty(propName)) &#123;</div><div class="line">    	<span class="keyword">return</span> currentObject;</div><div class="line">    &#125;</div><div class="line">    <span class="keyword">else</span> &#123;</div><div class="line">      currentObject = currentObject.__proto__;</div><div class="line">    &#125;</div><div class="line">  &#125;</div><div class="line">  <span class="keyword">return</span> <span class="string">"No property found!"</span>;</div><div class="line">&#125;;</div></pre></td></tr></table></figure>
-]]></content>
-    
-    <summary type="html">
-    
-      &lt;h1 id=&quot;Closures&quot;&gt;&lt;a href=&quot;#Closures&quot; class=&quot;headerlink&quot; title=&quot;Closures&quot;&gt;&lt;/a&gt;Closures&lt;/h1&gt;&lt;p&gt;&lt;strong&gt;Closures help in function “construction zones”&lt;/strong&gt;&lt;/p&gt;
-&lt;p&gt;A closure can make the creation of very similar functions ultra-efficient.&lt;/p&gt;
-&lt;figure class=&quot;highlight javascript&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;div class=&quot;line&quot;&gt;1&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;2&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;3&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;4&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;5&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;6&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;7&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;8&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;9&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;10&lt;/div&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;div class=&quot;line&quot;&gt;&lt;span class=&quot;function&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;function&lt;/span&gt; &lt;span class=&quot;title&quot;&gt;buildCoveTicketMaker&lt;/span&gt;(&lt;span class=&quot;params&quot;&gt; transport &lt;/span&gt;) &lt;/span&gt;&amp;#123;&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;  &lt;span class=&quot;keyword&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;function&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;function&lt;/span&gt; (&lt;span class=&quot;params&quot;&gt; name &lt;/span&gt;) &lt;/span&gt;&amp;#123;&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;    alert(&lt;span class=&quot;string&quot;&gt;&quot;Here is your transportation ticket via the &quot;&lt;/span&gt; + transport + &lt;span class=&quot;string&quot;&gt;&quot;.\n&quot;&lt;/span&gt; + &lt;/div&gt;&lt;div class=&quot;line&quot;&gt;          &lt;span class=&quot;string&quot;&gt;&quot;Welcome to the Cold Closures Cove, &quot;&lt;/span&gt; + name + &lt;span class=&quot;string&quot;&gt;&quot;!&quot;&lt;/span&gt;);&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;  &amp;#125;&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;&amp;#125;&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;var&lt;/span&gt; getSubmarineTicket = buildCoveTicketMaker(&lt;span class=&quot;string&quot;&gt;&quot;Submarine&quot;&lt;/span&gt;);&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;var&lt;/span&gt; getBattleshipTicket = buildCoveTicketMaker(&lt;span class=&quot;string&quot;&gt;&quot;Battleship&quot;&lt;/span&gt;);&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;var&lt;/span&gt; getGiantSeagullTicket = buildCoveTicketMaker(&lt;span class=&quot;string&quot;&gt;&quot;Giant Seagull&quot;&lt;/span&gt;);&lt;/div&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
-    
-    </summary>
-    
-      <category term="Notes" scheme="http://www.yuthon.com/categories/Notes/"/>
-    
-    
-      <category term="CodeSchool" scheme="http://www.yuthon.com/tags/CodeSchool/"/>
-    
-      <category term="JavaScript" scheme="http://www.yuthon.com/tags/JavaScript/"/>
     
   </entry>
   
