@@ -4,8 +4,32 @@
 
     
   <url>
+    <loc>http://www.yuthon.com/2016/10/30/Notes-for-CS231n-RNN/</loc>
+    <lastmod>2016-10-30T12:03:35.000Z</lastmod>
+    <data>
+        <display>
+        <title>Notes for CS231n Recurrent Neural Network</title>
+        <pubTime>2016-10-30T06:59:17.000Z</pubTime>
+        
+        <tag>Deep Learning</tag>
+         
+        <tag>CS231n</tag>
+         
+        <tag>Recurrent Neural Network</tag>
+         
+         
+           
+             
+              <breadCrumb title="Notes" url="http://www.yuthon.com/categories/Notes/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
     <loc>http://www.yuthon.com/2016/10/30/Traffic-Prediction-Using-LSTM/</loc>
-    <lastmod>2016-10-30T06:48:13.000Z</lastmod>
+    <lastmod>2016-10-30T07:01:34.000Z</lastmod>
     <data>
         <display>
         <title>Traffic Prediction Using LSTM</title>
@@ -31,7 +55,7 @@
     
   <url>
     <loc>http://www.yuthon.com/2016/10/25/CUDA-and-Tensorflow-Installation-on-Ubuntu-16-04/</loc>
-    <lastmod>2016-10-25T14:26:31.000Z</lastmod>
+    <lastmod>2016-10-30T07:01:16.000Z</lastmod>
     <data>
         <display>
         <title>CUDA and Tensorflow Installation on Ubuntu 16.04</title>
@@ -410,6 +434,28 @@
 
     
   <url>
+    <loc>http://www.yuthon.com/2016/04/09/CodeSchool-Javascript/</loc>
+    <lastmod>2016-05-16T11:51:43.000Z</lastmod>
+    <data>
+        <display>
+        <title>Notes for Code School - JavaScript Road Trip</title>
+        <pubTime>2016-04-09T04:37:07.000Z</pubTime>
+        
+        <tag>CodeSchool</tag>
+         
+        <tag>JavaScript</tag>
+         
+         
+           
+             
+              <breadCrumb title="Notes" url="http://www.yuthon.com/categories/Notes/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
     <loc>http://www.yuthon.com/2016/04/13/CodeSchool-Try-jQuery/</loc>
     <lastmod>2016-05-16T11:51:43.000Z</lastmod>
     <data>
@@ -438,28 +484,6 @@
         <display>
         <title>Notes for Code School - Shaping up with Angular.js</title>
         <pubTime>2016-04-14T13:19:22.000Z</pubTime>
-        
-        <tag>CodeSchool</tag>
-         
-        <tag>JavaScript</tag>
-         
-         
-           
-             
-              <breadCrumb title="Notes" url="http://www.yuthon.com/categories/Notes/"/>
-          
-        </display>
-    </data>
-    </url>
-
-    
-  <url>
-    <loc>http://www.yuthon.com/2016/04/09/CodeSchool-Javascript/</loc>
-    <lastmod>2016-05-16T11:51:43.000Z</lastmod>
-    <data>
-        <display>
-        <title>Notes for Code School - JavaScript Road Trip</title>
-        <pubTime>2016-04-09T04:37:07.000Z</pubTime>
         
         <tag>CodeSchool</tag>
          

@@ -2,16 +2,23 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>http://www.yuthon.com/2016/10/30/Notes-for-CS231n-RNN/</loc>
+    
+    <lastmod>2016-10-30T12:03:35.000Z</lastmod>
+    
+  </url>
+  
+  <url>
     <loc>http://www.yuthon.com/2016/10/30/Traffic-Prediction-Using-LSTM/</loc>
     
-    <lastmod>2016-10-30T06:48:13.000Z</lastmod>
+    <lastmod>2016-10-30T07:01:34.000Z</lastmod>
     
   </url>
   
   <url>
     <loc>http://www.yuthon.com/2016/10/25/CUDA-and-Tensorflow-Installation-on-Ubuntu-16-04/</loc>
     
-    <lastmod>2016-10-25T14:26:31.000Z</lastmod>
+    <lastmod>2016-10-30T07:01:16.000Z</lastmod>
     
   </url>
   
@@ -128,6 +135,13 @@
   </url>
   
   <url>
+    <loc>http://www.yuthon.com/2016/04/09/CodeSchool-Javascript/</loc>
+    
+    <lastmod>2016-05-16T11:51:43.000Z</lastmod>
+    
+  </url>
+  
+  <url>
     <loc>http://www.yuthon.com/2016/04/13/CodeSchool-Try-jQuery/</loc>
     
     <lastmod>2016-05-16T11:51:43.000Z</lastmod>
@@ -136,13 +150,6 @@
   
   <url>
     <loc>http://www.yuthon.com/2016/04/14/CodeSchool-Shaping-up-with-Angular.js/</loc>
-    
-    <lastmod>2016-05-16T11:51:43.000Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>http://www.yuthon.com/2016/04/09/CodeSchool-Javascript/</loc>
     
     <lastmod>2016-05-16T11:51:43.000Z</lastmod>
     
