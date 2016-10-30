@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://www.yuthon.com/"/>
-  <updated>2016-10-30T12:03:35.000Z</updated>
+  <updated>2016-10-30T14:38:21.000Z</updated>
   <id>http://www.yuthon.com/</id>
   
   <author>
@@ -20,14 +20,14 @@
     <link href="http://www.yuthon.com/2016/10/30/Notes-for-CS231n-RNN/"/>
     <id>http://www.yuthon.com/2016/10/30/Notes-for-CS231n-RNN/</id>
     <published>2016-10-30T06:59:17.000Z</published>
-    <updated>2016-10-30T12:03:35.000Z</updated>
+    <updated>2016-10-30T14:38:21.000Z</updated>
     
     <content type="html"><![CDATA[<blockquote>
 <p>从 RNN 开始, CS231n 的 Lecture Notes 就没有了, 因此我根据上课时的 Slides 整理了一些需要重视的知识点. 还可以参考这些文章或是视频来加深理解:</p>
 <ul>
 <li><a href="https://zhuanlan.zhihu.com/p/22107715?refer=intelligentunit" target="_blank" rel="external">[原创翻译]循环神经网络惊人的有效性（上）</a></li>
 <li><a href="https://zhuanlan.zhihu.com/p/22230074?refer=intelligentunit" target="_blank" rel="external">[原创翻译]循环神经网络惊人的有效性（下）</a></li>
-<li><a href="https://www.youtube.com/watch?v=Ukgii7Yd_cU" target="_blank" rel="external">Recurrent Neural Networks (Video)</a></li>
+<li><a href="https://www.youtube.com/watch?v=Ukgii7Yd_cU" target="_blank" rel="external">Recurrent Neural Networks (Video, recommend)</a></li>
 <li><a href="http://james371507.wixsite.com/hylee/single-post/2016/03/20/Recurrent-Neural-Network-RNN-Note-of-Stanford-CS231n" target="_blank" rel="external">Recurrent Neural Network (RNN) (Note of Stanford CS231n)</a></li>
 </ul>
 </blockquote>
@@ -99,7 +99,45 @@
 </ul>
 </blockquote>
 <h3 id="More-examples"><a href="#More-examples" class="headerlink" title="More examples"></a>More examples</h3><p>We can also use RNN to generate open source textbooks written in LaTex, or generate C code from Linux source code, or searching for interpretable cells.</p>
-<h2 id="LSTM"><a href="#LSTM" class="headerlink" title="LSTM"></a>LSTM</h2><p>(To be continued…)</p>
+<h2 id="Long-Short-Term-Memory-LSTM"><a href="#Long-Short-Term-Memory-LSTM" class="headerlink" title="Long Short Term Memory (LSTM)"></a>Long Short Term Memory (LSTM)</h2><h3 id="Vanishing-Exploding-gradients"><a href="#Vanishing-Exploding-gradients" class="headerlink" title="Vanishing/Exploding gradients"></a>Vanishing/Exploding gradients</h3><ul>
+<li>Exploding gradients<ul>
+<li>Truncated BPTT</li>
+<li><strong>Clip gradients at threshold</strong> (something like anti-windup in control science LOL)</li>
+<li>RMSProp to adjust learning rate</li>
+</ul>
+</li>
+<li>Vanishing gradients<ul>
+<li>Harder to detect</li>
+<li>Weight Initialization</li>
+<li>ReLU activation functions</li>
+<li>RMSProp</li>
+<li><strong>LSTM, GRUs</strong> (&lt;– That’s why we use LSTM)</li>
+</ul>
+</li>
+</ul>
+<h3 id="Introduction-1"><a href="#Introduction-1" class="headerlink" title="Introduction"></a>Introduction</h3><p>LSTM is proposed in [Hochreiter et al., 1997]. GRU is a knid of simplified LSTM.</p>
+<p> <img src="/images/LSTM_diagram.png" alt="LSTM_diagram"></p>
+<blockquote>
+<p>ResNet is to PlainNet what LSTM is to RNN, kind of.</p>
+<p> <img src="/images/plainnet_vs_resnet.png" alt="plainnet_vs_resnet"></p>
+</blockquote>
+<h3 id="Concept-1"><a href="#Concept-1" class="headerlink" title="Concept"></a>Concept</h3><p> <img src="/images/LSTM_structure.png" alt="LSTM_structure"></p>
+<p>LSTM have two states, one is <strong>cell state</strong> ($c$), another is <strong>hidden state</strong> ($h$):</p>
+<ul>
+<li>$i$: input gate, “add to memory”, decides whether do we want to add value to this cell.</li>
+<li>$f$: forget gate, “flush the memory”, decides whether to shut off the cell and reset the counter.</li>
+<li>$o$: output gate, “get from memory”, decides how much do we want to get from this cell.</li>
+<li>$g$: input, decides how much do we want to add to this cell.</li>
+</ul>
+<h2 id="Summary"><a href="#Summary" class="headerlink" title="Summary"></a>Summary</h2><ul>
+<li>RNNs allow a lot of flexibility inarchitecture design</li>
+<li>Vanilla RNNs are simple but don’twork very well</li>
+<li>Common to use LSTM or GRU: theiradditive interactions improve gradient flow</li>
+<li>Backward flow of gradients in RNNcan explode or vanish. Exploding is controlled with gradient clipping.Vanishing is controlled with additive interactions (LSTM)</li>
+<li>Better/simpler architectures are ahot topic of current research</li>
+<li>Better understanding (boththeoretical and empirical) is needed.</li>
+</ul>
+<p>(To be improved by adding extra materials…)</p>
 ]]></content>
     
     <summary type="html">
@@ -109,7 +147,7 @@
 &lt;ul&gt;
 &lt;li&gt;&lt;a href=&quot;https://zhuanlan.zhihu.com/p/22107715?refer=intelligentunit&quot;&gt;[原创翻译]循环神经网络惊人的有效性（上）&lt;/a&gt;&lt;/li&gt;
 &lt;li&gt;&lt;a href=&quot;https://zhuanlan.zhihu.com/p/22230074?refer=intelligentunit&quot;&gt;[原创翻译]循环神经网络惊人的有效性（下）&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href=&quot;https://www.youtube.com/watch?v=Ukgii7Yd_cU&quot;&gt;Recurrent Neural Networks (Video)&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;https://www.youtube.com/watch?v=Ukgii7Yd_cU&quot;&gt;Recurrent Neural Networks (Video, recommend)&lt;/a&gt;&lt;/li&gt;
 &lt;li&gt;&lt;a href=&quot;http://james371507.wixsite.com/hylee/single-post/2016/03/20/Recurrent-Neural-Network-RNN-Note-of-Stanford-CS231n&quot;&gt;Recurrent Neural Network (RNN) (Note of Stanford CS231n)&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;
 &lt;/blockquote&gt;
