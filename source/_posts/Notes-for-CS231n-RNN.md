@@ -13,7 +13,7 @@ tags:
 >
 > * [[原创翻译\]循环神经网络惊人的有效性（上）](https://zhuanlan.zhihu.com/p/22107715?refer=intelligentunit)
 > * [[原创翻译\]循环神经网络惊人的有效性（下）](https://zhuanlan.zhihu.com/p/22230074?refer=intelligentunit)
-> * [Recurrent Neural Networks (Video)](https://www.youtube.com/watch?v=Ukgii7Yd_cU)
+> * [Recurrent Neural Networks (Video, recommend)](https://www.youtube.com/watch?v=Ukgii7Yd_cU)
 > * [Recurrent Neural Network (RNN) (Note of Stanford CS231n)](http://james371507.wixsite.com/hylee/single-post/2016/03/20/Recurrent-Neural-Network-RNN-Note-of-Stanford-CS231n)
 >
 
@@ -270,6 +270,54 @@ We can also use RNN to generate open source textbooks written in LaTex, or gener
 
 
 
-## LSTM
+## Long Short Term Memory (LSTM)
 
-(To be continued...)
+### Vanishing/Exploding gradients
+
+* Exploding gradients
+  * Truncated BPTT
+  * **Clip gradients at threshold** (something like anti-windup in control science LOL)
+  * RMSProp to adjust learning rate
+* Vanishing gradients
+  * Harder to detect
+  * Weight Initialization
+  * ReLU activation functions
+  * RMSProp
+  * **LSTM, GRUs** (<-- That's why we use LSTM)
+
+### Introduction
+
+LSTM is proposed in [Hochreiter et al., 1997]. GRU is a knid of simplified LSTM.
+
+ ![LSTM_diagram](/images/LSTM_diagram.png)
+
+> ResNet is to PlainNet what LSTM is to RNN, kind of.
+>
+>  ![plainnet_vs_resnet](/images/plainnet_vs_resnet.png)
+
+### Concept
+
+ ![LSTM_structure](/images/LSTM_structure.png)
+
+LSTM have two states, one is **cell state** ($c$), another is **hidden state** ($h$):
+
+* $i$: input gate, "add to memory", decides whether do we want to add value to this cell.
+* $f$: forget gate, "flush the memory", decides whether to shut off the cell and reset the counter.
+* $o$: output gate, "get from memory", decides how much do we want to get from this cell.
+* $g$: input, decides how much do we want to add to this cell.
+
+
+
+
+## Summary
+
+- RNNs allow a lot of flexibility inarchitecture design
+- Vanilla RNNs are simple but don’twork very well
+- Common to use LSTM or GRU: theiradditive interactions improve gradient flow
+- Backward flow of gradients in RNNcan explode or vanish. Exploding is controlled with gradient clipping.Vanishing is controlled with additive interactions (LSTM)
+- Better/simpler architectures are ahot topic of current research
+- Better understanding (boththeoretical and empirical) is needed.
+
+
+
+(To be improved by adding extra materials...)
