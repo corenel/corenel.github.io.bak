@@ -96,7 +96,7 @@ tags:
 
   之后再执行安装过程
 
-* 安装过程中, 如果是像我一样的 Intel 核显 + NVIDIA 独显的, **绝对不要装 OpenCL**, 否则重启后会陷入 login loop.
+* 安装过程中, 如果是像我一样的 Intel 核显 + NVIDIA 独显的, **绝对不要装 OpenGL**, 否则重启后会陷入 login loop.
 
 * 安装完成之后, 设置环境变量:
 

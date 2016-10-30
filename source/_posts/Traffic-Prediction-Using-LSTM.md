@@ -44,6 +44,8 @@ $Input = \begin{bmatrix}Weekday & isWeekend & Hour & Minute\end{bmatrix}$
 
 $Output = \begin{bmatrix} Velocity \end{bmatrix}$
 
+> 话说 Keras 竟然能用 graphviz 直接输出模型的结构图, 真是方便
+
 ## 数据集
 
 老师给的数据集简直弱爆了, 一条路上总共2000+条数据, 还是按照小时计的, 训练出来的结果惨不忍睹.
@@ -61,6 +63,8 @@ $Output = \begin{bmatrix} Velocity \end{bmatrix}$
 ![traffic_prediction_result_2](/images/traffic_prediction_result_2.png)
 
 可以看出, 总体的趋势还是不错的, 但是高峰的部分还是有些够不上. 同时, 也确实预测到了周末与工作日的速度的区别.
+
+> matplotlib 可以用 ggplot 的样式, 好看多了
 
 ## 改进
 
