@@ -4,6 +4,32 @@
 
     
   <url>
+    <loc>http://www.yuthon.com/2016/10/30/Traffic-Prediction-Using-LSTM/</loc>
+    <lastmod>2016-10-30T06:48:13.000Z</lastmod>
+    <data>
+        <display>
+        <title>Traffic Prediction Using LSTM</title>
+        <pubTime>2016-10-30T05:53:32.000Z</pubTime>
+        
+        <tag>Deep Learning</tag>
+         
+        <tag>Traffic Prediction</tag>
+         
+        <tag>LSTM</tag>
+         
+        <tag>RNN</tag>
+         
+         
+           
+             
+              <breadCrumb title="Projects" url="http://www.yuthon.com/categories/Projects/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
     <loc>http://www.yuthon.com/2016/10/25/CUDA-and-Tensorflow-Installation-on-Ubuntu-16-04/</loc>
     <lastmod>2016-10-25T14:26:31.000Z</lastmod>
     <data>
@@ -384,12 +410,34 @@
 
     
   <url>
-    <loc>http://www.yuthon.com/2016/04/12/CodeSchool-JavaScript-Best-Practices/</loc>
+    <loc>http://www.yuthon.com/2016/04/13/CodeSchool-Try-jQuery/</loc>
     <lastmod>2016-05-16T11:51:43.000Z</lastmod>
     <data>
         <display>
-        <title>Notes for Code School - JavaScript Best Practices</title>
-        <pubTime>2016-04-12T10:19:54.000Z</pubTime>
+        <title>Notes for Code School - Try jQuery</title>
+        <pubTime>2016-04-13T09:24:09.000Z</pubTime>
+        
+        <tag>CodeSchool</tag>
+         
+        <tag>JavaScript</tag>
+         
+         
+           
+             
+              <breadCrumb title="Notes" url="http://www.yuthon.com/categories/Notes/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://www.yuthon.com/2016/04/14/CodeSchool-Shaping-up-with-Angular.js/</loc>
+    <lastmod>2016-05-16T11:51:43.000Z</lastmod>
+    <data>
+        <display>
+        <title>Notes for Code School - Shaping up with Angular.js</title>
+        <pubTime>2016-04-14T13:19:22.000Z</pubTime>
         
         <tag>CodeSchool</tag>
          
@@ -428,34 +476,12 @@
 
     
   <url>
-    <loc>http://www.yuthon.com/2016/04/13/CodeSchool-Try-jQuery/</loc>
+    <loc>http://www.yuthon.com/2016/04/12/CodeSchool-JavaScript-Best-Practices/</loc>
     <lastmod>2016-05-16T11:51:43.000Z</lastmod>
     <data>
         <display>
-        <title>Notes for Code School - Try jQuery</title>
-        <pubTime>2016-04-13T09:24:09.000Z</pubTime>
-        
-        <tag>CodeSchool</tag>
-         
-        <tag>JavaScript</tag>
-         
-         
-           
-             
-              <breadCrumb title="Notes" url="http://www.yuthon.com/categories/Notes/"/>
-          
-        </display>
-    </data>
-    </url>
-
-    
-  <url>
-    <loc>http://www.yuthon.com/2016/04/14/CodeSchool-Shaping-up-with-Angular.js/</loc>
-    <lastmod>2016-05-16T11:51:43.000Z</lastmod>
-    <data>
-        <display>
-        <title>Notes for Code School - Shaping up with Angular.js</title>
-        <pubTime>2016-04-14T13:19:22.000Z</pubTime>
+        <title>Notes for Code School - JavaScript Best Practices</title>
+        <pubTime>2016-04-12T10:19:54.000Z</pubTime>
         
         <tag>CodeSchool</tag>
          
