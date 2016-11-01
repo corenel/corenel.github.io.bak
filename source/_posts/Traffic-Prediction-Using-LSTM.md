@@ -32,7 +32,7 @@ ugh, Traffic prediction using LSTM!
 
 ## 模型结构
 
-详细代码可见我Github上的项目 **[traffic-prediction](https://github.com/corenel/traffic-prediction)**.
+详细代码可见我Github上的项目 **[traffic-prediction](https://github.com/corenel/traffic-prediction)**. 为了课堂展示我还做了一个pdf, 可以从此处下载.
 
 本次用了两层的 LSTM, 中间加了 Dropout:
 
@@ -67,6 +67,16 @@ $Output = \begin{bmatrix} Velocity \end{bmatrix}$
 可以看出, 总体的趋势还是不错的, 但是高峰的部分还是有些够不上. 同时, 也确实预测到了周末与工作日的速度的区别.
 
 > matplotlib 可以用 ggplot 的样式, 好看多了
+
+## Deeper
+
+使用了3层LSTM, MSE有一定下降, 但是高峰期跟不上的问题还是没有解决
+
+ ![traffic_prediction_result_4](/images/traffic_prediction_result_4.png)
+
+ ![traffic_prediction_result_5](/images/traffic_prediction_result_5.png)
+
+ ![traffic_prediction_result_6](/images/traffic_prediction_result_6.png)
 
 ## 改进
 

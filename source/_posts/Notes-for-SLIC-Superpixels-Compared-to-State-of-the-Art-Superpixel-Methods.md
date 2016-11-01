@@ -36,7 +36,7 @@ categories:
 
 * **[NC05](https://www.cs.sfu.ca/research/groups/VML/pubs/mori-model_search_segmentation-iccv05.pdf)**: 对边缘的遵循不好. 时间复杂度$O(N^{\frac{1}{2}})$
   * The Normalized cuts algorithm recursively partitions a graph of all pixels in the image using contour and texture cues, globally minimizing a cost function defined on the edges at the partition boundaries.
-* **[GS04](http://fcv2011.ulsan.ac.kr/files/announcement/413/IJCV(2004)%20Efficient%20Graph-Based%20Image%20Segmentation.pdf)**: 对边缘遵循较好, 但是生成的超像素大小与形状不规则, 不能严格控制超像素的个数. 时间复杂度$O(NlogN)$
+* **[GS04](http://link.springer.com/article/10.1023/B:VISI.0000022288.19776.77)**: 对边缘遵循较好, 但是生成的超像素大小与形状不规则, 不能严格控制超像素的个数. 时间复杂度$O(NlogN)$
   * It performs an agglomerative clustering of pixels as nodes on a graph such that each superpixel is the minimum spanning tree of the constituent pixels.
 * **[SL08](http://ieeexplore.ieee.org/document/4587471/?arnumber=4587471&tag=1)**: 时间复杂度$O(N^{\frac{3}{2}}logN)$, 但是没有算上预先生成边缘图(boundary map)所耗的时间
   * Moore et al. propose a method to generate superpixels that conform to a grid by finding optimal paths, or seams, that split the image into smaller vertical or horizontal regions. Optimal paths are found using a graph cuts method similar to Seam Carving.
@@ -48,9 +48,19 @@ categories:
 
 相关的方法有:
 
-* MS02
-* QS08
-* WS91
-* TP09
+* **[MS02](http://ieeexplore.ieee.org/xpls/abs_all.jsp?arnumber=1000236)**: 一种比较老的方法, 生成的超像素形状不规整, 而且对于超像素的数量大小等均不能控制. 同时, 时间复杂度是$O(N^2)$, 非常慢.
+  * Mean shift, an iterative mode-seeking procedure for locating local maxima of a density function, is applied to find modes in the color or intensity feature space of an image. Pixels that converge to the same mode define the superpixels. MS02
+* **[QS08](http://link.springer.com/chapter/10.1007/978-3-540-88693-8_52)**: 对边界的遵循比较好, 但是速度相当慢. 时间复杂度$O(dN^2)$.
+  * Quick shift also uses a mode-seeking segmentation scheme. It initializes the segmentation using a medoid shift procedure. It then moves each point in the feature space to the nearest neighbor that increases the Parzen density estimate.
+* **[WS91](https://pdfs.semanticscholar.org/a381/9dda9a5f00dbb8cd3413ca7422e37a0d5794.pdf)**: 对边界遵循不好, 形状不规整, 不能严格控制超像素的数量, 但是速度快. 时间复杂度$O(NlogN)$.
+  * The watershed approach performs a gradient ascent starting from local minima to produce watersheds, lines that separate catchment basins. The 
+* **[TP09](http://ieeexplore.ieee.org/xpls/abs_all.jsp?arnumber=4912213)**: 生成的超像素具有一致的大小, 紧凑性. 宣称时间复杂度$O(N)$, 但是实际上很慢, 而且对边界的遵循不好. 
+  * The Turbopixel method progressively dilates a set of seed locations using level-set-based geometric flow. The geometric flow relies on local image gradients, aiming to regularly distribute superpixels on the image plane.
+
+
+
+## SLIC Superpixels
+
+
 
 (To be continued...)
