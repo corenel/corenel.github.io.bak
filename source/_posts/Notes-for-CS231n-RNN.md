@@ -48,7 +48,7 @@ Usually we want to predict a vector at some time steps. To achieve this goal, we
 
 **(Vanilla) Recurrent Neural Network**
 
-The state consists of a single “hidden” vector $h$:
+The state consists of a single "hidden" vector $h$:
 
 * $h\_t = tanh (W\_{hh} h\_{t-1} + W\_{xh} x\_t)$
 * $y\_t = W\_{hy} h\_t$

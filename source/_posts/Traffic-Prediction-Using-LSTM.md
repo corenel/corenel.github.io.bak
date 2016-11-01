@@ -26,7 +26,9 @@ ugh, Traffic prediction using LSTM!
 
 ## RNN 与 LSTM 基本原理
 
-直接看我 CS231n 相关的课程笔记吧(喂, 还没写呢)
+直接看我 CS231n 相关的课程笔记吧
+
+[Notes for CS231n Recurrent Neural Network](http://www.yuthon.com/2016/10/30/Notes-for-CS231n-RNN/)
 
 ## 模型结构
 
