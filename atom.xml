@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://www.yuthon.com/"/>
-  <updated>2016-10-30T14:38:21.000Z</updated>
+  <updated>2016-11-01T11:03:25.000Z</updated>
   <id>http://www.yuthon.com/</id>
   
   <author>
@@ -16,11 +16,71 @@
   <generator uri="http://hexo.io/">Hexo</generator>
   
   <entry>
+    <title>Notes for SLIC Superpixels Compared to State-of-the-Art Superpixel Methods</title>
+    <link href="http://www.yuthon.com/2016/11/01/Notes-for-SLIC-Superpixels-Compared-to-State-of-the-Art-Superpixel-Methods/"/>
+    <id>http://www.yuthon.com/2016/11/01/Notes-for-SLIC-Superpixels-Compared-to-State-of-the-Art-Superpixel-Methods/</id>
+    <published>2016-11-01T10:21:04.000Z</published>
+    <updated>2016-11-01T11:03:25.000Z</updated>
+    
+    <content type="html"><![CDATA[<p>文章介绍了当前 State-of-the-Art 的5种<strong>超像素 (Superpixel)</strong> 的算法, 并主要从其对于图像边缘信息的拟合程度 (their ability to adhere to image boundaries), 速度, 内存利用效率, 以及它们对于图像分割性能的影响 (their impact on segmentation performance) 来综合评价.</p>
+<p>同时, 本文还提出了一种 <strong>SLIC (simple linear iterative clustering)</strong> 的算法, 用的是 k-means clustering 的方法.</p>
+<a id="more"></a>
+<h2 id="Introduction"><a href="#Introduction" class="headerlink" title="Introduction"></a>Introduction</h2><p><strong>超像素算法</strong>主要是将一幅图像中, 具有相似颜色, 纹理或者亮度等信息的相邻的像素点聚集起来, 组成一些具有一定视觉意义的像素块, 为后续处理做准备. 这种算法用少量的超像素来代替原来的图像像素, 能够减少图像的冗余度, 为计算图像特征做了很好的铺垫, 并且显著地降低了随后的图像处理步骤的复杂度. 超像素算法作为一个<strong>预处理</strong>的步骤, 现在已经成为了很多计算机视觉算法中的重要一环, 比如说图像分割 (image segmentation), 深度估计(depth estimation), 姿态预估 (body model estimation) 和目标定位 (object localization) 这些领域.</p>
+<p><img src="/images/Images_segmented_using_SLIC_into_superpixels.png" alt="Images_segmented_using_SLIC_into_superpixels"></p>
+<p>生成超像素的方法有很多, 各自有各自的优点和缺陷. 在此主要考虑以下方面来评测对比这些算法:</p>
+<ul>
+<li>超像素必须<u>遵循图像的边界</u> (Superpixels should adhere well to image boundaries.)</li>
+<li>如果超像素是作为一个预处理步骤, 来减少计算复杂度的, 那么就需要考虑<u>计算速度, 内存效率以及是否方便使用</u>等因素 (When used to reduce computational complexity as a pre- processing step, superpixels should be fast to compute, memory efficient, and simple to use.)</li>
+<li>同时, 如果超像素算法是为了用来给之后的分割做准备的, 那么就要考虑它<u>是否既能加快速度, 又能提升分割的效果</u>. (When used for segmentation purposes, superpixels should both increase the speed and improve the quality of the results.)</li>
+</ul>
+<h2 id="Existing-Superpixel-Methods"><a href="#Existing-Superpixel-Methods" class="headerlink" title="Existing Superpixel Methods"></a>Existing Superpixel Methods</h2><h3 id="Graph-Based-Algorithms"><a href="#Graph-Based-Algorithms" class="headerlink" title="Graph-Based Algorithms"></a>Graph-Based Algorithms</h3><p>这类算法主要就是把整个图像看成一张图, 各个像素是节点, 相邻像素之间的相似度作为边上的权值. 超像素就是根据最小化损失函数来构建的.</p>
+<p>相关的方法有:</p>
+<ul>
+<li><strong><a href="https://www.cs.sfu.ca/research/groups/VML/pubs/mori-model_search_segmentation-iccv05.pdf" target="_blank" rel="external">NC05</a></strong>: 对边缘的遵循不好. 时间复杂度$O(N^{\frac{1}{2}})$<ul>
+<li>The Normalized cuts algorithm recursively partitions a graph of all pixels in the image using contour and texture cues, globally minimizing a cost function defined on the edges at the partition boundaries.</li>
+</ul>
+</li>
+<li><strong><a href="http://link.springer.com/article/10.1023/B:VISI.0000022288.19776.77" target="_blank" rel="external">GS04</a></strong>: 对边缘遵循较好, 但是生成的超像素大小与形状不规则, 不能严格控制超像素的个数. 时间复杂度$O(NlogN)$<ul>
+<li>It performs an agglomerative clustering of pixels as nodes on a graph such that each superpixel is the minimum spanning tree of the constituent pixels.</li>
+</ul>
+</li>
+<li><strong><a href="http://ieeexplore.ieee.org/document/4587471/?arnumber=4587471&amp;tag=1" target="_blank" rel="external">SL08</a></strong>: 时间复杂度$O(N^{\frac{3}{2}}logN)$, 但是没有算上预先生成边缘图(boundary map)所耗的时间<ul>
+<li>Moore et al. propose a method to generate superpixels that conform to a grid by finding optimal paths, or seams, that split the image into smaller vertical or horizontal regions. Optimal paths are found using a graph cuts method similar to Seam Carving.</li>
+</ul>
+</li>
+<li><strong><a href="http://link.springer.com/chapter/10.1007/978-3-642-15555-0_16" target="_blank" rel="external">GCa10 &amp; GCb10</a></strong>: Veksler et al. use a global optimization approach similar to the texture synthesis work. Superpixels are obtained by stitching together overlapping image patches such that each pixel belongs to only one of the overlapping regions. They suggest two variants of their method, one for generating compact superpixels (GCa10) and one for constant- intensity superpixels (GCb10).</li>
+</ul>
+<h3 id="Gradient-Ascent-Based-Algorithms"><a href="#Gradient-Ascent-Based-Algorithms" class="headerlink" title="Gradient-Ascent-Based Algorithms"></a>Gradient-Ascent-Based Algorithms</h3><p>这类方法生对像素生成一个随机的初始聚类, 然后不断迭代优化, 直到满足收敛条件.</p>
+<p>相关的方法有:</p>
+<ul>
+<li>MS02</li>
+<li>QS08</li>
+<li>WS91</li>
+<li>TP09</li>
+</ul>
+<p>(To be continued…)</p>
+]]></content>
+    
+    <summary type="html">
+    
+      &lt;p&gt;文章介绍了当前 State-of-the-Art 的5种&lt;strong&gt;超像素 (Superpixel)&lt;/strong&gt; 的算法, 并主要从其对于图像边缘信息的拟合程度 (their ability to adhere to image boundaries), 速度, 内存利用效率, 以及它们对于图像分割性能的影响 (their impact on segmentation performance) 来综合评价.&lt;/p&gt;
+&lt;p&gt;同时, 本文还提出了一种 &lt;strong&gt;SLIC (simple linear iterative clustering)&lt;/strong&gt; 的算法, 用的是 k-means clustering 的方法.&lt;/p&gt;
+    
+    </summary>
+    
+      <category term="Notes" scheme="http://www.yuthon.com/categories/Notes/"/>
+    
+    
+      <category term="Superpixel" scheme="http://www.yuthon.com/tags/Superpixel/"/>
+    
+  </entry>
+  
+  <entry>
     <title>Notes for CS231n Recurrent Neural Network</title>
     <link href="http://www.yuthon.com/2016/10/30/Notes-for-CS231n-RNN/"/>
     <id>http://www.yuthon.com/2016/10/30/Notes-for-CS231n-RNN/</id>
     <published>2016-10-30T06:59:17.000Z</published>
-    <updated>2016-10-30T14:38:21.000Z</updated>
+    <updated>2016-10-31T11:42:10.000Z</updated>
     
     <content type="html"><![CDATA[<blockquote>
 <p>从 RNN 开始, CS231n 的 Lecture Notes 就没有了, 因此我根据上课时的 Slides 整理了一些需要重视的知识点. 还可以参考这些文章或是视频来加深理解:</p>
@@ -170,7 +230,7 @@
     <link href="http://www.yuthon.com/2016/10/30/Traffic-Prediction-Using-LSTM/"/>
     <id>http://www.yuthon.com/2016/10/30/Traffic-Prediction-Using-LSTM/</id>
     <published>2016-10-30T05:53:32.000Z</published>
-    <updated>2016-10-30T07:01:34.000Z</updated>
+    <updated>2016-10-30T14:47:39.000Z</updated>
     
     <content type="html"><![CDATA[<p>最近上的一门课 “无线传感器网络” 快要结束了, 于是所谓的大作业的 DDL 也压上来了. TAT</p>
 <p>不过这门课虽然说是讲无线传感器网络的, 但是大作业的要求却额外的宽松, 只要是和数据分析有关的就好了. 老师还给了些数据集, 比如说公共自行车的出借与归入记录啊, 出租车在各个路段的行驶速度啊, 或者是顺丰快递途径各个城市需要的时间啊这类的. 当然也可以自己选题. </p>
@@ -179,7 +239,8 @@
 <p>ugh, Traffic prediction using LSTM!</p>
 <p>(此处应有 PPAP)</p>
 <a id="more"></a>
-<h2 id="RNN-与-LSTM-基本原理"><a href="#RNN-与-LSTM-基本原理" class="headerlink" title="RNN 与 LSTM 基本原理"></a>RNN 与 LSTM 基本原理</h2><p>直接看我 CS231n 相关的课程笔记吧(喂, 还没写呢)</p>
+<h2 id="RNN-与-LSTM-基本原理"><a href="#RNN-与-LSTM-基本原理" class="headerlink" title="RNN 与 LSTM 基本原理"></a>RNN 与 LSTM 基本原理</h2><p>直接看我 CS231n 相关的课程笔记吧</p>
+<p><a href="http://www.yuthon.com/2016/10/30/Notes-for-CS231n-RNN/">Notes for CS231n Recurrent Neural Network</a></p>
 <h2 id="模型结构"><a href="#模型结构" class="headerlink" title="模型结构"></a>模型结构</h2><p>详细代码可见我Github上的项目 <strong><a href="https://github.com/corenel/traffic-prediction" target="_blank" rel="external">traffic-prediction</a></strong>.</p>
 <p>本次用了两层的 LSTM, 中间加了 Dropout:</p>
 <p><img src="/images/traffic_prediction_model.png" alt="traffic_prediction_model"></p>
@@ -2810,64 +2871,6 @@
 &lt;li&gt;animate content on the page&lt;/li&gt;
 &lt;li&gt;talk over the network to fetch new content&lt;/li&gt;
 &lt;/ul&gt;
-    
-    </summary>
-    
-      <category term="Notes" scheme="http://www.yuthon.com/categories/Notes/"/>
-    
-    
-      <category term="CodeSchool" scheme="http://www.yuthon.com/tags/CodeSchool/"/>
-    
-      <category term="JavaScript" scheme="http://www.yuthon.com/tags/JavaScript/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>Notes for Code School - JavaScript Best Practices</title>
-    <link href="http://www.yuthon.com/2016/04/12/CodeSchool-JavaScript-Best-Practices/"/>
-    <id>http://www.yuthon.com/2016/04/12/CodeSchool-JavaScript-Best-Practices/</id>
-    <published>2016-04-12T10:19:54.000Z</published>
-    <updated>2016-05-16T11:51:43.000Z</updated>
-    
-    <content type="html"><![CDATA[<h1 id="The-Sword-of-Syntax"><a href="#The-Sword-of-Syntax" class="headerlink" title="The Sword of Syntax"></a>The Sword of Syntax</h1><h2 id="Ternary-Conditionals"><a href="#Ternary-Conditionals" class="headerlink" title="Ternary Conditionals"></a>Ternary Conditionals</h2><p>The ternary conditional provides a shortcut over lengthier conditional blocks.</p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">someCondition ? pickThisIfTrue : pickThisIfFalse;</div></pre></td></tr></table></figure>
-<p><strong>Example</strong></p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">var</span> isArthur = <span class="literal">false</span>;</div><div class="line"><span class="keyword">var</span> weapon = isArthur ? <span class="string">"Excalibur"</span> : <span class="string">"Longsword"</span>;?</div><div class="line"><span class="built_in">console</span>.log(<span class="string">"Current weapon: "</span> + weapon); <span class="comment">// Longsword</span></div></pre></td></tr></table></figure>
-<a id="more"></a>
-<p><strong>Caution</strong></p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">var</span> isArthur = <span class="literal">false</span>;</div><div class="line"><span class="comment">// The output is not as expected</span></div><div class="line"><span class="built_in">console</span>.log(<span class="string">"Current weapon: "</span> + isArthur ? <span class="string">"Excalibur"</span> : <span class="string">"Longsword"</span>); <span class="comment">// Excalibur</span></div></pre></td></tr></table></figure>
-<p>The <code>+</code> only knows to evaluate a variable and add it to a string, all before the <code>?</code> gets to check a condition.</p>
-<p><img src="/images/using-retnaries-as-expressions.png" alt="using-retnaries-as-expressions"></p>
-<p>The <code>?</code> now looks for a boolean, but finds a string. Turns out, any JS value that is not <code>false</code>, <code>0</code>, <code>undefined</code>, <code>NaN</code>, <code>&quot;&quot;</code>, or <code>null</code> will always evaluate as “truthy”.</p>
-<p><strong>Ensure ternaries are isolated</strong><br>Use parentheses to ensure the conditional is checked correctly.</p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">var</span> isArthur = <span class="literal">false</span>;</div><div class="line"><span class="comment">// The output is as expected</span></div><div class="line"><span class="built_in">console</span>.log(<span class="string">"Current weapon: "</span> + (isArthur ? <span class="string">"Excalibur"</span> : <span class="string">"Longsword"</span>)); <span class="comment">// Longsword</span></div></pre></td></tr></table></figure>
-<p><strong>More Usage</strong></p>
-<ul>
-<li><p>We can use compound Boolean expressions to make ternary decisions, too.</p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">var</span> isArthur = <span class="literal">true</span>;</div><div class="line"><span class="keyword">var</span> isKing = <span class="literal">true</span>;</div><div class="line"></div><div class="line"><span class="built_in">console</span>.log(<span class="string">"Current weapon: "</span> + (isArthur <span class="string">"Excalibur"</span> : <span class="string">"Longsword"</span>));</div></pre></td></tr></table></figure>
-</li>
-<li><p>Any executable statement can serve as a ternary?s response choices.</p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">isArthur &amp;&amp; isKing ? alert(<span class="string">"Hail Arthur, King of the Britons!"</span>) : </div><div class="line">                     alert(<span class="string">"Charge on, ye Knight, for the glory of the King!"</span>) ;</div></pre></td></tr></table></figure>
-</li>
-<li><p>Ternaries provide a different format for picking immediately-invoked functions.</p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">var</span> isArthur = <span class="literal">true</span>;</div><div class="line"><span class="keyword">var</span> isKing = <span class="literal">false</span>;</div><div class="line"></div><div class="line">isArthur &amp;&amp; isKing ? <span class="function"><span class="keyword">function</span> (<span class="params"></span>)</span>&#123;</div><div class="line">                       alert(<span class="string">"Hail Arthur, King of the Britons!"</span>);</div><div class="line">                       <span class="built_in">console</span>.log(<span class="string">"Current weapon: Excalibur"</span>);</div><div class="line">                     <span class="comment">// Remember that adding the parentheses calls the function expression.</span></div><div class="line">                     &#125;()</div><div class="line">                     :</div><div class="line">                     <span class="function"><span class="keyword">function</span> (<span class="params"></span>)</span>&#123;</div><div class="line">                       alert(<span class="string">"Charge on, ye Knight, for the glory of the King!"</span>);</div><div class="line">                       <span class="built_in">console</span>.log(<span class="string">"Current weapon: Longsword"</span>);</div><div class="line">                     &#125;();</div></pre></td></tr></table></figure>
-</li>
-<li><p>Each result option provides the opportunity to execute multiple actions.</p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">var</span> isArthur = <span class="literal">true</span>;</div><div class="line"><span class="keyword">var</span> isKing = <span class="literal">false</span>;</div><div class="line"><span class="keyword">var</span> weapon;</div><div class="line"><span class="keyword">var</span> helmet;</div><div class="line"></div><div class="line"><span class="comment">// Multiple statements within a single ternary response </span></div><div class="line"><span class="comment">// are grouped in parentheses and separated by a comma.</span></div><div class="line">isArthur &amp;&amp; isKing ? ( weapon = <span class="string">"Excalibur"</span>, helmet = <span class="string">"Goosewhite"</span> )</div><div class="line">                     :</div><div class="line">                     ( weapon = <span class="string">"Longsword"</span>, helmet = <span class="string">"Iron Helm"</span> );</div></pre></td></tr></table></figure>
-</li>
-<li><p>A ternary can hold other ternaries within each of the possible responses.</p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">var</span> isArthur = <span class="literal">true</span>;</div><div class="line"><span class="keyword">var</span> isKing = <span class="literal">false</span>;</div><div class="line"><span class="keyword">var</span> weapon;</div><div class="line"><span class="keyword">var</span> helmet;</div><div class="line"></div><div class="line">isArthur &amp;&amp; isKing ? ( weapon = <span class="string">"Excalibur"</span>, helmet = <span class="string">"Goosewhite"</span> )</div><div class="line">                     :</div><div class="line">                     isArcher ? (weapon = <span class="string">"Longbow"</span>, helmet = <span class="string">"Mail Helm"</span>)</div><div class="line">                              : ( weapon = <span class="string">"Longsword"</span>, helmet = <span class="string">"Iron Helm"</span> );</div></pre></td></tr></table></figure>
-</li>
-</ul>
-<p>To be continued.</p>
-]]></content>
-    
-    <summary type="html">
-    
-      &lt;h1 id=&quot;The-Sword-of-Syntax&quot;&gt;&lt;a href=&quot;#The-Sword-of-Syntax&quot; class=&quot;headerlink&quot; title=&quot;The Sword of Syntax&quot;&gt;&lt;/a&gt;The Sword of Syntax&lt;/h1&gt;&lt;h2 id=&quot;Ternary-Conditionals&quot;&gt;&lt;a href=&quot;#Ternary-Conditionals&quot; class=&quot;headerlink&quot; title=&quot;Ternary Conditionals&quot;&gt;&lt;/a&gt;Ternary Conditionals&lt;/h2&gt;&lt;p&gt;The ternary conditional provides a shortcut over lengthier conditional blocks.&lt;/p&gt;
-&lt;figure class=&quot;highlight javascript&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;div class=&quot;line&quot;&gt;1&lt;/div&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;div class=&quot;line&quot;&gt;someCondition ? pickThisIfTrue : pickThisIfFalse;&lt;/div&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
-&lt;p&gt;&lt;strong&gt;Example&lt;/strong&gt;&lt;/p&gt;
-&lt;figure class=&quot;highlight javascript&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;div class=&quot;line&quot;&gt;1&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;2&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;3&lt;/div&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;div class=&quot;line&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;var&lt;/span&gt; isArthur = &lt;span class=&quot;literal&quot;&gt;false&lt;/span&gt;;&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;var&lt;/span&gt; weapon = isArthur ? &lt;span class=&quot;string&quot;&gt;&quot;Excalibur&quot;&lt;/span&gt; : &lt;span class=&quot;string&quot;&gt;&quot;Longsword&quot;&lt;/span&gt;;?&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;&lt;span class=&quot;built_in&quot;&gt;console&lt;/span&gt;.log(&lt;span class=&quot;string&quot;&gt;&quot;Current weapon: &quot;&lt;/span&gt; + weapon); &lt;span class=&quot;comment&quot;&gt;// Longsword&lt;/span&gt;&lt;/div&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
     
     </summary>
     

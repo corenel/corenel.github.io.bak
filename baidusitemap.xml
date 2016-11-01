@@ -4,8 +4,28 @@
 
     
   <url>
+    <loc>http://www.yuthon.com/2016/11/01/Notes-for-SLIC-Superpixels-Compared-to-State-of-the-Art-Superpixel-Methods/</loc>
+    <lastmod>2016-11-01T11:03:25.000Z</lastmod>
+    <data>
+        <display>
+        <title>Notes for SLIC Superpixels Compared to State-of-the-Art Superpixel Methods</title>
+        <pubTime>2016-11-01T10:21:04.000Z</pubTime>
+        
+        <tag>Superpixel</tag>
+         
+         
+           
+             
+              <breadCrumb title="Notes" url="http://www.yuthon.com/categories/Notes/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
     <loc>http://www.yuthon.com/2016/10/30/Notes-for-CS231n-RNN/</loc>
-    <lastmod>2016-10-30T14:38:21.000Z</lastmod>
+    <lastmod>2016-10-31T11:42:10.000Z</lastmod>
     <data>
         <display>
         <title>Notes for CS231n Recurrent Neural Network</title>
@@ -29,7 +49,7 @@
     
   <url>
     <loc>http://www.yuthon.com/2016/10/30/Traffic-Prediction-Using-LSTM/</loc>
-    <lastmod>2016-10-30T07:01:34.000Z</lastmod>
+    <lastmod>2016-10-30T14:47:39.000Z</lastmod>
     <data>
         <display>
         <title>Traffic Prediction Using LSTM</title>
@@ -456,12 +476,12 @@
 
     
   <url>
-    <loc>http://www.yuthon.com/2016/04/14/CodeSchool-Shaping-up-with-Angular.js/</loc>
+    <loc>http://www.yuthon.com/2016/04/09/CodeSchool-Javascript/</loc>
     <lastmod>2016-05-16T11:51:43.000Z</lastmod>
     <data>
         <display>
-        <title>Notes for Code School - Shaping up with Angular.js</title>
-        <pubTime>2016-04-14T13:19:22.000Z</pubTime>
+        <title>Notes for Code School - JavaScript Road Trip</title>
+        <pubTime>2016-04-09T04:37:07.000Z</pubTime>
         
         <tag>CodeSchool</tag>
          
@@ -478,12 +498,12 @@
 
     
   <url>
-    <loc>http://www.yuthon.com/2016/04/09/CodeSchool-Javascript/</loc>
+    <loc>http://www.yuthon.com/2016/04/14/CodeSchool-Shaping-up-with-Angular.js/</loc>
     <lastmod>2016-05-16T11:51:43.000Z</lastmod>
     <data>
         <display>
-        <title>Notes for Code School - JavaScript Road Trip</title>
-        <pubTime>2016-04-09T04:37:07.000Z</pubTime>
+        <title>Notes for Code School - Shaping up with Angular.js</title>
+        <pubTime>2016-04-14T13:19:22.000Z</pubTime>
         
         <tag>CodeSchool</tag>
          
