@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://www.yuthon.com/"/>
-  <updated>2016-11-01T11:03:25.000Z</updated>
+  <updated>2016-11-01T14:17:18.000Z</updated>
   <id>http://www.yuthon.com/</id>
   
   <author>
@@ -16,11 +16,69 @@
   <generator uri="http://hexo.io/">Hexo</generator>
   
   <entry>
+    <title>Solution for matplotlib importing error on macOS</title>
+    <link href="http://www.yuthon.com/2016/11/01/Solution-for-matplotlib-importing-error-on-Mac-OS-X/"/>
+    <id>http://www.yuthon.com/2016/11/01/Solution-for-matplotlib-importing-error-on-Mac-OS-X/</id>
+    <published>2016-11-01T13:57:58.000Z</published>
+    <updated>2016-11-01T14:17:18.000Z</updated>
+    
+    <content type="html"><![CDATA[<p>今天在做 CS231n 的 Assignment #2 的时候遇到了导入 matplotlib.pyplot 的问题, 特此记录.</p>
+<h2 id="问题描述"><a href="#问题描述" class="headerlink" title="问题描述"></a>问题描述</h2><p>打开 IPython Notebook 之后, 执行以下命令:</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">import</span> matplotlib.pyplot <span class="keyword">as</span> plt</div></pre></td></tr></table></figure>
+<p>出现错误:</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">ValueError: unknown locale: UTF<span class="number">-8</span></div></pre></td></tr></table></figure>
+<a id="more"></a>
+<h2 id="问题解决"><a href="#问题解决" class="headerlink" title="问题解决"></a>问题解决</h2><p>把下面这些加到<code>~/.zshrc</code>或者是<code>~/.bash_profile</code>里面:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">export LC_ALL=en_US.UTF-8</div><div class="line">export LANG=en_US.UTF-8</div></pre></td></tr></table></figure>
+<p>同时, 如果用 iTerm 的话, 还需要在 Preference -&gt; Profiles -&gt; Terminal -&gt; Environment 中, 取消选择 <code>Set locale variables automatically</code>.</p>
+<p><strong>然而</strong>又出现了下列报错:</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">ImportError: cannot <span class="keyword">import</span> name _thread</div></pre></td></tr></table></figure>
+<p>这个问题已经在最新的<code>six</code>和<code>dateutil</code>库中解决了, 然而 macOS 本身却还在使用旧版本的库. 解决方法如下:</p>
+<ul>
+<li><p>执行以下命令安装最新版本的<code>six</code></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ sudo pip install six -U</div></pre></td></tr></table></figure>
+</li>
+<li><p>开 python 看看是否还在使用旧版本的库:</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="meta">&gt;&gt;&gt; </span><span class="keyword">import</span> six</div><div class="line"><span class="meta">&gt;&gt;&gt; </span>six.__file__</div><div class="line">/System/Library/Frameworks/Python.framework/Versions/<span class="number">2.7</span>/Extras/lib/python/six.pyc</div></pre></td></tr></table></figure>
+<p>显然确实是这样</p>
+</li>
+<li><p>删除旧版本的库</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ rm -rf /System/Library/Frameworks/Python.framework/Versions/2.7/Extras/lib/python/six.*</div></pre></td></tr></table></figure>
+<p>这样就可以了, 之后 python 会使用我们之前新装的版本的<code>six</code>库</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="meta">&gt;&gt;&gt; </span><span class="keyword">import</span> six</div><div class="line"><span class="meta">&gt;&gt;&gt; </span>six.__file__</div><div class="line"><span class="string">'/Library/Python/2.7/site-packages/six.pyc'</span></div></pre></td></tr></table></figure>
+</li>
+</ul>
+<p>之后再执行<code>import matplotlib.pyplot as plt</code>之后就没问题了.</p>
+<p>说到底还是 macOS 的锅…</p>
+]]></content>
+    
+    <summary type="html">
+    
+      &lt;p&gt;今天在做 CS231n 的 Assignment #2 的时候遇到了导入 matplotlib.pyplot 的问题, 特此记录.&lt;/p&gt;
+&lt;h2 id=&quot;问题描述&quot;&gt;&lt;a href=&quot;#问题描述&quot; class=&quot;headerlink&quot; title=&quot;问题描述&quot;&gt;&lt;/a&gt;问题描述&lt;/h2&gt;&lt;p&gt;打开 IPython Notebook 之后, 执行以下命令:&lt;/p&gt;
+&lt;figure class=&quot;highlight python&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;div class=&quot;line&quot;&gt;1&lt;/div&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;div class=&quot;line&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;import&lt;/span&gt; matplotlib.pyplot &lt;span class=&quot;keyword&quot;&gt;as&lt;/span&gt; plt&lt;/div&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
+&lt;p&gt;出现错误:&lt;/p&gt;
+&lt;figure class=&quot;highlight python&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;div class=&quot;line&quot;&gt;1&lt;/div&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;div class=&quot;line&quot;&gt;ValueError: unknown locale: UTF&lt;span class=&quot;number&quot;&gt;-8&lt;/span&gt;&lt;/div&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
+    
+    </summary>
+    
+      <category term="Experience" scheme="http://www.yuthon.com/categories/Experience/"/>
+    
+    
+      <category term="Python" scheme="http://www.yuthon.com/tags/Python/"/>
+    
+      <category term="Matplotlib" scheme="http://www.yuthon.com/tags/Matplotlib/"/>
+    
+      <category term="macOS" scheme="http://www.yuthon.com/tags/macOS/"/>
+    
+  </entry>
+  
+  <entry>
     <title>Notes for SLIC Superpixels Compared to State-of-the-Art Superpixel Methods</title>
     <link href="http://www.yuthon.com/2016/11/01/Notes-for-SLIC-Superpixels-Compared-to-State-of-the-Art-Superpixel-Methods/"/>
     <id>http://www.yuthon.com/2016/11/01/Notes-for-SLIC-Superpixels-Compared-to-State-of-the-Art-Superpixel-Methods/</id>
     <published>2016-11-01T10:21:04.000Z</published>
-    <updated>2016-11-01T11:03:25.000Z</updated>
+    <updated>2016-11-01T12:09:59.000Z</updated>
     
     <content type="html"><![CDATA[<p>文章介绍了当前 State-of-the-Art 的5种<strong>超像素 (Superpixel)</strong> 的算法, 并主要从其对于图像边缘信息的拟合程度 (their ability to adhere to image boundaries), 速度, 内存利用效率, 以及它们对于图像分割性能的影响 (their impact on segmentation performance) 来综合评价.</p>
 <p>同时, 本文还提出了一种 <strong>SLIC (simple linear iterative clustering)</strong> 的算法, 用的是 k-means clustering 的方法.</p>
@@ -53,12 +111,24 @@
 <h3 id="Gradient-Ascent-Based-Algorithms"><a href="#Gradient-Ascent-Based-Algorithms" class="headerlink" title="Gradient-Ascent-Based Algorithms"></a>Gradient-Ascent-Based Algorithms</h3><p>这类方法生对像素生成一个随机的初始聚类, 然后不断迭代优化, 直到满足收敛条件.</p>
 <p>相关的方法有:</p>
 <ul>
-<li>MS02</li>
-<li>QS08</li>
-<li>WS91</li>
-<li>TP09</li>
+<li><strong><a href="http://ieeexplore.ieee.org/xpls/abs_all.jsp?arnumber=1000236" target="_blank" rel="external">MS02</a></strong>: 一种比较老的方法, 生成的超像素形状不规整, 而且对于超像素的数量大小等均不能控制. 同时, 时间复杂度是$O(N^2)$, 非常慢.<ul>
+<li>Mean shift, an iterative mode-seeking procedure for locating local maxima of a density function, is applied to find modes in the color or intensity feature space of an image. Pixels that converge to the same mode define the superpixels. MS02</li>
 </ul>
-<p>(To be continued…)</p>
+</li>
+<li><strong><a href="http://link.springer.com/chapter/10.1007/978-3-540-88693-8_52" target="_blank" rel="external">QS08</a></strong>: 对边界的遵循比较好, 但是速度相当慢. 时间复杂度$O(dN^2)$.<ul>
+<li>Quick shift also uses a mode-seeking segmentation scheme. It initializes the segmentation using a medoid shift procedure. It then moves each point in the feature space to the nearest neighbor that increases the Parzen density estimate.</li>
+</ul>
+</li>
+<li><strong><a href="https://pdfs.semanticscholar.org/a381/9dda9a5f00dbb8cd3413ca7422e37a0d5794.pdf" target="_blank" rel="external">WS91</a></strong>: 对边界遵循不好, 形状不规整, 不能严格控制超像素的数量, 但是速度快. 时间复杂度$O(NlogN)$.<ul>
+<li>The watershed approach performs a gradient ascent starting from local minima to produce watersheds, lines that separate catchment basins. The </li>
+</ul>
+</li>
+<li><strong><a href="http://ieeexplore.ieee.org/xpls/abs_all.jsp?arnumber=4912213" target="_blank" rel="external">TP09</a></strong>: 生成的超像素具有一致的大小, 紧凑性. 宣称时间复杂度$O(N)$, 但是实际上很慢, 而且对边界的遵循不好. <ul>
+<li>The Turbopixel method progressively dilates a set of seed locations using level-set-based geometric flow. The geometric flow relies on local image gradients, aiming to regularly distribute superpixels on the image plane.</li>
+</ul>
+</li>
+</ul>
+<h2 id="SLIC-Superpixels"><a href="#SLIC-Superpixels" class="headerlink" title="SLIC Superpixels"></a>SLIC Superpixels</h2><p>(To be continued…)</p>
 ]]></content>
     
     <summary type="html">
@@ -230,7 +300,7 @@
     <link href="http://www.yuthon.com/2016/10/30/Traffic-Prediction-Using-LSTM/"/>
     <id>http://www.yuthon.com/2016/10/30/Traffic-Prediction-Using-LSTM/</id>
     <published>2016-10-30T05:53:32.000Z</published>
-    <updated>2016-10-30T14:47:39.000Z</updated>
+    <updated>2016-11-01T12:16:30.000Z</updated>
     
     <content type="html"><![CDATA[<p>最近上的一门课 “无线传感器网络” 快要结束了, 于是所谓的大作业的 DDL 也压上来了. TAT</p>
 <p>不过这门课虽然说是讲无线传感器网络的, 但是大作业的要求却额外的宽松, 只要是和数据分析有关的就好了. 老师还给了些数据集, 比如说公共自行车的出借与归入记录啊, 出租车在各个路段的行驶速度啊, 或者是顺丰快递途径各个城市需要的时间啊这类的. 当然也可以自己选题. </p>
@@ -241,7 +311,7 @@
 <a id="more"></a>
 <h2 id="RNN-与-LSTM-基本原理"><a href="#RNN-与-LSTM-基本原理" class="headerlink" title="RNN 与 LSTM 基本原理"></a>RNN 与 LSTM 基本原理</h2><p>直接看我 CS231n 相关的课程笔记吧</p>
 <p><a href="http://www.yuthon.com/2016/10/30/Notes-for-CS231n-RNN/">Notes for CS231n Recurrent Neural Network</a></p>
-<h2 id="模型结构"><a href="#模型结构" class="headerlink" title="模型结构"></a>模型结构</h2><p>详细代码可见我Github上的项目 <strong><a href="https://github.com/corenel/traffic-prediction" target="_blank" rel="external">traffic-prediction</a></strong>.</p>
+<h2 id="模型结构"><a href="#模型结构" class="headerlink" title="模型结构"></a>模型结构</h2><p>详细代码可见我Github上的项目 <strong><a href="https://github.com/corenel/traffic-prediction" target="_blank" rel="external">traffic-prediction</a></strong>. 为了课堂展示我还做了一个pdf, 可以从此处下载.</p>
 <p>本次用了两层的 LSTM, 中间加了 Dropout:</p>
 <p><img src="/images/traffic_prediction_model.png" alt="traffic_prediction_model"></p>
 <p>输入是一个 4 元素的向量, 分别是星期几, 是否周末, 小时与分钟. </p>
@@ -261,6 +331,10 @@
 <blockquote>
 <p>matplotlib 可以用 ggplot 的样式, 好看多了</p>
 </blockquote>
+<h2 id="Deeper"><a href="#Deeper" class="headerlink" title="Deeper"></a>Deeper</h2><p>使用了3层LSTM, MSE有一定下降, 但是高峰期跟不上的问题还是没有解决</p>
+<p> <img src="/images/traffic_prediction_result_4.png" alt="traffic_prediction_result_4"></p>
+<p> <img src="/images/traffic_prediction_result_5.png" alt="traffic_prediction_result_5"></p>
+<p> <img src="/images/traffic_prediction_result_6.png" alt="traffic_prediction_result_6"></p>
 <h2 id="改进"><a href="#改进" class="headerlink" title="改进"></a>改进</h2><ul>
 <li>加深层数</li>
 <li>仔细考虑输入向量的长度和内容, 还可加入假日, 天气等(老师给的数据集有, 但是PeMS没)</li>
@@ -2676,200 +2750,6 @@
 &lt;li&gt;Angular helps create responsive (as in fast) websites.&lt;/li&gt;
 &lt;li&gt;Angular plays well with jQuery.&lt;/li&gt;
 &lt;li&gt;Angular is easy to test.&lt;/li&gt;
-&lt;/ul&gt;
-    
-    </summary>
-    
-      <category term="Notes" scheme="http://www.yuthon.com/categories/Notes/"/>
-    
-    
-      <category term="CodeSchool" scheme="http://www.yuthon.com/tags/CodeSchool/"/>
-    
-      <category term="JavaScript" scheme="http://www.yuthon.com/tags/JavaScript/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>Notes for Code School - Try jQuery</title>
-    <link href="http://www.yuthon.com/2016/04/13/CodeSchool-Try-jQuery/"/>
-    <id>http://www.yuthon.com/2016/04/13/CodeSchool-Try-jQuery/</id>
-    <published>2016-04-13T09:24:09.000Z</published>
-    <updated>2016-05-16T11:51:43.000Z</updated>
-    
-    <content type="html"><![CDATA[<h1 id="Introduction-to-jQuery"><a href="#Introduction-to-jQuery" class="headerlink" title="Introduction to jQuery"></a>Introduction to jQuery</h1><h2 id="What’s-jQuery"><a href="#What’s-jQuery" class="headerlink" title="What’s jQuery"></a>What’s jQuery</h2><p><strong>jQuery makes it easy to</strong></p>
-<ul>
-<li>find elements in an HTML document</li>
-<li>change HTML content</li>
-<li>listen to what a user does and react accordingly</li>
-<li>animate content on the page</li>
-<li>talk over the network to fetch new content</li>
-</ul>
-<a id="more"></a>
-<p><strong>Document Object Model</strong></p>
-<p>A tree-like structure created by browsers so we can quickly find HTML Elements using JavaScript.</p>
-<blockquote>
-<p>“DOM”</p>
-</blockquote>
-<p><img src="/images/dom-structure.png" alt="dom-structure"></p>
-<p><strong>How jQuery Accesses The DOM</strong></p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">jQuery(<span class="built_in">document</span>);</div></pre></td></tr></table></figure>
-<p><strong>Using the jQuery function to find nodes</strong></p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// jQuery selectors</span></div><div class="line"><span class="comment">// Use short &amp; sweet syntax</span></div><div class="line">$(<span class="string">"h1"</span>); <span class="comment">// EQUALS TO jQuery("h1");</span></div><div class="line">$(<span class="string">"p"</span>); <span class="comment">// EQUALS TO jQuery("p");</span></div></pre></td></tr></table></figure>
-<p><strong>Modifying an element’s text</strong></p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$(<span class="string">"h1"</span>).text(<span class="string">"Where to?"</span>);</div></pre></td></tr></table></figure>
-<p><strong>Listening for document ready</strong></p>
-<p>JavaScript may execute before the DOM loads, so we need to make sure the DOM has finished loading the HTML content before we can reliably use jQuery.</p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">jQuery(<span class="built_in">document</span>).ready(<span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</div><div class="line">  <span class="comment">// code</span></div><div class="line">&#125;);</div></pre></td></tr></table></figure>
-<h2 id="Using-jQuery"><a href="#Using-jQuery" class="headerlink" title="Using jQuery"></a>Using jQuery</h2><p><strong>Getting started</strong></p>
-<ol>
-<li><p>download jQuery</p>
-</li>
-<li><p>load it in your HTML document</p>
-<figure class="highlight html"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="tag">&lt;<span class="name">script</span> <span class="attr">src</span>=<span class="string">"jquery.min.js"</span>&gt;</span><span class="undefined"></span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></div></pre></td></tr></table></figure>
-</li>
-<li><p>start using it</p>
-<figure class="highlight html"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="tag">&lt;<span class="name">script</span> <span class="attr">src</span>=<span class="string">"application.js"</span>&gt;</span><span class="undefined"></span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></div></pre></td></tr></table></figure>
-</li>
-</ol>
-<p><strong>We can find elements by ID or Class</strong></p>
-<figure class="highlight html"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"><span class="tag">&lt;<span class="name">h1</span>&gt;</span>Where do you want to go?<span class="tag">&lt;/<span class="name">h1</span>&gt;</span></div><div class="line"><span class="tag">&lt;<span class="name">h2</span>&gt;</span>Travel Destinations<span class="tag">&lt;/<span class="name">h2</span>&gt;</span></div><div class="line"><span class="tag">&lt;<span class="name">p</span>&gt;</span>Plan your next adventure.<span class="tag">&lt;/<span class="name">p</span>&gt;</span></div><div class="line"><span class="tag">&lt;<span class="name">ul</span> <span class="attr">id</span>=<span class="string">"destinations"</span>&gt;</span></div><div class="line">  <span class="tag">&lt;<span class="name">li</span>&gt;</span>Rome<span class="tag">&lt;/<span class="name">li</span>&gt;</span></div><div class="line">  <span class="tag">&lt;<span class="name">li</span>&gt;</span>Paris<span class="tag">&lt;/<span class="name">li</span>&gt;</span></div><div class="line">  <span class="tag">&lt;<span class="name">li</span> <span class="attr">class</span>=<span class="string">'promo'</span>&gt;</span>Rio<span class="tag">&lt;/<span class="name">li</span>&gt;</span></div><div class="line"><span class="tag">&lt;/<span class="name">ul</span>&gt;</span></div></pre></td></tr></table></figure>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">$(<span class="string">"#destinations"</span>);</div><div class="line">$(<span class="string">".promo"</span>);</div></pre></td></tr></table></figure>
-<h1 id="Traversing-the-DOM"><a href="#Traversing-the-DOM" class="headerlink" title="Traversing the DOM"></a>Traversing the DOM</h1><h2 id="Searching-the-DOM"><a href="#Searching-the-DOM" class="headerlink" title="Searching the DOM"></a>Searching the DOM</h2><p><strong>Selecting descendants</strong></p>
-<figure class="highlight html"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"><span class="tag">&lt;<span class="name">h1</span>&gt;</span>Where do you want to go?<span class="tag">&lt;/<span class="name">h1</span>&gt;</span></div><div class="line"><span class="tag">&lt;<span class="name">h2</span>&gt;</span>Travel Destinations<span class="tag">&lt;/<span class="name">h2</span>&gt;</span></div><div class="line"><span class="tag">&lt;<span class="name">p</span>&gt;</span>Plan your next adventure.<span class="tag">&lt;/<span class="name">p</span>&gt;</span></div><div class="line"><span class="tag">&lt;<span class="name">ul</span> <span class="attr">id</span>=<span class="string">"destinations"</span>&gt;</span></div><div class="line">  <span class="tag">&lt;<span class="name">li</span>&gt;</span>Paris<span class="tag">&lt;/<span class="name">li</span>&gt;</span></div><div class="line">  <span class="tag">&lt;<span class="name">li</span>&gt;</span>Rome<span class="tag">&lt;/<span class="name">li</span>&gt;</span></div><div class="line">  <span class="tag">&lt;<span class="name">li</span> <span class="attr">class</span>=<span class="string">'promo'</span>&gt;</span>Rio<span class="tag">&lt;/<span class="name">li</span>&gt;</span></div><div class="line"><span class="tag">&lt;/<span class="name">ul</span>&gt;</span></div></pre></td></tr></table></figure>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// we select the &lt;li&gt; elements that are</span></div><div class="line"><span class="comment">// inside of the &lt;ul&gt; with a "destinations" ID</span></div><div class="line">$(<span class="string">"#destinations li"</span>);</div></pre></td></tr></table></figure>
-<p> <strong>Selecting direct children</strong></p>
-<figure class="highlight html"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line"><span class="tag">&lt;<span class="name">h1</span>&gt;</span>Where do you want to go?<span class="tag">&lt;/<span class="name">h1</span>&gt;</span></div><div class="line"><span class="tag">&lt;<span class="name">h2</span>&gt;</span>Travel Destinations<span class="tag">&lt;/<span class="name">h2</span>&gt;</span></div><div class="line"><span class="tag">&lt;<span class="name">p</span>&gt;</span>Plan your next adventure.<span class="tag">&lt;/<span class="name">p</span>&gt;</span></div><div class="line"><span class="tag">&lt;<span class="name">ul</span> <span class="attr">id</span>=<span class="string">"destinations"</span>&gt;</span></div><div class="line">  <span class="tag">&lt;<span class="name">li</span>&gt;</span>Rome<span class="tag">&lt;/<span class="name">li</span>&gt;</span></div><div class="line">  <span class="tag">&lt;<span class="name">li</span>&gt;</span></div><div class="line">    <span class="tag">&lt;<span class="name">ul</span> <span class="attr">id</span>=<span class="string">"france"</span>&gt;</span></div><div class="line">      <span class="tag">&lt;<span class="name">li</span>&gt;</span>Paris<span class="tag">&lt;/<span class="name">li</span>&gt;</span></div><div class="line">    <span class="tag">&lt;/<span class="name">ul</span>&gt;</span></div><div class="line">  <span class="tag">&lt;/<span class="name">li</span>&gt;</span></div><div class="line">  <span class="tag">&lt;<span class="name">li</span> <span class="attr">class</span>=<span class="string">'promo'</span>&gt;</span>Rio<span class="tag">&lt;/<span class="name">li</span>&gt;</span></div><div class="line"><span class="tag">&lt;/<span class="name">ul</span>&gt;</span></div></pre></td></tr></table></figure>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// we select only the &lt;li&gt; elements that are</span></div><div class="line"><span class="comment">// children of the "destinations" &lt;ul&gt;</span></div><div class="line">$(<span class="string">"#destinations &gt; li"</span>);</div></pre></td></tr></table></figure>
-<p><strong>Selecting multiple elements</strong></p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$(<span class="string">".promo, #france"</span>);</div></pre></td></tr></table></figure>
-<p><strong>CSS-like pseudo classes</strong></p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">$(<span class="string">"#destinations li:first"</span>);</div><div class="line">$(<span class="string">"#destinations li:last"</span>);</div><div class="line"></div><div class="line"><span class="comment">// watch out, the index starts at 0</span></div><div class="line">$(<span class="string">"#destinations li:odd"</span>);</div><div class="line">$(<span class="string">"#destinations li:even"</span>);</div></pre></td></tr></table></figure>
-<h2 id="Traversing-the-DOM-1"><a href="#Traversing-the-DOM-1" class="headerlink" title="Traversing the DOM"></a>Traversing the DOM</h2><p><strong>Filtering by traversing</strong></p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// EQUALS TO $("#destinations li");</span></div><div class="line">$(<span class="string">"#destinations"</span>).find(<span class="string">"li"</span>);</div><div class="line"></div><div class="line"><span class="comment">// EQUALS TO $("li:first");</span></div><div class="line">$(<span class="string">"li"</span>).first();</div><div class="line"></div><div class="line"><span class="comment">// EQUALS TO $("li:last");</span></div><div class="line">$(<span class="string">"li"</span>).last();</div></pre></td></tr></table></figure>
-<p><strong>Walking the DOM</strong></p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">$(<span class="string">"li"</span>).first();</div><div class="line">$(<span class="string">"li"</span>).first().next();</div><div class="line">$(<span class="string">"li"</span>).first().next().prev();</div></pre></td></tr></table></figure>
-<p><strong>Walking up the DOM</strong></p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$(<span class="string">"li"</span>).first().parent();</div></pre></td></tr></table></figure>
-<p><strong>Walking down the DOM</strong></p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$(<span class="string">"#destinations"</span>).children(<span class="string">"li"</span>);</div></pre></td></tr></table></figure>
-<h1 id="Working-with-the-DOM"><a href="#Working-with-the-DOM" class="headerlink" title="Working with the DOM"></a>Working with the DOM</h1><h2 id="Manipulating-the-DOM"><a href="#Manipulating-the-DOM" class="headerlink" title="Manipulating the DOM"></a>Manipulating the DOM</h2><h3 id="Appending-to-the-DOM"><a href="#Appending-to-the-DOM" class="headerlink" title="Appending to the DOM"></a>Appending to the DOM</h3><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">$(<span class="built_in">document</span>).ready(<span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</div><div class="line">  <span class="keyword">var</span> price = $(<span class="string">'&lt;p&gt;From $399.99&lt;/p&gt;'</span>);</div><div class="line">  $(<span class="string">'.vacation'</span>).append(price);</div><div class="line">  <span class="comment">// OR</span></div><div class="line">  <span class="comment">// price.appendTo($('.vacation'));</span></div><div class="line">&#125;);</div></pre></td></tr></table></figure>
-<p>Ways to add this price node to the DOM</p>
-<ul>
-<li><code>.append(&lt;element&gt;)</code></li>
-<li><code>.prepend(&lt;element&gt;)</code></li>
-<li><code>.after(&lt;element&gt;)</code></li>
-<li><code>.before(&lt;element&gt;)</code></li>
-<li><code>.appendTo(&lt;element&gt;)</code></li>
-<li><code>.prependTo(&lt;element&gt;)</code></li>
-<li><code>.insertAfter(&lt;element&gt;)</code></li>
-<li><code>.insertBefore(&lt;element&gt;)</code></li>
-</ul>
-<h3 id="Removing-from-the-DOM"><a href="#Removing-from-the-DOM" class="headerlink" title="Removing from the DOM"></a>Removing from the DOM</h3><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">$(<span class="built_in">document</span>).ready(<span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</div><div class="line">  <span class="keyword">var</span> price = $(<span class="string">'&lt;p&gt;From $399.99&lt;/p&gt;'</span>);</div><div class="line">  $(<span class="string">'.vacation'</span>).append(price);</div><div class="line">  <span class="comment">// Removes the &lt;button&gt; from the DOM</span></div><div class="line">  $(<span class="string">'button'</span>).remove();</div><div class="line">&#125;);</div></pre></td></tr></table></figure>
-<h2 id="Acting-on-Interaction"><a href="#Acting-on-Interaction" class="headerlink" title="Acting on Interaction"></a>Acting on Interaction</h2><p><strong>Watching for Click</strong></p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">$(<span class="built_in">document</span>).ready(<span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</div><div class="line">  $(<span class="string">'button'</span>).on(<span class="string">'click'</span>, <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</div><div class="line">    <span class="keyword">var</span> price = $(<span class="string">'&lt;p&gt;From $399.99&lt;/p&gt;'</span>);</div><div class="line">    $(<span class="string">'.vacation'</span>).append(price);</div><div class="line">    $(<span class="string">'button'</span>).remove();</div><div class="line">  &#125;);</div><div class="line">&#125;);</div></pre></td></tr></table></figure>
-<h2 id="Refactor-Using-Traversing"><a href="#Refactor-Using-Traversing" class="headerlink" title="Refactor Using Traversing"></a>Refactor Using Traversing</h2><ul>
-<li><strong>Traversing from $(this)</strong></li>
-<li><strong>Using .closest(<selector>)</selector></strong></li>
-</ul>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">$(<span class="built_in">document</span>).ready(<span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</div><div class="line">  $(<span class="string">'button'</span>).on(<span class="string">'click'</span>, <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</div><div class="line">    <span class="keyword">var</span> price = $(<span class="string">'&lt;p&gt;From $399.99&lt;/p&gt;'</span>);</div><div class="line">    $(<span class="keyword">this</span>).closest(<span class="string">'.vacation'</span>).append(price);</div><div class="line">    $(<span class="keyword">this</span>).remove();</div><div class="line">  &#125;);</div><div class="line">&#125;);</div></pre></td></tr></table></figure>
-<h2 id="Traversing-and-Filtering"><a href="#Traversing-and-Filtering" class="headerlink" title="Traversing and Filtering"></a>Traversing and Filtering</h2><p><strong>jQuery Object Methods</strong></p>
-<figure class="highlight html"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"><span class="tag">&lt;<span class="name">li</span> <span class="attr">class</span>=<span class="string">"vacation onsale"</span> <span class="attr">data-price</span>=<span class="string">'399.99'</span>&gt;</span></div><div class="line">  <span class="tag">&lt;<span class="name">h3</span>&gt;</span>Hawaiian Vacation<span class="tag">&lt;/<span class="name">h3</span>&gt;</span></div><div class="line">  <span class="tag">&lt;<span class="name">button</span>&gt;</span>Get Price<span class="tag">&lt;/<span class="name">button</span>&gt;</span></div><div class="line">  <span class="tag">&lt;<span class="name">ul</span> <span class="attr">class</span>=<span class="string">'comments'</span>&gt;</span></div><div class="line">    <span class="tag">&lt;<span class="name">li</span>&gt;</span>Amazing deal!<span class="tag">&lt;/<span class="name">li</span>&gt;</span></div><div class="line">    <span class="tag">&lt;<span class="name">li</span>&gt;</span>Want to go!<span class="tag">&lt;/<span class="name">li</span>&gt;</span></div><div class="line">  <span class="tag">&lt;/<span class="name">ul</span>&gt;</span></div><div class="line"><span class="tag">&lt;/<span class="name">li</span>&gt;</span></div></pre></td></tr></table></figure>
-<ul>
-<li><code>.data(&lt;name&gt;)</code></li>
-<li><code>.data(&lt;name&gt;, &lt;value&gt;)</code></li>
-</ul>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line">$(<span class="built_in">document</span>).ready(<span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</div><div class="line">  <span class="comment">// Only target a 'button' if it's inside a '.vacation'</span></div><div class="line">  $(<span class="string">'.vacation'</span>).on(<span class="string">'click'</span>, <span class="string">'button'</span>, <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</div><div class="line">    <span class="comment">// Reusing jQuery Objects</span></div><div class="line">    <span class="keyword">var</span> vacation = $(<span class="keyword">this</span>).closest(<span class="string">'.vacation'</span>);</div><div class="line">    <span class="keyword">var</span> amount = vacation.data(<span class="string">'price'</span>);</div><div class="line">    <span class="keyword">var</span> price = $(<span class="string">'&lt;p&gt;From $'</span>+amount+<span class="string">'&lt;/p&gt;'</span>);</div><div class="line">    vacation.append(price);</div><div class="line">    $(<span class="keyword">this</span>).remove();</div><div class="line">  &#125;);</div><div class="line">&#125;);</div></pre></td></tr></table></figure>
-<p><strong>Filtering for Vacations On sale</strong></p>
-<figure class="highlight html"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"><span class="tag">&lt;<span class="name">div</span> <span class="attr">id</span>=<span class="string">'filters'</span>&gt;</span></div><div class="line">  ...</div><div class="line">  <span class="tag">&lt;<span class="name">button</span> <span class="attr">class</span>=<span class="string">'onsale-filter'</span>&gt;</span>On Sale Now<span class="tag">&lt;/<span class="name">button</span>&gt;</span></div><div class="line">  <span class="tag">&lt;<span class="name">button</span> <span class="attr">class</span>=<span class="string">'expiring-filter'</span>&gt;</span>Expiring<span class="tag">&lt;/<span class="name">button</span>&gt;</span></div><div class="line">  ...</div><div class="line"><span class="tag">&lt;/<span class="name">div</span>&gt;</span></div></pre></td></tr></table></figure>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">$(<span class="string">'#filters'</span>).on(<span class="string">'click'</span>, <span class="string">'.onsale-filter'</span>, <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</div><div class="line">  $(<span class="string">'.highlighted'</span>).removeClass(<span class="string">'highlighted'</span>);</div><div class="line">  $(<span class="string">'.vacation'</span>).filter(<span class="string">'.onsale'</span>).addClass(<span class="string">'highlighted'</span>);</div><div class="line">&#125;);</div></pre></td></tr></table></figure>
-<h1 id="Listening-to-DOM-Events"><a href="#Listening-to-DOM-Events" class="headerlink" title="Listening to DOM Events"></a>Listening to DOM Events</h1><h2 id="On-DOM-Load"><a href="#On-DOM-Load" class="headerlink" title="On DOM Load"></a>On DOM Load</h2><figure class="highlight html"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line"><span class="tag">&lt;<span class="name">li</span> <span class="attr">class</span>=<span class="string">"confirmation"</span>&gt;</span></div><div class="line">  ...</div><div class="line">  // Clicking this button</div><div class="line">  <span class="tag">&lt;<span class="name">button</span>&gt;</span>FLIGHT DETAILS<span class="tag">&lt;/<span class="name">button</span>&gt;</span></div><div class="line">  // will show the ticket</div><div class="line">  <span class="tag">&lt;<span class="name">ul</span> <span class="attr">class</span>=<span class="string">"ticket"</span>&gt;</span>...<span class="tag">&lt;/<span class="name">ul</span>&gt;</span></div><div class="line"><span class="tag">&lt;/<span class="name">li</span>&gt;</span></div></pre></td></tr></table></figure>
-<figure class="highlight css"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="selector-class">.ticket</span> &#123;</div><div class="line">  <span class="attribute">display</span>: none;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">$(<span class="built_in">document</span>).ready(<span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</div><div class="line">  $(<span class="string">'.confirmation'</span>).on(<span class="string">'click'</span>, <span class="string">'button'</span>, <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</div><div class="line">   <span class="comment">// Using slideDown to Show Elements</span></div><div class="line">    $(<span class="keyword">this</span>).closest(<span class="string">'.confirmation'</span>).find(<span class="string">'.ticket'</span>).slideDown();</div><div class="line">  &#125;);</div><div class="line">&#125;);</div></pre></td></tr></table></figure>
-<p><strong>Using slideDown to Show Elements</strong></p>
-<ul>
-<li><code>.slideDown()</code></li>
-<li><code>.slideUp()</code></li>
-<li><code>.slideToggle()</code><ul>
-<li>Display or hide the matched elements with a sliding motion.</li>
-</ul>
-</li>
-</ul>
-<h2 id="Expanding-on-on"><a href="#Expanding-on-on" class="headerlink" title="Expanding on on()"></a>Expanding on on()</h2><p>What if we also want to show the ticket when they hover over the <code>&lt;h3&gt;</code> tag?</p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">showTicket</span>(<span class="params"></span>) </span>&#123;</div><div class="line">  $(<span class="string">'this'</span>).closest(<span class="string">'.confirmation'</span>).find(<span class="string">'.ticket'</span>).slideDown();</div><div class="line">&#125;</div><div class="line">$(<span class="built_in">document</span>).ready(<span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</div><div class="line">  <span class="comment">// Don't add () at the end - that would execute the function immediately</span></div><div class="line">  $(<span class="string">'.confirmation'</span>).on(<span class="string">'click'</span>, <span class="string">'button'</span>, showTicket);</div><div class="line">  $(<span class="string">'.confirmation'</span>).on(<span class="string">'mouseenter'</span>, <span class="string">'h3'</span>, showTicket);</div><div class="line">&#125;);</div></pre></td></tr></table></figure>
-<p><strong>Mouse Event</strong></p>
-<ul>
-<li><code>click</code></li>
-<li><code>dblclick</code></li>
-<li><code>focusin</code></li>
-<li><code>focusout</code></li>
-<li><code>mousedown</code></li>
-<li><code>mouseup</code></li>
-<li><code>mousemove</code></li>
-<li><code>mouseout</code></li>
-<li><code>mouseover</code></li>
-<li><code>mouseleave</code></li>
-<li><code>mouseenter</code></li>
-</ul>
-<h2 id="Keyboard-Events"><a href="#Keyboard-Events" class="headerlink" title="Keyboard Events"></a>Keyboard Events</h2><p>Changing this “Tickets “input field should recalculate the total price.</p>
-<figure class="highlight html"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line"><span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">"vacation"</span> <span class="attr">data-price</span>=<span class="string">'399.99'</span>&gt;</span></div><div class="line">  <span class="tag">&lt;<span class="name">h3</span>&gt;</span>Hawaiian Vacation<span class="tag">&lt;/<span class="name">h3</span>&gt;</span></div><div class="line">  <span class="tag">&lt;<span class="name">p</span>&gt;</span>$399.99 per ticket<span class="tag">&lt;/<span class="name">p</span>&gt;</span></div><div class="line">  <span class="tag">&lt;<span class="name">p</span>&gt;</span></div><div class="line">    Tickets:</div><div class="line">    <span class="comment">&lt;!-- When this updates... --&gt;</span></div><div class="line">    <span class="tag">&lt;<span class="name">input</span> <span class="attr">type</span>=<span class="string">'number'</span> <span class="attr">class</span>=<span class="string">'quantity'</span> <span class="attr">value</span>=<span class="string">'1'</span> /&gt;</span></div><div class="line">  <span class="tag">&lt;/<span class="name">p</span>&gt;</span></div><div class="line"><span class="tag">&lt;/<span class="name">div</span>&gt;</span></div><div class="line"><span class="comment">&lt;!-- ...we'll update the calculated price here --&gt;</span></div><div class="line"><span class="tag">&lt;<span class="name">p</span>&gt;</span>Total Price: $<span class="tag">&lt;<span class="name">span</span> <span class="attr">id</span>=<span class="string">'total'</span>&gt;</span>399.99<span class="tag">&lt;/<span class="name">span</span>&gt;</span><span class="tag">&lt;/<span class="name">p</span>&gt;</span></div></pre></td></tr></table></figure>
-<p><strong>Keyboard and Form Events</strong></p>
-<p>Keyboard Events</p>
-<ul>
-<li><code>keypress</code></li>
-<li><code>keydown</code></li>
-<li><code>keyup</code></li>
-</ul>
-<p>Form Events</p>
-<ul>
-<li><code>blur</code></li>
-<li><code>select</code></li>
-<li><code>change</code></li>
-<li><code>focus</code></li>
-<li><code>submit</code></li>
-</ul>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">$(<span class="built_in">document</span>).ready(<span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</div><div class="line">  $(<span class="string">'.vacation'</span>).on(<span class="string">'keyup'</span>, <span class="string">'.quantity'</span>, <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</div><div class="line">    <span class="comment">// Use + to convert the string to a number</span></div><div class="line">    <span class="keyword">var</span> price = +$(<span class="keyword">this</span>).closest(<span class="string">'.vacation'</span>).data(<span class="string">'price'</span>);</div><div class="line">    <span class="keyword">var</span> quantity = +$(<span class="keyword">this</span>).val();</div><div class="line">    <span class="comment">// You can pass a number or a string to the .text() method</span></div><div class="line">    $(<span class="string">'#total'</span>).text(price * quantity);</div><div class="line">  &#125;);</div><div class="line">&#125;);</div></pre></td></tr></table></figure>
-<h2 id="Link-Layover"><a href="#Link-Layover" class="headerlink" title="Link Layover"></a>Link Layover</h2><p>Clicking Show Comments will cause them to fade in</p>
-<figure class="highlight html"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="comment">&lt;!-- index.html --&gt;</span></div><div class="line"><span class="tag">&lt;<span class="name">a</span> <span class="attr">href</span>=<span class="string">'#'</span> <span class="attr">class</span>=<span class="string">'expand'</span>&gt;</span>Show Comments<span class="tag">&lt;/<span class="name">a</span>&gt;</span></div></pre></td></tr></table></figure>
-<figure class="highlight css"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="comment">/* application.css */</span></div><div class="line"><span class="selector-class">.comments</span> &#123;</div><div class="line">  <span class="attribute">display</span>: none;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// application.js</span></div><div class="line">$(<span class="built_in">document</span>).ready(<span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</div><div class="line">  $(<span class="string">'.vacation'</span>).on(<span class="string">'click'</span>, <span class="string">'.expand'</span>,<span class="function"><span class="keyword">function</span>(<span class="params">event</span>) </span>&#123;</div><div class="line">    <span class="comment">// The click event will "bubble up? but the browser won't handle it</span></div><div class="line">    event.preventDefault();</div><div class="line">    $(<span class="keyword">this</span>).closest(<span class="string">'.vacation'</span>)</div><div class="line">    .find(<span class="string">'.comments'</span>)</div><div class="line">    .fadeToggle();</div><div class="line">  &#125;</div><div class="line"> );</div><div class="line">&#125;);</div></pre></td></tr></table></figure>
-<p><strong>event.stopPropagation()</strong></p>
-<p>The browser will still handle the click event but will prevent it from “bubbling up? to each parent node.</p>
-<p><strong>event.preventDefault()</strong></p>
-<p>The click event will “bubble up? but the browser won’t handle it</p>
-<h1 id="Styling"><a href="#Styling" class="headerlink" title="Styling"></a>Styling</h1><h2 id="Taming-CSS"><a href="#Taming-CSS" class="headerlink" title="Taming CSS"></a>Taming CSS</h2><p><strong>Changing the Style</strong></p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// application.js</span></div><div class="line">$(<span class="built_in">document</span>).ready(<span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</div><div class="line">  $(<span class="string">'#vacations'</span>).on(<span class="string">'click'</span>, <span class="string">'.vacation'</span>, <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</div><div class="line">    <span class="comment">// NOT RECOMMENDED</span></div><div class="line">    <span class="comment">// $(this).css('background-color', '#252b30');</span></div><div class="line">    <span class="comment">// $(this).css('border-color', '1px solid #967');</span></div><div class="line">    <span class="comment">// $(this).css('background-color', '#252b30')</span></div><div class="line">    <span class="comment">//        .css('border-color', '1px solid #967');</span></div><div class="line">    </div><div class="line">    <span class="comment">// Passing in a JavaScript Object as an argument is a common jQuery pattern</span></div><div class="line">    $(<span class="keyword">this</span>).css(&#123;<span class="string">'background-color'</span>: <span class="string">'#252b30'</span>,</div><div class="line">                 <span class="string">'border-color'</span>: <span class="string">'1px solid #967'</span>&#125;);</div><div class="line">    <span class="comment">// Same as CSS syntax, but easier to read and understand</span></div><div class="line">    <span class="comment">// $(this).find('.price').css('display', 'block');</span></div><div class="line">    $(<span class="keyword">this</span>).find(<span class="string">'.price'</span>).show();</div><div class="line">  &#125;);</div><div class="line">&#125;);</div></pre></td></tr></table></figure>
-<p>jQuery Object Methods</p>
-<ul>
-<li><code>.css(&lt;attr&gt;, &lt;value&gt;)</code></li>
-<li><code>.css(&lt;attr&gt;)</code></li>
-<li><code>.css(&lt;object&gt;)</code></li>
-<li><code>.show()</code></li>
-<li><code>.hide()</code></li>
-</ul>
-<p><strong>Moving Styles to External CSS</strong></p>
-<figure class="highlight css"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"><span class="comment">/* application.css */</span></div><div class="line"><span class="selector-class">.highlighted</span> &#123;</div><div class="line">  <span class="attribute">background-color</span>:<span class="number">#563</span>;</div><div class="line">  <span class="attribute">border-color</span>: <span class="number">1px</span> solid <span class="number">#967</span>;</div><div class="line">&#125;</div><div class="line"><span class="selector-class">.highlighted</span> <span class="selector-class">.price</span> &#123;</div><div class="line">  <span class="attribute">display</span>: block;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// application.js</span></div><div class="line">$(<span class="built_in">document</span>).ready(<span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</div><div class="line">  $(<span class="string">'#vacations'</span>).on(<span class="string">'click'</span>, <span class="string">'.vacation'</span>, <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</div><div class="line">    $(<span class="keyword">this</span>).toggleClass(<span class="string">'highlighted'</span>);</div><div class="line">  &#125;);</div><div class="line">&#125;);</div></pre></td></tr></table></figure>
-<p>jQuery Object Methods</p>
-<ul>
-<li><code>.toggleClass()</code></li>
-<li><code>.addClass(&lt;class&gt;)</code></li>
-<li><code>.removeClass(&lt;class&gt;)</code></li>
-</ul>
-<h2 id="Animation"><a href="#Animation" class="headerlink" title="Animation"></a>Animation</h2><p>What can we do to add a bit more movement to this?</p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line">$(<span class="built_in">document</span>).ready(<span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</div><div class="line">  $(<span class="string">'#vacations'</span>).on(<span class="string">'click'</span>, <span class="string">'.vacation'</span>, <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</div><div class="line">    $(<span class="keyword">this</span>).toggleClass(<span class="string">'highlighted'</span>);</div><div class="line">    <span class="comment">// Our vacation package will move up and down</span></div><div class="line">    <span class="keyword">if</span> ($(<span class="keyword">this</span>).hasClass(<span class="string">'highlighted'</span>)) &#123;</div><div class="line">      $(<span class="keyword">this</span>).animate(&#123;<span class="string">'top'</span>: <span class="string">'-10px'</span>&#125;);</div><div class="line">    &#125; <span class="keyword">else</span> &#123;</div><div class="line">      $(<span class="keyword">this</span>).animate(&#123;<span class="string">'top'</span>: <span class="string">'0px'</span>&#125;);</div><div class="line">    &#125;</div><div class="line">  &#125;);</div><div class="line">&#125;);</div></pre></td></tr></table></figure>
-<p> <strong>Changing the Speed</strong></p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// Default speed is 400</span></div><div class="line">$(<span class="keyword">this</span>).animate(&#123;<span class="string">'top'</span>: <span class="string">'-10px'</span>&#125;, <span class="number">400</span>);</div><div class="line"><span class="comment">// 'fast' equals to 200</span></div><div class="line">$(<span class="keyword">this</span>).animate(&#123;<span class="string">'top'</span>: <span class="string">'-10px'</span>&#125;, <span class="string">'fast'</span>);</div><div class="line"><span class="comment">// 'slow' equals to 600</span></div><div class="line">$(<span class="keyword">this</span>).animate(&#123;<span class="string">'top'</span>: <span class="string">'-10px'</span>&#125;, <span class="string">'slow'</span>);</div></pre></td></tr></table></figure>
-]]></content>
-    
-    <summary type="html">
-    
-      &lt;h1 id=&quot;Introduction-to-jQuery&quot;&gt;&lt;a href=&quot;#Introduction-to-jQuery&quot; class=&quot;headerlink&quot; title=&quot;Introduction to jQuery&quot;&gt;&lt;/a&gt;Introduction to jQuery&lt;/h1&gt;&lt;h2 id=&quot;What’s-jQuery&quot;&gt;&lt;a href=&quot;#What’s-jQuery&quot; class=&quot;headerlink&quot; title=&quot;What’s jQuery&quot;&gt;&lt;/a&gt;What’s jQuery&lt;/h2&gt;&lt;p&gt;&lt;strong&gt;jQuery makes it easy to&lt;/strong&gt;&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;find elements in an HTML document&lt;/li&gt;
-&lt;li&gt;change HTML content&lt;/li&gt;
-&lt;li&gt;listen to what a user does and react accordingly&lt;/li&gt;
-&lt;li&gt;animate content on the page&lt;/li&gt;
-&lt;li&gt;talk over the network to fetch new content&lt;/li&gt;
 &lt;/ul&gt;
     
     </summary>

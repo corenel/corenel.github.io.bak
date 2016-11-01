@@ -4,8 +4,58 @@
 
     
   <url>
+    <loc>http://www.yuthon.com/2016/11/01/Solution-for-matplotlib-importing-error-on-Mac-OS-X/</loc>
+    <lastmod>2016-11-01T14:17:18.000Z</lastmod>
+    <data>
+        <display>
+        <title>Solution for matplotlib importing error on macOS</title>
+        <pubTime>2016-11-01T13:57:58.000Z</pubTime>
+        
+        <tag>Python</tag>
+         
+        <tag>Matplotlib</tag>
+         
+        <tag>macOS</tag>
+         
+         
+           
+             
+              <breadCrumb title="Experience" url="http://www.yuthon.com/categories/Experience/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://www.yuthon.com/2016/10/30/Traffic-Prediction-Using-LSTM/</loc>
+    <lastmod>2016-11-01T12:16:30.000Z</lastmod>
+    <data>
+        <display>
+        <title>Traffic Prediction Using LSTM</title>
+        <pubTime>2016-10-30T05:53:32.000Z</pubTime>
+        
+        <tag>Deep Learning</tag>
+         
+        <tag>Traffic Prediction</tag>
+         
+        <tag>LSTM</tag>
+         
+        <tag>RNN</tag>
+         
+         
+           
+             
+              <breadCrumb title="Projects" url="http://www.yuthon.com/categories/Projects/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
     <loc>http://www.yuthon.com/2016/11/01/Notes-for-SLIC-Superpixels-Compared-to-State-of-the-Art-Superpixel-Methods/</loc>
-    <lastmod>2016-11-01T11:03:25.000Z</lastmod>
+    <lastmod>2016-11-01T12:09:59.000Z</lastmod>
     <data>
         <display>
         <title>Notes for SLIC Superpixels Compared to State-of-the-Art Superpixel Methods</title>
@@ -41,32 +91,6 @@
            
              
               <breadCrumb title="Notes" url="http://www.yuthon.com/categories/Notes/"/>
-          
-        </display>
-    </data>
-    </url>
-
-    
-  <url>
-    <loc>http://www.yuthon.com/2016/10/30/Traffic-Prediction-Using-LSTM/</loc>
-    <lastmod>2016-10-30T14:47:39.000Z</lastmod>
-    <data>
-        <display>
-        <title>Traffic Prediction Using LSTM</title>
-        <pubTime>2016-10-30T05:53:32.000Z</pubTime>
-        
-        <tag>Deep Learning</tag>
-         
-        <tag>Traffic Prediction</tag>
-         
-        <tag>LSTM</tag>
-         
-        <tag>RNN</tag>
-         
-         
-           
-             
-              <breadCrumb title="Projects" url="http://www.yuthon.com/categories/Projects/"/>
           
         </display>
     </data>
@@ -476,6 +500,28 @@
 
     
   <url>
+    <loc>http://www.yuthon.com/2016/04/12/CodeSchool-JavaScript-Best-Practices/</loc>
+    <lastmod>2016-05-16T11:51:43.000Z</lastmod>
+    <data>
+        <display>
+        <title>Notes for Code School - JavaScript Best Practices</title>
+        <pubTime>2016-04-12T10:19:54.000Z</pubTime>
+        
+        <tag>CodeSchool</tag>
+         
+        <tag>JavaScript</tag>
+         
+         
+           
+             
+              <breadCrumb title="Notes" url="http://www.yuthon.com/categories/Notes/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
     <loc>http://www.yuthon.com/2016/04/09/CodeSchool-Javascript/</loc>
     <lastmod>2016-05-16T11:51:43.000Z</lastmod>
     <data>
@@ -496,6 +542,8 @@
     </data>
     </url>
 
+    
+    
     
   <url>
     <loc>http://www.yuthon.com/2016/04/14/CodeSchool-Shaping-up-with-Angular.js/</loc>
@@ -518,28 +566,4 @@
     </data>
     </url>
 
-    
-  <url>
-    <loc>http://www.yuthon.com/2016/04/12/CodeSchool-JavaScript-Best-Practices/</loc>
-    <lastmod>2016-05-16T11:51:43.000Z</lastmod>
-    <data>
-        <display>
-        <title>Notes for Code School - JavaScript Best Practices</title>
-        <pubTime>2016-04-12T10:19:54.000Z</pubTime>
-        
-        <tag>CodeSchool</tag>
-         
-        <tag>JavaScript</tag>
-         
-         
-           
-             
-              <breadCrumb title="Notes" url="http://www.yuthon.com/categories/Notes/"/>
-          
-        </display>
-    </data>
-    </url>
-
-    
-    
 </urlset>
