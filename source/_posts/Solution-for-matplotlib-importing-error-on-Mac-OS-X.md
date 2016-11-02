@@ -11,7 +11,7 @@ tags:
 
 今天在做 CS231n 的 Assignment #2 的时候遇到了导入 matplotlib.pyplot 的问题, 特此记录.
 
-## 问题描述
+## Description
 
 打开 IPython Notebook 之后, 执行以下命令:
 
@@ -27,7 +27,7 @@ ValueError: unknown locale: UTF-8
 
 <!-- more -->
 
-## 问题解决
+## Solution
 
 把下面这些加到`~/.zshrc`或者是`~/.bash_profile`里面:
 
@@ -79,3 +79,9 @@ ImportError: cannot import name _thread
 之后再执行`import matplotlib.pyplot as plt`之后就没问题了.
 
 说到底还是 macOS 的锅...
+
+## Reference
+
+* [Mac OS X: ValueError: unknown locale: UTF-8 in Python](https://coderwall.com/p/-k_93g/mac-os-x-valueerror-unknown-locale-utf-8-in-python)
+
+* [Matplotlib issue on OS X (“ImportError: cannot import name _thread”)](http://stackoverflow.com/questions/27630114/matplotlib-issue-on-os-x-importerror-cannot-import-name-thread)
