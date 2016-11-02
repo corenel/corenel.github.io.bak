@@ -22,7 +22,7 @@ categories:
 
 生成超像素的方法有很多, 各自有各自的优点和缺陷. 在此主要考虑以下方面来评测对比这些算法:
 
-* 超像素必须<u>遵循图像的边界</u> (Superpixels should adhere well to image boundaries.)
+* 超像素必须<u>保持图像的边缘信息</u> (Superpixels should adhere well to image boundaries.)
 * 如果超像素是作为一个预处理步骤, 来减少计算复杂度的, 那么就需要考虑<u>计算速度, 内存效率以及是否方便使用</u>等因素 (When used to reduce computational complexity as a pre- processing step, superpixels should be fast to compute, memory efficient, and simple to use.)
 * 同时, 如果超像素算法是为了用来给之后的分割做准备的, 那么就要考虑它<u>是否既能加快速度, 又能提升分割的效果</u>. (When used for segmentation purposes, superpixels should both increase the speed and improve the quality of the results.)
 
@@ -34,9 +34,9 @@ categories:
 
 相关的方法有:
 
-* **[NC05](https://www.cs.sfu.ca/research/groups/VML/pubs/mori-model_search_segmentation-iccv05.pdf)**: 对边缘的遵循不好. 时间复杂度$O(N^{\frac{1}{2}})$
+* **[NC05](https://www.cs.sfu.ca/research/groups/VML/pubs/mori-model_search_segmentation-iccv05.pdf)**: 对边缘的保持不好. 时间复杂度$O(N^{\frac{1}{2}})$
   * The Normalized cuts algorithm recursively partitions a graph of all pixels in the image using contour and texture cues, globally minimizing a cost function defined on the edges at the partition boundaries.
-* **[GS04](http://link.springer.com/article/10.1023/B:VISI.0000022288.19776.77)**: 对边缘遵循较好, 但是生成的超像素大小与形状不规则, 不能严格控制超像素的个数. 时间复杂度$O(NlogN)$
+* **[GS04](http://link.springer.com/article/10.1023/B:VISI.0000022288.19776.77)**: 对边缘保持较好, 但是生成的超像素大小与形状不规则, 不能严格控制超像素的个数. 时间复杂度$O(NlogN)$
   * It performs an agglomerative clustering of pixels as nodes on a graph such that each superpixel is the minimum spanning tree of the constituent pixels.
 * **[SL08](http://ieeexplore.ieee.org/document/4587471/?arnumber=4587471&tag=1)**: 时间复杂度$O(N^{\frac{3}{2}}logN)$, 但是没有算上预先生成边缘图(boundary map)所耗的时间
   * Moore et al. propose a method to generate superpixels that conform to a grid by finding optimal paths, or seams, that split the image into smaller vertical or horizontal regions. Optimal paths are found using a graph cuts method similar to Seam Carving.
@@ -50,17 +50,34 @@ categories:
 
 * **[MS02](http://ieeexplore.ieee.org/xpls/abs_all.jsp?arnumber=1000236)**: 一种比较老的方法, 生成的超像素形状不规整, 而且对于超像素的数量大小等均不能控制. 同时, 时间复杂度是$O(N^2)$, 非常慢.
   * Mean shift, an iterative mode-seeking procedure for locating local maxima of a density function, is applied to find modes in the color or intensity feature space of an image. Pixels that converge to the same mode define the superpixels. MS02
-* **[QS08](http://link.springer.com/chapter/10.1007/978-3-540-88693-8_52)**: 对边界的遵循比较好, 但是速度相当慢. 时间复杂度$O(dN^2)$.
+* **[QS08](http://link.springer.com/chapter/10.1007/978-3-540-88693-8_52)**: 对边界的保持比较好, 但是速度相当慢. 时间复杂度$O(dN^2)$.
   * Quick shift also uses a mode-seeking segmentation scheme. It initializes the segmentation using a medoid shift procedure. It then moves each point in the feature space to the nearest neighbor that increases the Parzen density estimate.
-* **[WS91](https://pdfs.semanticscholar.org/a381/9dda9a5f00dbb8cd3413ca7422e37a0d5794.pdf)**: 对边界遵循不好, 形状不规整, 不能严格控制超像素的数量, 但是速度快. 时间复杂度$O(NlogN)$.
+* **[WS91](https://pdfs.semanticscholar.org/a381/9dda9a5f00dbb8cd3413ca7422e37a0d5794.pdf)**: 对边界保持不好, 形状不规整, 不能严格控制超像素的数量, 但是速度快. 时间复杂度$O(NlogN)$.
   * The watershed approach performs a gradient ascent starting from local minima to produce watersheds, lines that separate catchment basins. The 
-* **[TP09](http://ieeexplore.ieee.org/xpls/abs_all.jsp?arnumber=4912213)**: 生成的超像素具有一致的大小, 紧凑性. 宣称时间复杂度$O(N)$, 但是实际上很慢, 而且对边界的遵循不好. 
+* **[TP09](http://ieeexplore.ieee.org/xpls/abs_all.jsp?arnumber=4912213)**: 生成的超像素具有一致的大小, 紧凑性. 宣称时间复杂度$O(N)$, 但是实际上很慢, 而且对边界的保持不好. 
   * The Turbopixel method progressively dilates a set of seed locations using level-set-based geometric flow. The geometric flow relies on local image gradients, aiming to regularly distribute superpixels on the image plane.
 
 
 
 ## SLIC Superpixels
 
+SLIC (simple linear iterative clustering) 算法是 k-means 在超像素生成方面的一个改写. 主要有以下特性:
 
+* 将搜索域限制在与超像素大小成比例的一个区域内, 从而显著减少优化过程中的距离计算量. 此举将复杂度降到了$N$的级别,并且与超像素数量$k$无关.
+* 综合颜色以及空间上的临近关系来构造权边, 同时也能控制超像素的数量.
+
+### Algorithm
+
+1. **聚类初始化**: 按照设定的超像素个数$k$, 采取步长$S=\sqrt{N/k}$, 在图像中均匀采样选取聚类中心$C_i = \begin{bmatrix} l_i & a_i & b_i & x_i & y_i \end{bmatrix}^T$. 然后在聚类中心的$3\times 3$领域内寻找梯度最小的点, 作为新的聚类中心的位置.
+   * 图像色彩空间采用 CIELAB
+   * 步长$S=\sqrt{N/k}$是为了使得聚类中心分布均匀
+   * 移动聚类中心是为了避免把中心建在边缘或者噪点上
+2. **像素点分类**: 将每个像素点$i$与离其最近并且搜索域覆盖到它的聚类中心相关联. 若是该像素点在多个聚类中心的搜索域内, 则取距离$D$最小的那个作为其关联的聚类中心.
+   * 搜索域为$2S\times 2S$
+   * 将搜索域限制在一个较小的范围内, 避免了传统的 k-means 方法里每个像素点要和所有的聚类中心比较的缺点, 使得运行速度大大提高. 这也是本算法速度快的最重要的一个原因.
+3. **分类更新**: 在所有的像素都已经关联到聚类中心之后, 我们需要调整聚类中心的位置, 使得其位于与其关联的像素点的中心.
+   * 这样的分配(assign)然后再更新(update)的步骤可以迭代多次, 直到满足收敛条件为止.
+   * 一般来说10次就差不多了
+4. **后处理**: 通过将不相交的点分配给相邻的超像素来增强联通性 (enforces connectivity by reassigning disjoint pixels to nearby superpixels).
 
 (To be continued...)
