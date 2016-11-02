@@ -2,9 +2,16 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>http://www.yuthon.com/2016/11/02/Solution-for-import-tensorflow-error-in-REPL-on-macOS/</loc>
+    
+    <lastmod>2016-11-02T03:44:04.000Z</lastmod>
+    
+  </url>
+  
+  <url>
     <loc>http://www.yuthon.com/2016/11/01/Solution-for-matplotlib-importing-error-on-Mac-OS-X/</loc>
     
-    <lastmod>2016-11-01T14:17:18.000Z</lastmod>
+    <lastmod>2016-11-02T03:34:52.000Z</lastmod>
     
   </url>
   
@@ -149,7 +156,7 @@
   </url>
   
   <url>
-    <loc>http://www.yuthon.com/2016/04/13/CodeSchool-Try-jQuery/</loc>
+    <loc>http://www.yuthon.com/2016/04/14/CodeSchool-Shaping-up-with-Angular.js/</loc>
     
     <lastmod>2016-05-16T11:51:43.000Z</lastmod>
     
@@ -170,7 +177,7 @@
   </url>
   
   <url>
-    <loc>http://www.yuthon.com/tags/index.html</loc>
+    <loc>http://www.yuthon.com/2016/04/13/CodeSchool-Try-jQuery/</loc>
     
     <lastmod>2016-05-16T11:51:43.000Z</lastmod>
     
@@ -184,7 +191,7 @@
   </url>
   
   <url>
-    <loc>http://www.yuthon.com/2016/04/14/CodeSchool-Shaping-up-with-Angular.js/</loc>
+    <loc>http://www.yuthon.com/tags/index.html</loc>
     
     <lastmod>2016-05-16T11:51:43.000Z</lastmod>
     

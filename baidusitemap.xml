@@ -4,8 +4,32 @@
 
     
   <url>
+    <loc>http://www.yuthon.com/2016/11/02/Solution-for-import-tensorflow-error-in-REPL-on-macOS/</loc>
+    <lastmod>2016-11-02T03:44:04.000Z</lastmod>
+    <data>
+        <display>
+        <title>Solution for 'import tensorflow' error in REPL on macOS</title>
+        <pubTime>2016-11-02T03:32:01.000Z</pubTime>
+        
+        <tag>Tensorflow</tag>
+         
+        <tag>Python</tag>
+         
+        <tag>macOS</tag>
+         
+         
+           
+             
+              <breadCrumb title="Experience" url="http://www.yuthon.com/categories/Experience/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
     <loc>http://www.yuthon.com/2016/11/01/Solution-for-matplotlib-importing-error-on-Mac-OS-X/</loc>
-    <lastmod>2016-11-01T14:17:18.000Z</lastmod>
+    <lastmod>2016-11-02T03:34:52.000Z</lastmod>
     <data>
         <display>
         <title>Solution for matplotlib importing error on macOS</title>
@@ -13,9 +37,9 @@
         
         <tag>Python</tag>
          
-        <tag>Matplotlib</tag>
-         
         <tag>macOS</tag>
+         
+        <tag>Matplotlib</tag>
          
          
            
@@ -478,12 +502,12 @@
 
     
   <url>
-    <loc>http://www.yuthon.com/2016/04/13/CodeSchool-Try-jQuery/</loc>
+    <loc>http://www.yuthon.com/2016/04/14/CodeSchool-Shaping-up-with-Angular.js/</loc>
     <lastmod>2016-05-16T11:51:43.000Z</lastmod>
     <data>
         <display>
-        <title>Notes for Code School - Try jQuery</title>
-        <pubTime>2016-04-13T09:24:09.000Z</pubTime>
+        <title>Notes for Code School - Shaping up with Angular.js</title>
+        <pubTime>2016-04-14T13:19:22.000Z</pubTime>
         
         <tag>CodeSchool</tag>
          
@@ -543,15 +567,13 @@
     </url>
 
     
-    
-    
   <url>
-    <loc>http://www.yuthon.com/2016/04/14/CodeSchool-Shaping-up-with-Angular.js/</loc>
+    <loc>http://www.yuthon.com/2016/04/13/CodeSchool-Try-jQuery/</loc>
     <lastmod>2016-05-16T11:51:43.000Z</lastmod>
     <data>
         <display>
-        <title>Notes for Code School - Shaping up with Angular.js</title>
-        <pubTime>2016-04-14T13:19:22.000Z</pubTime>
+        <title>Notes for Code School - Try jQuery</title>
+        <pubTime>2016-04-13T09:24:09.000Z</pubTime>
         
         <tag>CodeSchool</tag>
          
@@ -566,4 +588,6 @@
     </data>
     </url>
 
+    
+    
 </urlset>
