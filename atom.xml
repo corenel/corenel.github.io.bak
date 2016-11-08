@@ -121,7 +121,7 @@
     <link href="http://www.yuthon.com/2016/11/01/Notes-for-SLIC-Superpixels-Compared-to-State-of-the-Art-Superpixel-Methods/"/>
     <id>http://www.yuthon.com/2016/11/01/Notes-for-SLIC-Superpixels-Compared-to-State-of-the-Art-Superpixel-Methods/</id>
     <published>2016-11-01T10:21:04.000Z</published>
-    <updated>2016-11-02T11:13:31.000Z</updated>
+    <updated>2016-11-08T11:25:09.000Z</updated>
     
     <content type="html"><![CDATA[<p>文章介绍了当前 State-of-the-Art 的5种<strong>超像素 (Superpixel)</strong> 的算法, 并主要从其对于图像边缘信息的拟合程度 (their ability to adhere to image boundaries), 速度, 内存利用效率, 以及它们对于图像分割性能的影响 (their impact on segmentation performance) 来综合评价.</p>
 <p>同时, 本文还提出了一种 <strong>SLIC (simple linear iterative clustering)</strong> 的算法, 用的是 k-means clustering 的方法.</p>
@@ -177,24 +177,50 @@
 <li>综合颜色以及空间上的临近关系来构造权边, 同时也能控制超像素的数量.</li>
 </ul>
 <h3 id="Algorithm"><a href="#Algorithm" class="headerlink" title="Algorithm"></a>Algorithm</h3><ol>
-<li><strong>聚类初始化</strong>: 按照设定的超像素个数$k$, 采取步长$S=\sqrt{N/k}$, 在图像中均匀采样选取聚类中心$C_i = \begin{bmatrix} l_i &amp; a_i &amp; b_i &amp; x_i &amp; y_i \end{bmatrix}^T$. 然后在聚类中心的$3\times 3$领域内寻找梯度最小的点, 作为新的聚类中心的位置.<ul>
+<li><p><strong>聚类初始化</strong>: 按照设定的超像素个数$k$, 采取步长$S=\sqrt{N/k}$, 在图像中均匀采样选取聚类中心$C_i = \begin{bmatrix} l_i &amp; a_i &amp; b_i &amp; x_i &amp; y_i \end{bmatrix}^T$. 然后在聚类中心的$3\times 3$领域内寻找梯度最小的点, 作为新的聚类中心的位置.</p>
+<ul>
 <li>图像色彩空间采用 CIELAB</li>
 <li>步长$S=\sqrt{N/k}$是为了使得聚类中心分布均匀</li>
 <li>移动聚类中心是为了避免把中心建在边缘或者噪点上</li>
 </ul>
 </li>
-<li><strong>像素点分类</strong>: 将每个像素点$i$与离其最近并且搜索域覆盖到它的聚类中心相关联. 若是该像素点在多个聚类中心的搜索域内, 则取距离$D$最小的那个作为其关联的聚类中心.<ul>
-<li>搜索域为$2S\times 2S$</li>
-<li>将搜索域限制在一个较小的范围内, 避免了传统的 k-means 方法里每个像素点要和所有的聚类中心比较的缺点, 使得运行速度大大提高. 这也是本算法速度快的最重要的一个原因.</li>
+<li><p><strong>像素点分类</strong>: 将每个像素点$i$与离其最近并且搜索域覆盖到它的聚类中心相关联. 若是该像素点在多个聚类中心的搜索域内, 则取距离$D$最小的那个作为其关联的聚类中心.</p>
+<ul>
+<li><p>搜索域为$2S\times 2S$</p>
+</li>
+<li><p>将搜索域限制在一个较小的范围内, 避免了传统的 k-means 方法里每个像素点要和所有的聚类中心比较的缺点, 使得运行速度大大提高. 这也是本算法速度快的最重要的一个原因.</p>
+<p> <img src="/images/reducing_the_superpixel_search_regions.png" alt="reducing_the_superpixel_search_regions"></p>
+</li>
 </ul>
 </li>
-<li><strong>分类更新</strong>: 在所有的像素都已经关联到聚类中心之后, 我们需要调整聚类中心的位置, 使得其位于与其关联的像素点的中心.<ul>
+<li><p><strong>分类更新</strong>: 在所有的像素都已经关联到聚类中心之后, 我们需要调整聚类中心的位置, 使得其位于与其关联的像素点的中心.</p>
+<ul>
 <li>这样的分配(assign)然后再更新(update)的步骤可以迭代多次, 直到满足收敛条件为止.</li>
 <li>一般来说10次就差不多了</li>
 </ul>
 </li>
-<li><strong>后处理</strong>: 通过将不相交的点分配给相邻的超像素来增强联通性 (enforces connectivity by reassigning disjoint pixels to nearby superpixels).</li>
+<li><p><strong>后续处理</strong>: 通过将不相交的点分配给相邻的超像素来增强联通性 (enforces connectivity by reassigning disjoint pixels to nearby superpixels).</p>
+</li>
 </ol>
+<p>伪代码如下：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div></pre></td><td class="code"><pre><div class="line"><span class="comment">/* Initialization */</span></div><div class="line">Initialize cluster centers C_k = [l_k, a_k, b_k, x_k, y_k] by sampling pixels at regular grid steps S.</div><div class="line">Move cluster centers to the lowest gradient position in a <span class="number">3</span>x3 neighborhood.</div><div class="line">Set label l(i) = <span class="number">-1</span> <span class="keyword">for</span> each pixel i.</div><div class="line">Set distance d(i) = \infty <span class="keyword">for</span> each pixel i</div><div class="line"></div><div class="line">repeat</div><div class="line">  <span class="comment">/* Assignment */</span></div><div class="line">  <span class="keyword">for</span> each cluster center C_k <span class="keyword">do</span></div><div class="line">    <span class="keyword">for</span> each pixel i in a <span class="number">2</span>Sx2S region around C_k <span class="keyword">do</span></div><div class="line">      Compare the distance between C_k and i.</div><div class="line">      <span class="keyword">if</span> D &lt; d_i then</div><div class="line">        <span class="built_in">set</span> d(i) = D</div><div class="line">        <span class="built_in">set</span> l(i) = k</div><div class="line">      end <span class="keyword">if</span></div><div class="line">    end <span class="keyword">for</span></div><div class="line">  end <span class="keyword">for</span></div><div class="line">  <span class="comment">/* Update */</span></div><div class="line">  Compute <span class="keyword">new</span> cluster centers.</div><div class="line">  Compute residual error E</div><div class="line">until E &lt;= threshold</div></pre></td></tr></table></figure>
+<h3 id="Distance-Measure"><a href="#Distance-Measure" class="headerlink" title="Distance Measure"></a>Distance Measure</h3><p>SLIC 算法用的是 CIELAB 的色彩空间, 再加上像素本身的坐标, 因此一个像素的全部信息需要用一个5维的向量$\begin{bmatrix} l_i &amp; a_i &amp; b_i &amp; x_i &amp; y_i \end{bmatrix}^T$来表示, 也可以说是在一个$labxy$的图像空间内.</p>
+<p>$(l, a, b)$表示颜色信息, $(x ,y)$表示位置信息, 因此不能简单地用5维空间的欧氏距离来衡量两个像素之间的距离. 为了统一色彩与空间上的接近程度, 需要引入归一化 (normalization).</p>
+<p>$d_c = \sqrt{(l_j - l_i)^2 + (a_j - a_i)^2 + (b_j - b_i)^2}$</p>
+<p>$d_s = \sqrt{(x_j - x_i)^2 + (y_j - y_i)^2}$</p>
+<p>$D’ = \sqrt{(d_c / N_c)^2 + (d_s / N_s)^2}$</p>
+<p>其中$N_c$与$N_s$分别代表最大的色彩与空间距离. $N_s$很好确定, 就是超像素的大小, $N_s = S = \sqrt{N/k}$. 然而$N_c$则根据每个聚类区域的不同而不同, 为了方便起见, 将其设定为一个常数值$m$. 因此距离$D$的定义即可表示为:</p>
+<p>$D’ = \sqrt{(d_c / m)^2 + (d_s / S)^2}$</p>
+<p>进而可简化为</p>
+<p>$D = \sqrt{d_c^2 + (d_s / S)^2 m^2}$</p>
+<blockquote>
+<ul>
+<li>$m$其实也是用来衡量色彩与空间相似度哪个更加重要的标志. $m$较大时, 表示空间相似度更为重要, 产生的超像素会更为紧凑, 区域/边缘比率较低; 当$m$较小时, 表示色彩相似度更为重要, 产生的超像素会紧贴边缘, 但是大小与形状就不会很规整. 一般来说, 使用 CIELAB 色彩空间时, $m \in [1,40]$.</li>
+<li>对于灰阶图像, $d_c = \sqrt{(l_j - l_i)^2}$</li>
+<li>对于三维的超体素, $d_s = \sqrt{(x_j - x_i)^2 + (y_j - y_i)^2 + (z_j - z_i)^2}$</li>
+</ul>
+</blockquote>
+<h3 id="Postprocessing"><a href="#Postprocessing" class="headerlink" title="Postprocessing"></a>Postprocessing</h3><p>SLIC 和其他算法一样并不严格地强制保证连通性 (connectivity). 聚类完成时候, 会有一些与其聚类中心不属于同一个连通单元 (connected component) 的孤立像素存在. 为了对此做出校正, 这些像素会根据某种连通单元算法 (connected components algorithm) 来分配到另外一个最近的聚类中心上.</p>
 <p>(To be continued…)</p>
 ]]></content>
     
