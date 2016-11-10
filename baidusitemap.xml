@@ -4,6 +4,23 @@
 
     
   <url>
+    <loc>http://www.yuthon.com/2016/04/11/Tips-for-Hexo-configuration/</loc>
+    <lastmod>2016-11-10T10:43:35.000Z</lastmod>
+    <data>
+        <display>
+        <title>Tips for Hexo configuration</title>
+        <pubTime>2016-04-10T16:19:54.000Z</pubTime>
+        
+        <tag>hexo</tag>
+         
+         
+           
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
     <loc>http://www.yuthon.com/2016/11/01/Notes-for-SLIC-Superpixels-Compared-to-State-of-the-Art-Superpixel-Methods/</loc>
     <lastmod>2016-11-08T11:25:09.000Z</lastmod>
     <data>
@@ -420,23 +437,6 @@
 
     
   <url>
-    <loc>http://www.yuthon.com/2016/04/11/Tips-for-Hexo-configuration/</loc>
-    <lastmod>2016-07-30T14:56:44.000Z</lastmod>
-    <data>
-        <display>
-        <title>Tips for Hexo configuration</title>
-        <pubTime>2016-04-10T16:19:54.000Z</pubTime>
-        
-        <tag>hexo</tag>
-         
-         
-           
-        </display>
-    </data>
-    </url>
-
-    
-  <url>
     <loc>http://www.yuthon.com/2016/07/26/Coursera-Machine-Learning-Week-1/</loc>
     <lastmod>2016-07-29T08:21:27.000Z</lastmod>
     <data>
@@ -501,27 +501,6 @@
     </url>
 
     
-  <url>
-    <loc>http://www.yuthon.com/2016/04/13/CodeSchool-Try-jQuery/</loc>
-    <lastmod>2016-05-16T11:51:43.000Z</lastmod>
-    <data>
-        <display>
-        <title>Notes for Code School - Try jQuery</title>
-        <pubTime>2016-04-13T09:24:09.000Z</pubTime>
-        
-        <tag>CodeSchool</tag>
-         
-        <tag>JavaScript</tag>
-         
-         
-           
-             
-              <breadCrumb title="Notes" url="http://www.yuthon.com/categories/Notes/"/>
-          
-        </display>
-    </data>
-    </url>
-
     
   <url>
     <loc>http://www.yuthon.com/2016/04/09/CodeSchool-Javascript/</loc>
@@ -590,4 +569,25 @@
 
     
     
+  <url>
+    <loc>http://www.yuthon.com/2016/04/13/CodeSchool-Try-jQuery/</loc>
+    <lastmod>2016-05-16T11:51:43.000Z</lastmod>
+    <data>
+        <display>
+        <title>Notes for Code School - Try jQuery</title>
+        <pubTime>2016-04-13T09:24:09.000Z</pubTime>
+        
+        <tag>CodeSchool</tag>
+         
+        <tag>JavaScript</tag>
+         
+         
+           
+             
+              <breadCrumb title="Notes" url="http://www.yuthon.com/categories/Notes/"/>
+          
+        </display>
+    </data>
+    </url>
+
 </urlset>
