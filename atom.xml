@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://www.yuthon.com/"/>
-  <updated>2016-11-02T03:44:04.000Z</updated>
+  <updated>2016-11-10T14:07:59.000Z</updated>
   <id>http://www.yuthon.com/</id>
   
   <author>
@@ -14,6 +14,123 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>YOLO on NVIDIA Jetson TX1</title>
+    <link href="http://www.yuthon.com/2016/11/10/YOLO-on-NVIDIA-Jetson-TX1/"/>
+    <id>http://www.yuthon.com/2016/11/10/YOLO-on-NVIDIA-Jetson-TX1/</id>
+    <published>2016-11-10T12:36:34.000Z</published>
+    <updated>2016-11-10T14:07:59.000Z</updated>
+    
+    <content type="html"><![CDATA[<p>实验室昨天到了 NVIDIA 的 <a href="http://www.nvidia.com/object/jetson-tx1-module.html" target="_blank" rel="external">Jetson TX1</a>, 可以说是移动端比较好的带GPU的开发板子了, 于是可以试试在移动端上用YOLO (You Look Only Once) 来做目标识别.</p>
+<a id="more"></a>
+<h2 id="Specifications"><a href="#Specifications" class="headerlink" title="Specifications"></a>Specifications</h2><table>
+<thead>
+<tr>
+<th>GPU</th>
+<th>1 TFLOP/s 256-core with <a href="https://developer.nvidia.com/maxwell-compute-architecture" target="_blank" rel="external">NVIDIA Maxwell™ Architecture</a></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>CPU</td>
+<td>64-bit ARM® A57 CPUs</td>
+</tr>
+<tr>
+<td>Memory</td>
+<td>4 GB LPDDR4, 25.6 GB/s</td>
+</tr>
+<tr>
+<td>Video decode</td>
+<td>4K 60 Hz</td>
+</tr>
+<tr>
+<td>Video encode</td>
+<td>4K 30 Hz</td>
+</tr>
+<tr>
+<td>CSI</td>
+<td>Up to 6 cameras, 1400 Mpix/s</td>
+</tr>
+<tr>
+<td>Display</td>
+<td>2x DSI, 1x eDP 1.4, 1x DP 1.2/HDMI</td>
+</tr>
+<tr>
+<td>Connectivity</td>
+<td>Connects to 802.11ac Wi-Fi and Bluetooth-enabled devices</td>
+</tr>
+<tr>
+<td>Networking</td>
+<td>1 Gigabit Ethernet</td>
+</tr>
+<tr>
+<td>PCIE</td>
+<td>Gen 2 1x1 + 1x4</td>
+</tr>
+<tr>
+<td>Storage</td>
+<td>16 GB eMMC, SDIO, SATA</td>
+</tr>
+<tr>
+<td>Other</td>
+<td>3x UART, 3x SPI, 4x I2C, 4x I2S, GPIOs</td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p>标称1TFlops这个比较猛, 都快比得上XPS 15 9550的GTX960M了.</p>
+</blockquote>
+<h2 id="Environment"><a href="#Environment" class="headerlink" title="Environment"></a>Environment</h2><p>到手TX1之后发现是 Ubuntu 14.04 32-bit 的, 果断先用 <a href="https://developer.nvidia.com/embedded/jetpack" target="_blank" rel="external">JetPack 2.3</a> 升级到 Ubuntu 16.04 64bit. 用 JetPack 刷机的好处是能够顺便配置一大堆库, 比如说 CUDA, cuDNN, OpenCV4Terga 之类的.</p>
+<ul>
+<li><p>JetPack 在刷机之前需要下载一大堆 Package, 因此在国内的话最好在运行前配置好代理.</p>
+</li>
+<li><p>JetPack 刷完系统后会要求按 reset 键重启进 GUI, 之后就是不断地安装包安装依赖的过程, 因此在国内的话可以趁此机会修改<code>/etc/apt/source.list</code>:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">deb http://mirrors.ustc.edu.cn/ubuntu-ports/ xenial-updates main restricted universe multiverse</div><div class="line">deb-src http://mirrors.ustc.edu.cn/ubuntu-ports/ xenial-updates main restricted universe multiverse</div><div class="line">deb http://mirrors.ustc.edu.cn/ubuntu-ports/ xenial-security main restricted universe multiverse</div><div class="line">deb-src http://mirrors.ustc.edu.cn/ubuntu-ports/ xenial-security main restricted universe multiverse</div><div class="line">deb http://mirrors.ustc.edu.cn/ubuntu-ports/ xenial-backports main restricted universe multiverse</div><div class="line">deb-src http://mirrors.ustc.edu.cn/ubuntu-ports/ xenial-backports main restricted universe multiverse</div><div class="line">deb http://mirrors.ustc.edu.cn/ubuntu-ports/ xenial main universe restricted</div><div class="line">deb-src http://mirrors.ustc.edu.cn/ubuntu-ports/ xenial main universe restricted</div><div class="line">deb http://mirrors.ustc.edu.cn/ubuntu-ports/ xenial universe</div></pre></td></tr></table></figure>
+<blockquote>
+<p>注意arm64的源与普通的x86-64的源是不一样的.</p>
+</blockquote>
+</li>
+</ul>
+<h2 id="Darknet"><a href="#Darknet" class="headerlink" title="Darknet"></a>Darknet</h2><p>为了用 Webcam demo, 所以需要 Compiling with CUDA and OpenCV:</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">$ git <span class="built_in">clone</span> https://github.com/pjreddie/darknet.git</div><div class="line">$ <span class="built_in">cd</span> darknet</div><div class="line">$ sed <span class="string">'s/GPU=0/GPU=1/g'</span> Makefile</div><div class="line">$ sed <span class="string">'s/CUDNN=0/CUDNN=1/g'</span> Makefile</div><div class="line">$ sed <span class="string">'s/OPENCV=0/OPENCV=1/g'</span> Makefile</div><div class="line">$ make -j4</div></pre></td></tr></table></figure>
+<p>上面编译完了之后输入以下指令, 与输出结果相对应, 那就说明成功了</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">$ ./darknet</div><div class="line">$ usage: ./darknet &lt;<span class="keyword">function</span>&gt;</div></pre></td></tr></table></figure>
+<h2 id="YOLO"><a href="#YOLO" class="headerlink" title="YOLO"></a>YOLO</h2><p>先去下训练好的<a href="http://pjreddie.com/darknet/yolo/#models" target="_blank" rel="external">权重</a>, 建议选 yolo-tiny 的, 吃内存少. (毕竟 TX1 只有 4GB 内存, 还是 CPU 和 GPU 共用的)</p>
+<p>之后运行一下命令即可测试 Real-Time Detection on a Webcam:</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ ./darknet yolo demo cfg/tiny-yolo.cfg tiny-yolo.weights</div></pre></td></tr></table></figure>
+<p>实际效果如下:</p>
+<p> <img src="/images/yolo-tiny_on_TX1.png" alt="yolo-tiny_on_TX1"></p>
+<p>左下为摄像头实拍屏幕的画面, 可以看出检测结果还是很不错的.</p>
+<p>帧数有12fps左右, 基本上达到实时要求.</p>
+<h2 id="Re-train"><a href="#Re-train" class="headerlink" title="Re-train"></a>Re-train</h2><p>重新训练 YOLO, 使其识别球与球门.</p>
+<p>(To be continued…)</p>
+<h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><ul>
+<li><a href="http://pjreddie.com/darknet/yolo/" target="_blank" rel="external">YOLO: Real-Time Object Detection</a></li>
+<li><a href="http://guanghan.info/blog/en/my-works/train-yolo/" target="_blank" rel="external">Start Training YOLO with Our Own Data</a></li>
+</ul>
+]]></content>
+    
+    <summary type="html">
+    
+      &lt;p&gt;实验室昨天到了 NVIDIA 的 &lt;a href=&quot;http://www.nvidia.com/object/jetson-tx1-module.html&quot;&gt;Jetson TX1&lt;/a&gt;, 可以说是移动端比较好的带GPU的开发板子了, 于是可以试试在移动端上用YOLO (You Look Only Once) 来做目标识别.&lt;/p&gt;
+    
+    </summary>
+    
+      <category term="Experience" scheme="http://www.yuthon.com/categories/Experience/"/>
+    
+    
+      <category term="Deep Learning" scheme="http://www.yuthon.com/tags/Deep-Learning/"/>
+    
+      <category term="NVIDIA Jetson TX1" scheme="http://www.yuthon.com/tags/NVIDIA-Jetson-TX1/"/>
+    
+      <category term="YOLO" scheme="http://www.yuthon.com/tags/YOLO/"/>
+    
+      <category term="Object detection" scheme="http://www.yuthon.com/tags/Object-detection/"/>
+    
+      <category term="Darknet" scheme="http://www.yuthon.com/tags/Darknet/"/>
+    
+  </entry>
   
   <entry>
     <title>Solution for &#39;import tensorflow&#39; error in REPL on macOS</title>
@@ -2703,33 +2820,6 @@
       <category term="Coursera" scheme="http://www.yuthon.com/tags/Coursera/"/>
     
       <category term="Machine Learning" scheme="http://www.yuthon.com/tags/Machine-Learning/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>OS X 10.11.4 on XPS 15 9550</title>
-    <link href="http://www.yuthon.com/2016/05/16/OS-X-10-11-4-on-XPS-15-9550/"/>
-    <id>http://www.yuthon.com/2016/05/16/OS-X-10-11-4-on-XPS-15-9550/</id>
-    <published>2016-05-16T12:20:08.000Z</published>
-    <updated>2016-07-26T03:52:32.000Z</updated>
-    
-    <content type="html"><![CDATA[<p>Thanks to the <a href="http://www.tonymacx86.com/threads/guide-wip-dell-xps-15-9550-skylake-gtx960m-ssd-via-clover-uefi.192598/" target="_blank" rel="external">guide</a> and its participants, I successfully installed OS X 10.11.4 on my XPS 15 9550.</p>
-<p> <img src="/images/OS-X-10-11-4-on-XPS-15-9550.jpg" alt="OS-X-10-11-4-on-XPS-15-9550"></p>
-<p>The guide is considerably perfect. Just follow the steps and you’ll get a well-done Hackintosh.</p>
-<p>My Clover directory, DSDT &amp; SSDT and Kexts are uploaded to <a href="https://github.com/corenel/XPS9550-OSX" target="_blank" rel="external">Github</a>, for reference only. </p>
-<p><strong>Update</strong>: Now I upgrade to 10.11.5, and everything is fine.</p>
-]]></content>
-    
-    <summary type="html">
-    
-      &lt;p&gt;Thanks to the &lt;a href=&quot;http://www.tonymacx86.com/threads/guide-wip-dell-xps-15-9550-skylake-gtx960m-ssd-via-clover-uefi.192598/&quot; target=&quot;
-    
-    </summary>
-    
-    
-      <category term="OS X" scheme="http://www.yuthon.com/tags/OS-X/"/>
-    
-      <category term="XPS" scheme="http://www.yuthon.com/tags/XPS/"/>
     
   </entry>
   
