@@ -12,13 +12,10 @@ tags:
 1. 在`source/`里创建`README.md`
 
 2. 在`_config.yml`中修改
-
-   ```
-   skip_render:
-     - README.md
-   ```
-
-
+```
+skip_render:
+  - README.md
+```
 
 > skip_render: Paths not to be rendered. You can use [glob expressions](https://github.com/isaacs/minimatch) for path matching
 
