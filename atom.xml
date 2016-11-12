@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://www.yuthon.com/"/>
-  <updated>2016-11-10T14:07:59.000Z</updated>
+  <updated>2016-11-12T04:41:24.000Z</updated>
   <id>http://www.yuthon.com/</id>
   
   <author>
@@ -16,11 +16,96 @@
   <generator uri="http://hexo.io/">Hexo</generator>
   
   <entry>
+    <title>Train YOLO on our own dataset</title>
+    <link href="http://www.yuthon.com/2016/11/12/Train-YOLO-on-our-own-dataset/"/>
+    <id>http://www.yuthon.com/2016/11/12/Train-YOLO-on-our-own-dataset/</id>
+    <published>2016-11-12T03:20:22.000Z</published>
+    <updated>2016-11-12T04:41:24.000Z</updated>
+    
+    <content type="html"><![CDATA[<p>之前到手 TX1 之后试了一下 YOLO 的 Demo, 感觉很是不错, 帧数勉强达到实时要求, 因此就萌生了使用自己的数据集来训练看看效果的想法. </p>
+<a id="more"></a>
+<h2 id="Dataset"><a href="#Dataset" class="headerlink" title="Dataset"></a>Dataset</h2><h3 id="Get-The-ImageNet-Data"><a href="#Get-The-ImageNet-Data" class="headerlink" title="Get The ImageNet Data"></a>Get The ImageNet Data</h3><p>为了最大限度地利用资源 (其实是为了偷懒, 但是之后发现给自己挖了个大坑), 我用的是从 ImageNet 上的图片与 Bounding Box 标注. 本次使用了两个类别, 分别是 <a href="http://imagenet.stanford.edu/synset?wnid=n04254680#" target="_blank" rel="external">ball</a> 和 <a href="http://imagenet.stanford.edu/synset?wnid=n03820318" target="_blank" rel="external">goal</a>.</p>
+<blockquote>
+<ul>
+<li>在<code>Downloads</code>内可以可以下到<code>images in the synset</code>以及<code>Bounding Boxes</code></li>
+<li>ImageNet 里的图片看起来多, 实际上摊到每个子类上的就1000多张, 能下下来的就500多, 能直接和 Bounding Box 标注匹配的只剩此案100多了TAT. 果然还是需要自己标注, 自力更生.</li>
+<li>另外 ImageNet 上的 Bounding Box 信息只有当前类别的. 比如说我下了 goal 的 Bounding Box, 其实某张图片里还有 ball 等 Object, 但是并不会被标出来. 这对于之后的训练有一定影响.</li>
+<li>注意如果要从 ImageNet 上下原始图片的话是需要注册账号, 并且通过邮箱认证的 (还不能是 Gmail 这类的可以免费注册的邮箱, 需要机构或者学校邮箱才行).</li>
+</ul>
+</blockquote>
+<p>下好的文件结构如下:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">.</div><div class="line">├── Annotation</div><div class="line">│   ├── n03820318</div><div class="line">│   └── n04254680</div><div class="line">└── images</div><div class="line">    ├── n03820318</div><div class="line">    └── n04254680</div></pre></td></tr></table></figure>
+<p>其中<code>Annotation</code>目录下放标注, <code>images</code>目录下放图片.</p>
+<h3 id="Convert-labels-for-darknet"><a href="#Convert-labels-for-darknet" class="headerlink" title="Convert labels for darknet"></a>Convert labels for darknet</h3><p>ImageNet 上下下来的 Bounding Box 信息是 Pascal VOC 的 xml 格式:</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div></pre></td><td class="code"><pre><div class="line"><span class="tag">&lt;<span class="name">annotation</span>&gt;</span></div><div class="line">	<span class="tag">&lt;<span class="name">folder</span>&gt;</span>n03820318<span class="tag">&lt;/<span class="name">folder</span>&gt;</span></div><div class="line">	<span class="tag">&lt;<span class="name">filename</span>&gt;</span>n03820318_101<span class="tag">&lt;/<span class="name">filename</span>&gt;</span></div><div class="line">	<span class="tag">&lt;<span class="name">source</span>&gt;</span></div><div class="line">		<span class="tag">&lt;<span class="name">database</span>&gt;</span>ImageNet database<span class="tag">&lt;/<span class="name">database</span>&gt;</span></div><div class="line">	<span class="tag">&lt;/<span class="name">source</span>&gt;</span></div><div class="line">	<span class="tag">&lt;<span class="name">size</span>&gt;</span></div><div class="line">		<span class="tag">&lt;<span class="name">width</span>&gt;</span>500<span class="tag">&lt;/<span class="name">width</span>&gt;</span></div><div class="line">		<span class="tag">&lt;<span class="name">height</span>&gt;</span>333<span class="tag">&lt;/<span class="name">height</span>&gt;</span></div><div class="line">		<span class="tag">&lt;<span class="name">depth</span>&gt;</span>3<span class="tag">&lt;/<span class="name">depth</span>&gt;</span></div><div class="line">	<span class="tag">&lt;/<span class="name">size</span>&gt;</span></div><div class="line">	<span class="tag">&lt;<span class="name">segmented</span>&gt;</span>0<span class="tag">&lt;/<span class="name">segmented</span>&gt;</span></div><div class="line">	<span class="tag">&lt;<span class="name">object</span>&gt;</span></div><div class="line">		<span class="tag">&lt;<span class="name">name</span>&gt;</span>n03820318<span class="tag">&lt;/<span class="name">name</span>&gt;</span></div><div class="line">		<span class="tag">&lt;<span class="name">pose</span>&gt;</span>Unspecified<span class="tag">&lt;/<span class="name">pose</span>&gt;</span></div><div class="line">		<span class="tag">&lt;<span class="name">truncated</span>&gt;</span>0<span class="tag">&lt;/<span class="name">truncated</span>&gt;</span></div><div class="line">		<span class="tag">&lt;<span class="name">difficult</span>&gt;</span>0<span class="tag">&lt;/<span class="name">difficult</span>&gt;</span></div><div class="line">		<span class="tag">&lt;<span class="name">bndbox</span>&gt;</span></div><div class="line">			<span class="tag">&lt;<span class="name">xmin</span>&gt;</span>19<span class="tag">&lt;/<span class="name">xmin</span>&gt;</span></div><div class="line">			<span class="tag">&lt;<span class="name">ymin</span>&gt;</span>43<span class="tag">&lt;/<span class="name">ymin</span>&gt;</span></div><div class="line">			<span class="tag">&lt;<span class="name">xmax</span>&gt;</span>499<span class="tag">&lt;/<span class="name">xmax</span>&gt;</span></div><div class="line">			<span class="tag">&lt;<span class="name">ymax</span>&gt;</span>214<span class="tag">&lt;/<span class="name">ymax</span>&gt;</span></div><div class="line">		<span class="tag">&lt;/<span class="name">bndbox</span>&gt;</span></div><div class="line">	<span class="tag">&lt;/<span class="name">object</span>&gt;</span></div><div class="line"><span class="tag">&lt;/<span class="name">annotation</span>&gt;</span></div></pre></td></tr></table></figure>
+<p>而 darknet 需要的标注文件是 txt 格式:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">&lt;object-class&gt; &lt;x&gt; &lt;y&gt; &lt;width&gt; &lt;height&gt;</div></pre></td></tr></table></figure>
+<p>于是就需要对于 labels 进行转换. 我写了<a href="https://github.com/corenel/darknet/blob/yuthon/scripts/imagenet_bb_label.py" target="_blank" rel="external">一份 Python 脚本</a>, 将其放在数据集的根目录下执行即可:</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ python imagenet_bb_label.py</div></pre></td></tr></table></figure>
+<p>之后得到目录结构如下:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line">.</div><div class="line">├── Annotation</div><div class="line">│   ├── n03820318</div><div class="line">│   └── n04254680</div><div class="line">├── imagenet_bb_label.py</div><div class="line">├── images</div><div class="line">│   ├── n03820318</div><div class="line">│   └── n04254680</div><div class="line">├── labels</div><div class="line">│   ├── n03820318</div><div class="line">│   └── n04254680</div><div class="line">└── train.txt</div></pre></td></tr></table></figure>
+<p>其中, <code>labels</code>目录保存着转换后的 Bounding Box 信息, <code>train.txt</code>则包含了所有图片文件的绝对路径.</p>
+<h2 id="Modify-darknet"><a href="#Modify-darknet" class="headerlink" title="Modify darknet"></a>Modify darknet</h2><p>由于 class 的数量和名字都变了, 因此需要修改下 YOLO 的源代码.</p>
+<p>首先是从 clone repository. 可以选择 clone <a href="https://github.com/pjreddie/darknet" target="_blank" rel="external">官方的</a>, 也可以直接下<a href="https://github.com/corenel/darknet" target="_blank" rel="external">我修改好的</a>. 此处里官方 repo 为例.</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ git <span class="built_in">clone</span> https://github.com/pjreddie/darknet.git</div></pre></td></tr></table></figure>
+<p>由于最新的 commit 修改了 label image 的显示方法, 并且改变了源文件里类别的定义, 因此需要先切回之前的 commit:</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ git checkout 73f7aacf35ec9b1d0f9de9ddf38af0889f213e99</div></pre></td></tr></table></figure>
+<p>首先修改<code>Makefile</code>:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">GPU=1</div><div class="line">CUDNN=1</div><div class="line">OPENCV=1</div></pre></td></tr></table></figure>
+<p>之后是<code>src/yolo.c</code>, 主要是类别名称和数量, 以及<code>train.txt</code>与<code>backup</code>的地址.(<code>backup</code>目录用来存放训练得到的weights)</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// ...</span></div><div class="line"><span class="meta">#<span class="meta-keyword">define</span> NUM_CLASS 2</span></div><div class="line"><span class="keyword">char</span> *voc_names[] = &#123;<span class="string">"ball"</span>, <span class="string">"goal"</span>&#125;;</div><div class="line">image voc_labels[NUM_CLASS];</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">void</span> <span class="title">train_yolo</span><span class="params">(<span class="keyword">char</span> *cfgfile, <span class="keyword">char</span> *weightfile)</span></span></div><div class="line">&#123;</div><div class="line">    <span class="keyword">char</span> *train_images = <span class="string">"/home/m/workspace/dataset/train.txt"</span>;</div><div class="line">    <span class="keyword">char</span> *backup_directory = <span class="string">"/home/m/workspace/backup/"</span>;</div><div class="line">&#125;</div><div class="line"><span class="comment">// ...</span></div><div class="line"><span class="function"><span class="keyword">void</span> <span class="title">test_yolo</span><span class="params">(<span class="keyword">char</span> *cfgfile, <span class="keyword">char</span> *weightfile, <span class="keyword">char</span> *filename, <span class="keyword">float</span> thresh)</span></span></div><div class="line">&#123;</div><div class="line">  <span class="comment">// ...</span></div><div class="line">  draw_detections(im, l.side*l.side*l.n, thresh, boxes, probs, voc_names, voc_labels, NUM_CLASS);</div><div class="line">  <span class="comment">// ...</span></div><div class="line">&#125;</div><div class="line"><span class="function"><span class="keyword">void</span> <span class="title">run_yolo</span><span class="params">(<span class="keyword">int</span> argc, <span class="keyword">char</span> **argv)</span></span></div><div class="line">&#123;</div><div class="line">  <span class="comment">// ...</span></div><div class="line">  <span class="keyword">for</span>(i = <span class="number">0</span>; i &lt; NUM_CLASS; ++i)&#123;</div><div class="line">    <span class="comment">// ...</span></div><div class="line">  &#125;</div><div class="line">  <span class="comment">// ...</span></div><div class="line">  <span class="keyword">else</span> <span class="keyword">if</span>(<span class="number">0</span>==<span class="built_in">strcmp</span>(argv[<span class="number">2</span>], <span class="string">"demo"</span>)) demo(cfg, weights, thresh, cam_index, filename, voc_names, voc_labels, NUM_CLASS, frame_skip);</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>接着是<code>yolo_kernels.cu</code>:</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// ...</span></div><div class="line"><span class="meta">#<span class="meta-keyword">define</span> NUM_CLASS 2</span></div><div class="line"><span class="comment">// ...</span></div><div class="line"><span class="function"><span class="keyword">void</span> *<span class="title">detect_in_thread</span><span class="params">(<span class="keyword">void</span> *ptr)</span></span></div><div class="line">&#123;</div><div class="line">  <span class="comment">// ...</span></div><div class="line">  draw_detections(det, l.side*l.side*l.n, demo_thresh, boxes, probs, voc_names, voc_labels, NUM_CLASS);</div><div class="line">  <span class="comment">// ...</span></div><div class="line">&#125;</div><div class="line"><span class="comment">// ...</span></div></pre></td></tr></table></figure>
+<p>然后是<code>cfg</code>(建议新建一个, 我的<a href="https://github.com/corenel/darknet/blob/yuthon/cfg/tiny-yolo.train.cfg" target="_blank" rel="external">配置</a>可作为参考):</p>
+<figure class="highlight ini"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># ...</span></div><div class="line"><span class="section">[connected]</span></div><div class="line"><span class="comment"># output = Side x Side x (2x5 + class_num)</span></div><div class="line"><span class="attr">output</span>= <span class="number">588</span></div><div class="line"><span class="attr">activation</span>=linear</div><div class="line"><span class="section"></span></div><div class="line">[detection]</div><div class="line"><span class="comment"># modify the class num</span></div><div class="line"><span class="attr">classes</span>=<span class="number">2</span></div><div class="line"><span class="attr">coords</span>=<span class="number">4</span></div><div class="line"><span class="attr">rescore</span>=<span class="number">1</span></div><div class="line"><span class="attr">side</span>=<span class="number">7</span></div><div class="line"><span class="attr">num</span>=<span class="number">2</span></div><div class="line"><span class="attr">softmax</span>=<span class="number">0</span></div><div class="line"><span class="attr">sqrt</span>=<span class="number">1</span></div><div class="line"><span class="attr">jitter</span>=.<span class="number">2</span></div><div class="line"></div><div class="line"><span class="attr">object_scale</span>=<span class="number">1</span></div><div class="line"><span class="attr">noobject_scale</span>=.<span class="number">5</span></div><div class="line"><span class="attr">class_scale</span>=<span class="number">1</span></div><div class="line"><span class="attr">coord_scale</span>=<span class="number">5</span></div></pre></td></tr></table></figure>
+<p>最后, 如果使用了新的 class 的话, 需要在<code>data/labels</code>里修改<code>make_labels.py</code>并执行来生成新的 label image:</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">import</span> os</div><div class="line"></div><div class="line">l = [<span class="string">"ball"</span>, <span class="string">"goal"</span>]</div><div class="line"></div><div class="line"><span class="keyword">for</span> word <span class="keyword">in</span> l:</div><div class="line">    os.system(<span class="string">"convert -fill black -background white -bordercolor white -border 4 -font ubuntu-mono -pointsize 18 label:\"%s\" \"%s.png\""</span>%(word, word))</div></pre></td></tr></table></figure>
+<p>至此前期准备完成, 可以开始训练了.</p>
+<h2 id="Training"><a href="#Training" class="headerlink" title="Training"></a>Training</h2><p>首先还需要下载 pre-trained weights.</p>
+<ul>
+<li>全尺寸的 YOLO 使用<a href="http://pjreddie.com/media/files/extraction.conv.weights" target="_blank" rel="external">这个</a></li>
+<li>tiny-YOLO 使用<a href="http://pjreddie.com/media/files/darknet.conv.weights" target="_blank" rel="external">这个</a></li>
+</ul>
+<p>之后就是慢慢训练之路了:</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">$ <span class="built_in">cd</span> darknet</div><div class="line">$ make -j8</div><div class="line">$ ./darknet yolo train cfg/tiny-yolo.train.cfg darknet.conv.weights</div></pre></td></tr></table></figure>
+<p>我用上述的 dataset 训练 tiny-YOLO, 从 22:43 一直到 05:12, 总计 6 个小时左右, 最终得到<code>tiny-yolo_final.weights</code>文件.</p>
+<p>之后就可以拿来 test 或者 demo 了:</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ ./darknet yolo <span class="built_in">test</span> cfg/tiny-yolo.train.cfg tiny-yolo_final.weights</div></pre></td></tr></table></figure>
+<p>or</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ ./darknet yolo demo cfg/tiny-yolo.train.cfg tiny-yolo_final.weights</div></pre></td></tr></table></figure>
+<h2 id="Results"><a href="#Results" class="headerlink" title="Results"></a>Results</h2><p><img src="/images/yolo-tiny_on_TX1_ball.png" alt="yolo-tiny_on_TX1_ball"></p>
+<p><img src="/images/yolo-tiny_on_TX1_goal.png" alt="yolo-tiny_on_TX1_goal"></p>
+<h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><ul>
+<li><a href="http://guanghan.info/blog/en/my-works/train-yolo/" target="_blank" rel="external">Start Training YOLO with Our Own Data</a></li>
+<li><a href="http://pjreddie.com/darknet/yolo/#train" target="_blank" rel="external">Training YOLO</a></li>
+</ul>
+]]></content>
+    
+    <summary type="html">
+    
+      &lt;p&gt;之前到手 TX1 之后试了一下 YOLO 的 Demo, 感觉很是不错, 帧数勉强达到实时要求, 因此就萌生了使用自己的数据集来训练看看效果的想法. &lt;/p&gt;
+    
+    </summary>
+    
+      <category term="Experience" scheme="http://www.yuthon.com/categories/Experience/"/>
+    
+    
+      <category term="Deep Learning" scheme="http://www.yuthon.com/tags/Deep-Learning/"/>
+    
+      <category term="YOLO" scheme="http://www.yuthon.com/tags/YOLO/"/>
+    
+      <category term="Object detection" scheme="http://www.yuthon.com/tags/Object-detection/"/>
+    
+      <category term="Darknet" scheme="http://www.yuthon.com/tags/Darknet/"/>
+    
+  </entry>
+  
+  <entry>
     <title>YOLO on NVIDIA Jetson TX1</title>
     <link href="http://www.yuthon.com/2016/11/10/YOLO-on-NVIDIA-Jetson-TX1/"/>
     <id>http://www.yuthon.com/2016/11/10/YOLO-on-NVIDIA-Jetson-TX1/</id>
     <published>2016-11-10T12:36:34.000Z</published>
-    <updated>2016-11-10T14:07:59.000Z</updated>
+    <updated>2016-11-12T03:21:08.000Z</updated>
     
     <content type="html"><![CDATA[<p>实验室昨天到了 NVIDIA 的 <a href="http://www.nvidia.com/object/jetson-tx1-module.html" target="_blank" rel="external">Jetson TX1</a>, 可以说是移动端比较好的带GPU的开发板子了, 于是可以试试在移动端上用YOLO (You Look Only Once) 来做目标识别.</p>
 <a id="more"></a>
@@ -122,13 +207,13 @@
     
       <category term="Deep Learning" scheme="http://www.yuthon.com/tags/Deep-Learning/"/>
     
-      <category term="NVIDIA Jetson TX1" scheme="http://www.yuthon.com/tags/NVIDIA-Jetson-TX1/"/>
-    
       <category term="YOLO" scheme="http://www.yuthon.com/tags/YOLO/"/>
     
       <category term="Object detection" scheme="http://www.yuthon.com/tags/Object-detection/"/>
     
       <category term="Darknet" scheme="http://www.yuthon.com/tags/Darknet/"/>
+    
+      <category term="NVIDIA Jetson TX1" scheme="http://www.yuthon.com/tags/NVIDIA-Jetson-TX1/"/>
     
   </entry>
   
@@ -2634,180 +2719,6 @@
 &lt;li&gt;$x=\begin{bmatrix}x_0 \\ x_1 \\ x_2 \\ \vdots \\ x_n \end{bmatrix}, \theta = \begin{bmatrix}\theta_0 \\ \theta_1 \\ \theta_2 \\ \vdots \\ \theta_n \end{bmatrix}, h_\theta (x) = \theta^T x​$&lt;/li&gt;
 &lt;/ul&gt;
 &lt;/li&gt;
-&lt;/ul&gt;
-&lt;/li&gt;
-&lt;/ul&gt;
-    
-    </summary>
-    
-      <category term="Notes" scheme="http://www.yuthon.com/categories/Notes/"/>
-    
-    
-      <category term="Coursera" scheme="http://www.yuthon.com/tags/Coursera/"/>
-    
-      <category term="Machine Learning" scheme="http://www.yuthon.com/tags/Machine-Learning/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>Notes for Machine Learning - Week 1</title>
-    <link href="http://www.yuthon.com/2016/07/26/Coursera-Machine-Learning-Week-1/"/>
-    <id>http://www.yuthon.com/2016/07/26/Coursera-Machine-Learning-Week-1/</id>
-    <published>2016-07-26T03:55:36.000Z</published>
-    <updated>2016-07-29T08:21:27.000Z</updated>
-    
-    <content type="html"><![CDATA[<h1 id="Linear-Regression-with-One-Variable"><a href="#Linear-Regression-with-One-Variable" class="headerlink" title="Linear Regression with One Variable"></a>Linear Regression with One Variable</h1><h2 id="Model-and-Cost-Function"><a href="#Model-and-Cost-Function" class="headerlink" title="Model and Cost Function"></a>Model and Cost Function</h2><h3 id="Model-Representation"><a href="#Model-Representation" class="headerlink" title="Model Representation"></a>Model Representation</h3><ul>
-<li><strong>Supervised Learning (监督学习)</strong>: Given the “right answer” for each example in the data.<ul>
-<li><strong>Regression Problem (回归问题)</strong>: Predict real-valued output. </li>
-<li><strong>Classification Problem (分类问题)</strong>: Predict discrete-valued output.</li>
-</ul>
-</li>
-<li><strong>Training set (训练集)</strong><ul>
-<li><strong>m</strong>: number of training examples</li>
-<li><strong>x</strong>‘s: “input” variable / features</li>
-<li><strong>y</strong>‘s: “output” variable / “target” variable</li>
-<li><strong>$(x, y)$</strong>: one training example</li>
-<li><strong>$(x^i, y^i)$</strong>: $i^{th}$ training example</li>
-</ul>
-</li>
-</ul>
-<ul>
-<li>Training Set -&gt; Learning Algorithm -&gt; <strong>h(hypothesis, 假设)</strong><ul>
-<li>h is a function maps from x’s to y’s</li>
-<li>e.g. Size of house -&gt; h -&gt; Estimated price</li>
-</ul>
-</li>
-</ul>
-<ul>
-<li><strong>Linear regression with one variable</strong><ul>
-<li>$h_\theta (x) = \theta_0 + \theta_1 x$<ul>
-<li>Shorthand: $h(x)$</li>
-</ul>
-</li>
-<li>Or named Univariate linear regression (单变量线性回归)</li>
-</ul>
-</li>
-</ul>
-<a id="more"></a>
-<h3 id="Cost-Function"><a href="#Cost-Function" class="headerlink" title="Cost Function"></a>Cost Function</h3><ul>
-<li><p><strong>Hypothesis</strong>: $h_\theta (x) = \theta_0 + \theta_1 x$</p>
-<ul>
-<li>$\theta_i$’s: Parameters (模型参数)</li>
-<li>How to choose $\theta_i$’s ?<ul>
-<li>Idea: Choose $\theta_0, \theta_1$ so that $h_\theta (x)$ is close to $y$ for our training example $(x,y)$</li>
-</ul>
-</li>
-</ul>
-</li>
-</ul>
-<ul>
-<li><strong>Cost function (代价函数)</strong><ul>
-<li>$J(\theta_0, \theta_1) = \frac{1}{2m} \sum_{i=1}^m \left(h_\theta(x^{(i)})-y^{(i)}\right)^2$</li>
-<li>Sometimes called Square error function (平方误差代价函数)</li>
-</ul>
-</li>
-</ul>
-<ul>
-<li>Goal: minimise $J(\theta_0, \theta_1)$</li>
-</ul>
-<h2 id="Parameter-Learning"><a href="#Parameter-Learning" class="headerlink" title="Parameter Learning"></a>Parameter Learning</h2><h3 id="Gradient-Descent"><a href="#Gradient-Descent" class="headerlink" title="Gradient Descent"></a>Gradient Descent</h3><ul>
-<li><p><strong>Gradient Descent (梯度下降)</strong></p>
-<ul>
-<li>Goal<ul>
-<li>Have some function $J(\theta_0, \theta_1)$</li>
-<li>Want $\theta_0, \theta_1$ of $min J(\theta_0, \theta_1)$</li>
-</ul>
-</li>
-<li>Outline<ul>
-<li>Start with some $\theta_0, \theta_1$, usually all set to $0$.</li>
-<li>Keep changing $\theta_0, \theta_1$ to reduce $J(\theta_0, \theta_1)$ until we hopefully end up at minimum</li>
-</ul>
-</li>
-</ul>
-</li>
-<li><p>Gradient descent algorithm</p>
-<blockquote>
-<p>repeat until convergence (收敛) {<br>​    $\theta_j := \theta_j - \alpha \frac{\partial}{\partial \theta_j} J(\theta_0, \theta_j)$  (for $j=0$ and $j=1$)<br>}</p>
-</blockquote>
-<ul>
-<li><p><code>:=</code> denotes assignment</p>
-</li>
-<li><p>$\alpha$ denotes learning rate</p>
-<ul>
-<li>if too small, gradient descent can be slow</li>
-<li>If too large, gradient descent can overshoot the minimum. It may fail to converge or even diverge.</li>
-</ul>
-</li>
-<li><p>You should <u>simultaneously</u> update $\theta_0$ and $\theta_1$</p>
-<ul>
-<li><p>That is, you should compute the right-hand sides of $\theta_0$ and $\theta_1$, then save them to temporary variables, and finally update $\theta_0$ and $\theta_1$.</p>
-<blockquote>
-<p>$temp0 := \theta_0 - \alpha \frac{\partial}{\partial \theta_0} J(\theta_0, \theta_j)$</p>
-<p>$temp1 := \theta_1 - \alpha \frac{\partial}{\partial \theta_1} J(\theta_0, \theta_j)$</p>
-<p>$\theta_0 := temp0$</p>
-<p>$\theta_1 :=temp1$</p>
-</blockquote>
-</li>
-</ul>
-</li>
-</ul>
-</li>
-</ul>
-<h3 id="Intuition"><a href="#Intuition" class="headerlink" title="Intuition"></a>Intuition</h3><ul>
-<li><p>If $\theta_1$ at local optima, it leaves $\theta_1$ unchanged.</p>
-</li>
-<li><p><u>gradient descent can converge to a local minimum, even with the learning rate $\alpha$ fixed.</u></p>
-<ul>
-<li>As we approach a local minimum, gradient descent will automatically take smaller steps. So, no need to decrease $\alpha$ over time.</li>
-</ul>
-</li>
-</ul>
-<h3 id="Gradient-Descent-For-Linear-Regression"><a href="#Gradient-Descent-For-Linear-Regression" class="headerlink" title="Gradient Descent For Linear Regression"></a>Gradient Descent For Linear Regression</h3><p>We can compute that</p>
-<p>$\frac{\partial}{\partial \theta_0} J(\theta_0, \theta_1) = \frac{1}{m} \sum^m_{i=1}\left(h_\theta(x^{(i)})-y^{(i)}\right)$</p>
-<p>$\frac{\partial}{\partial \theta_1} J(\theta_0, \theta_1) = \frac{1}{m} \sum^m_{i=1}\left(h_\theta(x^{(i)})-y^{(i)}\right) \cdot x^{(i)}$</p>
-<p>Thus the Gradient descent algorithm can be expressed as</p>
-<blockquote>
-<p> repeat until convergence {<br>   $\theta_0 := \theta_0 - \alpha \frac{1}{m} \sum^m_{i=1}\left(h_\theta(x^{(i)})-y^{(i)}\right)​$</p>
-<p>   $\theta_1 := \theta_1 - \alpha \frac{1}{m} \sum^m_{i=1}\left(h_\theta(x^{(i)})-y^{(i)}\right) \cdot x^{(i)}$<br> }</p>
-</blockquote>
-<p>And the cost funciton of linear refression is always a convex function (凸函数), or called Bowl-shaped function (弓形函数). <u>It doesn’t have any local optima except for the one global optimum.</u></p>
-<h4 id="“Batch”-Gradient-Descent"><a href="#“Batch”-Gradient-Descent" class="headerlink" title="“Batch” Gradient Descent"></a>“Batch” Gradient Descent</h4><ul>
-<li>The algorithm that we just went over is sometimes called <strong>Batch Gradient Descent (批量梯度下降)</strong>.</li>
-<li>“Batch”: Each step of gradient descent uses all th etraining examples.</li>
-</ul>
-]]></content>
-    
-    <summary type="html">
-    
-      &lt;h1 id=&quot;Linear-Regression-with-One-Variable&quot;&gt;&lt;a href=&quot;#Linear-Regression-with-One-Variable&quot; class=&quot;headerlink&quot; title=&quot;Linear Regression with One Variable&quot;&gt;&lt;/a&gt;Linear Regression with One Variable&lt;/h1&gt;&lt;h2 id=&quot;Model-and-Cost-Function&quot;&gt;&lt;a href=&quot;#Model-and-Cost-Function&quot; class=&quot;headerlink&quot; title=&quot;Model and Cost Function&quot;&gt;&lt;/a&gt;Model and Cost Function&lt;/h2&gt;&lt;h3 id=&quot;Model-Representation&quot;&gt;&lt;a href=&quot;#Model-Representation&quot; class=&quot;headerlink&quot; title=&quot;Model Representation&quot;&gt;&lt;/a&gt;Model Representation&lt;/h3&gt;&lt;ul&gt;
-&lt;li&gt;&lt;strong&gt;Supervised Learning (监督学习)&lt;/strong&gt;: Given the “right answer” for each example in the data.&lt;ul&gt;
-&lt;li&gt;&lt;strong&gt;Regression Problem (回归问题)&lt;/strong&gt;: Predict real-valued output. &lt;/li&gt;
-&lt;li&gt;&lt;strong&gt;Classification Problem (分类问题)&lt;/strong&gt;: Predict discrete-valued output.&lt;/li&gt;
-&lt;/ul&gt;
-&lt;/li&gt;
-&lt;li&gt;&lt;strong&gt;Training set (训练集)&lt;/strong&gt;&lt;ul&gt;
-&lt;li&gt;&lt;strong&gt;m&lt;/strong&gt;: number of training examples&lt;/li&gt;
-&lt;li&gt;&lt;strong&gt;x&lt;/strong&gt;‘s: “input” variable / features&lt;/li&gt;
-&lt;li&gt;&lt;strong&gt;y&lt;/strong&gt;‘s: “output” variable / “target” variable&lt;/li&gt;
-&lt;li&gt;&lt;strong&gt;$(x, y)$&lt;/strong&gt;: one training example&lt;/li&gt;
-&lt;li&gt;&lt;strong&gt;$(x^i, y^i)$&lt;/strong&gt;: $i^{th}$ training example&lt;/li&gt;
-&lt;/ul&gt;
-&lt;/li&gt;
-&lt;/ul&gt;
-&lt;ul&gt;
-&lt;li&gt;Training Set -&amp;gt; Learning Algorithm -&amp;gt; &lt;strong&gt;h(hypothesis, 假设)&lt;/strong&gt;&lt;ul&gt;
-&lt;li&gt;h is a function maps from x’s to y’s&lt;/li&gt;
-&lt;li&gt;e.g. Size of house -&amp;gt; h -&amp;gt; Estimated price&lt;/li&gt;
-&lt;/ul&gt;
-&lt;/li&gt;
-&lt;/ul&gt;
-&lt;ul&gt;
-&lt;li&gt;&lt;strong&gt;Linear regression with one variable&lt;/strong&gt;&lt;ul&gt;
-&lt;li&gt;$h_\theta (x) = \theta_0 + \theta_1 x$&lt;ul&gt;
-&lt;li&gt;Shorthand: $h(x)$&lt;/li&gt;
-&lt;/ul&gt;
-&lt;/li&gt;
-&lt;li&gt;Or named Univariate linear regression (单变量线性回归)&lt;/li&gt;
 &lt;/ul&gt;
 &lt;/li&gt;
 &lt;/ul&gt;

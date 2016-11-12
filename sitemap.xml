@@ -2,9 +2,16 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>http://www.yuthon.com/2016/11/12/Train-YOLO-on-our-own-dataset/</loc>
+    
+    <lastmod>2016-11-12T04:41:24.000Z</lastmod>
+    
+  </url>
+  
+  <url>
     <loc>http://www.yuthon.com/2016/11/10/YOLO-on-NVIDIA-Jetson-TX1/</loc>
     
-    <lastmod>2016-11-10T14:07:59.000Z</lastmod>
+    <lastmod>2016-11-12T03:21:08.000Z</lastmod>
     
   </url>
   
@@ -177,14 +184,7 @@
   </url>
   
   <url>
-    <loc>http://www.yuthon.com/2016/04/14/CodeSchool-Shaping-up-with-Angular.js/</loc>
-    
-    <lastmod>2016-05-16T11:51:43.000Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>http://www.yuthon.com/2016/04/09/CodeSchool-Javascript/</loc>
+    <loc>http://www.yuthon.com/2016/04/13/CodeSchool-Try-jQuery/</loc>
     
     <lastmod>2016-05-16T11:51:43.000Z</lastmod>
     
@@ -198,7 +198,14 @@
   </url>
   
   <url>
-    <loc>http://www.yuthon.com/2016/04/13/CodeSchool-Try-jQuery/</loc>
+    <loc>http://www.yuthon.com/2016/04/09/CodeSchool-Javascript/</loc>
+    
+    <lastmod>2016-05-16T11:51:43.000Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://www.yuthon.com/2016/04/14/CodeSchool-Shaping-up-with-Angular.js/</loc>
     
     <lastmod>2016-05-16T11:51:43.000Z</lastmod>
     

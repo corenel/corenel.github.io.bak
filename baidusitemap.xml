@@ -4,8 +4,34 @@
 
     
   <url>
+    <loc>http://www.yuthon.com/2016/11/12/Train-YOLO-on-our-own-dataset/</loc>
+    <lastmod>2016-11-12T04:41:24.000Z</lastmod>
+    <data>
+        <display>
+        <title>Train YOLO on our own dataset</title>
+        <pubTime>2016-11-12T03:20:22.000Z</pubTime>
+        
+        <tag>Deep Learning</tag>
+         
+        <tag>YOLO</tag>
+         
+        <tag>Object detection</tag>
+         
+        <tag>Darknet</tag>
+         
+         
+           
+             
+              <breadCrumb title="Experience" url="http://www.yuthon.com/categories/Experience/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
     <loc>http://www.yuthon.com/2016/11/10/YOLO-on-NVIDIA-Jetson-TX1/</loc>
-    <lastmod>2016-11-10T14:07:59.000Z</lastmod>
+    <lastmod>2016-11-12T03:21:08.000Z</lastmod>
     <data>
         <display>
         <title>YOLO on NVIDIA Jetson TX1</title>
@@ -13,13 +39,13 @@
         
         <tag>Deep Learning</tag>
          
-        <tag>NVIDIA Jetson TX1</tag>
-         
         <tag>YOLO</tag>
          
         <tag>Object detection</tag>
          
         <tag>Darknet</tag>
+         
+        <tag>NVIDIA Jetson TX1</tag>
          
          
            
@@ -532,34 +558,12 @@
 
     
   <url>
-    <loc>http://www.yuthon.com/2016/04/14/CodeSchool-Shaping-up-with-Angular.js/</loc>
+    <loc>http://www.yuthon.com/2016/04/13/CodeSchool-Try-jQuery/</loc>
     <lastmod>2016-05-16T11:51:43.000Z</lastmod>
     <data>
         <display>
-        <title>Notes for Code School - Shaping up with Angular.js</title>
-        <pubTime>2016-04-14T13:19:22.000Z</pubTime>
-        
-        <tag>CodeSchool</tag>
-         
-        <tag>JavaScript</tag>
-         
-         
-           
-             
-              <breadCrumb title="Notes" url="http://www.yuthon.com/categories/Notes/"/>
-          
-        </display>
-    </data>
-    </url>
-
-    
-  <url>
-    <loc>http://www.yuthon.com/2016/04/09/CodeSchool-Javascript/</loc>
-    <lastmod>2016-05-16T11:51:43.000Z</lastmod>
-    <data>
-        <display>
-        <title>Notes for Code School - JavaScript Road Trip</title>
-        <pubTime>2016-04-09T04:37:07.000Z</pubTime>
+        <title>Notes for Code School - Try jQuery</title>
+        <pubTime>2016-04-13T09:24:09.000Z</pubTime>
         
         <tag>CodeSchool</tag>
          
@@ -598,12 +602,34 @@
 
     
   <url>
-    <loc>http://www.yuthon.com/2016/04/13/CodeSchool-Try-jQuery/</loc>
+    <loc>http://www.yuthon.com/2016/04/09/CodeSchool-Javascript/</loc>
     <lastmod>2016-05-16T11:51:43.000Z</lastmod>
     <data>
         <display>
-        <title>Notes for Code School - Try jQuery</title>
-        <pubTime>2016-04-13T09:24:09.000Z</pubTime>
+        <title>Notes for Code School - JavaScript Road Trip</title>
+        <pubTime>2016-04-09T04:37:07.000Z</pubTime>
+        
+        <tag>CodeSchool</tag>
+         
+        <tag>JavaScript</tag>
+         
+         
+           
+             
+              <breadCrumb title="Notes" url="http://www.yuthon.com/categories/Notes/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://www.yuthon.com/2016/04/14/CodeSchool-Shaping-up-with-Angular.js/</loc>
+    <lastmod>2016-05-16T11:51:43.000Z</lastmod>
+    <data>
+        <display>
+        <title>Notes for Code School - Shaping up with Angular.js</title>
+        <pubTime>2016-04-14T13:19:22.000Z</pubTime>
         
         <tag>CodeSchool</tag>
          
