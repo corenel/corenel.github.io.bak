@@ -9,7 +9,6 @@ tags:
   - Darknet
 categories:
   - Experience
-
 ---
 
 实验室昨天到了 NVIDIA 的 [Jetson TX1](http://www.nvidia.com/object/jetson-tx1-module.html), 可以说是移动端比较好的带GPU的开发板子了, 于是可以试试在移动端上用YOLO (You Look Only Once) 来做目标识别.
