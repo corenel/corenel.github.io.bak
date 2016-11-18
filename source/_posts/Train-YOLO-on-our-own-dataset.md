@@ -102,6 +102,12 @@ $ python imagenet_bb_label.py
 
 其中, `labels`目录保存着转换后的 Bounding Box 信息, `train.txt`则包含了所有图片文件的绝对路径.
 
+> ImageNet 的 xml 文件里 object 的名字是类似`n03820318`这种格式的, 如果需要转成`goal`这样的话可以再目录下执行以下命令来批量替换:
+>
+> ```bash
+> $ find . -name "*.xml" -print | xargs sed -i 's/<name>n03820318/<name>goal/g'
+> ```
+
 ## Modify darknet
 
 由于 class 的数量和名字都变了, 因此需要修改下 YOLO 的源代码.
