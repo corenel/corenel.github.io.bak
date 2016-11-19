@@ -1,10 +1,11 @@
 ---
-title: Notes for SLIC Superpixels Compared to State-of-the-Art Superpixel Methods
+title: Thesis Notes for SLIC
 date: 2016-11-01 18:21:04
 tags:
   - Superpixel
+  - SLIC
 categories:
-  - Notes
+  - Thesis Notes
 ---
 
 
