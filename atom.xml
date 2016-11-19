@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://www.yuthon.com/"/>
-  <updated>2016-11-18T07:39:41.000Z</updated>
+  <updated>2016-11-19T07:20:59.000Z</updated>
   <id>http://www.yuthon.com/</id>
   
   <author>
@@ -14,6 +14,106 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>Thesis Notes for YOLO</title>
+    <link href="http://www.yuthon.com/2016/11/18/Thesis-Notes-for-YOLO/"/>
+    <id>http://www.yuthon.com/2016/11/18/Thesis-Notes-for-YOLO/</id>
+    <published>2016-11-18T14:43:26.000Z</published>
+    <updated>2016-11-19T07:20:59.000Z</updated>
+    
+    <content type="html"><![CDATA[<p>前几天发烧流鼻涕, 睡不了觉, 因此就熬夜读完了 YOLO 的论文. 可以说, YOLO 的实现方式相较于之前 R-CNN 一系的 Region Proposal 的方法来说, 很有新意. YOLO 将 Classification 和 Bounding Box Regression 合起来放进了 CNN 的输出层里面, 从而大大加快了速度. </p>
+<a id="more"></a>
+<h2 id="Unified-Detection"><a href="#Unified-Detection" class="headerlink" title="Unified Detection"></a>Unified Detection</h2><p>YOLO 将 Bounding Box 的位置回归和分类都放在了 CNN 的输出层中, 从整张图输入来预测 Bounding Box 的信息, 从而实现了 end-to-end 的训练, 实时的检测性能, 并且还保持了较高的精度.</p>
+<p> <img src="/images/YOLO_the_model.png" alt="YOLO_the_model"></p>
+<p>YOLO 将整张图分成了$S\times S$个网格 (论文中$S=2$), 如果一个物体的中心在某个网格内, 那么这个网格就负责预测这个物体的检测.</p>
+<p>每个网格需要预测$B$个 Bounding Box (论文中$B=2$), 以及它们的置信度 (confidence).</p>
+<ul>
+<li>置信度定义为$Pr(Object) * IOU^{truth}_{pred}$<ul>
+<li>$Pr(Object)$ 即为有物体的概率, 取0或1</li>
+<li>$IOU^{truth}_{pred}$ 即为 ground truth 与predicted box 区域的交并比</li>
+</ul>
+</li>
+<li>每个 Bounding Box 有5个属性$(x,y,w,h,c)$<ul>
+<li>$(x,y)$ 代表 Bounding Box 的中心距离与网格边界的相对距离, 取值在0与1之间<ul>
+<li>$x = \frac{x_{max} + x_{min}}{2 * width}$</li>
+<li>$y = \frac{y_{max} + y_{min}}{2 * height}$</li>
+</ul>
+</li>
+<li>$(w,h)$ 代表 Bounding Box 的长宽与整个图像长宽的相对比值, 取值在0与1之间<ul>
+<li>$x = \frac{x_{max} - x_{min}}{width}$</li>
+<li>$y = \frac{y_{max} - y_{min}}{height}$</li>
+</ul>
+</li>
+<li>$c$ 即此 Bounding Box 的置信度</li>
+</ul>
+</li>
+</ul>
+<p>每个格子还要预测 $C$ 个类别的概率, 记为$Pr(Class_i|Object)$. 此概率与网格中是否有物体有关, 并且使相对于每个网格来说的, 与网格中的 Bounding Box 数量 $B$ 无关.</p>
+<ul>
+<li>测试时, 将 class 的条件概率和 box 的置信度乘起来, 得到每个 box 关于 class 的置信度</li>
+<li>$Pr(Class_i|Object) * Pr(Object) * IOU^{truth}_{pred} = Pr(Class_i) * IOU^{truth}_{pred}$</li>
+<li>这个概率既包含了 box 属于哪个 class 的概率, 又包含了这个 box 对于 object 的拟合度</li>
+</ul>
+<p>合起来看, 最终的预测张量的维数是 $S\times S \times (B*5 + C)$. 论文里用 PASCAL VOC 数据集, 取$S=7, B=2, C=20$, 因此总计$7\times 7 \times 30$.</p>
+<h2 id="Network-Design"><a href="#Network-Design" class="headerlink" title="Network Design"></a>Network Design</h2><p> <img src="/images/YOLO_the_architecture.png" alt="YOLO_the_architecture"></p>
+<p>整个网络参考了 GoogleNet, 总共有24个卷积层和两个全连接层.</p>
+<h2 id="Training"><a href="#Training" class="headerlink" title="Training"></a>Training</h2><p>为了让整个网络有更好的性能, YOLO 使用了以下 tricks:</p>
+<ul>
+<li><p>前20层卷积层使用 ImageNet 进行 pretrain, 后4层卷积层和两层全连接层则是随机初始化</p>
+</li>
+<li><p>将输入图像的分辨率从$224\times 224$提升到$448*448$</p>
+</li>
+<li><p>将$(x,y,w,h)$全部都归一化 (详见上文)</p>
+</li>
+<li><p>最后一层(输出层)采用线性激活函数, 其它层都用 Leaky ReLU.</p>
+</li>
+<li><p>损失函数采用平方和误差(sum-squared error), 并且针对以下问题作出了改进:</p>
+<ul>
+<li>8维的 box 的位置信息$(x,y,w,h)$, 2维的置信度信息, 以及20维 box 的类别信息的平方和误差直接放在一起显然是不合理的. 因此增加 box 的位置信息的误差的权重系数$\lambda_{coord}$ (论文内取$5$).</li>
+<li>同时, 一个图像会有很多网格没有物体, 那么就会把格子里的 box 的置信度变成 0, 导致那些真正有物体的柜子被压制, 最终导致整个网络发散.因此减少没有物体的 box 的权重系数$\lambda_noobj$ (论文内取$0.5$).</li>
+<li>另外, 平方和误差会把 large box 和 small Box 的误差一视同仁. 然而相对于 large box 稍微偏一点, small box 的误差更加不能忍受. 因此使用$(\sqrt{w}, \sqrt{h})$而非$(w,h)$来计算误差.</li>
+<li>每个格子里都有多个 Bounding Box, 但是在训练的时候我们希望对于每个物体只有一个 Bounding Box Predictor. 因此就选择与 ground truth 的 IoU 最大的那个, 称对该 box 对 该 object “负责” (responsible).</li>
+</ul>
+<p>最终整个的 loss function 如下:</p>
+<p> <img src="/images/YOLO_loss_function.png" alt="YOLO_loss_function"></p>
+<ul>
+<li>$1^{obj}_{ij}$代表第$i$个网格中的第$j$个 box 是否对此 object “负责”, $1^{obj}_i$表示第$i$个网格中是否有 object.</li>
+<li>该损失函数仅仅对有物体的网格的分类误差, 以及对 ground truth box 负责的 box 的位置误差进行惩罚</li>
+</ul>
+</li>
+<li><p>另外还采用了 Dropout 和 Data Augmentation 的方法来增强泛化能力.</p>
+<ul>
+<li>$Dropout = 0.5$</li>
+<li>对图像进行最大$20\%$的随机缩放和平移变换, 同时还有最大$1.5$的曝光与色调变换</li>
+</ul>
+</li>
+</ul>
+<h2 id="Limitations-of-YOLO"><a href="#Limitations-of-YOLO" class="headerlink" title="Limitations of YOLO"></a>Limitations of YOLO</h2><ul>
+<li>由于 YOLO 每个网格只有 $B$ 个Bounding Box与1个 Class, 因此限制了临近物体检测到的个数</li>
+<li>泛化能力不够, 由于降采样比较多导致只能用比较粗的特征</li>
+<li>损失函数主要来源还是定位误差, 在对大小物体的位置误差的均衡上还需要改进.</li>
+</ul>
+]]></content>
+    
+    <summary type="html">
+    
+      &lt;p&gt;前几天发烧流鼻涕, 睡不了觉, 因此就熬夜读完了 YOLO 的论文. 可以说, YOLO 的实现方式相较于之前 R-CNN 一系的 Region Proposal 的方法来说, 很有新意. YOLO 将 Classification 和 Bounding Box Regression 合起来放进了 CNN 的输出层里面, 从而大大加快了速度. &lt;/p&gt;
+    
+    </summary>
+    
+      <category term="Thesis Notes" scheme="http://www.yuthon.com/categories/Thesis-Notes/"/>
+    
+    
+      <category term="Deep Learning" scheme="http://www.yuthon.com/tags/Deep-Learning/"/>
+    
+      <category term="YOLO" scheme="http://www.yuthon.com/tags/YOLO/"/>
+    
+      <category term="Object detection" scheme="http://www.yuthon.com/tags/Object-detection/"/>
+    
+      <category term="Darknet" scheme="http://www.yuthon.com/tags/Darknet/"/>
+    
+  </entry>
   
   <entry>
     <title>Train YOLO on our own dataset</title>
@@ -323,11 +423,11 @@
   </entry>
   
   <entry>
-    <title>Notes for SLIC Superpixels Compared to State-of-the-Art Superpixel Methods</title>
-    <link href="http://www.yuthon.com/2016/11/01/Notes-for-SLIC-Superpixels-Compared-to-State-of-the-Art-Superpixel-Methods/"/>
-    <id>http://www.yuthon.com/2016/11/01/Notes-for-SLIC-Superpixels-Compared-to-State-of-the-Art-Superpixel-Methods/</id>
+    <title>Thesis Notes for SLIC</title>
+    <link href="http://www.yuthon.com/2016/11/01/Thesis-Notes-for-SLIC/"/>
+    <id>http://www.yuthon.com/2016/11/01/Thesis-Notes-for-SLIC/</id>
     <published>2016-11-01T10:21:04.000Z</published>
-    <updated>2016-11-08T11:25:09.000Z</updated>
+    <updated>2016-11-19T07:22:12.000Z</updated>
     
     <content type="html"><![CDATA[<p>文章介绍了当前 State-of-the-Art 的5种<strong>超像素 (Superpixel)</strong> 的算法, 并主要从其对于图像边缘信息的拟合程度 (their ability to adhere to image boundaries), 速度, 内存利用效率, 以及它们对于图像分割性能的影响 (their impact on segmentation performance) 来综合评价.</p>
 <p>同时, 本文还提出了一种 <strong>SLIC (simple linear iterative clustering)</strong> 的算法, 用的是 k-means clustering 的方法.</p>
@@ -437,10 +537,12 @@
     
     </summary>
     
-      <category term="Notes" scheme="http://www.yuthon.com/categories/Notes/"/>
+      <category term="Thesis Notes" scheme="http://www.yuthon.com/categories/Thesis-Notes/"/>
     
     
       <category term="Superpixel" scheme="http://www.yuthon.com/tags/Superpixel/"/>
+    
+      <category term="SLIC" scheme="http://www.yuthon.com/tags/SLIC/"/>
     
   </entry>
   
@@ -2396,336 +2498,6 @@
     <summary type="html">
     
       &lt;p&gt;My exercise files and notes are put in &lt;a href=&quot;https://github.com/corenel/Notes-for-Machine-Learning-in-Coursera&quot; target=&quot;_blank&quot; rel=&quot;e
-    
-    </summary>
-    
-      <category term="Notes" scheme="http://www.yuthon.com/categories/Notes/"/>
-    
-    
-      <category term="Coursera" scheme="http://www.yuthon.com/tags/Coursera/"/>
-    
-      <category term="Machine Learning" scheme="http://www.yuthon.com/tags/Machine-Learning/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>Notes for Machine Learning - Week 2</title>
-    <link href="http://www.yuthon.com/2016/07/27/Coursera-Machine-Learning-Week-2/"/>
-    <id>http://www.yuthon.com/2016/07/27/Coursera-Machine-Learning-Week-2/</id>
-    <published>2016-07-27T02:30:35.000Z</published>
-    <updated>2016-08-01T13:40:40.000Z</updated>
-    
-    <content type="html"><![CDATA[<h1 id="Linear-Regression-with-Multiple-Variables"><a href="#Linear-Regression-with-Multiple-Variables" class="headerlink" title="Linear Regression with Multiple Variables"></a>Linear Regression with Multiple Variables</h1><h2 id="Multivariate-Linear-Regression"><a href="#Multivariate-Linear-Regression" class="headerlink" title="Multivariate Linear Regression"></a>Multivariate Linear Regression</h2><ul>
-<li>Multiple features (variables)<ul>
-<li>$n$ = number of features</li>
-<li>$x^{(i)}$ = input (features) of $i^{th}$ training example.</li>
-<li>$x^{(i)}_j$ = value of feature $j$ in $i^{th}$ training example.</li>
-</ul>
-</li>
-<li>Hypotesis<ul>
-<li>Previously: $h_\theta (x) = \theta_0 + \theta_1 x$</li>
-<li>$h_\theta (x) = \theta_0 + \theta_1 x_1 + \theta_2 x_2 + \cdots + \theta_n x_n$<ul>
-<li>For convenience of notation, define $x_0=1$</li>
-<li>$x=\begin{bmatrix}x_0 \\ x_1 \\ x_2 \\ \vdots \\ x_n \end{bmatrix}, \theta = \begin{bmatrix}\theta_0 \\ \theta_1 \\ \theta_2 \\ \vdots \\ \theta_n \end{bmatrix}, h_\theta (x) = \theta^T x​$</li>
-</ul>
-</li>
-</ul>
-</li>
-</ul>
-<a id="more"></a>
-<h2 id="Gradient-Descent-for-Multiple-Variables"><a href="#Gradient-Descent-for-Multiple-Variables" class="headerlink" title="Gradient Descent for Multiple Variables"></a>Gradient Descent for Multiple Variables</h2><ul>
-<li><p>Hypothesis: $h_\theta(x)=\theta^Tx=\theta_0 x_0 + \theta_1 x_1 + \theta_2 x_2 + \cdots + \theta_n x_n$</p>
-</li>
-<li><p>Parameters: $\theta_0, \theta_1, \dots ,\theta_n$</p>
-</li>
-<li><p>Cost function: $J(\theta_0, \theta_1, \dots, \theta_n) = \frac{1}{2m} \sum^m_{i=1}\left(h_\theta (x^{(i)})-y^{(i)}\right)^2$</p>
-<ul>
-<li>or $J(\theta) = \frac{1}{2m}\sum_{i=1}^{m}(\theta^T x^{(i)} - y^{(i)})^2$</li>
-</ul>
-</li>
-<li><p>Gradient descent</p>
-<blockquote>
-<p>repeat {</p>
-<p>  $\theta_j := \theta_j - \alpha \frac{\partial}{\partial \theta_j} J(\theta_0, \dots ,\theta_n)$</p>
-<p>  (simultaneously update for every $j=0,\dots,n$)</p>
-<p>}</p>
-</blockquote>
-<p>or</p>
-<blockquote>
-<p>repeat {</p>
-<p>  $\theta_j := \theta_j - \alpha \frac{1}{m} \sum^m_{i=1}\left(h_\theta(x^{(i)})-y^{(i)}\right) x^{(i)}_j$ </p>
-<p>  (simultaneously update for every $j=0,\dots,n$)</p>
-<p>}</p>
-</blockquote>
-</li>
-</ul>
-<h2 id="Gradient-Descent-in-Practice"><a href="#Gradient-Descent-in-Practice" class="headerlink" title="Gradient Descent in Practice"></a>Gradient Descent in Practice</h2><h3 id="Feature-Normalization"><a href="#Feature-Normalization" class="headerlink" title="Feature Normalization"></a>Feature Normalization</h3><p>Idea: Make sure featueres are on a similar scale.</p>
-<ul>
-<li>We can speed up gradient descent by having each of our input values in roughly the same range. This is because $\theta$ will descend quickly on small ranges and slowly on large ranges, and so will oscillate inefficiently down to the optimum when the variables are very uneven.</li>
-<li>The way to prevent this is to modify the ranges of our input variables so that they are all roughly the same.</li>
-</ul>
-<h4 id="Example"><a href="#Example" class="headerlink" title="Example"></a>Example</h4><ul>
-<li>$x_1$ = size (0-2000 $feet^2$)</li>
-<li>$x_2$ = number of bedrooms (1-5)</li>
-</ul>
-<p>$x_1$ has a much larger range of values than $x_2$. So the $J(\theta_1, \theta_2)$ can be a very very skewed elliptical shape. And if you run gradient descents on this cost function, your gradients may end up taking a long time and can oscillate back and forth and take a long time before it can finally find its way to the global minimum. </p>
-<h4 id="Feature-scaling"><a href="#Feature-scaling" class="headerlink" title="Feature scaling"></a>Feature scaling</h4><p>Get every feature into approcimately $-1\le x_i \le 1$ range.</p>
-<ul>
-<li>Feature scaling involves dividing the input values by the range (i.e. the maximum value minus the minimum value) of the input variable, resulting in a new range of just 1.</li>
-<li>These aren’t exact requirements; we are only trying to speed things up.</li>
-</ul>
-<ul>
-<li>$-3\le x_i \le 3$ or $ -\frac{1}{3} \le x_i \le \frac{1}{3}$ just is fine.</li>
-</ul>
-<h4 id="Mean-normalization"><a href="#Mean-normalization" class="headerlink" title="Mean normalization"></a>Mean normalization</h4><p>Replace $x_i$ with $x_i - \mu _i$ to make features have approximately zero mean (Do not apply to $x_0 = 1$)</p>
-<ul>
-<li>E.g. $x_1 = \frac{size -1000}{2000}, x_2 = \frac{bedrooms - 2}{5}$</li>
-<li>$x_i = \frac{x_i - \mu _i}{s_i}$<ul>
-<li>$\mu _i$ is the average value of $x_i$ in training set.</li>
-<li>$s_i$ is the range ($x_{imax}-x_{imin}$) or standard deviation ($\sigma$)</li>
-</ul>
-</li>
-</ul>
-<h3 id="Learning-Rate"><a href="#Learning-Rate" class="headerlink" title="Learning Rate"></a>Learning Rate</h3><ul>
-<li>“Debugging”: <strong>How to make sure gradient descent is working correctly</strong><ul>
-<li>Make a plot with <em>number of iterations</em> on the x-axis. Now plot the cost function, $J(\theta)$ over the number of iterations of gradient descent.<ul>
-<li>For sufficient small $\alpha$, $J(\theta)$ should decreases on every iteration.</li>
-<li>But if $\alpha$ is too small, gradient descent can be slow to converge.</li>
-<li>If $J(\theta)$ ever increases, then you probably need to use smaller $\alpha$.</li>
-</ul>
-</li>
-<li>Example automatic convergence test<ul>
-<li>Declare convergence if $J(\theta)$ decreases by less than $\epsilon$ (e.g., $10^{-3})$ in one iteration.</li>
-</ul>
-</li>
-</ul>
-</li>
-<li><strong>How to choose learing rate $\alpha$</strong><ul>
-<li>So just try running gradient descent with a range of values for $\alpha$, like 0.001 and 0.01. And for these different values of $\alpha$ are just plot $J(\theta)$ as a function of number of iterations, and then pick the value of $\alpha$ that seems to be causing $J(\theta)$to decrease rapidly.</li>
-<li>Andrew Ng recommends decreasing $\alpha$ by multiples of 3. And then try to pick the largest possible value, or just something slightly smaller than the largest reasonable value.</li>
-<li>E.g. $\dots, 0.001, 0.003, 0.01, 0.03, 0.1, 0.3, 1, \dots$</li>
-</ul>
-</li>
-</ul>
-<h2 id="Features-and-Polynomial-Regression"><a href="#Features-and-Polynomial-Regression" class="headerlink" title="Features and Polynomial Regression"></a>Features and Polynomial Regression</h2><h3 id="Choice-of-features"><a href="#Choice-of-features" class="headerlink" title="Choice of features"></a>Choice of features</h3><ul>
-<li>We can improve our features and the form of our hypothesis function in a couple different ways.</li>
-<li>We can <strong>combine</strong> multiple features into one. For example, we can combine $x_1​$ and $x_2​$ into a new feature $x_3​$ by taking $x_1\cdot x_2​$. (E.g. $House Area = Frontage \times Depth​$)</li>
-</ul>
-<h3 id="Polynomial-Regression"><a href="#Polynomial-Regression" class="headerlink" title="Polynomial Regression"></a>Polynomial Regression</h3><p>Our hypothesis function need not be linear (a straight line) if that does not fit the data well.</p>
-<ul>
-<li><p>We can <strong>change the behavior or curve</strong> of our hypothesis function by making it a quadratic, cubic or square root function (or any other form).</p>
-<ul>
-<li><p>For example, if our hypothesis function is $h_\theta(x) = \theta_0 + \theta_1 x_1$ then we can create additional features based on $x_1$, to get the quadratic function $h_\theta(x) = \theta_0 + \theta_1 x_1 + \theta_2 x_1^2$ or the cubic function $h_\theta(x) = \theta_0 + \theta_1 x_1 + \theta_2 x_1^2 + \theta_3 x_1^3$.</p>
-</li>
-<li><p>In the cubic version, we have created new features $x_2$ and $x_3$ where $x_2 = x_1^2$ and $x_3=x^3_1$.</p>
-</li>
-<li><p>To make it a square root function, we could do: $h_\theta(x) = \theta_0 + \theta_1 x_1 + \theta_2 \sqrt{x_1}$</p>
-</li>
-<li><p>Note that at 2:52 and through 6:22 in the “Features and Polynomial Regression” video, the curve that Prof Ng discusses about “doesn’t ever come back down” is in reference to the hypothesis function that uses the <code>sqrt()</code> function (shown by the solid purple line), not the one that uses $size^2$ (shown with the dotted blue line). The quadratic form of the hypothesis function would have the shape shown with the blue dotted line if $\theta _2$ was negative.</p>
-<p><img src="/images/polynomial_regression.png" alt="polynomial_regression"></p>
-</li>
-</ul>
-</li>
-<li>One important thing to keep in mind is, if you choose your features this way then <strong>feature scaling becomes very important</strong>.<ul>
-<li>E.g. if $x_1$ has range $1 - 1000$ then range of $x^2_1$ becomes $1 - 1000000$ and that of $x^3_1$ becomes $1 - 1000000000$</li>
-<li>So you should scale $x_1$ before using polynomial regression.</li>
-</ul>
-</li>
-</ul>
-<h2 id="Computing-Parameters-Analytically"><a href="#Computing-Parameters-Analytically" class="headerlink" title="Computing Parameters Analytically"></a>Computing Parameters Analytically</h2><h3 id="Normal-Equation"><a href="#Normal-Equation" class="headerlink" title="Normal Equation"></a>Normal Equation</h3><p>The “Normal Equation” (正规方程) is a method of finding the optimum $\theta$ <strong>without iteration.</strong></p>
-<blockquote>
-<p>There is <strong>no need</strong> to do feature scaling with the normal equation.</p>
-</blockquote>
-<h4 id="Intuition"><a href="#Intuition" class="headerlink" title="Intuition"></a>Intuition</h4><ul>
-<li>$\theta \in R^{n+1} , J(\theta _0, \theta _1, \dots , \theta_m) = \frac{1}{2m} \sum ^m_{i=1} \left( h_\theta (x^{(i)}) - y^{(i)} \right) ^2$</li>
-<li>Set $\frac{\partial }{\partial \theta _j} J(\theta ) = \cdots = 0$ (for every $j$), solve for $\theta _0, \theta _1, \dots , \theta _m$</li>
-</ul>
-<h4 id="Method"><a href="#Method" class="headerlink" title="Method"></a>Method</h4><p>We have $m$ examples $(x^{(1)}, y^{(1)}), \dots , (x^{(m)}, y^{(m)})$ and $n$ features. (Note that $x^{(i)}_0 = 0$)</p>
-<p>$$x^{(i)} = \begin{bmatrix}x^{(i)}_0 \\ x^{(i)}_1 \\ x^{(i)}_2 \\ \vdots \\ x^{(i)}_n \end{bmatrix}$$</p>
-<p>And construct the $m \times (n+1)$ matrix $X$</p>
-<p>$$X = \begin{bmatrix} (x^{(1)})^T \\ (x^{(2)})^T \\ \vdots \\ (x^{(m)})^T \end{bmatrix}$$</p>
-<p>And the $m$-dimension vector $y$</p>
-<p>$$y = \begin{bmatrix}y^{(i)} \\ y^{(i)} \\ y^{(i)} \\ \vdots \\ y^{(m)} \end{bmatrix}$$</p>
-<p>Finally, we can get</p>
-<p>$$ \theta = (X^T X)^{-1}X^T y $$</p>
-<h4 id="Example-1"><a href="#Example-1" class="headerlink" title="Example"></a>Example</h4><p>Suppose you have the training in the table below:</p>
-<table>
-<thead>
-<tr>
-<th style="text-align:center">age ($x_1$)</th>
-<th style="text-align:center">height in cm ($x_2$)</th>
-<th style="text-align:center">weight in kg ($y$)</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td style="text-align:center">4</td>
-<td style="text-align:center">89</td>
-<td style="text-align:center">16</td>
-</tr>
-<tr>
-<td style="text-align:center">9</td>
-<td style="text-align:center">124</td>
-<td style="text-align:center">28</td>
-</tr>
-<tr>
-<td style="text-align:center">5</td>
-<td style="text-align:center">103</td>
-<td style="text-align:center">20</td>
-</tr>
-</tbody>
-</table>
-<p>You would like to predict a child’s weight as a function of his age and height with the model</p>
-<p>$$weight = \theta _0 + \theta _1 age + \theta _2 height$$</p>
-<p>Then you can construct $X$ and $y$</p>
-<p>$$X = \begin{bmatrix} 1 &amp; 4 &amp; 89 \\ 1 &amp; 9 &amp; 124 \\ 1 &amp; 5 &amp; 103 \end{bmatrix}$$</p>
-<p>$$Y = \begin{bmatrix} 16 \\ 28 \\ 20 \end{bmatrix}$$</p>
-<h4 id="Usage-in-Octave"><a href="#Usage-in-Octave" class="headerlink" title="Usage in Octave"></a>Usage in Octave</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">pinv (X&apos;*X)*X&apos;*y</div></pre></td></tr></table></figure>
-<h4 id="Comparison-of-gradient-descent-and-the-normal-equation"><a href="#Comparison-of-gradient-descent-and-the-normal-equation" class="headerlink" title="Comparison of gradient descent and the normal equation"></a>Comparison of gradient descent and the normal equation</h4><p>$m$ training examples and $n$ features.</p>
-<table>
-<thead>
-<tr>
-<th>Gradient Descent</th>
-<th>Normal Equation</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>Need to choose $\alpha$</td>
-<td>No need to choose $\alpha$</td>
-</tr>
-<tr>
-<td>Needs many iterations</td>
-<td>No need to iterate</td>
-</tr>
-<tr>
-<td>$O (kn^2)$</td>
-<td>$O (n^3)$, need to calculate  $(X^TX)^{-1}$</td>
-</tr>
-<tr>
-<td>Works well when $n$ is large</td>
-<td>Slow if $n$ is very large</td>
-</tr>
-</tbody>
-</table>
-<p>With the normal equation, computing the inversion has complexity $O(n^3)$. So if we have a very large number of features, the normal equation will be slow. In practice, <strong>when $n$ exceeds 10,000 it might be a good time to go from a normal solution to an iterative process.</strong></p>
-<h3 id="Normal-Equation-Noninvertibility"><a href="#Normal-Equation-Noninvertibility" class="headerlink" title="Normal Equation Noninvertibility"></a>Normal Equation Noninvertibility</h3><p>$$ \theta = (X^T X)^{-1}X^T y $$</p>
-<ul>
-<li>What if $X^TX$ is non-invertible (不可逆的) ? (singular/ degenerate)</li>
-<li>Octave: <code>pinv(X&#39;*X)*X&quot;*y</code><ul>
-<li>There’s two functions in Octave for inverting matrices, <code>pinv</code> (pseudo-inverse, 伪逆) and <code>inv</code> (inverse).</li>
-<li>As long as you use the <code>pinv</code> function then this will actually compute the value of data that you want even if X transpose X is non-invertible.</li>
-<li>So when implementing the normal equation in octave we want to use the <code>pinv</code> function rather than <code>inv</code>.</li>
-</ul>
-</li>
-<li>$X^TX$ may be <strong>noninvertible</strong>. The common causes are:<ul>
-<li>Redundant features, where two features are very closely related (i.e. they are linearly dependent)<ul>
-<li>E.g. $x_1$ = size in $feet^2$, and $x_2$ = size in $m^2$. So you’ll always have $x_1 = (3.28)^2 x_2$</li>
-</ul>
-</li>
-<li>Too many features (e.g. $m\le n$). <ul>
-<li>In this case, delete some features or use “regularization”.</li>
-</ul>
-</li>
-</ul>
-</li>
-</ul>
-<h1 id="Octave-Matlab-Tutorial"><a href="#Octave-Matlab-Tutorial" class="headerlink" title="Octave/Matlab Tutorial"></a>Octave/Matlab Tutorial</h1><h2 id="Basic-Operations"><a href="#Basic-Operations" class="headerlink" title="Basic Operations"></a>Basic Operations</h2><ul>
-<li>Print specific decimals: <code>disp(sprintf(&#39;6 decimals: %0.6f&#39;, a)) // 6 decimals: 3.141593</code></li>
-<li><code>v = 1:0.2:2 // [1.0 1.2 1.4 1.6 1.8 2.0]</code></li>
-<li><code>ones</code>, <code>zeros</code>, <code>rand</code>, <code>randn</code> (生成正态分布的随机数矩阵), <code>eye</code> (生成单位矩阵)</li>
-<li><code>hist</code> (直方图，第二个参数课自定义条数)</li>
-<li><code>size</code> (返回矩阵的行数与列数 [m n] )</li>
-<li><code>length</code> (返回向量的维数)</li>
-</ul>
-<h2 id="Moving-Data-Around"><a href="#Moving-Data-Around" class="headerlink" title="Moving Data Around"></a>Moving Data Around</h2><ul>
-<li><p>Use <code>load</code> to load data set.</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">load featureX.dat</div><div class="line">load(&apos;priceY.dat&apos;)</div></pre></td></tr></table></figure>
-</li>
-<li><p>Use <code>who</code> to show all variables in Octave workspace</p>
-<ul>
-<li><p><code>whos</code> for detail information</p>
-</li>
-<li><p><code>clear</code> to delete a variable</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">clear featureX</div></pre></td></tr></table></figure>
-</li>
-</ul>
-</li>
-<li><p>Get first ten elements of a matrix</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">v = priceY(1:10)</div></pre></td></tr></table></figure>
-</li>
-<li><p>Use <code>save</code> to save your variable</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">save hello.mat v</div></pre></td></tr></table></figure>
-<ul>
-<li><p>By default the data is saved in binary. You can save it to ASCII by</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">save hello.txt v -ascii</div></pre></td></tr></table></figure>
-</li>
-</ul>
-</li>
-<li><p>Use <code>A(3, 2)</code> to get $A_{32}$, or <code>A(2, :)</code> to get every element along the second row</p>
-<ul>
-<li><code>A([1, 3], :)</code> to get everything in the first and third rows</li>
-<li><code>A(:, 2) = [10; 11; 12]</code> to change the value of elements in second column.</li>
-<li><code>A = [A, [100; 101; 102]]</code> to append another column vector to right</li>
-<li><code>A(:)</code> to put all elements of $A$ into a single vector</li>
-</ul>
-</li>
-</ul>
-<h2 id="Computing-on-Data"><a href="#Computing-on-Data" class="headerlink" title="Computing on Data"></a>Computing on Data</h2><ul>
-<li><p>Use <code>max</code> to get the largest element in a vector</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">a = [1 15 2 0.5];</div><div class="line">[val, ind] = max(a); // val = 15, ind = 2</div></pre></td></tr></table></figure>
-<ul>
-<li><p>If you do <code>max(A)</code>, where $A$ is a matrix, what this does is this actually does the column wise maximum.</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">A = [1 2; 3 4; 5 6];</div><div class="line">max(A) // [5 6]</div><div class="line"></div><div class="line">A = [8 1 6; 3 5 7; 4 9 2];</div><div class="line">max(A, [], 1) // [8 9 7] (get the column wise maximum)</div><div class="line">max(A, [], 2) // [8 7 9] (get the row wise maximum)</div><div class="line">max(max(A)) // 9</div><div class="line">max(A(:)) // 9</div></pre></td></tr></table></figure>
-</li>
-</ul>
-</li>
-<li><p><code>a &lt; 3</code>  does the element wise operation, you’ll get <code>[1 0 1 1]</code></p>
-<ul>
-<li><code>find(a&lt;3)</code> gets <code>[1 3 4]</code></li>
-</ul>
-</li>
-<li><p><code>magic(3)</code> gets a 3x3 magic matrix</p>
-</li>
-<li><p><code>sum</code>, <code>prod</code>, <code>floor</code>, <code>ceil</code>, <code>flipud</code></p>
-</li>
-</ul>
-<h2 id="Plotting-Data"><a href="#Plotting-Data" class="headerlink" title="Plotting Data"></a>Plotting Data</h2><ul>
-<li><code>plot</code></li>
-<li><code>hold on</code>, <code>figure</code>, <code>subplot</code></li>
-<li><code>xlabel</code>, <code>ylabel</code>, <code>legend</code>, <code>title</code>, <code>axis</code></li>
-<li><code>print -dpng &#39;myPlot.png&#39;</code></li>
-<li><code>imagesc(A)</code> to visualize a matrix<ul>
-<li><code>imagesc(A), colorer, colormap gray</code> to be in gray scale.</li>
-</ul>
-</li>
-</ul>
-<h2 id="Control-Statements-for-while-if-statement"><a href="#Control-Statements-for-while-if-statement" class="headerlink" title="Control Statements: for, while, if statement"></a>Control Statements: for, while, if statement</h2><h2 id="Vectorization"><a href="#Vectorization" class="headerlink" title="Vectorization"></a>Vectorization</h2><p>Vectorization is the process of taking code that relies on <strong>loops</strong> and converting it into <strong>matrix operations</strong>. It is more efficient, more elegant, and more concise.</p>
-<p>As an example, let’s compute our prediction from a hypothesis. Theta is the vector of fields for the hypothesis and x is a vector of variables.</p>
-<p>With loops ($h_\theta (x) =\theta_0 x_0 + \theta_1 x_1 + \theta_2 x_2 + \cdots + \theta_n x_n$):</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">prediction = 0.0;</div><div class="line">for j = 1:n+1,</div><div class="line">  prediction += theta(j) * x(j);</div><div class="line">end;</div></pre></td></tr></table></figure>
-<p>With vectorization ($h_\theta (x) = \theta^T x$):</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">prediction = theta&apos; * x;</div></pre></td></tr></table></figure>]]></content>
-    
-    <summary type="html">
-    
-      &lt;h1 id=&quot;Linear-Regression-with-Multiple-Variables&quot;&gt;&lt;a href=&quot;#Linear-Regression-with-Multiple-Variables&quot; class=&quot;headerlink&quot; title=&quot;Linear Regression with Multiple Variables&quot;&gt;&lt;/a&gt;Linear Regression with Multiple Variables&lt;/h1&gt;&lt;h2 id=&quot;Multivariate-Linear-Regression&quot;&gt;&lt;a href=&quot;#Multivariate-Linear-Regression&quot; class=&quot;headerlink&quot; title=&quot;Multivariate Linear Regression&quot;&gt;&lt;/a&gt;Multivariate Linear Regression&lt;/h2&gt;&lt;ul&gt;
-&lt;li&gt;Multiple features (variables)&lt;ul&gt;
-&lt;li&gt;$n$ = number of features&lt;/li&gt;
-&lt;li&gt;$x^{(i)}$ = input (features) of $i^{th}$ training example.&lt;/li&gt;
-&lt;li&gt;$x^{(i)}_j$ = value of feature $j$ in $i^{th}$ training example.&lt;/li&gt;
-&lt;/ul&gt;
-&lt;/li&gt;
-&lt;li&gt;Hypotesis&lt;ul&gt;
-&lt;li&gt;Previously: $h_\theta (x) = \theta_0 + \theta_1 x$&lt;/li&gt;
-&lt;li&gt;$h_\theta (x) = \theta_0 + \theta_1 x_1 + \theta_2 x_2 + \cdots + \theta_n x_n$&lt;ul&gt;
-&lt;li&gt;For convenience of notation, define $x_0=1$&lt;/li&gt;
-&lt;li&gt;$x=\begin{bmatrix}x_0 \\ x_1 \\ x_2 \\ \vdots \\ x_n \end{bmatrix}, \theta = \begin{bmatrix}\theta_0 \\ \theta_1 \\ \theta_2 \\ \vdots \\ \theta_n \end{bmatrix}, h_\theta (x) = \theta^T x​$&lt;/li&gt;
-&lt;/ul&gt;
-&lt;/li&gt;
-&lt;/ul&gt;
-&lt;/li&gt;
-&lt;/ul&gt;
     
     </summary>
     

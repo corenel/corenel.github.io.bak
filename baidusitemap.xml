@@ -4,6 +4,54 @@
 
     
   <url>
+    <loc>http://www.yuthon.com/2016/11/01/Thesis-Notes-for-SLIC/</loc>
+    <lastmod>2016-11-19T07:22:12.000Z</lastmod>
+    <data>
+        <display>
+        <title>Thesis Notes for SLIC</title>
+        <pubTime>2016-11-01T10:21:04.000Z</pubTime>
+        
+        <tag>Superpixel</tag>
+         
+        <tag>SLIC</tag>
+         
+         
+           
+             
+              <breadCrumb title="Thesis Notes" url="http://www.yuthon.com/categories/Thesis-Notes/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://www.yuthon.com/2016/11/18/Thesis-Notes-for-YOLO/</loc>
+    <lastmod>2016-11-19T07:20:59.000Z</lastmod>
+    <data>
+        <display>
+        <title>Thesis Notes for YOLO</title>
+        <pubTime>2016-11-18T14:43:26.000Z</pubTime>
+        
+        <tag>Deep Learning</tag>
+         
+        <tag>YOLO</tag>
+         
+        <tag>Object detection</tag>
+         
+        <tag>Darknet</tag>
+         
+         
+           
+             
+              <breadCrumb title="Thesis Notes" url="http://www.yuthon.com/categories/Thesis-Notes/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
     <loc>http://www.yuthon.com/2016/11/12/Train-YOLO-on-our-own-dataset/</loc>
     <lastmod>2016-11-18T07:39:41.000Z</lastmod>
     <data>
@@ -71,26 +119,6 @@
          
          
            
-        </display>
-    </data>
-    </url>
-
-    
-  <url>
-    <loc>http://www.yuthon.com/2016/11/01/Notes-for-SLIC-Superpixels-Compared-to-State-of-the-Art-Superpixel-Methods/</loc>
-    <lastmod>2016-11-08T11:25:09.000Z</lastmod>
-    <data>
-        <display>
-        <title>Notes for SLIC Superpixels Compared to State-of-the-Art Superpixel Methods</title>
-        <pubTime>2016-11-01T10:21:04.000Z</pubTime>
-        
-        <tag>Superpixel</tag>
-         
-         
-           
-             
-              <breadCrumb title="Notes" url="http://www.yuthon.com/categories/Notes/"/>
-          
         </display>
     </data>
     </url>
@@ -558,12 +586,12 @@
 
     
   <url>
-    <loc>http://www.yuthon.com/2016/04/14/CodeSchool-Shaping-up-with-Angular.js/</loc>
+    <loc>http://www.yuthon.com/2016/04/13/CodeSchool-Try-jQuery/</loc>
     <lastmod>2016-05-16T11:51:43.000Z</lastmod>
     <data>
         <display>
-        <title>Notes for Code School - Shaping up with Angular.js</title>
-        <pubTime>2016-04-14T13:19:22.000Z</pubTime>
+        <title>Notes for Code School - Try jQuery</title>
+        <pubTime>2016-04-13T09:24:09.000Z</pubTime>
         
         <tag>CodeSchool</tag>
          
@@ -580,12 +608,12 @@
 
     
   <url>
-    <loc>http://www.yuthon.com/2016/04/12/CodeSchool-JavaScript-Best-Practices/</loc>
+    <loc>http://www.yuthon.com/2016/04/14/CodeSchool-Shaping-up-with-Angular.js/</loc>
     <lastmod>2016-05-16T11:51:43.000Z</lastmod>
     <data>
         <display>
-        <title>Notes for Code School - JavaScript Best Practices</title>
-        <pubTime>2016-04-12T10:19:54.000Z</pubTime>
+        <title>Notes for Code School - Shaping up with Angular.js</title>
+        <pubTime>2016-04-14T13:19:22.000Z</pubTime>
         
         <tag>CodeSchool</tag>
          
@@ -624,12 +652,12 @@
 
     
   <url>
-    <loc>http://www.yuthon.com/2016/04/13/CodeSchool-Try-jQuery/</loc>
+    <loc>http://www.yuthon.com/2016/04/12/CodeSchool-JavaScript-Best-Practices/</loc>
     <lastmod>2016-05-16T11:51:43.000Z</lastmod>
     <data>
         <display>
-        <title>Notes for Code School - Try jQuery</title>
-        <pubTime>2016-04-13T09:24:09.000Z</pubTime>
+        <title>Notes for Code School - JavaScript Best Practices</title>
+        <pubTime>2016-04-12T10:19:54.000Z</pubTime>
         
         <tag>CodeSchool</tag>
          

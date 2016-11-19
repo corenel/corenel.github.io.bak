@@ -2,6 +2,20 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>http://www.yuthon.com/2016/11/01/Thesis-Notes-for-SLIC/</loc>
+    
+    <lastmod>2016-11-19T07:22:12.000Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://www.yuthon.com/2016/11/18/Thesis-Notes-for-YOLO/</loc>
+    
+    <lastmod>2016-11-19T07:20:59.000Z</lastmod>
+    
+  </url>
+  
+  <url>
     <loc>http://www.yuthon.com/2016/11/12/Train-YOLO-on-our-own-dataset/</loc>
     
     <lastmod>2016-11-18T07:39:41.000Z</lastmod>
@@ -33,13 +47,6 @@
     <loc>http://www.yuthon.com/2016/04/11/Tips-for-Hexo-configuration/</loc>
     
     <lastmod>2016-11-10T10:43:35.000Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>http://www.yuthon.com/2016/11/01/Notes-for-SLIC-Superpixels-Compared-to-State-of-the-Art-Superpixel-Methods/</loc>
-    
-    <lastmod>2016-11-08T11:25:09.000Z</lastmod>
     
   </url>
   
@@ -184,14 +191,14 @@
   </url>
   
   <url>
-    <loc>http://www.yuthon.com/2016/04/14/CodeSchool-Shaping-up-with-Angular.js/</loc>
+    <loc>http://www.yuthon.com/2016/04/13/CodeSchool-Try-jQuery/</loc>
     
     <lastmod>2016-05-16T11:51:43.000Z</lastmod>
     
   </url>
   
   <url>
-    <loc>http://www.yuthon.com/2016/04/12/CodeSchool-JavaScript-Best-Practices/</loc>
+    <loc>http://www.yuthon.com/2016/04/14/CodeSchool-Shaping-up-with-Angular.js/</loc>
     
     <lastmod>2016-05-16T11:51:43.000Z</lastmod>
     
@@ -205,7 +212,7 @@
   </url>
   
   <url>
-    <loc>http://www.yuthon.com/2016/04/13/CodeSchool-Try-jQuery/</loc>
+    <loc>http://www.yuthon.com/2016/04/12/CodeSchool-JavaScript-Best-Practices/</loc>
     
     <lastmod>2016-05-16T11:51:43.000Z</lastmod>
     
