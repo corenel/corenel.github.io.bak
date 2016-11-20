@@ -79,7 +79,7 @@ deploy:
   branch: master
 
 math:
-  engine: 'katex' # or 'mathjax'
+  engine: 'katex' # or 'katex'
   mathjax:
     src: custom_mathjax_source
     config:
