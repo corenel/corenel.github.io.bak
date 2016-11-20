@@ -4,8 +4,104 @@
 
     
   <url>
+    <loc>http://www.yuthon.com/2016/07/26/Coursera-Machine-Learning-Week-1/</loc>
+    <lastmod>2016-11-20T13:26:14.000Z</lastmod>
+    <data>
+        <display>
+        <title>Notes for Machine Learning - Week 1</title>
+        <pubTime>2016-07-26T03:55:36.000Z</pubTime>
+        
+        <tag>Coursera</tag>
+         
+        <tag>Machine Learning</tag>
+         
+         
+           
+             
+              <breadCrumb title="Notes" url="http://www.yuthon.com/categories/Notes/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://www.yuthon.com/2016/10/16/Notes-for-CS231n-NN/</loc>
+    <lastmod>2016-11-20T13:23:59.000Z</lastmod>
+    <data>
+        <display>
+        <title>Notes for CS231n Neural Network</title>
+        <pubTime>2016-10-16T13:04:26.000Z</pubTime>
+        
+        <tag>Deep Learning</tag>
+         
+        <tag>CS231n</tag>
+         
+        <tag>Neural Network</tag>
+         
+         
+           
+             
+              <breadCrumb title="Notes" url="http://www.yuthon.com/categories/Notes/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://www.yuthon.com/2016/10/30/Notes-for-CS231n-RNN/</loc>
+    <lastmod>2016-11-20T13:22:44.000Z</lastmod>
+    <data>
+        <display>
+        <title>Notes for CS231n Recurrent Neural Network</title>
+        <pubTime>2016-10-30T06:59:17.000Z</pubTime>
+        
+        <tag>Deep Learning</tag>
+         
+        <tag>CS231n</tag>
+         
+        <tag>Recurrent Neural Network</tag>
+         
+         
+           
+             
+              <breadCrumb title="Notes" url="http://www.yuthon.com/categories/Notes/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://www.yuthon.com/2016/11/18/Thesis-Notes-for-YOLO/</loc>
+    <lastmod>2016-11-20T13:22:06.000Z</lastmod>
+    <data>
+        <display>
+        <title>Thesis Notes for YOLO</title>
+        <pubTime>2016-11-18T14:43:26.000Z</pubTime>
+        
+        <tag>Deep Learning</tag>
+         
+        <tag>YOLO</tag>
+         
+        <tag>Object detection</tag>
+         
+        <tag>Darknet</tag>
+         
+         
+           
+             
+              <breadCrumb title="Thesis Notes" url="http://www.yuthon.com/categories/Thesis-Notes/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
     <loc>http://www.yuthon.com/2016/11/20/Thesis-Notes-for-ScribbleSup/</loc>
-    <lastmod>2016-11-20T12:44:21.000Z</lastmod>
+    <lastmod>2016-11-20T13:17:14.000Z</lastmod>
     <data>
         <display>
         <title>Thesis Notes for ScribbleSup</title>
@@ -38,32 +134,6 @@
         <tag>Superpixel</tag>
          
         <tag>SLIC</tag>
-         
-         
-           
-             
-              <breadCrumb title="Thesis Notes" url="http://www.yuthon.com/categories/Thesis-Notes/"/>
-          
-        </display>
-    </data>
-    </url>
-
-    
-  <url>
-    <loc>http://www.yuthon.com/2016/11/18/Thesis-Notes-for-YOLO/</loc>
-    <lastmod>2016-11-19T07:20:59.000Z</lastmod>
-    <data>
-        <display>
-        <title>Thesis Notes for YOLO</title>
-        <pubTime>2016-11-18T14:43:26.000Z</pubTime>
-        
-        <tag>Deep Learning</tag>
-         
-        <tag>YOLO</tag>
-         
-        <tag>Object detection</tag>
-         
-        <tag>Darknet</tag>
          
          
            
@@ -223,30 +293,6 @@
 
     
   <url>
-    <loc>http://www.yuthon.com/2016/10/30/Notes-for-CS231n-RNN/</loc>
-    <lastmod>2016-10-31T11:42:10.000Z</lastmod>
-    <data>
-        <display>
-        <title>Notes for CS231n Recurrent Neural Network</title>
-        <pubTime>2016-10-30T06:59:17.000Z</pubTime>
-        
-        <tag>Deep Learning</tag>
-         
-        <tag>CS231n</tag>
-         
-        <tag>Recurrent Neural Network</tag>
-         
-         
-           
-             
-              <breadCrumb title="Notes" url="http://www.yuthon.com/categories/Notes/"/>
-          
-        </display>
-    </data>
-    </url>
-
-    
-  <url>
     <loc>http://www.yuthon.com/2016/10/25/CUDA-and-Tensorflow-Installation-on-Ubuntu-16-04/</loc>
     <lastmod>2016-10-30T07:01:16.000Z</lastmod>
     <data>
@@ -285,30 +331,6 @@
         <tag>CS231n</tag>
          
         <tag>Convolutional Neural Network</tag>
-         
-         
-           
-             
-              <breadCrumb title="Notes" url="http://www.yuthon.com/categories/Notes/"/>
-          
-        </display>
-    </data>
-    </url>
-
-    
-  <url>
-    <loc>http://www.yuthon.com/2016/10/16/Notes-for-CS231n-NN/</loc>
-    <lastmod>2016-10-18T11:45:51.000Z</lastmod>
-    <data>
-        <display>
-        <title>Notes for CS231n Neural Network</title>
-        <pubTime>2016-10-16T13:04:26.000Z</pubTime>
-        
-        <tag>Deep Learning</tag>
-         
-        <tag>CS231n</tag>
-         
-        <tag>Neural Network</tag>
          
          
            
@@ -545,28 +567,6 @@
 
     
   <url>
-    <loc>http://www.yuthon.com/2016/07/26/Coursera-Machine-Learning-Week-1/</loc>
-    <lastmod>2016-07-29T08:21:27.000Z</lastmod>
-    <data>
-        <display>
-        <title>Notes for Machine Learning - Week 1</title>
-        <pubTime>2016-07-26T03:55:36.000Z</pubTime>
-        
-        <tag>Coursera</tag>
-         
-        <tag>Machine Learning</tag>
-         
-         
-           
-             
-              <breadCrumb title="Notes" url="http://www.yuthon.com/categories/Notes/"/>
-          
-        </display>
-    </data>
-    </url>
-
-    
-  <url>
     <loc>http://www.yuthon.com/2016/04/10/CodeSchool-ES2015/</loc>
     <lastmod>2016-07-26T03:56:32.000Z</lastmod>
     <data>
@@ -610,12 +610,12 @@
 
     
   <url>
-    <loc>http://www.yuthon.com/2016/04/09/CodeSchool-Javascript/</loc>
+    <loc>http://www.yuthon.com/2016/04/14/CodeSchool-Shaping-up-with-Angular.js/</loc>
     <lastmod>2016-05-16T11:51:43.000Z</lastmod>
     <data>
         <display>
-        <title>Notes for Code School - JavaScript Road Trip</title>
-        <pubTime>2016-04-09T04:37:07.000Z</pubTime>
+        <title>Notes for Code School - Shaping up with Angular.js</title>
+        <pubTime>2016-04-14T13:19:22.000Z</pubTime>
         
         <tag>CodeSchool</tag>
          
@@ -632,12 +632,12 @@
 
     
   <url>
-    <loc>http://www.yuthon.com/2016/04/14/CodeSchool-Shaping-up-with-Angular.js/</loc>
+    <loc>http://www.yuthon.com/2016/04/13/CodeSchool-Try-jQuery/</loc>
     <lastmod>2016-05-16T11:51:43.000Z</lastmod>
     <data>
         <display>
-        <title>Notes for Code School - Shaping up with Angular.js</title>
-        <pubTime>2016-04-14T13:19:22.000Z</pubTime>
+        <title>Notes for Code School - Try jQuery</title>
+        <pubTime>2016-04-13T09:24:09.000Z</pubTime>
         
         <tag>CodeSchool</tag>
          
@@ -676,12 +676,12 @@
 
     
   <url>
-    <loc>http://www.yuthon.com/2016/04/13/CodeSchool-Try-jQuery/</loc>
+    <loc>http://www.yuthon.com/2016/04/09/CodeSchool-Javascript/</loc>
     <lastmod>2016-05-16T11:51:43.000Z</lastmod>
     <data>
         <display>
-        <title>Notes for Code School - Try jQuery</title>
-        <pubTime>2016-04-13T09:24:09.000Z</pubTime>
+        <title>Notes for Code School - JavaScript Road Trip</title>
+        <pubTime>2016-04-09T04:37:07.000Z</pubTime>
         
         <tag>CodeSchool</tag>
          
