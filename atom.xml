@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://www.yuthon.com/"/>
-  <updated>2016-11-19T07:20:59.000Z</updated>
+  <updated>2016-11-20T12:44:21.000Z</updated>
   <id>http://www.yuthon.com/</id>
   
   <author>
@@ -14,6 +14,111 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>Thesis Notes for ScribbleSup</title>
+    <link href="http://www.yuthon.com/2016/11/20/Thesis-Notes-for-ScribbleSup/"/>
+    <id>http://www.yuthon.com/2016/11/20/Thesis-Notes-for-ScribbleSup/</id>
+    <published>2016-11-20T10:26:24.000Z</published>
+    <updated>2016-11-20T12:44:21.000Z</updated>
+    
+    <content type="html"><![CDATA[<p>毕设需要写一个图像标注的软件, 来给场景分割的数据集做标注. 经学长推荐, 看了今年的这篇文章, 作者中竟然还有 Kaiming He 大神, 给微软膜一秒.</p>
+<p>这篇文章讲了一个弱监督的场景分割的算法 ScribbleSup, 主要是先通过 GrubCut 将输入的 scribble 信息广播到没有标注的像素, 然后用 FCN 来做像素级别的预测. 令人遗憾的是 Github 上并没有人实现 (不能偷懒了TAT).</p>
+<a id="more"></a>
+<h2 id="Introduction"><a href="#Introduction" class="headerlink" title="Introduction"></a>Introduction</h2><p>TBD</p>
+<h2 id="Scribble-Supervised-Learning"><a href="#Scribble-Supervised-Learning" class="headerlink" title="Scribble-Supervised Learning"></a>Scribble-Supervised Learning</h2><h3 id="Objective-Functions"><a href="#Objective-Functions" class="headerlink" title="Objective Functions"></a>Objective Functions</h3><p>主要用到的记号如下:</p>
+<table>
+<thead>
+<tr>
+<th>Symbol</th>
+<th>Name</th>
+<th>Note</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>$X$</td>
+<td>training image</td>
+<td></td>
+</tr>
+<tr>
+<td>${x_i}$</td>
+<td>set of non-overlapping superpixles</td>
+<td>$\cup_i x_i = X; x_i \cap x_j = \varnothing, \forall i,j$</td>
+</tr>
+<tr>
+<td>$S$</td>
+<td>scribble annotations of image</td>
+<td>$S={s_k, c_k}$</td>
+</tr>
+<tr>
+<td>$s_k$</td>
+<td>the pixels of a scribble $k$</td>
+<td></td>
+</tr>
+<tr>
+<td>$c_k$</td>
+<td>the scribble’s category label</td>
+<td>$0 \le c_k \le C$; $c_k=0$ for background</td>
+</tr>
+<tr>
+<td>$Y$ or ${y_i}$</td>
+<td>the category label of ${x_i}$</td>
+<td>provides full annotations of the image</td>
+</tr>
+</tbody>
+</table>
+<p>定义目标函数为</p>
+<p>$$\sum_i \psi_i (y_i | X,S) + \sum_{i,j} \psi_{ij} (y_i, y_j | X)$$</p>
+<p>其中$\psi_i$是一个关于$x_i$的一元项 (unary term), 而$\psi\ _{ij}$是关于$x_i$与$x_j$的成对项 (pairwise term).</p>
+<ul>
+<li><p>$\psi _i$由两个部分组成, 一个是$\psi ^{scr}_i$, 另一个是$\psi^{net}_i$.两者权重相同, $\psi _i = \psi^{scr} _i + \psi^{net} _i$.</p>
+<ul>
+<li><p>$\psi ^{scr}_i$ 基于 scribble, 定义如下:<br>$$<br>\psi ^{scr}_i=<br>\begin{aligned}<br>&amp;0 &amp; \text{if $y_i=c_k$ and $x_i \cap s_k \ne \varnothing$}\\<br>&amp;-log(\frac{1}{|c_k|}) &amp; \text{if $y_i \in {c_k}$ and $x_i \cap S = \varnothing$} \\<br>&amp;\infty &amp; \text{otherwise} \\<br>\end{aligned}<br>$$</p>
+<ul>
+<li>当$x_i$与$s_k$有交集, 且标签是分到$c_k$时, 则$cost=0$</li>
+<li>当$x_i$与所有 scribble 都没有交集, 则它可以被等概率地分给任何标签. 当然, $y_i$需要在${c_k}$之内. 此处$|{c_k}|$表示标签集内元素个数.</li>
+<li>如果不是以上两种情况, 则$cost= \infty$</li>
+</ul>
+</li>
+<li><p>$\psi ^{net}_i$基于 FCN 的输出, 定义为<br>$$<br>\psi^{net}_i (y_i) = -log P(y_i|X, \Theta)<br>$$</p>
+<ul>
+<li>$\Theta$表示网络的参数</li>
+<li>$log P(y_i|X, \Theta)$表示了$x_i$属于标签$y_i$的对数概率, 实际上是$x_i$内所有像素的对数概率之和.</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>$\psi_{ij}$用以衡量相邻的两个超像素的相似程度, 主要是用色彩直方图与纹理直方图来量化 (均已归一化).<br>$$<br>\psi_{ij} (y_i, y_j | X) = [y_i \ne y_j] exp \left( -\frac{||h_c(x_i) - h_c(x_j)||^2_2}{\delta_c^2} - \frac{||h_t(x_i) - h_t(x_j)||^2_2}{\delta_t^2} \right)<br>$$</p>
+<ul>
+<li>$h_c(x_i)$ 表示RGB三个 channel 每个 channel 分成 25 bins 的色彩直方图</li>
+<li>$h_t(x_i)$ 表示横向与纵向的梯度直方图, 每个方向 10 bins</li>
+<li>$[\cdot]$表示一个符号函数, 条件为真则为$1$, 否则为$0$</li>
+<li>$\delta_c=5, \delta_t = 10$</li>
+<li>对于不是同一个标签的临近超像素来说, 它们间的外观越相似, 则 cost 越大</li>
+</ul>
+</li>
+</ul>
+<p>(To be continued…)</p>
+]]></content>
+    
+    <summary type="html">
+    
+      &lt;p&gt;毕设需要写一个图像标注的软件, 来给场景分割的数据集做标注. 经学长推荐, 看了今年的这篇文章, 作者中竟然还有 Kaiming He 大神, 给微软膜一秒.&lt;/p&gt;
+&lt;p&gt;这篇文章讲了一个弱监督的场景分割的算法 ScribbleSup, 主要是先通过 GrubCut 将输入的 scribble 信息广播到没有标注的像素, 然后用 FCN 来做像素级别的预测. 令人遗憾的是 Github 上并没有人实现 (不能偷懒了TAT).&lt;/p&gt;
+    
+    </summary>
+    
+      <category term="Thesis Notes" scheme="http://www.yuthon.com/categories/Thesis-Notes/"/>
+    
+    
+      <category term="Deep Learning" scheme="http://www.yuthon.com/tags/Deep-Learning/"/>
+    
+      <category term="ScribbleSup" scheme="http://www.yuthon.com/tags/ScribbleSup/"/>
+    
+      <category term="Scene Segmentation" scheme="http://www.yuthon.com/tags/Scene-Segmentation/"/>
+    
+  </entry>
   
   <entry>
     <title>Thesis Notes for YOLO</title>
@@ -2473,31 +2578,6 @@
 &lt;/li&gt;
 &lt;li&gt;Logistic Regression (逻辑回归) : $0\le h_\theta \le 1$&lt;/li&gt;
 &lt;/ul&gt;
-    
-    </summary>
-    
-      <category term="Notes" scheme="http://www.yuthon.com/categories/Notes/"/>
-    
-    
-      <category term="Coursera" scheme="http://www.yuthon.com/tags/Coursera/"/>
-    
-      <category term="Machine Learning" scheme="http://www.yuthon.com/tags/Machine-Learning/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>Exercise in Machine Learning</title>
-    <link href="http://www.yuthon.com/2016/08/05/Coursera-Machine-Learning-Exercise/"/>
-    <id>http://www.yuthon.com/2016/08/05/Coursera-Machine-Learning-Exercise/</id>
-    <published>2016-08-05T04:12:54.000Z</published>
-    <updated>2016-08-05T04:15:55.000Z</updated>
-    
-    <content type="html"><![CDATA[<p>My exercise files and notes are put in <a href="https://github.com/corenel/Notes-for-Machine-Learning-in-Coursera" target="_blank" rel="external">Github</a>.</p>
-]]></content>
-    
-    <summary type="html">
-    
-      &lt;p&gt;My exercise files and notes are put in &lt;a href=&quot;https://github.com/corenel/Notes-for-Machine-Learning-in-Coursera&quot; target=&quot;_blank&quot; rel=&quot;e
     
     </summary>
     
