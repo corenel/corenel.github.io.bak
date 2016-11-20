@@ -15,8 +15,8 @@ tags:
 ### Model Representation
 
 * **Supervised Learning (监督学习)**: Given the "right answer" for each example in the data.
-  * **Regression Problem (回归问题)**: Predict real-valued output. 
-  * **Classification Problem (分类问题)**: Predict discrete-valued output.
+  * **Regression Problem (回归问题)**: Predict real-valued output.
+  * **Classification Problem (分类问题)**: Predict discrete-valued output.
 * **Training set (训练集)**
   * **m**: number of training examples
   * **x**'s: "input" variable / features
@@ -120,4 +120,3 @@ And the cost funciton of linear refression is always a convex function (凸函�
 
 * The algorithm that we just went over is sometimes called **Batch Gradient Descent (批量梯度下降)**.
 * "Batch": Each step of gradient descent uses all th etraining examples.
-

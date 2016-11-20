@@ -29,9 +29,9 @@ tags:
 
 # Lecture 5
 
-## Activation Functions 
+## Activation Functions
 
-课程中主要讲了Sigmoid, tanh, ReLU, Leaky ReLU, Maxout 以及 ELU 这几种激活函数. 
+课程中主要讲了Sigmoid, tanh, ReLU, Leaky ReLU, Maxout 以及 ELU 这几种激活函数.
 
 ![activation_functions](/images/activation_functions.png)
 
@@ -84,7 +84,7 @@ tags:
 
 ## Weight Initialization
 
-由于各种原因, 将 Weight 全部初始化为0, 或者是小随机数的方法都不大好(一个是由于对称性, 另一个是由于梯度信号太小). 建议使用的是下面这个(配合 ReLU):
+由于各种原因, 将 Weight 全部初始化为0, 或者是小随机数的方法都不大好(一个是由于对称性, 另一个是由于梯度信号太小). 建议使用的是下面这个(配合 ReLU):
 
 ```python
 w = np.random.randn(n) * sqrt(2.0/n)
@@ -94,7 +94,7 @@ w = np.random.randn(n) * sqrt(2.0/n)
 
  ![xavier_init](/images/xavier_init.png)
 
-另外就是还推荐 **Batch Normalization** (批量归一化), 通常应用在全连接层之后, 激活函数之前. 具体参见论文[Ioffe and Szegedy, 2015]. 
+另外就是还推荐 **Batch Normalization** (批量归一化), 通常应用在全连接层之后, 激活函数之前. 具体参见论文[Ioffe and Szegedy, 2015].
 
 ![batch_normalizaition](/images/batch_normalizaition.png)
 
@@ -268,25 +268,25 @@ redundant representation), 或者说是训练出了一个大的集成网络 (Dro
 
 ```python
 p = 0.5 # probability of keeping a unit active. higher = less dropout
-def train_step(X): 
+def train_step(X):
     """ X contains the datat """
-    
+
     # forward pass for example 3-layer neural network
-    H1 = np.maximum(0, np.dot(W1, X) + b1) 
-    U1 = (np.random.rand(*H1.shape) < p) / p # First dropout mask. Notice /p! 
-    H1 *= U1 # drop! 
-    H2 = np.maximum(0, np.dot(W2, H1) + b2) 
+    H1 = np.maximum(0, np.dot(W1, X) + b1)
+    U1 = (np.random.rand(*H1.shape) < p) / p # First dropout mask. Notice /p!
+    H1 *= U1 # drop!
+    H2 = np.maximum(0, np.dot(W2, H1) + b2)
     U2 = (np.random.rand(*H2.shape) < p) / p # Second dropout mask. Notice /p!  
-    H2 *= U2 # drop! 
-    out = np.dot(W3, H2) + b3 
-    
-    # backward pass: compute geadients ... (not shown) 
-    # parameter update... (not shown) 
+    H2 *= U2 # drop!
+    out = np.dot(W3, H2) + b3
+
+    # backward pass: compute geadients ... (not shown)
+    # parameter update... (not shown)
 
 def predict(X):
-    # ensembled forward pass 
-    H1 = np.maximum(0, np.dot(W1, X) + b1) # no scaling necessary 
-    H2 = np.maximum(0, np.dot(W2, H1) + b2) 
+    # ensembled forward pass
+    H1 = np.maximum(0, np.dot(W1, X) + b1) # no scaling necessary
+    H2 = np.maximum(0, np.dot(W2, H1) + b2)
     out = np.dot(W3, H2) + b3
 ```
 

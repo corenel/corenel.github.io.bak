@@ -10,7 +10,7 @@ categories:
   - Thesis Notes
 ---
 
-前几天发烧流鼻涕, 睡不了觉, 因此就熬夜读完了 YOLO 的论文. 可以说, YOLO 的实现方式相较于之前 R-CNN 一系的 Region Proposal 的方法来说, 很有新意. YOLO 将 Classification 和 Bounding Box Regression 合起来放进了 CNN 的输出层里面, 从而大大加快了速度. 
+前几天发烧流鼻涕, 睡不了觉, 因此就熬夜读完了 YOLO 的论文. 可以说, YOLO 的实现方式相较于之前 R-CNN 一系的 Region Proposal 的方法来说, 很有新意. YOLO 将 Classification 和 Bounding Box Regression 合起来放进了 CNN 的输出层里面, 从而大大加快了速度.
 
 <!-- more -->
 
@@ -81,7 +81,7 @@ YOLO 将整张图分成了$S\times S$个网格 (论文中$S=2$), 如果一个物
   * $Dropout = 0.5$
   * 对图像进行最大$20\%$的随机缩放和平移变换, 同时还有最大$1.5$的曝光与色调变换
 
-## Limitations of YOLO
+## Limitations of YOLO
 
 * 由于 YOLO 每个网格只有 $B$ 个Bounding Box与1个 Class, 因此限制了临近物体检测到的个数
 * 泛化能力不够, 由于降采样比较多导致只能用比较粗的特征
