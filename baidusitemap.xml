@@ -4,6 +4,30 @@
 
     
   <url>
+    <loc>http://www.yuthon.com/2016/11/20/Thesis-Notes-for-ScribbleSup/</loc>
+    <lastmod>2016-11-21T08:18:27.000Z</lastmod>
+    <data>
+        <display>
+        <title>Thesis Notes for ScribbleSup</title>
+        <pubTime>2016-11-20T10:26:24.000Z</pubTime>
+        
+        <tag>Deep Learning</tag>
+         
+        <tag>ScribbleSup</tag>
+         
+        <tag>Scene Segmentation</tag>
+         
+         
+           
+             
+              <breadCrumb title="Thesis Notes" url="http://www.yuthon.com/categories/Thesis-Notes/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
     <loc>http://www.yuthon.com/2016/07/26/Coursera-Machine-Learning-Week-1/</loc>
     <lastmod>2016-11-20T13:26:14.000Z</lastmod>
     <data>
@@ -88,30 +112,6 @@
         <tag>Object detection</tag>
          
         <tag>Darknet</tag>
-         
-         
-           
-             
-              <breadCrumb title="Thesis Notes" url="http://www.yuthon.com/categories/Thesis-Notes/"/>
-          
-        </display>
-    </data>
-    </url>
-
-    
-  <url>
-    <loc>http://www.yuthon.com/2016/11/20/Thesis-Notes-for-ScribbleSup/</loc>
-    <lastmod>2016-11-20T13:17:14.000Z</lastmod>
-    <data>
-        <display>
-        <title>Thesis Notes for ScribbleSup</title>
-        <pubTime>2016-11-20T10:26:24.000Z</pubTime>
-        
-        <tag>Deep Learning</tag>
-         
-        <tag>ScribbleSup</tag>
-         
-        <tag>Scene Segmentation</tag>
          
          
            
@@ -610,28 +610,6 @@
 
     
   <url>
-    <loc>http://www.yuthon.com/2016/04/14/CodeSchool-Shaping-up-with-Angular.js/</loc>
-    <lastmod>2016-05-16T11:51:43.000Z</lastmod>
-    <data>
-        <display>
-        <title>Notes for Code School - Shaping up with Angular.js</title>
-        <pubTime>2016-04-14T13:19:22.000Z</pubTime>
-        
-        <tag>CodeSchool</tag>
-         
-        <tag>JavaScript</tag>
-         
-         
-           
-             
-              <breadCrumb title="Notes" url="http://www.yuthon.com/categories/Notes/"/>
-          
-        </display>
-    </data>
-    </url>
-
-    
-  <url>
     <loc>http://www.yuthon.com/2016/04/13/CodeSchool-Try-jQuery/</loc>
     <lastmod>2016-05-16T11:51:43.000Z</lastmod>
     <data>
@@ -654,12 +632,12 @@
 
     
   <url>
-    <loc>http://www.yuthon.com/2016/04/12/CodeSchool-JavaScript-Best-Practices/</loc>
+    <loc>http://www.yuthon.com/2016/04/14/CodeSchool-Shaping-up-with-Angular.js/</loc>
     <lastmod>2016-05-16T11:51:43.000Z</lastmod>
     <data>
         <display>
-        <title>Notes for Code School - JavaScript Best Practices</title>
-        <pubTime>2016-04-12T10:19:54.000Z</pubTime>
+        <title>Notes for Code School - Shaping up with Angular.js</title>
+        <pubTime>2016-04-14T13:19:22.000Z</pubTime>
         
         <tag>CodeSchool</tag>
          
@@ -682,6 +660,28 @@
         <display>
         <title>Notes for Code School - JavaScript Road Trip</title>
         <pubTime>2016-04-09T04:37:07.000Z</pubTime>
+        
+        <tag>CodeSchool</tag>
+         
+        <tag>JavaScript</tag>
+         
+         
+           
+             
+              <breadCrumb title="Notes" url="http://www.yuthon.com/categories/Notes/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://www.yuthon.com/2016/04/12/CodeSchool-JavaScript-Best-Practices/</loc>
+    <lastmod>2016-05-16T11:51:43.000Z</lastmod>
+    <data>
+        <display>
+        <title>Notes for Code School - JavaScript Best Practices</title>
+        <pubTime>2016-04-12T10:19:54.000Z</pubTime>
         
         <tag>CodeSchool</tag>
          

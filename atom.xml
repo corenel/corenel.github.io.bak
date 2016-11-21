@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://www.yuthon.com/"/>
-  <updated>2016-11-20T13:17:14.000Z</updated>
+  <updated>2016-11-21T08:18:27.000Z</updated>
   <id>http://www.yuthon.com/</id>
   
   <author>
@@ -20,10 +20,10 @@
     <link href="http://www.yuthon.com/2016/11/20/Thesis-Notes-for-ScribbleSup/"/>
     <id>http://www.yuthon.com/2016/11/20/Thesis-Notes-for-ScribbleSup/</id>
     <published>2016-11-20T10:26:24.000Z</published>
-    <updated>2016-11-20T13:17:14.000Z</updated>
+    <updated>2016-11-21T08:18:27.000Z</updated>
     
     <content type="html"><![CDATA[<p>毕设需要写一个图像标注的软件, 来给场景分割的数据集做标注. 经学长推荐, 看了今年的这篇文章, 作者中竟然还有 Kaiming He 大神, 给微软膜一秒.</p>
-<p>这篇文章讲了一个弱监督的场景分割的算法 ScribbleSup, 主要是先通过 GrubCut 将输入的 scribble 信息广播到没有标注的像素, 然后用 FCN 来做像素级别的预测. 令人遗憾的是 Github 上并没有人实现 (不能偷懒了TAT).</p>
+<p>这篇文章讲了一个弱监督的场景分割的算法 ScribbleSup, 主要是先通过 Graph Cut 将输入的 scribble 信息广播到没有标注的像素, 然后用 FCN 来做像素级别的预测. 令人遗憾的是 Github 上并没有人实现 (不能偷懒了TAT).</p>
 <a id="more"></a>
 <h2 id="Introduction"><a href="#Introduction" class="headerlink" title="Introduction"></a>Introduction</h2><p>TBD</p>
 <h2 id="Scribble-Supervised-Learning"><a href="#Scribble-Supervised-Learning" class="headerlink" title="Scribble-Supervised Learning"></a>Scribble-Supervised Learning</h2><h3 id="Objective-Functions"><a href="#Objective-Functions" class="headerlink" title="Objective Functions"></a>Objective Functions</h3><p>主要用到的记号如下:</p>
@@ -99,13 +99,38 @@
 </ul>
 </li>
 </ul>
+<p>最后把上边这些合起来, 就成了一个对于以下式子进行最优化的问题:<br>$$<br>\sum_i \psi^{scr}_i (y_i |X, S) + \sum_i -log P(y_i  | X, \Theta) + \sum_{i,j} \psi_{ij} (y_i, y_j | X)<br>$$<br>其中有两组变量, 一个是所有超像素的标签$Y={y_i}$, 另一个是 FCN 的参数 $\Theta$.</p>
+<p> <img src="/images/ScribbleSup_grapgical_model.png" alt="ScribbleSup_grapgical_model"></p>
+<h3 id="Optimization"><a href="#Optimization" class="headerlink" title="Optimization"></a>Optimization</h3><p>论文里采用的是一种交替优化的方法:</p>
+<ul>
+<li>$\Theta$固定, 优化$Y$, slover 基于 scribbles, appearance 以及 FCN 网络的预测, 将标签传播到未标记的像素中</li>
+<li>$Y$固定, 优化$\Theta$, slover 对 pixel-wise 的语义分割的 FCN 进行学习</li>
+</ul>
+<p>具体的来说就是</p>
+<ul>
+<li><p><strong>Propagating scribble information to unmarked pixels</strong></p>
+<p>当$\Theta$固定时, 一元项$\psi _i = \psi^{scr} _i + \psi^{net} _i$能够用列举所有可能的标签$0 \le y_i \le C$得到, 成对项也能够预先计算生成一个 look-up table. 因此, 优化问题就能用 graph cut 的方法来解决. 论文里用的是<a href="http://www.csd.uwo.ca/faculty/yuri/Papers/pami04.pdf" target="_blank" rel="external">这一篇文章</a>的<a href="http://vision.csd.uwo.ca/code/gco- v3.0.zip" target="_blank" rel="external">现成代码</a>.</p>
+</li>
+<li><p><strong>Optimizing network parameters</strong></p>
+<p>前一步做完后, 所有超像素的标签都已经定好了, 也就是说$Y$固定了. 之后优化$\Theta$就相当于用$Y$做为监督来训练 FCN. $Y$有了, 那么每个像素的标签就有了, 然后 FCN 面对的就是一个 pixel-wise 的回归问题. FCN 的最后一层输出的就是每个像素的分类的对数概率, 可以用来更新 graph 上的一元项.</p>
+</li>
+</ul>
+<p>训练的时候有几点需要注意:</p>
+<ul>
+<li>初始化的时候没有 network prediction, 因此就是直接用 graph cut 初始化的. 之后则是在两步之间不断迭代.</li>
+<li>每次 network optimizing step 的时候, 前50k次用0.0003的 learning rate, 后10k次用0.0001的 learning rate, batch size 为 8.</li>
+<li>每次 network optimizing step 都是从一个 pre-trained 的 model (比如 VGG-16) 重新初始化的. 作者也试过复用上一次迭代后的权重, 但是效果不是很理想. 似乎是由于本来标签就不可靠, 导致训练的时候参数被调到了不太好的局部最优里面.</li>
+<li>基本上3次迭代就能得到比较好的效果了, 再多得到的提升微乎其微.</li>
+</ul>
+<p>迭代结果如下:</p>
+<p> <img src="/images/ScribbleSup_training.png" alt="ScribbleSup_training"></p>
 <p>(To be continued…)</p>
 ]]></content>
     
     <summary type="html">
     
       &lt;p&gt;毕设需要写一个图像标注的软件, 来给场景分割的数据集做标注. 经学长推荐, 看了今年的这篇文章, 作者中竟然还有 Kaiming He 大神, 给微软膜一秒.&lt;/p&gt;
-&lt;p&gt;这篇文章讲了一个弱监督的场景分割的算法 ScribbleSup, 主要是先通过 GrubCut 将输入的 scribble 信息广播到没有标注的像素, 然后用 FCN 来做像素级别的预测. 令人遗憾的是 Github 上并没有人实现 (不能偷懒了TAT).&lt;/p&gt;
+&lt;p&gt;这篇文章讲了一个弱监督的场景分割的算法 ScribbleSup, 主要是先通过 Graph Cut 将输入的 scribble 信息广播到没有标注的像素, 然后用 FCN 来做像素级别的预测. 令人遗憾的是 Github 上并没有人实现 (不能偷懒了TAT).&lt;/p&gt;
     
     </summary>
     
