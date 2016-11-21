@@ -108,10 +108,34 @@ $$
 * 每次 network optimizing step 的时候, 前50k次用0.0003的 learning rate, 后10k次用0.0001的 learning rate, batch size 为 8.
 * 每次 network optimizing step 都是从一个 pre-trained 的 model (比如 VGG-16) 重新初始化的. 作者也试过复用上一次迭代后的权重, 但是效果不是很理想. 似乎是由于本来标签就不可靠, 导致训练的时候参数被调到了不太好的局部最优里面.
 * 基本上3次迭代就能得到比较好的效果了, 再多得到的提升微乎其微.
+* 做验证的时候只要用 FCN 就好了, 超像素和 graph model 之类的都只是用来训练用的.
+* Post-process 用了 CRF.
 
 迭代结果如下:
 
  ![ScribbleSup_training](/images/ScribbleSup_training.png)
+
+### Related Work
+
+#### Graphical models for segmentation
+
+Graphical model 在交互式的图像分割和语义分割领域是很常见的, 通常是目标函数包含了一元项和成对项, 特别适用于对局部和全局的空间约束的建模.
+
+有趣的是, FCN 作为目前最成功的语义分割的方法之一, 由于做的是 pixel-wise 的 regression, 因此其目标函数只有一元项. 不过像 CRF/MRF 这样给 FCN 做 post-processing 或是 joint-training 的方法在之后也发展起来了.
+
+但是这一类 graph model 都是强监督的, 主要工作是在优化 mask 的边缘, 而 ScribbleSup 里面的 graph model 主要是用来把标签传播到其他未标注的像素上. 同时, 这类方法是 pixel-based, 而 ScribbleSup 是 super-pixel-based.
+
+#### Weakly-supervised semantic segmentation
+
+用 CNN/FCN 来做弱监督的语义分割的方法很多, 用的标注方法也有很多种.
+
+* Image-level 的标注很容易获取, 但是只用这个的话精度远低于强监督的结果
+* Box-level 的相比较而言结果与强监督的接近了不少. 由于 Box annotations 本身就提供了物体边缘以及可信的背景区域的信息, 因此就不需要 graph model 来传播标签.
+
+这些方法和本篇论文里面讲的 ScribbleSup 比起来到底哪个更胜一筹, 姿势水平更高, 就看下面的实验了.
+
+
+
 
 
 (To be continued...)
