@@ -136,6 +136,31 @@ Graphical model 在交互式的图像分割和语义分割领域是很常见的,
 
 
 
+## Experiment
 
+### Annotating Scribbles
+
+主要使用了 PASCAL VOC 2012 (20个分类) 以及 PASCAL-CONTEXT (59个分类) 这两个数据集, 同时也标注了 PASCAL VOC 2007 (标注了59个分类). 不过 2007 没有 mask-level 的标注.
+
+总共有10个人在标注, 每张图片一人标注一人检查. 平均下来20分类的话每张图片25秒, 59分类的话每张图片50秒, 算是相当快的了.
+
+同时, 保证每个 object 上的 scribble 至少有其 bounding box 长边的 70% 以上的长度.
+
+### Experiments on PASCAL VOC 2012
+
+#### Strategies of utilizing scribbles
+
+ScribbleSup 是将标签的扩散与网络的训练合起来考虑的, 但是一个更为简单的方案是把这两步分开来, 先用一些现成的工具 (比如说 GrabCut 或者是 LazySnapping) 把 scribble 转换成 mask, 然后再来训练 FCN 网络. 这个方案听起来也是很吼的, 那么中央到底兹不兹瓷呢, 我们来看看实验结果
+
+| Method                   | mIoU(%) |
+| ------------------------ | ------- |
+| GrabCut + FCN            | 49.1    |
+| LazySnapping + FCN       | 53.8    |
+| ours, w/o pairwise terms | 60.5    |
+| ours, w/ pairwise terms  | 63.1    |
+
+所以说不要听风就是雨, 可以看出分两步走的方案是一个错误的道路, mIoU显著低于 ScribbleSup. 其中的原因主要是这些传统的方法仅仅针对 low-level 的空间或者是色彩信息建模, 并没有考虑到语义的层面. 也就是说, 这些方法得到的 mask 是不值得信赖的, 不能作为 ground truth 来用.
+
+而 ScribbleSup 就不同了, 通过不断的迭代, FCN 能够逐渐学习到 high-level 的语义特征, 这些特征又能反哺给 graph-based scribble propagation. 这样就形成了一个良性循环, 自然 mIoU 就不知比传统方法高到哪里去了.
 
 (To be continued...)
