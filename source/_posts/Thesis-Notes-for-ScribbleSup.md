@@ -169,7 +169,7 @@ ScribbleSup 是将标签的扩散与网络的训练合起来考虑的, 但是一
 
 Scribble quality 是个非常主观的东西, 所以为了研究这个对于准确度的影响, 论文里采用了将原 scribble 放缩为不同长度 (甚至是一个点), 然后实验来观察.
 
- ![scribble_of_different_length](/images/scribble_of_different_length.png)
+ ![scribble_of_different_length](/images/ScribbleSup_scribble_of_different_length.png)
 
 | Length ratio | mIoU (%) |
 | ------------ | -------- |
@@ -180,5 +180,41 @@ Scribble quality 是个非常主观的东西, 所以为了研究这个对于准�
 | 0 (spot)     | 51.6     |
 
 可以看出, ScribbleSup 对于 scribble length 还是比较鲁棒的, 甚至到了一个点都还能有不错的准确度.
+
+#### Comparisons with other weakly-supervised methods
+
+All methods are trained on the PASCAL VOC 2012 training images using VGG-16, except that the annotations are different.
+
+| Method            | Annotations | mIoU (%) |
+| ----------------- | ----------- | -------- |
+| MIL-FCN           | image-level | 25.1     |
+| WSSL              | image-level | 38.2     |
+| point supervision | spot        | 46.1     |
+| WSSL              | box         | 60.6     |
+| BoxSup            | box         | 62.0     |
+| ours              | spot        | 51.6     |
+| ours              | scribble    | 63.1     |
+
+可以看出
+
+* 虽然 image-level 的标注很容易标, 但是训练出来的结果惨不忍睹. 
+* 同时, 用 scribble 来标注得到的结果准确度很不错, 并且也是相对比较方便的.
+* ScribbleSup 即便是用 spot 标注, 结果的 mIoU 也比 point supervision 高了 5%.
+
+#### Comparisons with using masks
+
+虐了一遍同等级的 weakly-supervised 的方法之后, ScribbleSup 开始对比使用 scribble 和使用 mask 得到的结果. (在 PASCAL VOC 2012 上训练)
+
+| Supervision | \# w/ masks | \# w/scribbles | total | mIoU (%) |
+| ----------- | ----------- | -------------- | ----- | -------- |
+| weakly      | -           | 11k            | 11k   | 63.1     |
+| strongly    | 11k         | -              | 11k   | 68.5     |
+| semi        | 11k         | 10k (VOC07)    | 21k   | 71.3     |
+
+使用 scribble 比使用 mask 得到的结果差了5%左右, 考虑到这两者标注的困难程度, 这点差距还是可以忍的.
+
+ScribbleSup 其实也是可以用 mask-level 的标注来训练的. 对于 mask-level 的标注, 不使用 graph model, 直接扔到 FCN 的训练里面去就行了. 注意的是这些只能用在 FCN 的训练步骤里, 优化 graph model 这一步骤中不使用. 可以看出, scribble 与 mask 联合起来能达到71.3%的 mIoU, 可以说是非常理想了.
+
+ ![ScribbleSup_results_on_VOC_2012](/images/ScribbleSup_results_on_VOC_2012.png)
 
 (To be continued...)
