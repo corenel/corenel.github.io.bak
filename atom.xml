@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://www.yuthon.com/"/>
-  <updated>2016-11-22T14:00:45.000Z</updated>
+  <updated>2016-11-22T14:22:45.000Z</updated>
   <id>http://www.yuthon.com/</id>
   
   <author>
@@ -20,7 +20,7 @@
     <link href="http://www.yuthon.com/2016/11/20/Thesis-Notes-for-ScribbleSup/"/>
     <id>http://www.yuthon.com/2016/11/20/Thesis-Notes-for-ScribbleSup/</id>
     <published>2016-11-20T10:26:24.000Z</published>
-    <updated>2016-11-22T14:00:45.000Z</updated>
+    <updated>2016-11-22T14:22:45.000Z</updated>
     
     <content type="html"><![CDATA[<p>毕设需要写一个图像标注的软件, 来给场景分割的数据集做标注. 经学长推荐, 看了今年的这篇文章, 作者中竟然还有 Kaiming He 大神, 给微软膜一秒.</p>
 <p>这篇文章讲了一个弱监督的场景分割的算法 ScribbleSup, 主要是先通过 Graph Cut 将输入的 scribble 信息广播到没有标注的像素, 然后用 FCN 来做像素级别的预测. 令人遗憾的是 Github 上并没有人实现 (不能偷懒了TAT).</p>
@@ -169,7 +169,7 @@
 <p>而 ScribbleSup 就不同了, 通过不断的迭代, FCN 能够逐渐学习到 high-level 的语义特征, 这些特征又能反哺给 graph-based scribble propagation. 这样就形成了一个良性循环, 自然 mIoU 就不知比传统方法高到哪里去了.</p>
 <p>同时可以看出, 用了成对项的效果比不用的好. 这是因为如果没有了成对项, 那么目标函数就只剩下了一元项, graph cut 步骤变成了基于network prediction 的 winner-take-all 的模式. 这样的话, 信息的传播就只与全卷积有关, 会过于看重局部一致性, 最终导致准确度降低.</p>
 <h4 id="Sensitivities-to-scribble-quality"><a href="#Sensitivities-to-scribble-quality" class="headerlink" title="Sensitivities to scribble quality"></a>Sensitivities to scribble quality</h4><p>Scribble quality 是个非常主观的东西, 所以为了研究这个对于准确度的影响, 论文里采用了将原 scribble 放缩为不同长度 (甚至是一个点), 然后实验来观察.</p>
-<p> <img src="/images/scribble_of_different_length.png" alt="scribble_of_different_length"></p>
+<p> <img src="/images/ScribbleSup_scribble_of_different_length.png" alt="scribble_of_different_length"></p>
 <table>
 <thead>
 <tr>
@@ -201,6 +201,97 @@
 </tbody>
 </table>
 <p>可以看出, ScribbleSup 对于 scribble length 还是比较鲁棒的, 甚至到了一个点都还能有不错的准确度.</p>
+<h4 id="Comparisons-with-other-weakly-supervised-methods"><a href="#Comparisons-with-other-weakly-supervised-methods" class="headerlink" title="Comparisons with other weakly-supervised methods"></a>Comparisons with other weakly-supervised methods</h4><p>All methods are trained on the PASCAL VOC 2012 training images using VGG-16, except that the annotations are different.</p>
+<table>
+<thead>
+<tr>
+<th>Method</th>
+<th>Annotations</th>
+<th>mIoU (%)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>MIL-FCN</td>
+<td>image-level</td>
+<td>25.1</td>
+</tr>
+<tr>
+<td>WSSL</td>
+<td>image-level</td>
+<td>38.2</td>
+</tr>
+<tr>
+<td>point supervision</td>
+<td>spot</td>
+<td>46.1</td>
+</tr>
+<tr>
+<td>WSSL</td>
+<td>box</td>
+<td>60.6</td>
+</tr>
+<tr>
+<td>BoxSup</td>
+<td>box</td>
+<td>62.0</td>
+</tr>
+<tr>
+<td>ours</td>
+<td>spot</td>
+<td>51.6</td>
+</tr>
+<tr>
+<td>ours</td>
+<td>scribble</td>
+<td>63.1</td>
+</tr>
+</tbody>
+</table>
+<p>可以看出</p>
+<ul>
+<li>虽然 image-level 的标注很容易标, 但是训练出来的结果惨不忍睹. </li>
+<li>同时, 用 scribble 来标注得到的结果准确度很不错, 并且也是相对比较方便的.</li>
+<li>ScribbleSup 即便是用 spot 标注, 结果的 mIoU 也比 point supervision 高了 5%.</li>
+</ul>
+<h4 id="Comparisons-with-using-masks"><a href="#Comparisons-with-using-masks" class="headerlink" title="Comparisons with using masks"></a>Comparisons with using masks</h4><p>虐了一遍同等级的 weakly-supervised 的方法之后, ScribbleSup 开始对比使用 scribble 和使用 mask 得到的结果. (在 PASCAL VOC 2012 上训练)</p>
+<table>
+<thead>
+<tr>
+<th>Supervision</th>
+<th># w/ masks</th>
+<th># w/scribbles</th>
+<th>total</th>
+<th>mIoU (%)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>weakly</td>
+<td>-</td>
+<td>11k</td>
+<td>11k</td>
+<td>63.1</td>
+</tr>
+<tr>
+<td>strongly</td>
+<td>11k</td>
+<td>-</td>
+<td>11k</td>
+<td>68.5</td>
+</tr>
+<tr>
+<td>semi</td>
+<td>11k</td>
+<td>10k (VOC07)</td>
+<td>21k</td>
+<td>71.3</td>
+</tr>
+</tbody>
+</table>
+<p>使用 scribble 比使用 mask 得到的结果差了5%左右, 考虑到这两者标注的困难程度, 这点差距还是可以忍的.</p>
+<p>ScribbleSup 其实也是可以用 mask-level 的标注来训练的. 对于 mask-level 的标注, 不使用 graph model, 直接扔到 FCN 的训练里面去就行了. 注意的是这些只能用在 FCN 的训练步骤里, 优化 graph model 这一步骤中不使用. 可以看出, scribble 与 mask 联合起来能达到71.3%的 mIoU, 可以说是非常理想了.</p>
+<p> <img src="/images/ScribbleSup_results_on_VOC_2012.png" alt="ScribbleSup_results_on_VOC_2012"></p>
 <p>(To be continued…)</p>
 ]]></content>
     
