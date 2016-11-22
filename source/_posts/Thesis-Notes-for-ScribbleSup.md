@@ -217,4 +217,20 @@ ScribbleSup 其实也是可以用 mask-level 的标注来训练的. 对于 mask-
 
  ![ScribbleSup_results_on_VOC_2012](/images/ScribbleSup_results_on_VOC_2012.png)
 
+### Experiments on PASCAL-CONTEXT
+
+To the best of our knowledge, our accuracy is the current state of the art on this dataset. (向dalao低头)
+
+| Method       | Data/Annotations                         | mIoU (%) |
+| ------------ | ---------------------------------------- | -------- |
+| CFM          | 5k w/ masks                              | 34.4     |
+| FCN          | 5k w/ masks                              | 35.1     |
+| Boxsup       | 5k w/ masks + 133k w/ boxes (COCO+VOC7)  | 40.5     |
+| baseline     | 5k w/ masks                              | 37.7     |
+| ours, weakly | 5k w/ scribbles                          | 36.1     |
+| ours, weakly | 5k w/ scribbles + 10k w/ scribbles (VOC07) | 39.3     |
+| ours, semi   | 5k w/ masks + 10k w/ scribbles (VOC07)   | 42.0     |
+
+ ![ScribbleSup_results_on_PASCAL_CONTEXT](/images/ScribbleSup_results_on_PASCAL_CONTEXT.png)
+
 (To be continued...)
