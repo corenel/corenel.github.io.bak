@@ -163,4 +163,22 @@ ScribbleSup 是将标签的扩散与网络的训练合起来考虑的, 但是一
 
 而 ScribbleSup 就不同了, 通过不断的迭代, FCN 能够逐渐学习到 high-level 的语义特征, 这些特征又能反哺给 graph-based scribble propagation. 这样就形成了一个良性循环, 自然 mIoU 就不知比传统方法高到哪里去了.
 
+同时可以看出, 用了成对项的效果比不用的好. 这是因为如果没有了成对项, 那么目标函数就只剩下了一元项, graph cut 步骤变成了基于network prediction 的 winner-take-all 的模式. 这样的话, 信息的传播就只与全卷积有关, 会过于看重局部一致性, 最终导致准确度降低.
+
+#### Sensitivities to scribble quality
+
+Scribble quality 是个非常主观的东西, 所以为了研究这个对于准确度的影响, 论文里采用了将原 scribble 放缩为不同长度 (甚至是一个点), 然后实验来观察.
+
+ ![scribble_of_different_length](/images/scribble_of_different_length.png)
+
+| Length ratio | mIoU (%) |
+| ------------ | -------- |
+| 1            | 63.1     |
+| 0.8          | 61.8     |
+| 0.5          | 58.5     |
+| 0.3          | 54.3     |
+| 0 (spot)     | 51.6     |
+
+可以看出, ScribbleSup 对于 scribble length 还是比较鲁棒的, 甚至到了一个点都还能有不错的准确度.
+
 (To be continued...)
