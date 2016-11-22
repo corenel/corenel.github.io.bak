@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://www.yuthon.com/"/>
-  <updated>2016-11-22T14:22:45.000Z</updated>
+  <updated>2016-11-22T14:30:31.000Z</updated>
   <id>http://www.yuthon.com/</id>
   
   <author>
@@ -20,7 +20,7 @@
     <link href="http://www.yuthon.com/2016/11/20/Thesis-Notes-for-ScribbleSup/"/>
     <id>http://www.yuthon.com/2016/11/20/Thesis-Notes-for-ScribbleSup/</id>
     <published>2016-11-20T10:26:24.000Z</published>
-    <updated>2016-11-22T14:22:45.000Z</updated>
+    <updated>2016-11-22T14:30:31.000Z</updated>
     
     <content type="html"><![CDATA[<p>毕设需要写一个图像标注的软件, 来给场景分割的数据集做标注. 经学长推荐, 看了今年的这篇文章, 作者中竟然还有 Kaiming He 大神, 给微软膜一秒.</p>
 <p>这篇文章讲了一个弱监督的场景分割的算法 ScribbleSup, 主要是先通过 Graph Cut 将输入的 scribble 信息广播到没有标注的像素, 然后用 FCN 来做像素级别的预测. 令人遗憾的是 Github 上并没有人实现 (不能偷懒了TAT).</p>
@@ -292,6 +292,54 @@
 <p>使用 scribble 比使用 mask 得到的结果差了5%左右, 考虑到这两者标注的困难程度, 这点差距还是可以忍的.</p>
 <p>ScribbleSup 其实也是可以用 mask-level 的标注来训练的. 对于 mask-level 的标注, 不使用 graph model, 直接扔到 FCN 的训练里面去就行了. 注意的是这些只能用在 FCN 的训练步骤里, 优化 graph model 这一步骤中不使用. 可以看出, scribble 与 mask 联合起来能达到71.3%的 mIoU, 可以说是非常理想了.</p>
 <p> <img src="/images/ScribbleSup_results_on_VOC_2012.png" alt="ScribbleSup_results_on_VOC_2012"></p>
+<h3 id="Experiments-on-PASCAL-CONTEXT"><a href="#Experiments-on-PASCAL-CONTEXT" class="headerlink" title="Experiments on PASCAL-CONTEXT"></a>Experiments on PASCAL-CONTEXT</h3><p>To the best of our knowledge, our accuracy is the current state of the art on this dataset. (向dalao低头)</p>
+<table>
+<thead>
+<tr>
+<th>Method</th>
+<th>Data/Annotations</th>
+<th>mIoU (%)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>CFM</td>
+<td>5k w/ masks</td>
+<td>34.4</td>
+</tr>
+<tr>
+<td>FCN</td>
+<td>5k w/ masks</td>
+<td>35.1</td>
+</tr>
+<tr>
+<td>Boxsup</td>
+<td>5k w/ masks + 133k w/ boxes (COCO+VOC7)</td>
+<td>40.5</td>
+</tr>
+<tr>
+<td>baseline</td>
+<td>5k w/ masks</td>
+<td>37.7</td>
+</tr>
+<tr>
+<td>ours, weakly</td>
+<td>5k w/ scribbles</td>
+<td>36.1</td>
+</tr>
+<tr>
+<td>ours, weakly</td>
+<td>5k w/ scribbles + 10k w/ scribbles (VOC07)</td>
+<td>39.3</td>
+</tr>
+<tr>
+<td>ours, semi</td>
+<td>5k w/ masks + 10k w/ scribbles (VOC07)</td>
+<td>42.0</td>
+</tr>
+</tbody>
+</table>
+<p> <img src="/images/ScribbleSup_results_on_PASCAL_CONTEXT.png" alt="ScribbleSup_results_on_PASCAL_CONTEXT"></p>
 <p>(To be continued…)</p>
 ]]></content>
     
