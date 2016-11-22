@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://www.yuthon.com/"/>
-  <updated>2016-11-21T14:01:47.000Z</updated>
+  <updated>2016-11-22T14:00:45.000Z</updated>
   <id>http://www.yuthon.com/</id>
   
   <author>
@@ -20,7 +20,7 @@
     <link href="http://www.yuthon.com/2016/11/20/Thesis-Notes-for-ScribbleSup/"/>
     <id>http://www.yuthon.com/2016/11/20/Thesis-Notes-for-ScribbleSup/</id>
     <published>2016-11-20T10:26:24.000Z</published>
-    <updated>2016-11-21T14:01:47.000Z</updated>
+    <updated>2016-11-22T14:00:45.000Z</updated>
     
     <content type="html"><![CDATA[<p>毕设需要写一个图像标注的软件, 来给场景分割的数据集做标注. 经学长推荐, 看了今年的这篇文章, 作者中竟然还有 Kaiming He 大神, 给微软膜一秒.</p>
 <p>这篇文章讲了一个弱监督的场景分割的算法 ScribbleSup, 主要是先通过 Graph Cut 将输入的 scribble 信息广播到没有标注的像素, 然后用 FCN 来做像素级别的预测. 令人遗憾的是 Github 上并没有人实现 (不能偷懒了TAT).</p>
@@ -167,6 +167,40 @@
 </table>
 <p>所以说不要听风就是雨, 可以看出分两步走的方案是一个错误的道路, mIoU显著低于 ScribbleSup. 其中的原因主要是这些传统的方法仅仅针对 low-level 的空间或者是色彩信息建模, 并没有考虑到语义的层面. 也就是说, 这些方法得到的 mask 是不值得信赖的, 不能作为 ground truth 来用.</p>
 <p>而 ScribbleSup 就不同了, 通过不断的迭代, FCN 能够逐渐学习到 high-level 的语义特征, 这些特征又能反哺给 graph-based scribble propagation. 这样就形成了一个良性循环, 自然 mIoU 就不知比传统方法高到哪里去了.</p>
+<p>同时可以看出, 用了成对项的效果比不用的好. 这是因为如果没有了成对项, 那么目标函数就只剩下了一元项, graph cut 步骤变成了基于network prediction 的 winner-take-all 的模式. 这样的话, 信息的传播就只与全卷积有关, 会过于看重局部一致性, 最终导致准确度降低.</p>
+<h4 id="Sensitivities-to-scribble-quality"><a href="#Sensitivities-to-scribble-quality" class="headerlink" title="Sensitivities to scribble quality"></a>Sensitivities to scribble quality</h4><p>Scribble quality 是个非常主观的东西, 所以为了研究这个对于准确度的影响, 论文里采用了将原 scribble 放缩为不同长度 (甚至是一个点), 然后实验来观察.</p>
+<p> <img src="/images/scribble_of_different_length.png" alt="scribble_of_different_length"></p>
+<table>
+<thead>
+<tr>
+<th>Length ratio</th>
+<th>mIoU (%)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td>63.1</td>
+</tr>
+<tr>
+<td>0.8</td>
+<td>61.8</td>
+</tr>
+<tr>
+<td>0.5</td>
+<td>58.5</td>
+</tr>
+<tr>
+<td>0.3</td>
+<td>54.3</td>
+</tr>
+<tr>
+<td>0 (spot)</td>
+<td>51.6</td>
+</tr>
+</tbody>
+</table>
+<p>可以看出, ScribbleSup 对于 scribble length 还是比较鲁棒的, 甚至到了一个点都还能有不错的准确度.</p>
 <p>(To be continued…)</p>
 ]]></content>
     
