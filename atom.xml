@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://www.yuthon.com/"/>
-  <updated>2016-11-22T14:30:31.000Z</updated>
+  <updated>2016-11-26T11:26:29.000Z</updated>
   <id>http://www.yuthon.com/</id>
   
   <author>
@@ -14,6 +14,84 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>Train Caffe-YOLO on our own dataset</title>
+    <link href="http://www.yuthon.com/2016/11/26/Train-Caffe-YOLO-on-our-own-dataset/"/>
+    <id>http://www.yuthon.com/2016/11/26/Train-Caffe-YOLO-on-our-own-dataset/</id>
+    <published>2016-11-26T10:11:14.000Z</published>
+    <updated>2016-11-26T11:26:29.000Z</updated>
+    
+    <content type="html"><![CDATA[<p>经过这几天不断地测试, YOLO 在 TX1 上跑得还是挺不错的, 符合我们实验室的要求. 但是 YOLO 依赖的 Darknet 框架还是太原始了, 不如 TensorFlow 或者 Caffe 用着顺手. 另外, 我负责的目标检测这一块还需要和梅老板写的新框架相结合, 所以更加需要把 YOLO 移植到一个成熟的框架上去.</p>
+<p>很幸运的是, YOLO 在各个框架上的移植都有前人做过了, 比如 <a href="https://github.com/thtrieu/darktf" target="_blank" rel="external">darktf</a> 和 <a href="https://github.com/yeahkun/caffe-yolo" target="_blank" rel="external">caffe-yolo</a>. 今天以 caffe-yolo 为例, 谈一下在其上使用自己的数据集来训练.</p>
+<a id="more"></a>
+<h2 id="Reformat-our-dataset-as-PASCAL-VOC-style"><a href="#Reformat-our-dataset-as-PASCAL-VOC-style" class="headerlink" title="Reformat our dataset as PASCAL VOC style"></a>Reformat our dataset as PASCAL VOC style</h2><p>为了之后的方便起见, 首先将我们的数据集转成 PASCAL VOC 的标准的目录格式.</p>
+<h3 id="Structure-of-PASCAL-VOC-dataset"><a href="#Structure-of-PASCAL-VOC-dataset" class="headerlink" title="Structure of PASCAL VOC dataset"></a>Structure of PASCAL VOC dataset</h3><p>其目录结构如下:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line">.</div><div class="line">├── VOC2007</div><div class="line">│   ├── Annotations</div><div class="line">│   ├── ImageSets</div><div class="line">│   ├── JPEGImages</div><div class="line">│   ├── SegmentationClass</div><div class="line">│   └── SegmentationObject</div><div class="line">└── VOC2012</div><div class="line">    ├── Annotations</div><div class="line">    ├── ImageSets</div><div class="line">    ├── JPEGImages</div><div class="line">    ├── SegmentationClass</div><div class="line">    └── SegmentationObject</div></pre></td></tr></table></figure>
+<p>其中<code>Annotations</code>目录放的是<code>.xml</code>文件, <code>JPEGImages</code>目录中存放的是对应的<code>.jpg</code>图像. 由于我们不做语义分割, 所以<code>SegmentationClass</code>与<code>SegmentationObject</code>对我们没什么用.</p>
+<p> <code>ImageSets</code>目录中结构如下, 主要关注的是<code>Main</code>文件夹中的<code>trainval.txt</code>, <code>train.txt</code> , <code>val.txt</code>以及<code>test.txt</code>四个文件.</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div></pre></td><td class="code"><pre><div class="line">.</div><div class="line">├── Layout</div><div class="line">│   ├── test.txt</div><div class="line">│   ├── train.txt</div><div class="line">│   ├── trainval.txt</div><div class="line">│   └── val.txt</div><div class="line">├── Main</div><div class="line">│   ├── aeroplane_test.txt</div><div class="line">│   ├── aeroplane_train.txt</div><div class="line">│   ├── aeroplane_trainval.txt</div><div class="line">│   ├── aeroplane_val.txt</div><div class="line">│   ├── ...</div><div class="line">│   ├── test.txt</div><div class="line">│   ├── train.txt</div><div class="line">│   ├── trainval.txt</div><div class="line">│   └── val.txt</div><div class="line">└── Segmentation</div><div class="line">    ├── test.txt</div><div class="line">    ├── train.txt</div><div class="line">    ├── trainval.txt</div><div class="line">    └── val.txt</div></pre></td></tr></table></figure>
+<h3 id="Reformat-our-dataset"><a href="#Reformat-our-dataset" class="headerlink" title="Reformat our dataset"></a>Reformat our dataset</h3><p>首先是把之前杂乱的图片文件名重新整理, 如下所示:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">.</div><div class="line">├── image00001.jpg</div><div class="line">├── image00002.jpg</div><div class="line">├── image00012.jpg</div><div class="line">├── ...</div><div class="line">├── image04524.jpg</div><div class="line">├── image04525.jpg</div><div class="line">└── image04526.jpg</div></pre></td></tr></table></figure>
+<p>随后用<code>labelImg</code>重新标注这些图. 标注完成后, 建立我们自己的数据集的结构, 并且将图片和标注放到对应的文件夹里:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line">.</div><div class="line">├── ROB2017</div><div class="line">│   ├── Annotations</div><div class="line">│   ├── ImageSets</div><div class="line">│   ├── JPEGImages</div><div class="line">│   └── JPEGImages_original</div><div class="line">└── scripts</div><div class="line">    ├── clean.py</div><div class="line">    ├── conf.json</div><div class="line">    ├── convert_png2jpg.py</div><div class="line">    └── split_dataset.py</div></pre></td></tr></table></figure>
+<p>之后写了几个脚本, 其中<code>clean.py</code>用来清理未标注的图片; <code>split_dataset.py</code>用来分割训练集验证集测试集, 并且保存到<code>ImageSets/Main</code>中.</p>
+<p>至此, 把我们的数据集转成 PASCAL VOC 标准目录的工作就完成了, 可以进行下一步的训练工作.</p>
+<h2 id="Train-YOLO-on-Caffe"><a href="#Train-YOLO-on-Caffe" class="headerlink" title="Train YOLO on Caffe"></a>Train YOLO on Caffe</h2><h3 id="Clone-amp-Make"><a href="#Clone-amp-Make" class="headerlink" title="Clone &amp; Make"></a>Clone &amp; Make</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">$ git <span class="built_in">clone</span> https://github.com/yeahkun/caffe-yolo.git</div><div class="line">$ <span class="built_in">cd</span> caffe-yolo</div><div class="line">$ cp Makefile.config.example Makefile.config</div><div class="line">$ make -j8</div></pre></td></tr></table></figure>
+<p>若是出现<code>src/caffe/net.cpp:8:18: fatal error: hdf5.h: No such file or directory</code>这一错误, 可以照下文修改<code>Makefile.config</code>文件:</p>
+<figure class="highlight diff"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line">diff --git a/Makefile.config b/Makefile.config</div><div class="line">index a873502..88828cc 100644</div><div class="line"><span class="comment">--- a/Makefile.config.example</span></div><div class="line"><span class="comment">+++ b/Makefile.config.example</span></div><div class="line">@@ -69,8 +69,8 @@ PYTHON_LIB := /usr/lib</div><div class="line"> # WITH_PYTHON_LAYER := 1</div><div class="line"></div><div class="line"> # Whatever else you find you need goes here.</div><div class="line"><span class="deletion">-INCLUDE_DIRS := $(PYTHON_INCLUDE) /usr/local/include</span></div><div class="line"><span class="deletion">-LIBRARY_DIRS := $(PYTHON_LIB) /usr/local/lib /usr/lib</span></div><div class="line"><span class="addition">+INCLUDE_DIRS := $(PYTHON_INCLUDE) /usr/local/include /usr/include/hdf5/serial/</span></div><div class="line"><span class="addition">+LIBRARY_DIRS := $(PYTHON_LIB) /usr/local/lib /usr/lib /usr/lib/x86_64-linux-gnu/hdf5/serial/</span></div><div class="line"></div><div class="line"> # If Homebrew is installed at a non standard location (for example your home directory) and you use it for general dependencies</div><div class="line"> # INCLUDE_DIRS += $(shell brew --prefix)/include</div></pre></td></tr></table></figure>
+<p>同时还可以开启 cuDNN 以及修改 compute, 充分发挥 GTX1080 的性能:</p>
+<figure class="highlight diff"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div></pre></td><td class="code"><pre><div class="line">## Refer to http://caffe.berkeleyvision.org/installation.html</div><div class="line"># Contributions simplifying and improving our build system are welcome!</div><div class="line"></div><div class="line"># cuDNN acceleration switch (uncomment to build with cuDNN).</div><div class="line"><span class="deletion">-# USE_CUDNN := 1</span></div><div class="line"><span class="addition">+USE_CUDNN := 1</span></div><div class="line"></div><div class="line"># CPU-only switch (uncomment to build without GPU support).</div><div class="line"># CPU_ONLY := 1</div><div class="line">...</div><div class="line"># CUDA architecture setting: going with all of them.</div><div class="line"># For CUDA &lt; 6.0, comment the *_50 lines for compatibility.</div><div class="line">CUDA_ARCH := -gencode arch=compute_20,code=sm_20 \</div><div class="line">                -gencode arch=compute_20,code=sm_21 \</div><div class="line">                -gencode arch=compute_30,code=sm_30 \</div><div class="line">                -gencode arch=compute_35,code=sm_35 \</div><div class="line">                -gencode arch=compute_50,code=sm_50 \</div><div class="line"><span class="deletion">-                -gencode arch=compute_50,code=compute_50</span></div><div class="line"><span class="addition">+                -gencode arch=compute_50,code=compute_50 \</span></div><div class="line"><span class="addition">+                -gencode arch=compute_61,code=compute_61</span></div></pre></td></tr></table></figure>
+<h3 id="Data-preparation"><a href="#Data-preparation" class="headerlink" title="Data preparation"></a>Data preparation</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">$ <span class="built_in">cd</span> data/yolo</div><div class="line">$ ln <span class="_">-s</span> /your/path/to/VOCdevkit/ .</div><div class="line">$ python ./get_list.py</div><div class="line"><span class="comment"># change related path in script convert.sh</span></div><div class="line">$ sudo rm -r lmdb</div><div class="line">$ mkdir lmdb</div><div class="line">$ ./convert.sh</div></pre></td></tr></table></figure>
+<p>有一些注意点:</p>
+<ul>
+<li><p>记得将<code>ln -s /your/path/to/VOCdevkit/ .</code>中的<code>/your/path/to/VOCdevkit/</code>换成自己数据集的路径, 例如<code>ln -s ~/data/ROBdevkit/ .</code></p>
+</li>
+<li><p>修改<code>./get_list.py</code>:</p>
+<figure class="highlight diff"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div><div class="line">66</div><div class="line">67</div><div class="line">68</div></pre></td><td class="code"><pre><div class="line">diff --git a/data/yolo/get_list.py b/data/yolo/get_list.py</div><div class="line">index f519f1a..73b9858 100755</div><div class="line"><span class="comment">--- a/data/yolo/get_list.py</span></div><div class="line"><span class="comment">+++ b/data/yolo/get_list.py</span></div><div class="line">@@ -3,12 +3,15 @@ import os</div><div class="line"></div><div class="line"> trainval_jpeg_list = []</div><div class="line"> trainval_xml_list = []</div><div class="line"><span class="deletion">-test07_jpeg_list = []</span></div><div class="line"><span class="deletion">-test07_xml_list = []</span></div><div class="line"><span class="deletion">-test12_jpeg_list = []</span></div><div class="line"><span class="deletion">-</span></div><div class="line"><span class="deletion">-for name in ["VOC2007", "VOC2012"]:</span></div><div class="line"><span class="deletion">-  voc_dir = os.path.join("VOCdevkit", name)</span></div><div class="line"><span class="addition">+test_jpeg_list = []</span></div><div class="line"><span class="addition">+test_xml_list = []</span></div><div class="line"><span class="addition">+</span></div><div class="line"><span class="addition">+for name in ['ROB2017']:</span></div><div class="line"><span class="addition">+  # voc_dir = os.path.join("VOCdevkit", name)</span></div><div class="line"><span class="addition">+  voc_dir = os.path.join('ROBdevkit', name)</span></div><div class="line">   txt_fold = os.path.join(voc_dir, "ImageSets/Main")</div><div class="line">   jpeg_fold = os.path.join(voc_dir, "JPEGImages")</div><div class="line">   xml_fold = os.path.join(voc_dir, "Annotations")</div><div class="line">@@ -23,35 +26,49 @@ for name in ["VOC2007", "VOC2012"]:</div><div class="line">           print trainval_jpeg_list[-1], "not exist"</div><div class="line">         if not os.path.exists(trainval_xml_list[-1]):</div><div class="line">           print trainval_xml_list[-1], "not exist"</div><div class="line"><span class="deletion">-  if name == "VOC2007":</span></div><div class="line"><span class="deletion">-    file_path = os.path.join(txt_fold, "test.txt")</span></div><div class="line"><span class="deletion">-    with open(file_path, 'r') as fp:</span></div><div class="line"><span class="deletion">-      for line in fp:</span></div><div class="line"><span class="deletion">-        line = line.strip()</span></div><div class="line"><span class="deletion">-        test07_jpeg_list.append(os.path.join(jpeg_fold, "&#123;&#125;.jpg".format(line)))</span></div><div class="line"><span class="deletion">-        test07_xml_list.append(os.path.join(xml_fold, "&#123;&#125;.xml".format(line)))</span></div><div class="line"><span class="deletion">-        if not os.path.exists(test07_jpeg_list[-1]):</span></div><div class="line"><span class="deletion">-          print test07_jpeg_list[-1], "not exist"</span></div><div class="line"><span class="deletion">-        if not os.path.exists(test07_xml_list[-1]):</span></div><div class="line"><span class="deletion">-          print test07_xml_list[-1], "not exist"</span></div><div class="line"><span class="deletion">-  elif name == "VOC2012":</span></div><div class="line"><span class="addition">+  if name == "ROB2017":</span></div><div class="line">     file_path = os.path.join(txt_fold, "test.txt")</div><div class="line">     with open(file_path, 'r') as fp:</div><div class="line">       for line in fp:</div><div class="line">         line = line.strip()</div><div class="line"><span class="deletion">-        test12_jpeg_list.append(os.path.join(jpeg_fold, "&#123;&#125;.jpg".format(line)))</span></div><div class="line"><span class="deletion">-        if not os.path.exists(test12_jpeg_list[-1]):</span></div><div class="line"><span class="deletion">-          print test12_jpeg_list[-1], "not exist"</span></div><div class="line"><span class="addition">+        test_jpeg_list.append(os.path.join(jpeg_fold, "&#123;&#125;.jpg".format(line)))</span></div><div class="line"><span class="addition">+        test_xml_list.append(os.path.join(xml_fold, "&#123;&#125;.xml".format(line)))</span></div><div class="line"><span class="addition">+        if not os.path.exists(test_jpeg_list[-1]):</span></div><div class="line"><span class="addition">+          print test_jpeg_list[-1], "not exist"</span></div><div class="line"><span class="addition">+        if not os.path.exists(test_xml_list[-1]):</span></div><div class="line"><span class="addition">+          print test_xml_list[-1], "not exist"</span></div><div class="line"></div><div class="line"> with open("trainval.txt", "w") as wr:</div><div class="line">   for i in range(len(trainval_jpeg_list)):</div><div class="line">     wr.write("&#123;&#125; &#123;&#125;\n".format(trainval_jpeg_list[i], trainval_xml_list[i]))</div><div class="line"></div><div class="line"><span class="deletion">-with open("test_2007.txt", "w") as wr:</span></div><div class="line"><span class="deletion">-  for i in range(len(test07_jpeg_list)):</span></div><div class="line"><span class="deletion">-    wr.write("&#123;&#125; &#123;&#125;\n".format(test07_jpeg_list[i], test07_xml_list[i]))</span></div><div class="line"><span class="deletion">-</span></div><div class="line"><span class="deletion">-with open("test_2012.txt", "w") as wr:</span></div><div class="line"><span class="deletion">-  for i in range(len(test12_jpeg_list)):</span></div><div class="line"><span class="deletion">-    wr.write("&#123;&#125;\n".format(test12_jpeg_list[i]))</span></div><div class="line"><span class="addition">+with open("test.txt", "w") as wr:</span></div><div class="line"><span class="addition">+  for i in range(len(test_jpeg_list)):</span></div><div class="line"><span class="addition">+    wr.write("&#123;&#125; &#123;&#125;\n".format(test_jpeg_list[i], test_xml_list[i]))</span></div></pre></td></tr></table></figure>
+</li>
+<li><p>修改<code>convert.sh</code></p>
+<figure class="highlight diff"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div></pre></td><td class="code"><pre><div class="line">diff --git a/data/yolo/convert.sh b/data/yolo/convert.sh</div><div class="line">index 8a52525..a06eb69 100755</div><div class="line"><span class="comment">--- a/data/yolo/convert.sh</span></div><div class="line"><span class="comment">+++ b/data/yolo/convert.sh</span></div><div class="line"><span class="meta">@@ -1,7 +1,7 @@</span></div><div class="line"> #!/usr/bin/env sh</div><div class="line"></div><div class="line"> CAFFE_ROOT=../..</div><div class="line"><span class="deletion">-ROOT_DIR=/your/path/to/vocroot/</span></div><div class="line"><span class="addition">+ROOT_DIR=/home/m/data/</span></div><div class="line"> LABEL_FILE=$CAFFE_ROOT/data/yolo/label_map.txt</div><div class="line"></div><div class="line"> # 2007 + 2012 trainval</div><div class="line">@@ -10,13 +10,15 @@ LMDB_DIR=./lmdb/trainval_lmdb</div><div class="line"> SHUFFLE=true</div><div class="line"></div><div class="line"> # 2007 test</div><div class="line"><span class="deletion">-# LIST_FILE=$CAFFE_ROOT/data/yolo/test_2007.txt</span></div><div class="line"><span class="deletion">-# LMDB_DIR=./lmdb/test2007_lmdb</span></div><div class="line"><span class="addition">+# LIST_FILE=$CAFFE_ROOT/data/yolo/test.txt</span></div><div class="line"><span class="addition">+# LMDB_DIR=./lmdb/test_lmdb</span></div><div class="line"> # SHUFFLE=false</div><div class="line"></div><div class="line"> RESIZE_W=448</div><div class="line"> RESIZE_H=448</div><div class="line"></div><div class="line"> $CAFFE_ROOT/build/tools/convert_box_data --resize_width=$RESIZE_W --resize_height=$RESIZE_H \</div><div class="line">   --label_file=$LABEL_FILE $ROOT_DIR $LIST_FILE $LMDB_DIR --encoded=true --encode_type=jpg --shuffle=$SHUFFLE</div></pre></td></tr></table></figure>
+</li>
+<li><p>修改<code>label_map.txt</code>:</p>
+<figure class="highlight diff"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div></pre></td><td class="code"><pre><div class="line">diff --git a/data/yolo/label_map.txt b/data/yolo/label_map.txt</div><div class="line">index 1fe873a..bee8f82 100644</div><div class="line"><span class="comment">--- a/data/yolo/label_map.txt</span></div><div class="line"><span class="comment">+++ b/data/yolo/label_map.txt</span></div><div class="line"><span class="meta">@@ -1,20 +1,3 @@</span></div><div class="line"><span class="deletion">-aeroplane 0</span></div><div class="line"><span class="deletion">-bicycle 1</span></div><div class="line"><span class="deletion">-bird 2</span></div><div class="line"><span class="deletion">-boat 3</span></div><div class="line"><span class="deletion">-bottle 4</span></div><div class="line"><span class="deletion">-bus 5</span></div><div class="line"><span class="deletion">-car 6</span></div><div class="line"><span class="deletion">-cat 7</span></div><div class="line"><span class="deletion">-chair 8</span></div><div class="line"><span class="deletion">-cow 9</span></div><div class="line"><span class="deletion">-diningtable 10</span></div><div class="line"><span class="deletion">-dog 11</span></div><div class="line"><span class="deletion">-horse 12</span></div><div class="line"><span class="deletion">-motorbike 13</span></div><div class="line"><span class="deletion">-person 14</span></div><div class="line"><span class="deletion">-pottedplant 15</span></div><div class="line"><span class="deletion">-sheep 16</span></div><div class="line"><span class="deletion">-sofa 17</span></div><div class="line"><span class="deletion">-train 18</span></div><div class="line"><span class="deletion">-tvmonitor 19</span></div><div class="line"><span class="addition">+ball 0</span></div><div class="line"><span class="addition">+goal 1</span></div><div class="line"><span class="addition">+robot 2</span></div></pre></td></tr></table></figure>
+</li>
+</ul>
+<h3 id="Train"><a href="#Train" class="headerlink" title="Train"></a>Train</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">cd examples/yolo</div><div class="line"># change related path in script train.sh</div><div class="line">mkdir models</div><div class="line">nohup ./train.sh &amp;</div></pre></td></tr></table></figure>
+<p>也有一些注意点:</p>
+<ul>
+<li><p>修改<code>gnet_train.prototxt</code>:</p>
+<figure class="highlight diff"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line">diff --git a/examples/yolo/gnet_train.prototxt b/examples/yolo/gnet_train.prototxt</div><div class="line">index 8483a32..da01daf 100644</div><div class="line"><span class="comment">--- a/examples/yolo/gnet_train.prototxt</span></div><div class="line"><span class="comment">+++ b/examples/yolo/gnet_train.prototxt</span></div><div class="line">@@ -36,7 +36,7 @@ layer &#123;</div><div class="line">     mean_value: 123</div><div class="line">   &#125;</div><div class="line">   data_param &#123;</div><div class="line"><span class="deletion">-    source: "../../data/yolo/lmdb/test2007_lmdb"</span></div><div class="line"><span class="addition">+    source: "../../data/yolo/lmdb/test_lmdb"</span></div><div class="line">     batch_size: 1</div><div class="line">     side: 7</div><div class="line">     backend: LMDB</div></pre></td></tr></table></figure>
+</li>
+<li><p>修改<code>train.sh</code>:</p>
+<figure class="highlight diff"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line">diff --git a/examples/yolo/train.sh b/examples/yolo/train.sh</div><div class="line">index 416e2b0..ecd0872 100755</div><div class="line"><span class="comment">--- a/examples/yolo/train.sh</span></div><div class="line"><span class="comment">+++ b/examples/yolo/train.sh</span></div><div class="line"><span class="meta">@@ -3,8 +3,7 @@</span></div><div class="line"> CAFFE_HOME=../..</div><div class="line"></div><div class="line"> SOLVER=./gnet_solver.prototxt</div><div class="line"><span class="deletion">-WEIGHTS=/your/path/to/bvlc_googlenet.caffemodel</span></div><div class="line"><span class="addition">+WEIGHTS=/home/m/workspace/caffe-yolo/models/bvlc_googlenet/bvlc_googlenet.caffemodel</span></div><div class="line"></div><div class="line"> $CAFFE_HOME/build/tools/caffe train \</div><div class="line"><span class="deletion">-    --solver=$SOLVER --weights=$WEIGHTS --gpu=0,1</span></div><div class="line"><span class="addition">+    --solver=$SOLVER --weights=$WEIGHTS --gpu=0</span></div></pre></td></tr></table></figure>
+</li>
+<li><p>注意还要预先下载 GoogleNet 的<a href="http://dl.caffe.berkeleyvision.org/bvlc_googlenet.caffemodel" target="_blank" rel="external">预训练权重文件</a>, 并且放在<code>caffe-yolo/models/bvlc_googlenet/</code>(当然放哪里是随便的, 注意改<code>train.sh</code>中的相应地址即可).</p>
+</li>
+</ul>
+<h3 id="Test"><a href="#Test" class="headerlink" title="Test"></a>Test</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"># if everything goes well, the map of gnet_yolo_iter_32000.caffemodel may reach ~56.</div><div class="line">cd examples/yolo</div><div class="line">./test.sh model_path gpu_id</div></pre></td></tr></table></figure>
+<p>(To be continued)</p>
+]]></content>
+    
+    <summary type="html">
+    
+      &lt;p&gt;经过这几天不断地测试, YOLO 在 TX1 上跑得还是挺不错的, 符合我们实验室的要求. 但是 YOLO 依赖的 Darknet 框架还是太原始了, 不如 TensorFlow 或者 Caffe 用着顺手. 另外, 我负责的目标检测这一块还需要和梅老板写的新框架相结合, 所以更加需要把 YOLO 移植到一个成熟的框架上去.&lt;/p&gt;
+&lt;p&gt;很幸运的是, YOLO 在各个框架上的移植都有前人做过了, 比如 &lt;a href=&quot;https://github.com/thtrieu/darktf&quot;&gt;darktf&lt;/a&gt; 和 &lt;a href=&quot;https://github.com/yeahkun/caffe-yolo&quot;&gt;caffe-yolo&lt;/a&gt;. 今天以 caffe-yolo 为例, 谈一下在其上使用自己的数据集来训练.&lt;/p&gt;
+    
+    </summary>
+    
+      <category term="Experience" scheme="http://www.yuthon.com/categories/Experience/"/>
+    
+    
+      <category term="Deep Learning" scheme="http://www.yuthon.com/tags/Deep-Learning/"/>
+    
+      <category term="YOLO" scheme="http://www.yuthon.com/tags/YOLO/"/>
+    
+      <category term="Object detection" scheme="http://www.yuthon.com/tags/Object-detection/"/>
+    
+      <category term="Darknet" scheme="http://www.yuthon.com/tags/Darknet/"/>
+    
+  </entry>
   
   <entry>
     <title>Thesis Notes for ScribbleSup</title>
@@ -2607,218 +2685,6 @@
       &lt;h1 id=&quot;Neural-Networks-Representation&quot;&gt;&lt;a href=&quot;#Neural-Networks-Representation&quot; class=&quot;headerlink&quot; title=&quot;Neural Networks: Representation&quot;&gt;&lt;/a&gt;Neural Networks: Representation&lt;/h1&gt;&lt;h2 id=&quot;Motivations&quot;&gt;&lt;a href=&quot;#Motivations&quot; class=&quot;headerlink&quot; title=&quot;Motivations&quot;&gt;&lt;/a&gt;Motivations&lt;/h2&gt;&lt;h3 id=&quot;Non-linear-Hypotheses&quot;&gt;&lt;a href=&quot;#Non-linear-Hypotheses&quot; class=&quot;headerlink&quot; title=&quot;Non-linear Hypotheses&quot;&gt;&lt;/a&gt;Non-linear Hypotheses&lt;/h3&gt;&lt;p&gt;&lt;u&gt;Performing linear regression with a complex set of data with many features is very unwieldy.&lt;/u&gt; For 100 features, if we wanted to make them quadratic we would get 5050 resulting new features.&lt;/p&gt;
 &lt;p&gt;We can approximate the growth of the number of new features we get with all quadratic terms with $\mathcal{O}(n^2/2)$. And if you wanted to include all cubic terms in your hypothesis, the features would grow asymptotically at $\mathcal{O}(n^3)$. &lt;u&gt;These are very steep growths, so as the number of our features increase, the number of quadratic or cubic features increase very rapidly and becomes quickly impractical&lt;/u&gt;.&lt;/p&gt;
 &lt;p&gt;&lt;strong&gt;Example&lt;/strong&gt;: let our training set be a collection of 50x50 pixel black-and-white photographs, and our goal will be to classify which ones are photos of cars. Our feature set size is then n=2500 if we compare every pair of pixels (7500 if RGB). Now let’s say we need to make a quadratic hypothesis function. With quadratic features, our growth is $\mathcal{O}(n^2/2)$. So our total features will be about 25002/2=3125000, which is very impractical.&lt;/p&gt;
-    
-    </summary>
-    
-      <category term="Notes" scheme="http://www.yuthon.com/categories/Notes/"/>
-    
-    
-      <category term="Coursera" scheme="http://www.yuthon.com/tags/Coursera/"/>
-    
-      <category term="Machine Learning" scheme="http://www.yuthon.com/tags/Machine-Learning/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>Notes for Machine Learning - Week 3</title>
-    <link href="http://www.yuthon.com/2016/08/05/Coursera-Machine-Learning-Week-3/"/>
-    <id>http://www.yuthon.com/2016/08/05/Coursera-Machine-Learning-Week-3/</id>
-    <published>2016-08-05T04:16:08.000Z</published>
-    <updated>2016-08-15T05:47:08.000Z</updated>
-    
-    <content type="html"><![CDATA[<h1 id="Logistic-Regression"><a href="#Logistic-Regression" class="headerlink" title="Logistic Regression"></a>Logistic Regression</h1><h2 id="Classification-and-Representation"><a href="#Classification-and-Representation" class="headerlink" title="Classification and Representation"></a>Classification and Representation</h2><h3 id="Classification"><a href="#Classification" class="headerlink" title="Classification"></a>Classification</h3><ul>
-<li>Calssification Problem<ul>
-<li>$y\in {0,1}$<ul>
-<li>0: “Negative Class”,  负类</li>
-<li>1: “Positive Class”, 正类</li>
-</ul>
-</li>
-<li>One method is to use linear regression and map all predictions greater than 0.5 as a 1 and all less than 0.5 as a 0. This method doesn’t work well because classification is not actually a linear function.</li>
-</ul>
-</li>
-<li>Logistic Regression (逻辑回归) : $0\le h_\theta \le 1$</li>
-</ul>
-<a id="more"></a>
-<h3 id="Hypothesis-Representation"><a href="#Hypothesis-Representation" class="headerlink" title="Hypothesis Representation"></a>Hypothesis Representation</h3><h4 id="Logistic-Regression-Model"><a href="#Logistic-Regression-Model" class="headerlink" title="Logistic Regression Model"></a>Logistic Regression Model</h4><p>$h_\theta (x) = \frac{1}{1+e^{-\theta ^T x}}​$</p>
-<ul>
-<li><p>Want $0\le h_\theta(x)\le 1$</p>
-<ul>
-<li><p>$h_\theta (x) = g(\theta ^T x)$</p>
-</li>
-<li><p>$g(z) = \frac{1}{1+e^{-z}}$</p>
-<ul>
-<li><p>Called “Sigmod function” or “Logistic function”</p>
-<p><img src="/images/sigmod_function.png" alt="sigmod function"></p>
-</li>
-</ul>
-</li>
-</ul>
-</li>
-</ul>
-<h4 id="Interpretation-of-Hypothesis-Output"><a href="#Interpretation-of-Hypothesis-Output" class="headerlink" title="Interpretation of Hypothesis Output"></a>Interpretation of Hypothesis Output</h4><ul>
-<li>$h_\theta (x)$ = estimated probability that $y=1$ on input $x$<ul>
-<li>$h_\theta (x) = P(y=1|x; \theta)$<ul>
-<li>probability that $y=1$, given $x$, parameterised by $\theta$.</li>
-</ul>
-</li>
-<li>$P(y=0|x;\theta ) = 1 - P(y=1|x;\theta )$</li>
-</ul>
-</li>
-</ul>
-<h3 id="Decision-Boundary"><a href="#Decision-Boundary" class="headerlink" title="Decision Boundary"></a>Decision Boundary</h3><p>In order to get our discrete 0 or 1 classification, we can suppose</p>
-<ul>
-<li>$h_\theta(x) \geq 0.5 \rightarrow y = 1$</li>
-<li>$h_\theta(x) &lt; 0.5 \rightarrow y = 0$</li>
-</ul>
-<p>The way our logistic function $g$ behaves is that when its input is greater than or equal to zero, its output is greater than or equal to 0.5:</p>
-<ul>
-<li>$g(z) \ge 0.5$ when $z\ge 0$, i.e., $\theta ^T x \ge 0$</li>
-</ul>
-<p>In conclusion, we can now say:</p>
-<ul>
-<li>$\theta^T x \geq 0 \Rightarrow y = 1$</li>
-<li>$\theta^T x &lt; 0 \Rightarrow y = 0$</li>
-</ul>
-<h4 id="Decision-boundaries"><a href="#Decision-boundaries" class="headerlink" title="Decision boundaries"></a>Decision boundaries</h4><p>The <strong>decision boundary</strong> is the line that separates the area where $y=0$ and where $y=1$. It is created by our hypothesis function $\theta^T x = 0$.</p>
-<p><img src="/images/dicision_boundary.png" alt="Disicion Boundary"></p>
-<p>The decision boundary is a property, not of the trading set, but of the hypothesis $h_\theta(x)$ under the parameters. As long as we’re given parameter vector $\theta$, that defines the decision boundary. <u>But the training set is not what we use to define the decision boundary.</u></p>
-<h4 id="Non-linear-decision-boundaries"><a href="#Non-linear-decision-boundaries" class="headerlink" title="Non-linear decision boundaries"></a>Non-linear decision boundaries</h4><p>The input to the sigmoid function $g(z)$ (e.g. $\theta ^T x$) doesn’t need to be linear, and could be a function that describes a circle (e.g. $z = \theta_0 + \theta _1 x_1 + \theta _2 x_2 + \theta _3 x_1^2 + \theta _4 x_2^2$) or any shape to fit our data.</p>
-<p><img src="/images/nonlinear_decision_boundary.png" alt="nonlinear decision boundary"></p>
-<h2 id="Logistic-Regression-Model-1"><a href="#Logistic-Regression-Model-1" class="headerlink" title="Logistic Regression Model"></a>Logistic Regression Model</h2><h3 id="Cost-Function"><a href="#Cost-Function" class="headerlink" title="Cost Function"></a>Cost Function</h3><p>We cannot use the same cost function that we use for linear regression because the Logistic Function will cause the output to be wavy, causing many local optima. In other words, it will not be a convex function (凸函数).</p>
-<p><img src="/images/non-convex_and_convex_function.png" alt="non-convex and convex function"></p>
-<p>Instead, our cost function for logistic regression looks like:</p>
-<p>$J(\theta) = \dfrac{1}{m} \sum<em>{i=1}^m \mathrm{Cost}(h</em>\theta(x^{(i)}),y^{(i)})$</p>
-<p>$\mathrm{Cost}(h<em>\theta(x),y) = \begin{cases}-\log(h</em>\theta(x)) ,&amp;\text{if y = 1}\newline -\log(1-h_\theta(x)) ,&amp;\text{if y = 0}\end{cases}$</p>
-<ul>
-<li>$\mathrm{Cost} = 0$ if $y=1, h_\theta (x)=1$</li>
-<li>But as $h_\theta (x) \to 0, \mathrm{Cost} \to \infty$<ul>
-<li>Captures intuition that if $h_\theta (x) = 0$ (predict $P(y=1|x;\theta ) = 0$), but $y=1$, we’ll <strong>penalise</strong> learning algorithm by a very large cost.</li>
-</ul>
-</li>
-</ul>
-<p><img src="/images/Logistic_regression_cost_function_positive_class.png" alt="Logistic_regression_cost_function_positive_class"></p>
-<p><img src="/images/Logistic_regression_cost_function_negative_class.png" alt="Logistic_regression_cost_function_negative_class"></p>
-<h3 id="Simplified-Cost-Function-and-Gradient-Descent"><a href="#Simplified-Cost-Function-and-Gradient-Descent" class="headerlink" title="Simplified Cost Function and Gradient Descent"></a>Simplified Cost Function and Gradient Descent</h3><h4 id="Simplified-Cost-Function"><a href="#Simplified-Cost-Function" class="headerlink" title="Simplified Cost Function"></a>Simplified Cost Function</h4><p>We can compress our cost function’s two conditional cases into one case:</p>
-<p>$\mathrm{Cost}(h_\theta(x),y) = - y \log(h_\theta(x)) - (1 - y) \log(1 - h_\theta(x))$</p>
-<p>We can fully write out our entire cost function as follows:</p>
-<p>$J(\theta) = - \frac{1}{m} \sum_{i=1}^m [y^{(i)}\log (h_\theta (x^{(i)})) + (1 - y^{(i)})\log (1 - h_\theta(x^{(i)}))]$</p>
-<ul>
-<li>This cost function can be derived from statistics using the principle of maximum likelihood estimation (极大似然估计). Which is an idea in statistics for how to efficiently find parameters’ data for different models.</li>
-<li>And it also has a nice property that it is convex.</li>
-</ul>
-<p>A vectorized implementation is:</p>
-<p>$h = g(X\theta)$</p>
-<p>$ J(\theta)  = \frac{1}{m} \cdot \left(-y^{T}\log(h)-(1-y)^{T}\log(1-h)\right)$</p>
-<h4 id="Gradient-Descent"><a href="#Gradient-Descent" class="headerlink" title="Gradient Descent"></a>Gradient Descent</h4><p>$Repeat \lbrace \\ \theta_j := \theta_j - \alpha \dfrac{\partial}{\partial \theta_j}J(\theta)= \theta_j - \frac{\alpha}{m} \sum_{i=1}^m (h_\theta(x^{(i)}) - y^{(i)}) x_j^{(i)} \\ \rbrace$</p>
-<ul>
-<li><p>Notice that this algorithm is identical to the one we used in linear regression (only $h_\theta (x)$ changes). We still have to simultaneously update all values in theta.</p>
-</li>
-<li><p>A vectorized implementation is:</p>
-<p>$\theta := \theta - \frac{\alpha}{m} X^{T} (g(X \theta ) - \vec{y})$</p>
-</li>
-<li><p>To make sure th learning rate $\alpha$ is set properly, you can plot $J(\theta)$ as a function of the number of iterations and make sure $J(\theta )$ is decreasing on every iteration.</p>
-</li>
-</ul>
-<h3 id="Advanced-Optimization"><a href="#Advanced-Optimization" class="headerlink" title="Advanced Optimization"></a>Advanced Optimization</h3><p>Optimization algorithms</p>
-<ul>
-<li>Gradient descent</li>
-<li>Conjugate gradient</li>
-<li>BFGS</li>
-<li>L-BFGS</li>
-</ul>
-<p>The avdantage of last three algorithms:</p>
-<ul>
-<li>No need to manually pick $\alpha$</li>
-<li>Often faster than gradient descent</li>
-</ul>
-<p>Disadvantages:</p>
-<ul>
-<li>More complex</li>
-</ul>
-<h4 id="Example"><a href="#Example" class="headerlink" title="Example"></a>Example</h4><p>We first need to provide a function that evaluates the following two functions for a given input value $\theta$ :</p>
-<ul>
-<li>$J(\theta )$</li>
-<li>$\frac{\partial}{\partial \theta _j} J(\theta )$</li>
-</ul>
-<p>We can write a single function that returns both of these:</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">function [jVal, gradient] = costFunction(theta)</div><div class="line">  jVal = [...code to compute J(theta)...];</div><div class="line">  gradient = [...code to compute derivative of J(theta)...];</div><div class="line">end</div></pre></td></tr></table></figure>
-<p>Then we can use octave’s “fminunc()” optimization algorithm along with the “optimset()” function that creates an object containing the options we want to send to “fminunc()”.</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">options = optimset(&apos;GradObj&apos;, &apos;on&apos;, &apos;MaxIter&apos;, 100);</div><div class="line">initialTheta = zeros(2,1);</div><div class="line">[optTheta, functionVal, exitFlag] = fminunc(@costFunction, initialTheta, options);</div></pre></td></tr></table></figure>
-<h2 id="Multiclass-Classification-One-vs-all"><a href="#Multiclass-Classification-One-vs-all" class="headerlink" title="Multiclass Classification: One-vs-all"></a>Multiclass Classification: One-vs-all</h2><p>Instead of $y = {0,1}$, we will expand our definition so that $y = {1,2…n}$. In this case we divide our problem into $n$ binary classification problems; in each one, we predict the probability that ‘y’ is a member of one of our classes.</p>
-<p>That is, we can train a logistic regression classifier $h_\theta ^{(i)} (x)$ for each class $i$ to predict the probability that $y=i$.</p>
-<p>$h_\theta^{(i)}(x) = P(y = i | x ; \theta)\ \ \ \  (i=1,2,3,\dots , n+1)$</p>
-<p>On a new input $x$, to make a prediction, pick the class $i$ that maximizes $h_\theta ^{(i)} (x)$.</p>
-<p><img src="/images/one_vs_all.png" alt="One-vs-all"></p>
-<h1 id="Regularization"><a href="#Regularization" class="headerlink" title="Regularization"></a>Regularization</h1><h2 id="Solving-the-Problem-of-Overfitting"><a href="#Solving-the-Problem-of-Overfitting" class="headerlink" title="Solving the Problem of Overfitting"></a>Solving the Problem of Overfitting</h2><h3 id="The-Problem-of-Overfitting"><a href="#The-Problem-of-Overfitting" class="headerlink" title="The Problem of Overfitting"></a>The Problem of Overfitting</h3><p><img src="/images/overfitting.png" alt="overfitting"></p>
-<ul>
-<li><strong>High bias</strong> or <strong>underfitting</strong> is when the form of our hypothesis function h maps poorly to the trend of the data. It is usually caused by a function that is too simple or uses too few features. eg. if we take $h_\theta (x)=\theta _0+\theta _1x_1+\theta _2x_2$ then we are making an initial assumption that a linear model will fit the training data well and will be able to generalize but that may not be the case.</li>
-<li>At the other extreme, <strong>overfitting</strong> or <strong>high variance</strong> is caused by a hypothesis function that fits the available data but does not generalize (泛化) well to predict new data. It is usually caused by a complicated function that creates a lot of unnecessary curves and angles unrelated to the data.</li>
-</ul>
-<p>This terminology is applied to both linear and logistic regression.</p>
-<p><img src="/images/overfitting_2.png" alt="overfitting_2"></p>
-<p>There are <strong>two</strong> main options to address the issue of overfitting:</p>
-<ol>
-<li>Reduce the number of features.<ul>
-<li>Manually select which features to keep.</li>
-<li>Use a model selection algorithm (later in the course).</li>
-</ul>
-</li>
-<li>Regularization (正则化)<ul>
-<li>Keep all the features, but reduce the parameters $\theta _j$.</li>
-</ul>
-</li>
-</ol>
-<p>Regularization works well when we have a lot of slightly useful features.</p>
-<h3 id="Cost-Function-1"><a href="#Cost-Function-1" class="headerlink" title="Cost Function"></a>Cost Function</h3><h4 id="Intuition"><a href="#Intuition" class="headerlink" title="Intuition"></a>Intuition</h4><p>If we have overfitting from our hypothesis function, we can reduce the weight that some of the terms in our function carry by increasing their cost.</p>
-<p>Say we wanted to make the following function more quadratic:</p>
-<p>$\theta_0 + \theta_1x + \theta_2x^2 + \theta_3x^3 + \theta_4x^4$</p>
-<p>We’ll want to eliminate the influence of $\theta _3x_3​$ and $\theta _4x_4​$. Without actually getting rid of these features or changing the form of our hypothesis, we can instead modify our <strong>cost function</strong>:</p>
-<p>$min_\theta\ \dfrac{1}{2m} \sum_{i=1}^m (h_\theta(x^{(i)}) - y^{(i)})^2 + 1000\cdot \theta _3^2 + 1000\cdot \theta _4^2$</p>
-<p>We’ve added two extra terms at the end to inflate the cost of $\theta_3$ and $\theta_4$. Now, in order for the cost function to get close to zero, we will have to reduce the values of $\theta_3$ and $\theta_4$ to near zero. This will in turn greatly reduce the values of $\theta _3x_3$ and $\theta _4x_4$ in our hypothesis function.</p>
-<p><img src="/images/regularization_intuition.png" alt="regularization_intuition"></p>
-<h4 id="Regularization-1"><a href="#Regularization-1" class="headerlink" title="Regularization"></a>Regularization</h4><p>We could also regularize all of our theta parameters in a single summation:</p>
-<p>$min_\theta \dfrac{1}{2m}\ \left[ \sum_{i=1}^m (h_\theta(x^{(i)}) - y^{(i)})^2 + \lambda\ \sum_{j=1}^n \theta_j^2 \right]$</p>
-<p>The $\lambda$, or lambda, is the <strong>regularization parameter</strong>. It determines how much the costs of our theta parameters are inflated. </p>
-<ul>
-<li>Using the above cost function with the extra summation, we can smooth the output of our hypothesis function to reduce overfitting. </li>
-<li>If lambda is chosen to be too large, it may smooth out the function too much and cause underfitting. (fails to fit even the training set).</li>
-</ul>
-<h3 id="Regularized-Linear-Regression"><a href="#Regularized-Linear-Regression" class="headerlink" title="Regularized Linear Regression"></a>Regularized Linear Regression</h3><h4 id="Gradient-Descent-1"><a href="#Gradient-Descent-1" class="headerlink" title="Gradient Descent"></a>Gradient Descent</h4><p>We will modify our gradient descent function to separate out $\theta_0$ from the rest of the parameters because <strong>we do not want to penalize $\theta_0$.</strong></p>
-<p>$\text{Repeat}\ \lbrace \\ \ \ \ \ \theta_0 := \theta_0 - \alpha\ \frac{1}{m}\ \sum_{i=1}^m (h_\theta(x^{(i)}) - y^{(i)})x_0^{(i)} \\ \ \ \ \ \theta_j := \theta_j - \alpha\ \left[ \left( \frac{1}{m}\ \sum_{i=1}^m (h_\theta(x^{(i)}) - y^{(i)})x_j^{(i)} \right) + \frac{\lambda}{m}\theta_j \right] \ \ \ \ \ \ \ \ \ \ j \in \lbrace 1,2…n\rbrace \\ \rbrace$</p>
-<ul>
-<li>The term $\frac{\lambda}{m}\theta_j$ performs our regularization.</li>
-</ul>
-<p>With some manipulation our update rule can also be represented as:</p>
-<p>$\theta_j := \theta_j(1 - \alpha\frac{\lambda}{m}) - \alpha\frac{1}{m}\sum_{i=1}^m(h_\theta(x^{(i)}) - y^{(i)})x_j^{(i)}$</p>
-<ul>
-<li>The first term in the above equation, $1 - \alpha\frac{\lambda}{m}$ will always be less than 1. Intuitively you can see it as reducing the value of $\theta _j$ by some amount on every update.</li>
-<li>Notice that the second term is now exactly the same as it was before.</li>
-</ul>
-<h4 id="Normal-Equation"><a href="#Normal-Equation" class="headerlink" title="Normal Equation"></a>Normal Equation</h4><p>To add in regularization, the equation is the same as our original, except that we add another term inside the parentheses:</p>
-<p>$\theta = \left( X^TX + \lambda \cdot L \right)^{-1} X^Ty$</p>
-<p>$L = \begin{bmatrix} 0 &amp; &amp; &amp; &amp; \\ &amp; 1 &amp; &amp; &amp; \\ &amp; &amp; 1 &amp; &amp; \\ &amp; &amp; &amp; \ddots &amp; \\ &amp; &amp; &amp; &amp; 1 \\ \end{bmatrix}$</p>
-<p>$L$ should have dimension $(n+1)\times (n+1)$. Intuitively, this is the identity matrix (though we are not including $x_0$), multiplied with a single real number $\lambda$.</p>
-<p>Recall that if $m\le n$, then $X^TX$ is non-invertible. However, when we add the term $\lambda \cdot L$, then $X^TX + \lambda \cdot L$ becomes invertible.</p>
-<h3 id="Regularized-Logistic-Regression"><a href="#Regularized-Logistic-Regression" class="headerlink" title="Regularized Logistic Regression"></a>Regularized Logistic Regression</h3><h4 id="Cost-Function-2"><a href="#Cost-Function-2" class="headerlink" title="Cost Function"></a>Cost Function</h4><p>We can regularize this equation by adding a term to the end:</p>
-<p>$J(\theta) = - \frac{1}{m} \sum_{i=1}^m \large[ y^{(i)}\ \log (h_\theta (x^{(i)})) + (1 - y^{(i)})\ \log (1 - h_\theta(x^{(i)}))\large] + \frac{\lambda}{2m}\sum_{j=1}^n \theta_j^2$</p>
-<p><strong>Note Well:</strong> The second sum, $\sum_{j=1}^n \theta_j^2$ <strong>means to explicitly exclude</strong> the bias term, $\theta _0$. I.e. the $\theta$ vector is indexed from 0 to n (holding $n+1$ values, $\theta _0$ through $\theta _n$), and this sum explicitly skips $\theta _0$, by running from 1 to n, skipping 0.</p>
-<h4 id="Gradient-Descent-2"><a href="#Gradient-Descent-2" class="headerlink" title="Gradient Descent"></a>Gradient Descent</h4><p>$\text{Repeat}\ \lbrace \\ \ \ \ \ \theta_0 := \theta_0 - \alpha\ \frac{1}{m}\ \sum_{i=1}^m (h_\theta(x^{(i)}) - y^{(i)})x_0^{(i)} \\\ \ \ \ \ \theta_j := \theta_j - \alpha\ \left[ \left( \frac{1}{m}\ \sum_{i=1}^m (h_\theta(x^{(i)}) - y^{(i)})x_j^{(i)} \right) + \frac{\lambda}{m}\theta_j \right] \ \ \ \ \ \ \ \ \ \ j \in \lbrace 1,2…n\rbrace\\\ \rbrace$</p>
-]]></content>
-    
-    <summary type="html">
-    
-      &lt;h1 id=&quot;Logistic-Regression&quot;&gt;&lt;a href=&quot;#Logistic-Regression&quot; class=&quot;headerlink&quot; title=&quot;Logistic Regression&quot;&gt;&lt;/a&gt;Logistic Regression&lt;/h1&gt;&lt;h2 id=&quot;Classification-and-Representation&quot;&gt;&lt;a href=&quot;#Classification-and-Representation&quot; class=&quot;headerlink&quot; title=&quot;Classification and Representation&quot;&gt;&lt;/a&gt;Classification and Representation&lt;/h2&gt;&lt;h3 id=&quot;Classification&quot;&gt;&lt;a href=&quot;#Classification&quot; class=&quot;headerlink&quot; title=&quot;Classification&quot;&gt;&lt;/a&gt;Classification&lt;/h3&gt;&lt;ul&gt;
-&lt;li&gt;Calssification Problem&lt;ul&gt;
-&lt;li&gt;$y\in {0,1}$&lt;ul&gt;
-&lt;li&gt;0: “Negative Class”,  负类&lt;/li&gt;
-&lt;li&gt;1: “Positive Class”, 正类&lt;/li&gt;
-&lt;/ul&gt;
-&lt;/li&gt;
-&lt;li&gt;One method is to use linear regression and map all predictions greater than 0.5 as a 1 and all less than 0.5 as a 0. This method doesn’t work well because classification is not actually a linear function.&lt;/li&gt;
-&lt;/ul&gt;
-&lt;/li&gt;
-&lt;li&gt;Logistic Regression (逻辑回归) : $0\le h_\theta \le 1$&lt;/li&gt;
-&lt;/ul&gt;
     
     </summary>
     

@@ -4,6 +4,32 @@
 
     
   <url>
+    <loc>http://www.yuthon.com/2016/11/26/Train-Caffe-YOLO-on-our-own-dataset/</loc>
+    <lastmod>2016-11-26T11:26:29.000Z</lastmod>
+    <data>
+        <display>
+        <title>Train Caffe-YOLO on our own dataset</title>
+        <pubTime>2016-11-26T10:11:14.000Z</pubTime>
+        
+        <tag>Deep Learning</tag>
+         
+        <tag>YOLO</tag>
+         
+        <tag>Object detection</tag>
+         
+        <tag>Darknet</tag>
+         
+         
+           
+             
+              <breadCrumb title="Experience" url="http://www.yuthon.com/categories/Experience/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
     <loc>http://www.yuthon.com/2016/11/20/Thesis-Notes-for-ScribbleSup/</loc>
     <lastmod>2016-11-22T14:30:31.000Z</lastmod>
     <data>
@@ -610,12 +636,12 @@
 
     
   <url>
-    <loc>http://www.yuthon.com/2016/04/14/CodeSchool-Shaping-up-with-Angular.js/</loc>
+    <loc>http://www.yuthon.com/2016/04/12/CodeSchool-JavaScript-Best-Practices/</loc>
     <lastmod>2016-05-16T11:51:43.000Z</lastmod>
     <data>
         <display>
-        <title>Notes for Code School - Shaping up with Angular.js</title>
-        <pubTime>2016-04-14T13:19:22.000Z</pubTime>
+        <title>Notes for Code School - JavaScript Best Practices</title>
+        <pubTime>2016-04-12T10:19:54.000Z</pubTime>
         
         <tag>CodeSchool</tag>
          
@@ -654,12 +680,12 @@
 
     
   <url>
-    <loc>http://www.yuthon.com/2016/04/12/CodeSchool-JavaScript-Best-Practices/</loc>
+    <loc>http://www.yuthon.com/2016/04/14/CodeSchool-Shaping-up-with-Angular.js/</loc>
     <lastmod>2016-05-16T11:51:43.000Z</lastmod>
     <data>
         <display>
-        <title>Notes for Code School - JavaScript Best Practices</title>
-        <pubTime>2016-04-12T10:19:54.000Z</pubTime>
+        <title>Notes for Code School - Shaping up with Angular.js</title>
+        <pubTime>2016-04-14T13:19:22.000Z</pubTime>
         
         <tag>CodeSchool</tag>
          
