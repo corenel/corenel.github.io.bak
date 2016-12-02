@@ -1,17 +1,1 @@
-$(document).ready(function () {
-  var $headerInner = $('.header-inner');
-  var $sidebar = $('#sidebar');
-  var getSidebarTop = function(){
-    return $headerInner.height() + 10;
-  };
-  var setSidebarMarginTop = function(sidebarTop){
-    return $sidebar.css({ 'margin-top': sidebarTop });
-  };
-  var mql = window.matchMedia('(min-width: 991px)');
-  setSidebarMarginTop(getSidebarTop()).show();
-  mql.addListener(function(e){
-    if(e.matches){
-      setSidebarMarginTop(getSidebarTop());
-    }
-  });
-});
+$(document).ready(function(){var n=$(".header-inner"),e=$("#sidebar"),i=function(){return n.height()+10},t=function(n){return e.css({"margin-top":n})},r=window.matchMedia("(min-width: 991px)");t(i()).show(),r.addListener(function(n){n.matches&&t(i())})});

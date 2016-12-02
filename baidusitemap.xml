@@ -4,6 +4,28 @@
 
     
   <url>
+    <loc>http://www.yuthon.com/2016/12/02/1Password-Problem-browser-could-not-be-verified/</loc>
+    <lastmod>2016-12-02T08:52:36.000Z</lastmod>
+    <data>
+        <display>
+        <title>1Password Problem browser could not be verified</title>
+        <pubTime>2016-12-02T08:41:04.000Z</pubTime>
+        
+        <tag>1Password</tag>
+         
+        <tag>macOS</tag>
+         
+         
+           
+             
+              <breadCrumb title="Experience" url="http://www.yuthon.com/categories/Experience/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
     <loc>http://www.yuthon.com/2016/11/26/Train-Caffe-YOLO-on-our-own-dataset/</loc>
     <lastmod>2016-11-26T11:26:29.000Z</lastmod>
     <data>
@@ -252,11 +274,11 @@
         <title>Solution for 'import tensorflow' error in REPL on macOS</title>
         <pubTime>2016-11-02T03:32:01.000Z</pubTime>
         
+        <tag>macOS</tag>
+         
         <tag>Tensorflow</tag>
          
         <tag>Python</tag>
-         
-        <tag>macOS</tag>
          
          
            
@@ -276,9 +298,9 @@
         <title>Solution for matplotlib importing error on macOS</title>
         <pubTime>2016-11-01T13:57:58.000Z</pubTime>
         
-        <tag>Python</tag>
-         
         <tag>macOS</tag>
+         
+        <tag>Python</tag>
          
         <tag>Matplotlib</tag>
          
@@ -636,28 +658,6 @@
 
     
   <url>
-    <loc>http://www.yuthon.com/2016/04/14/CodeSchool-Shaping-up-with-Angular.js/</loc>
-    <lastmod>2016-05-16T11:51:43.000Z</lastmod>
-    <data>
-        <display>
-        <title>Notes for Code School - Shaping up with Angular.js</title>
-        <pubTime>2016-04-14T13:19:22.000Z</pubTime>
-        
-        <tag>CodeSchool</tag>
-         
-        <tag>JavaScript</tag>
-         
-         
-           
-             
-              <breadCrumb title="Notes" url="http://www.yuthon.com/categories/Notes/"/>
-          
-        </display>
-    </data>
-    </url>
-
-    
-  <url>
     <loc>http://www.yuthon.com/2016/04/09/CodeSchool-Javascript/</loc>
     <lastmod>2016-05-16T11:51:43.000Z</lastmod>
     <data>
@@ -680,12 +680,12 @@
 
     
   <url>
-    <loc>http://www.yuthon.com/2016/04/12/CodeSchool-JavaScript-Best-Practices/</loc>
+    <loc>http://www.yuthon.com/2016/04/13/CodeSchool-Try-jQuery/</loc>
     <lastmod>2016-05-16T11:51:43.000Z</lastmod>
     <data>
         <display>
-        <title>Notes for Code School - JavaScript Best Practices</title>
-        <pubTime>2016-04-12T10:19:54.000Z</pubTime>
+        <title>Notes for Code School - Try jQuery</title>
+        <pubTime>2016-04-13T09:24:09.000Z</pubTime>
         
         <tag>CodeSchool</tag>
          
@@ -702,12 +702,34 @@
 
     
   <url>
-    <loc>http://www.yuthon.com/2016/04/13/CodeSchool-Try-jQuery/</loc>
+    <loc>http://www.yuthon.com/2016/04/14/CodeSchool-Shaping-up-with-Angular.js/</loc>
     <lastmod>2016-05-16T11:51:43.000Z</lastmod>
     <data>
         <display>
-        <title>Notes for Code School - Try jQuery</title>
-        <pubTime>2016-04-13T09:24:09.000Z</pubTime>
+        <title>Notes for Code School - Shaping up with Angular.js</title>
+        <pubTime>2016-04-14T13:19:22.000Z</pubTime>
+        
+        <tag>CodeSchool</tag>
+         
+        <tag>JavaScript</tag>
+         
+         
+           
+             
+              <breadCrumb title="Notes" url="http://www.yuthon.com/categories/Notes/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://www.yuthon.com/2016/04/12/CodeSchool-JavaScript-Best-Practices/</loc>
+    <lastmod>2016-05-16T11:51:43.000Z</lastmod>
+    <data>
+        <display>
+        <title>Notes for Code School - JavaScript Best Practices</title>
+        <pubTime>2016-04-12T10:19:54.000Z</pubTime>
         
         <tag>CodeSchool</tag>
          

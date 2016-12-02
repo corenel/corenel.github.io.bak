@@ -2,6 +2,13 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>http://www.yuthon.com/2016/12/02/1Password-Problem-browser-could-not-be-verified/</loc>
+    
+    <lastmod>2016-12-02T08:52:36.000Z</lastmod>
+    
+  </url>
+  
+  <url>
     <loc>http://www.yuthon.com/2016/11/26/Train-Caffe-YOLO-on-our-own-dataset/</loc>
     
     <lastmod>2016-11-26T11:26:29.000Z</lastmod>
@@ -205,13 +212,6 @@
   </url>
   
   <url>
-    <loc>http://www.yuthon.com/2016/04/14/CodeSchool-Shaping-up-with-Angular.js/</loc>
-    
-    <lastmod>2016-05-16T11:51:43.000Z</lastmod>
-    
-  </url>
-  
-  <url>
     <loc>http://www.yuthon.com/2016/04/09/CodeSchool-Javascript/</loc>
     
     <lastmod>2016-05-16T11:51:43.000Z</lastmod>
@@ -219,14 +219,21 @@
   </url>
   
   <url>
-    <loc>http://www.yuthon.com/2016/04/12/CodeSchool-JavaScript-Best-Practices/</loc>
+    <loc>http://www.yuthon.com/2016/04/13/CodeSchool-Try-jQuery/</loc>
     
     <lastmod>2016-05-16T11:51:43.000Z</lastmod>
     
   </url>
   
   <url>
-    <loc>http://www.yuthon.com/2016/04/13/CodeSchool-Try-jQuery/</loc>
+    <loc>http://www.yuthon.com/2016/04/14/CodeSchool-Shaping-up-with-Angular.js/</loc>
+    
+    <lastmod>2016-05-16T11:51:43.000Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://www.yuthon.com/2016/04/12/CodeSchool-JavaScript-Best-Practices/</loc>
     
     <lastmod>2016-05-16T11:51:43.000Z</lastmod>
     
