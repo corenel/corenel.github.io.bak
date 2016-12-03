@@ -79,22 +79,9 @@ index 3d3d5e4..dd7a33d 100644
 +ARCH=  -gencode arch=compute_61,code=compute_61
 ```
 
-另外, 还需要修改`src/yolo.c`:
-
-```diff
-diff --git a/src/yolo.c b/src/yolo.c
-index 05f2be6..26f07cb 100644
---- a/src/yolo.c
-+++ b/src/yolo.c
- void train_yolo(char *cfgfile, char *weightfile)
- {
--    char *train_images = "/data/voc/train.txt";
--    char *backup_directory = "/home/pjreddie/backup/";
-+    char *train_images = "/home/m/data/ROBdevkit/train.txt";
-+    char *backup_directory = "/home/m/workspace/backup/";
-```
-
 ### Prepare
+
+YOLOv2这次不用改`yolo.c`源文件了, 只需要修改一些配置文件即可, 大大方便了我们用自己的数据集训练.
 
 首先修改`data/voc.names`, 另存为`data/rob.names`:
 
@@ -181,7 +168,7 @@ thresh = .6
 random=1
 ```
 
-> 注意`region`的前一层的`filter`值的计算方法为$5\times (classes + num)$.
+> 注意`region`的前一层的`filter`值的计算方法为$num \times (classes+coords+1)$.
 
 ### Train
 
