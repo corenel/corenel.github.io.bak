@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://www.yuthon.com/"/>
-  <updated>2016-12-02T08:52:36.000Z</updated>
+  <updated>2016-12-03T04:51:47.000Z</updated>
   <id>http://www.yuthon.com/</id>
   
   <author>
@@ -14,6 +14,146 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>Train YOLOv2 on my own dataset</title>
+    <link href="http://www.yuthon.com/2016/12/03/Train-YOLOv2-on-my-own-dataset/"/>
+    <id>http://www.yuthon.com/2016/12/03/Train-YOLOv2-on-my-own-dataset/</id>
+    <published>2016-12-03T03:29:04.000Z</published>
+    <updated>2016-12-03T04:51:47.000Z</updated>
+    
+    <content type="html"><![CDATA[<p>最近在看 Darkflow 的时候, 发现连 YOLOv2 都出了, 据称 mAP 和速度都提升了不少, 立马 clone 下来试了一番.</p>
+<a id="more"></a>
+<h2 id="Instruction"><a href="#Instruction" class="headerlink" title="Instruction"></a>Instruction</h2><h3 id="Comparison"><a href="#Comparison" class="headerlink" title="Comparison"></a>Comparison</h3><p>下面是<a href="http://pjreddie.com/darknet/yolo/" target="_blank" rel="external">官网</a>挂出来的一个对比表, 可以看出, YOLOv2 有 76.8 的mAP, 和 SSD500 相同, 但是 FPS 不知比 SSD 高到哪里去了. YOLOv2 544x544 提升到了 78.6 mAP, 比 Faster-RCNN 的 Baseline (ResNet-101, VOC07+12) 的 76.4 mAP 高, 但是比其 Baseline+++ (ResNet-101, COCO+VOC2007+VOC2012) 的 85.6 mAP 还是逊色了不少. 不过官网没有挂出来 training on Pascal + COCO data and testing on Pascal data 的数据, 想见应该也会在 80 mAP 以上.</p>
+<p>更加可喜的是, Tiny-YOLOv2比之前的Tiny-YOLO高出了52FPS, 达到了惊人的207FPS, 想必在 TX1 上跑的话应该也能上20FPS.</p>
+<table>
+<thead>
+<tr>
+<th>Model</th>
+<th>Train</th>
+<th>Test</th>
+<th>mAP</th>
+<th>FLOPS</th>
+<th>FPS</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Old YOLO</td>
+<td>VOC 2007+2012</td>
+<td>2007</td>
+<td>63.4</td>
+<td>40.19 Bn</td>
+<td>45</td>
+</tr>
+<tr>
+<td>SSD300</td>
+<td>VOC 2007+2012</td>
+<td>2007</td>
+<td>74.3</td>
+<td>-</td>
+<td>46</td>
+</tr>
+<tr>
+<td>SSD500</td>
+<td>VOC 2007+2012</td>
+<td>2007</td>
+<td>76.8</td>
+<td>-</td>
+<td>19</td>
+</tr>
+<tr>
+<td>YOLOv2</td>
+<td>VOC 2007+2012</td>
+<td>2007</td>
+<td>76.8</td>
+<td>34.90 Bn</td>
+<td>67</td>
+</tr>
+<tr>
+<td>YOLOv2 544x544</td>
+<td>VOC 2007+2012</td>
+<td>2007</td>
+<td>78.6</td>
+<td>59.68 Bn</td>
+<td>40</td>
+</tr>
+<tr>
+<td>Tiny YOLO</td>
+<td>VOC 2007+2012</td>
+<td>2007</td>
+<td>57.1</td>
+<td>6.97 Bn</td>
+<td>207</td>
+</tr>
+<tr>
+<td>SSD300</td>
+<td>COCO trainval</td>
+<td>test-dev</td>
+<td>41.2</td>
+<td>-</td>
+<td>46</td>
+</tr>
+<tr>
+<td>SSD500</td>
+<td>COCO trainval</td>
+<td>test-dev</td>
+<td>46.5</td>
+<td>-</td>
+<td>19</td>
+</tr>
+<tr>
+<td>YOLOv2 544x544</td>
+<td>COCO trainval</td>
+<td>test-dev</td>
+<td>44.0</td>
+<td>59.68 Bn</td>
+<td>40</td>
+</tr>
+</tbody>
+</table>
+<h3 id="What’s-New-in-Version-2"><a href="#What’s-New-in-Version-2" class="headerlink" title="What’s New in Version 2"></a>What’s New in Version 2</h3><p>具体的文章还没在 Arxiv 上挂出来, 按照目前透露的信息, 主要是像 SSD 和 Overfeat 那样全部都用了卷积层, 而不是后面还跟着全连接层. 但是不同的是, 仍然是对整个图像进行训练. 同时还借鉴了 Faster-RCNN, 调整了 Bounding Box 的优先级, 不直接预测<code>w</code>, <code>h</code>, 但是仍然是直接预测<code>x</code>, <code>y</code>坐标.</p>
+<h3 id="Video"><a href="#Video" class="headerlink" title="Video"></a>Video</h3><p>官网还挂了一个用 YOLOv2 识别过的 007 的 Trailer, 配乐+Bounding Box 使得这个视频莫名其妙地非常搞笑, 建议去<a href="https://youtu.be/VOC3huqHrss" target="_blank" rel="external">看看</a>.</p>
+<h2 id="Training"><a href="#Training" class="headerlink" title="Training"></a>Training</h2><p>下面讲讲使用 YOLOv2 在我自己做的数据集 ROBdevkit 上的训练过程.</p>
+<h3 id="Make"><a href="#Make" class="headerlink" title="Make"></a>Make</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">$ git <span class="built_in">clone</span> https://github.com/pjreddie/darknet</div><div class="line">$ <span class="built_in">cd</span> darknet</div><div class="line">$ make -j8</div></pre></td></tr></table></figure>
+<p>在<code>make</code>之前, 为了最大发挥机器的性能, 还需要修改<code>Makefile</code>:</p>
+<figure class="highlight diff"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div></pre></td><td class="code"><pre><div class="line">diff --git a/Makefile b/Makefile</div><div class="line">index 3d3d5e4..dd7a33d 100644</div><div class="line"><span class="comment">--- a/Makefile</span></div><div class="line"><span class="comment">+++ b/Makefile</span></div><div class="line"><span class="meta">@@ -1,6 +1,6 @@</span></div><div class="line"><span class="deletion">-GPU=0</span></div><div class="line"><span class="deletion">-CUDNN=0</span></div><div class="line"><span class="deletion">-OPENCV=0</span></div><div class="line"><span class="addition">+GPU=1</span></div><div class="line"><span class="addition">+CUDNN=1</span></div><div class="line"><span class="addition">+OPENCV=1</span></div><div class="line"> DEBUG=0</div><div class="line"></div><div class="line"> ARCH= -gencode arch=compute_20,code=[sm_20,sm_21] \</div><div class="line">@@ -10,47 +10,47 @@ ARCH= -gencode arch=compute_20,code=[sm_20,sm_21] \</div><div class="line">       -gencode arch=compute_52,code=[sm_52,compute_52]</div><div class="line"></div><div class="line"> # This is what I use, uncomment if you know your arch and want to specify</div><div class="line"><span class="deletion">-# ARCH=  -gencode arch=compute_52,code=compute_52</span></div><div class="line"><span class="addition">+ARCH=  -gencode arch=compute_61,code=compute_61</span></div></pre></td></tr></table></figure>
+<p>另外, 还需要修改<code>src/yolo.c</code>:</p>
+<figure class="highlight diff"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">diff --git a/src/yolo.c b/src/yolo.c</div><div class="line">index 05f2be6..26f07cb 100644</div><div class="line"><span class="comment">--- a/src/yolo.c</span></div><div class="line"><span class="comment">+++ b/src/yolo.c</span></div><div class="line"> void train_yolo(char *cfgfile, char *weightfile)</div><div class="line"> &#123;</div><div class="line"><span class="deletion">-    char *train_images = "/data/voc/train.txt";</span></div><div class="line"><span class="deletion">-    char *backup_directory = "/home/pjreddie/backup/";</span></div><div class="line"><span class="addition">+    char *train_images = "/home/m/data/ROBdevkit/train.txt";</span></div><div class="line"><span class="addition">+    char *backup_directory = "/home/m/workspace/backup/";</span></div></pre></td></tr></table></figure>
+<h3 id="Prepare"><a href="#Prepare" class="headerlink" title="Prepare"></a>Prepare</h3><p>首先修改<code>data/voc.names</code>, 另存为<code>data/rob.names</code>:</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">ball</div><div class="line">goal</div><div class="line">robot</div></pre></td></tr></table></figure>
+<p>修改<code>cfg/voc.data</code>, 另存为<code>cfg/rob.names</code>:</p>
+<figure class="highlight ini"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="attr">classes</span>= <span class="number">3</span></div><div class="line"><span class="attr">train</span>  = /home/m/data/ROBdevkit/train.txt</div><div class="line"><span class="attr">valid</span>  = /home/m/data/ROBdevkit/<span class="number">2017</span>_test.txt</div><div class="line"><span class="attr">names</span> = data/rob.names</div><div class="line"><span class="attr">backup</span> = /home/m/workspace/backup/</div></pre></td></tr></table></figure>
+<p>其次修改<code>script/voc_label.py</code>, 另存为<code>script/rob_label.py</code>:</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">import</span> xml.etree.ElementTree <span class="keyword">as</span> ET</div><div class="line"><span class="keyword">import</span> pickle</div><div class="line"><span class="keyword">import</span> os</div><div class="line"><span class="keyword">from</span> os <span class="keyword">import</span> listdir, getcwd</div><div class="line"><span class="keyword">from</span> os.path <span class="keyword">import</span> join</div><div class="line"></div><div class="line">sets = [(<span class="string">'2017'</span>, <span class="string">'train'</span>), (<span class="string">'2017'</span>, <span class="string">'val'</span>), (<span class="string">'2017'</span>, <span class="string">'test'</span>)]</div><div class="line"></div><div class="line">classes = [<span class="string">'ball'</span>, <span class="string">'goal'</span>, <span class="string">'robot'</span>]</div><div class="line"></div><div class="line">...</div></pre></td></tr></table></figure>
+<p>然后在<code>ROBdevkit</code>的根目录下执行<code>python rob_label.py</code>来生成 label 文件, 并用<code>cat 2017_* &gt; train.txt</code>生成<code>train.txt</code>. 最终目录结构为:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line">.</div><div class="line">├── ROBdevkit</div><div class="line">│   ├── 2017_test.txt</div><div class="line">│   ├── 2017_train.txt</div><div class="line">│   ├── 2017_val.txt</div><div class="line">│   ├── results</div><div class="line">│   ├── ROB2017</div><div class="line">│   ├── scripts</div><div class="line">│   ├── train.txt</div><div class="line">│   └── VOC0712</div><div class="line">├── rob_label.py</div></pre></td></tr></table></figure>
+<p>最后, 修改<code>cfg/voc.data</code>, 另存为<code>cfg/rob.names</code>:</p>
+<figure class="highlight diff"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div></pre></td><td class="code"><pre><div class="line">diff --git a/cfg/tiny-yolo-voc.cfg b/cfg/tiny-yolo-rob.cfg</div><div class="line"><span class="deletion">-- a/cfg/tiny-yolo-voc.cfg</span></div><div class="line"><span class="addition">++ b/cfg/tiny-yolo-rob.cfg</span></div><div class="line">[convolutional]</div><div class="line">size=1</div><div class="line">stride=1</div><div class="line">pad=1</div><div class="line"><span class="deletion">-filters=250</span></div><div class="line"><span class="addition">+filters=40</span></div><div class="line">activation=linear</div><div class="line"></div><div class="line">[region]</div><div class="line">anchors = 1.08,1.19,  3.42,4.41,  6.63,11.38,  9.42,5.11,  16.62,10.52</div><div class="line">bias_match=1</div><div class="line"><span class="deletion">-classes=20</span></div><div class="line"><span class="addition">+classes=3</span></div><div class="line">coords=4</div><div class="line">num=5</div><div class="line">softmax=1</div><div class="line">jitter=.2</div><div class="line">rescore=1</div><div class="line"></div><div class="line">object_scale=5</div><div class="line">noobject_scale=1</div><div class="line">class_scale=1</div><div class="line">coord_scale=1</div><div class="line"></div><div class="line">absolute=1</div><div class="line">thresh = .6</div><div class="line">random=1</div></pre></td></tr></table></figure>
+<blockquote>
+<p>注意<code>region</code>的前一层的<code>filter</code>值的计算方法为$5\times (classes + num)$.</p>
+</blockquote>
+<h3 id="Train"><a href="#Train" class="headerlink" title="Train"></a>Train</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ ./darknet detector train cfg/rob.data cfg/tiny-yolo-rob.cfg darknet.conv.weights</div></pre></td></tr></table></figure>
+]]></content>
+    
+    <summary type="html">
+    
+      &lt;p&gt;最近在看 Darkflow 的时候, 发现连 YOLOv2 都出了, 据称 mAP 和速度都提升了不少, 立马 clone 下来试了一番.&lt;/p&gt;
+    
+    </summary>
+    
+      <category term="Experience" scheme="http://www.yuthon.com/categories/Experience/"/>
+    
+    
+      <category term="Deep Learning" scheme="http://www.yuthon.com/tags/Deep-Learning/"/>
+    
+      <category term="YOLO" scheme="http://www.yuthon.com/tags/YOLO/"/>
+    
+      <category term="Object detection" scheme="http://www.yuthon.com/tags/Object-detection/"/>
+    
+      <category term="Darknet" scheme="http://www.yuthon.com/tags/Darknet/"/>
+    
+  </entry>
   
   <entry>
     <title>1Password Problem browser could not be verified</title>
@@ -2257,221 +2397,6 @@
 &lt;/ul&gt;
 &lt;p&gt;Don’t just pick one of these avenues at random. We’ll explore diagnostic techniques for choosing one of the above solutions in the following sections.&lt;/p&gt;
 &lt;p&gt;In the next few sections, We’ll first talk about how evaluate your learning algorithms and after that we’ll talk about some of these diagnostics which will hopefully let you much more effectively select more of the useful things to try mixing if your goal to improve the machine learning system. &lt;/p&gt;
-    
-    </summary>
-    
-      <category term="Notes" scheme="http://www.yuthon.com/categories/Notes/"/>
-    
-    
-      <category term="Coursera" scheme="http://www.yuthon.com/tags/Coursera/"/>
-    
-      <category term="Machine Learning" scheme="http://www.yuthon.com/tags/Machine-Learning/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>Notes for Machine Learning - Week 5</title>
-    <link href="http://www.yuthon.com/2016/08/17/Coursera-Machine-Learning-Week-5/"/>
-    <id>http://www.yuthon.com/2016/08/17/Coursera-Machine-Learning-Week-5/</id>
-    <published>2016-08-17T03:57:03.000Z</published>
-    <updated>2016-09-10T07:20:49.000Z</updated>
-    
-    <content type="html"><![CDATA[<h1 id="Neural-Networks-Learning"><a href="#Neural-Networks-Learning" class="headerlink" title="Neural Networks: Learning"></a>Neural Networks: Learning</h1><h2 id="Cost-Function-and-Backpropagation"><a href="#Cost-Function-and-Backpropagation" class="headerlink" title="Cost Function and Backpropagation"></a>Cost Function and Backpropagation</h2><h3 id="Cost-Function"><a href="#Cost-Function" class="headerlink" title="Cost Function"></a>Cost Function</h3><p>Let’s first define a few variables that we will need to use:</p>
-<ul>
-<li>$L$ = total number of layers in the network</li>
-<li>$s_l$ = number of units (not counting bias unit) in layer $l$</li>
-<li>$K$ = number of output units/classes</li>
-</ul>
-<p>Recall that the cost function for regularized logistic regression was:</p>
-<p>$J(\theta) = - \frac{1}{m} \sum_{i=1}^m \large[ y^{(i)}\ \log (h_\theta (x^{(i)})) + (1 - y^{(i)})\ \log (1 - h_\theta(x^{(i)}))\large] + \frac{\lambda}{2m}\sum_{j=1}^n \theta_j^2$</p>
-<p>For neural networks, it is going to be slightly more complicated:</p>
-<p>$J(\Theta) = - \frac{1}{m} \sum_{i=1}^m \sum_{k=1}^K \left[y^{(i)}_k \log ((h_\Theta (x^{(i)}))_k) + (1 - y^{(i)}_k)\log (1 - (h_\Theta(x^{(i)}))_k)\right] + \frac{\lambda}{2m}\sum_{l=1}^{L-1} \sum_{i=1}^{s_l} \sum_{j=1}^{s_{l+1}} ( \Theta_{j,i}^{(l)})^2$</p>
-<a id="more"></a>
-<ul>
-<li>$h_\Theta (x) \in R^K$, $(h_\Theta (x))_i$ = $i^{th}$ output</li>
-<li><u>In the first part of the equation</u>, the double sum simply adds up the logistic regression costs calculated for each cell in the output layer</li>
-<li><u>In the regularization part</u>, the triple sum simply adds up the squares of all the individual $\Theta$s in the entire network.<ul>
-<li><u>The number of columns</u> in our current theta matrix is equal to the number of nodes in our current layer (<u>including</u> the bias unit).</li>
-<li><u>The number of rows</u> in our current theta matrix is equal to the number of nodes in the next layer (<u>excluding</u> the bias unit).<ul>
-<li>This is like a bias unit and by analogy to what we were doing for logistic progression, we won’t sum over those terms in our regularization term because <u>we don’t want to regularize them</u> and string their values as zero. </li>
-</ul>
-</li>
-</ul>
-</li>
-</ul>
-<h3 id="Backpropagation-Algorithm"><a href="#Backpropagation-Algorithm" class="headerlink" title="Backpropagation Algorithm"></a>Backpropagation Algorithm</h3><p><strong>“Backpropagation” (后向搜索)</strong> is neural-network terminology for minimizing our cost function, just like what we were doing with gradient descent in logistic and linear regression.</p>
-<p>Our goal is try to find parameters $\Theta$ to try to minimize $J(\Theta)$. </p>
-<p>In order to use either gradient descent or one of the advance optimization algorithms. What we need to do therefore is to write code that takes this input the parameters theta and computes $J(\Theta)$ and $\dfrac{\partial}{\partial \Theta_{i,j}^{(l)}}J(\Theta)$.</p>
-<h4 id="Gradient-compuation"><a href="#Gradient-compuation" class="headerlink" title="Gradient compuation"></a>Gradient compuation</h4><p>Given one training example $(x,y)$</p>
-<p><img src="/images/gradient_computation.png" alt="gradient_computation"></p>
-<p>Forward propagation:</p>
-<ul>
-<li>$a^{(1)} = x$</li>
-<li>$z^{(2)} = \Theta ^{(1)} a ^{(1)}$</li>
-<li>$a^{(2)} = g(z^{(2)})\ (add\ a^{(2)}_0)$</li>
-<li>$z^{(3)} = \Theta ^{(1)} a ^{(2)}$</li>
-<li>$a^{(3)} = g(z^{(3)})\ (add\ a^{(3)}_0)$</li>
-<li>$z^{(4)} = \Theta ^{(3)} a ^{(3)}$</li>
-<li>$a^{(2)} = h_\Theta (x) =  g(z^{(3)})$</li>
-</ul>
-<p>In backpropagation we’re going to compute for every node:</p>
-<p>$\delta_j^{(l)}$ = “error” of node j in layer $l$ ($s_{l+1}$ elements vector)</p>
-<p>For each output unit (layer $L = 4$):</p>
-<p>$\delta ^{(4)} = a^{(4)} - y$</p>
-<p>To get the delta values of the layers before the last layer, we can use an equation that steps us back from right to left:</p>
-<p>$\delta^{(l)} = ((\Theta^{(l)})^T \delta^{(l+1)})\ .*\ g’(z^{(l)})$</p>
-<p>The g-prime derivative terms can also be written out as:</p>
-<p>$g’(z^{(l)}) = a^{(l)}\ .*\ (1 - a^{(l)})$</p>
-<p>There is no $\delta ^{(1)}$ term, because the first layer corresponds to the input layer and that’s just the feature we observed in our training sets, so that doesn’t have any error associated with that.</p>
-<p>It’s possible to prove that if you ignore regularation, then the partial derivative terms you want are exactly given by the activations and these delta terms. </p>
-<p>$\dfrac{\partial J(\Theta)}{\partial \Theta_{i,j}^{(l)}} = a^{(i)}_j \delta^{(l+1)}_i\ (\text{ignoring }\lambda)$</p>
-<h4 id="Backpropagation-Algorithm-1"><a href="#Backpropagation-Algorithm-1" class="headerlink" title="Backpropagation Algorithm"></a>Backpropagation Algorithm</h4><ul>
-<li>Training set $\lbrace (x^{(1)}, y^{(1)}) \cdots (x^{(m)}, y^{(m)})\rbrace$</li>
-<li>Set $\Delta^{(l)}_{i,j} := 0$ (for all $l, i, j$)</li>
-<li>For $i=1$ to $m$<ul>
-<li>Set $a^{(1)} := x^{(t)}$</li>
-<li>Perform forward propagation to compute $a^{(l)}$ for $l = 2,3,\dots ,L$</li>
-<li>Using $y^{(i)}$, compute $\delta^{(L)} = a^{(L)} - y^{(t)}$</li>
-<li>Compute $\delta^{(L-1)}, \delta^{(L-2)},\dots,\delta^{(2)}$</li>
-<li>$\Delta^{(l)}_{i,j} := \Delta^{(l)}_{i,j} + a_j^{(l)} \delta_i^{(l+1)}$  or with vectorization, $\Delta^{(l)} := \Delta^{(l)} + \delta^{(l+1)}(a^{(l)})^T$</li>
-</ul>
-</li>
-<li>$D^{(l)}_{i,j} := \dfrac{1}{m}\left(\Delta^{(l)}_{i,j} + \lambda\Theta^{(l)}_{i,j}\right)$ <strong>If</strong> $j\ne 0$ </li>
-<li>$D^{(l)}_{i,j} := \dfrac{1}{m}\Delta^{(l)}_{i,j}$ <strong>If</strong> $j = 0$</li>
-</ul>
-<p>The capital-delta matrix is used as an “accumulator” to add up our values as we go along and eventually compute our partial derivative.</p>
-<p> the $D_{i,j}^{(l)}$ terms are the partial derivatives and the results we are looking for:</p>
-<p>$\dfrac{\partial J(\Theta)}{\partial \Theta_{i,j}^{(l)}} = D_{i,j}^{(l)}$</p>
-<h3 id="Backpropagation-Intuition"><a href="#Backpropagation-Intuition" class="headerlink" title="Backpropagation Intuition"></a>Backpropagation Intuition</h3><h4 id="Forward-propagation"><a href="#Forward-propagation" class="headerlink" title="Forward propagation"></a>Forward propagation</h4><p><img src="/images/forward_propagation_intuition.png" alt="forward_propagation_intuition.png"></p>
-<h4 id="What’s-backpropagation-doing"><a href="#What’s-backpropagation-doing" class="headerlink" title="What’s backpropagation doing?"></a>What’s backpropagation doing?</h4><p>The cost function is:</p>
-<p>$J(\theta) = - \frac{1}{m} \sum_{t=1}^m\sum_{k=1}^K  \left[ y^{(t)}_k \ \log (h_\theta (x^{(t)}))_k + (1 - y^{(t)}_k)\ \log (1 - h_\theta(x^{(t)})_k)\right] + \frac{\lambda}{2m}\sum_{l=1}^{L-1} \sum_{i=1}^{s_l} \sum_{j=1}^{s_l+1} ( \theta_{j,i}^{(l)})^2$</p>
-<p>Focusing on  a single example $x^{(i)}, y^{(i)}$, the case of 1 output unit, and ignoring regularization ($\lambda = 0$), </p>
-<p>$cost(t) =y^{(t)} \ \log (h_\theta (x^{(t)})) + (1 - y^{(t)})\ \log (1 - h_\theta(x^{(t)}))$</p>
-<p>Intuitively, $\theta ^{(l)}_j$ is the “error” for $a ^{(l)}_j$ (unit $j$ in layer $l$). More formally, the delta values are actually the derivative of the cost function:</p>
-<p>$\delta_j^{(l)} = \dfrac{\partial}{\partial z_j^{(l)}} cost(t)$</p>
-<p><img src="/images/backward_propagation_intuition.png" alt="backward_propagation_intuition.png"></p>
-<p>In above, we can compute</p>
-<p>$\delta ^{(4)}_1 = y^{(i)} - a^{(4)}_1$</p>
-<p>$\delta ^{(3)}_2 = \Theta ^{(3)}_{12} \delta^{(4)}_1$</p>
-<p>$\delta ^{(2)}_2 = \Theta ^{(2)}_{12} \delta^{(3)}_1 + \Theta ^{(2)}_{22} \delta^{(3)}_2$</p>
-<h2 id="Backpropagation-in-Practice"><a href="#Backpropagation-in-Practice" class="headerlink" title="Backpropagation in Practice"></a>Backpropagation in Practice</h2><h3 id="Implementation-Note-Unrolling-Parameters"><a href="#Implementation-Note-Unrolling-Parameters" class="headerlink" title="Implementation Note: Unrolling Parameters"></a>Implementation Note: Unrolling Parameters</h3><p>We use following code to get the optimisation theta.</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">function [jVal, gradient] = costFunction(theta)</div><div class="line">  ...</div><div class="line">optTheta = fminunc(@costFunction, initialTheta, options)</div></pre></td></tr></table></figure>
-<p>Where <code>gradient</code>, <code>theta</code>, <code>initialTheta</code> are vectors of $n+1$ dimension.</p>
-<p>In order to use optimizing functions such as <code>fminunc()</code>, we will want to “unroll” all the elements and put them into one long vector:</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">thetaVec = [Theta1(:); Theta2(:); Theta3(:)];</div><div class="line">DVec = [D1(:); D2(:); D3(:)];</div></pre></td></tr></table></figure>
-<p>If the dimensions of <code>Theta1</code> is $10\times11$, <code>Theta2</code> is $10\times 11$ and <code>Theta3</code> is $1\times 11$, then we can get back our original matrices from the “unrolled” versions as follows:</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">Theta1 = reshape(thetaVector(1:110),10,11)</div><div class="line">Theta2 = reshape(thetaVector(111:220),10,11)</div><div class="line">Theta3 = reshape(thetaVector(221:231),1,11)</div></pre></td></tr></table></figure>
-<h3 id="Gradient-Checking"><a href="#Gradient-Checking" class="headerlink" title="Gradient Checking"></a>Gradient Checking</h3><p>Gradient checking will assure that our backpropagation works as intended.</p>
-<h4 id="Numerical-estimation-of-gradients"><a href="#Numerical-estimation-of-gradients" class="headerlink" title="Numerical estimation of gradients"></a>Numerical estimation of gradients</h4><p><img src="/images/numerical_estimation_of_gradients.png" alt="numerical_estimation_of_gradients.png"></p>
-<p>We can approximate the derivative of our cost function with:</p>
-<p>$\dfrac{\partial}{\partial\Theta}J(\Theta) \approx \dfrac{J(\Theta + \epsilon) - J(\Theta - \epsilon)}{2\epsilon}$</p>
-<p><strong>Implement</strong></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">gradApprox = (J(theta + EPSILON) - J(theta - EPSILON)) / (@ * EPSILON);</div></pre></td></tr></table></figure>
-<h4 id="Gradient-Checking-1"><a href="#Gradient-Checking-1" class="headerlink" title="Gradient Checking"></a>Gradient Checking</h4><p>With multiple theta matrices, we can approximate the derivative <strong>with respect to</strong> $\Theta _J$ as follows:</p>
-<p>$\dfrac{\partial}{\partial\Theta_j}J(\Theta) \approx \dfrac{J(\Theta_1, \dots, \Theta_j + \epsilon, \dots, \Theta_n) - J(\Theta_1, \dots, \Theta_j - \epsilon, \dots, \Theta_n)}{2\epsilon}$</p>
-<p>A good small value for ϵ (epsilon), guarantees the math above to become true. If the value be much smaller, may we will end up with numerical problems. The professor Andrew usually uses the value $\epsilon = 10^{-4}$.</p>
-<p><strong>Implement</strong></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">epsilon = 1e-4;</div><div class="line">for i = 1 : n,</div><div class="line">  thetaPlus = theta;</div><div class="line">  thetaPlus(i) += epsilon;</div><div class="line">  thetaMinus = theta;</div><div class="line">  thetaMinus(i) -= epsilon;</div><div class="line">  gradApprox(i) = (J(thetaPlus) - J(thetaMinus))/(2*epsilon)</div><div class="line">end;</div></pre></td></tr></table></figure>
-<p>We then want to check that <code>gradApprox</code> $\approx$ <code>deltaVector</code>.</p>
-<h4 id="Implement-Note"><a href="#Implement-Note" class="headerlink" title="Implement Note"></a>Implement Note</h4><ul>
-<li>Implement backprop to compute <code>DVec</code> (unrolled $D^{(1)}, D^{(2)}, D^{(3)}$).</li>
-<li>Implement numerical gradient check to compute <code>gradApprox</code>.</li>
-<li>Make sure they give similar values.</li>
-<li>Turn off gradient checking. Using backprop code for learning.</li>
-</ul>
-<h4 id="Important"><a href="#Important" class="headerlink" title="Important"></a>Important</h4><ul>
-<li>Be sure to disable your gradient checking code before training your classifier. If you run numerical gradient computation on every iteration of gradient descent (or in the inner loop of <code>costFunction(...)</code>), your code will be <u>very</u> slow.</li>
-</ul>
-<h3 id="Random-Initialization"><a href="#Random-Initialization" class="headerlink" title="Random Initialization"></a>Random Initialization</h3><p>Initializing all theta weights to zero does not work with neural networks. When we backpropagate, all nodes will update to the same value repeatedly.</p>
-<p>Instead we can randomly initialize our weights to break symmetry.</p>
-<ul>
-<li>Initialize each $\Theta^{(l)}_{ij}$ to a random value between $[-\epsilon, \epsilon]$<ul>
-<li>$\epsilon = \dfrac{\sqrt{6}}{\sqrt{\mathrm{Loutput} + \mathrm{Linput}}}$</li>
-<li>$\Theta^{(l)} = 2\epsilon\ rand(Loutput, Linput+1)-\epsilon$</li>
-</ul>
-</li>
-</ul>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">% If the dimensions of Theta1 is 10x11, Theta2 is 10x11 and Theta3 is 1x11.</div><div class="line"></div><div class="line">Theta1 = rand(10,11) * (2 * INIT_EPSILON) - INIT_EPSILON;</div><div class="line">Theta2 = rand(10,11) * (2 * INIT_EPSILON) - INIT_EPSILON;</div><div class="line">Theta3 = rand(1,11) * (2 * INIT_EPSILON) - INIT_EPSILON;</div></pre></td></tr></table></figure>
-<blockquote>
-<p>Note: this epsilon is unrelated to the epsilon from Gradient Checking</p>
-</blockquote>
-<h3 id="Putting-It-Together"><a href="#Putting-It-Together" class="headerlink" title="Putting It Together"></a>Putting It Together</h3><p>First, pick a network architecture; choose the layout of your neural network, including how many hidden units in each layer and how many layers total.</p>
-<ul>
-<li>Number of input units = dimension of features $x^{(i)}$</li>
-<li>Number of output units = number of classes</li>
-<li>Number of hidden units per layer = usually more the better (must balance with cost of computation as it increases with more hidden units)</li>
-<li>Defaults: 1 hidden layer. If more than 1 hidden layer, then the same number of units in every hidden layer.</li>
-</ul>
-<p><strong>Training a Neural Network</strong></p>
-<ol>
-<li>Randomly initialize the weights</li>
-<li>Implement forward propagation to get $h_\theta(x^{(i)})$</li>
-<li>Implement the cost function</li>
-<li>Implement backpropagation to compute partial derivatives</li>
-<li>Use gradient checking to confirm that your backpropagation works. Then disable gradient checking.</li>
-<li>Use gradient descent or a built-in optimization function to minimize the cost function with the weights in theta.</li>
-</ol>
-<p>When we perform forward and back propagation, we loop on every training example:</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">for i = 1:m,</div><div class="line">   Perform forward propagation and backpropagation using example (x(i),y(i))</div><div class="line">   (Get activations a(l) and delta terms d(l) for l = 2,...,L</div></pre></td></tr></table></figure>
-<h1 id="Quiz"><a href="#Quiz" class="headerlink" title="Quiz"></a>Quiz</h1><ol>
-<li>You are training a three layer neural network and would like to use backpropagation to compute the gradient of the cost function. In the backpropagation algorithm, one of the steps is to update $\Delta^{(2)}<em>{ij} := \Delta^{(2)}</em>{ij} +  \delta^{(3)}_i * (a^{(2)})_j$ for every $i,j$. Which of the following is a correct vectorization of this step?<ul>
-<li>$\Delta(2) :=\Delta(2)+(a(3))^T \ast\delta(2)$</li>
-<li>$\Delta(2) :=\Delta(2)+\delta(3) \ast (a(3))^T$</li>
-<li>$\Delta(2) :=\Delta(2)+(a(2))^T \ast \delta(3)$</li>
-<li><u>$\Delta(2) :=\Delta(2)+\delta(3) \ast (a(2))^T$</u></li>
-</ul>
-</li>
-<li>Suppose <code>Theta1</code> is a $5\times 3$ matrix, and <code>Theta2</code> is a $4\times 6$ matrix. You set <code>thetaVec=[Theta1(:);Theta2(:)]</code>. Which of the following correctly recovers <code>Theta2</code>?<ul>
-<li><u><code>reshape(thetaVec(16:39),4,6)</code></u></li>
-<li><code>reshape(thetaVec(15:38),4,6)</code></li>
-<li><code>reshape(thetaVec(16:24),4,6)</code></li>
-<li><code>reshape(thetaVec(15:39),4,6)</code></li>
-<li><code>reshape(thetaVec(16:39),6,4)</code></li>
-</ul>
-</li>
-<li>Let $J(\theta) = 3\theta^3 + 2$. Let $\theta=1$, and $\epsilon=0.01$. Use the formula $\frac{J(\theta+\epsilon)-J(\theta-\epsilon)}{2\epsilon}$ to numerically compute an approximation to the derivative at $\theta=1$. What value do you get? (When $\theta=1$, the true/exact derivative is $ \frac{d J(\theta)}{ d\theta}=9$.)<ul>
-<li>9</li>
-<li>8.9997</li>
-<li>11</li>
-<li><u>9.0003</u></li>
-</ul>
-</li>
-<li><p>Which of the following statements are true? Check all that apply.</p>
-<ul>
-<li>Computing the gradient of the cost function in a neural network has the same efficiency when we use backpropagation or when we numerically compute it using the method of gradient checking.</li>
-<li><u>For computational efficiency, after we have performed gradient checking to verify that our backpropagation code is correct, we usually disable gradient checking before using backpropagation to train the network.</u></li>
-<li><u>Using gradient checking can help verify if one’s implementation of backpropagation is bug-free.</u></li>
-<li>Gradient checking is useful if we are using one of the advanced optimization methods (such as in fminunc) as our optimization algorithm. However, it serves little purpose if we are using gradient descent.</li>
-<li>Using a large value of $\lambda$ cannot hurt the performance of your neural network; the only reason we do not set $\lambda$ to be too large is to avoid numerical problems.</li>
-<li><u>If our neural network overfits the training set, one reasonable step to take is to increase the regularization parameter $\lambda$.</u></li>
-<li>Gradient checking is useful if we are using gradient descent as our optimization algorithm. However, it serves little purpose if we are using one of the advanced optimization methods (such as in fminunc).</li>
-</ul>
-</li>
-<li><p>Which of the following statements are true? Check all that apply.</p>
-<ul>
-<li>Suppose that the parameter $\theta(1)$ is a square matrix (meaning the number of rows equals the number of columns). If we replace $\theta(1)$ with its transpose ($\theta(1)^T$), then we have not changed the function that the network is computing.</li>
-<li><u>Suppose we have a correct implementation of backpropagation, and are training a neural network using gradient descent. Suppose we plot $J(\theta)$ as a function of the number of iterations, and find that it is increasing rather than decreasing. One possible cause of this is that the learning rate $\alpha$ is too large.</u></li>
-<li><u>If we are training a neural network using gradient descent, one reasonable “debugging” step to make sure it is working is to plot $J(\theta)$ as a function of the number of iterations, and make sure it is decreasing (or at least non-increasing) after each iteration.</u></li>
-<li>Suppose we are using gradient descent with learning rate $\alpha$. For logistic regression and linear regression, $J(\theta)$ was a convex optimization problem and thus we did not want to choose a learning rate $\alpha$ that is too large. For a neural network however, $J(\theta)$ may not be convex, and thus choosing a very large value of $\alpha$ can only speed up convergence.</li>
-<li>Suppose you have a three layer network with parameters $\theta(1)$ (controlling the function mapping from the inputs to the hidden units) and $\theta(2)$ (controlling the mapping from the hidden units to the outputs). If we set all the elements of $\theta(1)$ to be 0, and all the elements of $\theta(2)$ to be 1, then this suffices for symmetry breaking, since the neurons are no longer all computing the same function of the input.</li>
-<li>If we initialize all the parameters of a neural network to ones instead of zeros, this will suffice for the purpose of “symmetry breaking” because the parameters are no longer symmetrically equal to zero.</li>
-</ul>
-</li>
-</ol>
-]]></content>
-    
-    <summary type="html">
-    
-      &lt;h1 id=&quot;Neural-Networks-Learning&quot;&gt;&lt;a href=&quot;#Neural-Networks-Learning&quot; class=&quot;headerlink&quot; title=&quot;Neural Networks: Learning&quot;&gt;&lt;/a&gt;Neural Networks: Learning&lt;/h1&gt;&lt;h2 id=&quot;Cost-Function-and-Backpropagation&quot;&gt;&lt;a href=&quot;#Cost-Function-and-Backpropagation&quot; class=&quot;headerlink&quot; title=&quot;Cost Function and Backpropagation&quot;&gt;&lt;/a&gt;Cost Function and Backpropagation&lt;/h2&gt;&lt;h3 id=&quot;Cost-Function&quot;&gt;&lt;a href=&quot;#Cost-Function&quot; class=&quot;headerlink&quot; title=&quot;Cost Function&quot;&gt;&lt;/a&gt;Cost Function&lt;/h3&gt;&lt;p&gt;Let’s first define a few variables that we will need to use:&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;$L$ = total number of layers in the network&lt;/li&gt;
-&lt;li&gt;$s_l$ = number of units (not counting bias unit) in layer $l$&lt;/li&gt;
-&lt;li&gt;$K$ = number of output units/classes&lt;/li&gt;
-&lt;/ul&gt;
-&lt;p&gt;Recall that the cost function for regularized logistic regression was:&lt;/p&gt;
-&lt;p&gt;$J(\theta) = - \frac{1}{m} \sum_{i=1}^m \large[ y^{(i)}\ \log (h_\theta (x^{(i)})) + (1 - y^{(i)})\ \log (1 - h_\theta(x^{(i)}))\large] + \frac{\lambda}{2m}\sum_{j=1}^n \theta_j^2$&lt;/p&gt;
-&lt;p&gt;For neural networks, it is going to be slightly more complicated:&lt;/p&gt;
-&lt;p&gt;$J(\Theta) = - \frac{1}{m} \sum_{i=1}^m \sum_{k=1}^K \left[y^{(i)}_k \log ((h_\Theta (x^{(i)}))_k) + (1 - y^{(i)}_k)\log (1 - (h_\Theta(x^{(i)}))_k)\right] + \frac{\lambda}{2m}\sum_{l=1}^{L-1} \sum_{i=1}^{s_l} \sum_{j=1}^{s_{l+1}} ( \Theta_{j,i}^{(l)})^2$&lt;/p&gt;
     
     </summary>
     

@@ -4,6 +4,32 @@
 
     
   <url>
+    <loc>http://www.yuthon.com/2016/12/03/Train-YOLOv2-on-my-own-dataset/</loc>
+    <lastmod>2016-12-03T04:51:47.000Z</lastmod>
+    <data>
+        <display>
+        <title>Train YOLOv2 on my own dataset</title>
+        <pubTime>2016-12-03T03:29:04.000Z</pubTime>
+        
+        <tag>Deep Learning</tag>
+         
+        <tag>YOLO</tag>
+         
+        <tag>Object detection</tag>
+         
+        <tag>Darknet</tag>
+         
+         
+           
+             
+              <breadCrumb title="Experience" url="http://www.yuthon.com/categories/Experience/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
     <loc>http://www.yuthon.com/2016/12/02/1Password-Problem-browser-could-not-be-verified/</loc>
     <lastmod>2016-12-02T08:52:36.000Z</lastmod>
     <data>
@@ -680,6 +706,28 @@
 
     
   <url>
+    <loc>http://www.yuthon.com/2016/04/12/CodeSchool-JavaScript-Best-Practices/</loc>
+    <lastmod>2016-05-16T11:51:43.000Z</lastmod>
+    <data>
+        <display>
+        <title>Notes for Code School - JavaScript Best Practices</title>
+        <pubTime>2016-04-12T10:19:54.000Z</pubTime>
+        
+        <tag>CodeSchool</tag>
+         
+        <tag>JavaScript</tag>
+         
+         
+           
+             
+              <breadCrumb title="Notes" url="http://www.yuthon.com/categories/Notes/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
     <loc>http://www.yuthon.com/2016/04/13/CodeSchool-Try-jQuery/</loc>
     <lastmod>2016-05-16T11:51:43.000Z</lastmod>
     <data>
@@ -708,28 +756,6 @@
         <display>
         <title>Notes for Code School - Shaping up with Angular.js</title>
         <pubTime>2016-04-14T13:19:22.000Z</pubTime>
-        
-        <tag>CodeSchool</tag>
-         
-        <tag>JavaScript</tag>
-         
-         
-           
-             
-              <breadCrumb title="Notes" url="http://www.yuthon.com/categories/Notes/"/>
-          
-        </display>
-    </data>
-    </url>
-
-    
-  <url>
-    <loc>http://www.yuthon.com/2016/04/12/CodeSchool-JavaScript-Best-Practices/</loc>
-    <lastmod>2016-05-16T11:51:43.000Z</lastmod>
-    <data>
-        <display>
-        <title>Notes for Code School - JavaScript Best Practices</title>
-        <pubTime>2016-04-12T10:19:54.000Z</pubTime>
         
         <tag>CodeSchool</tag>
          
