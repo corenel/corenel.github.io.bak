@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://www.yuthon.com/"/>
-  <updated>2016-12-03T10:15:34.000Z</updated>
+  <updated>2016-12-04T13:25:17.000Z</updated>
   <id>http://www.yuthon.com/</id>
   
   <author>
@@ -14,6 +14,77 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>Installation of TensorFlow r0.11 on TX1</title>
+    <link href="http://www.yuthon.com/2016/12/04/Installation-of-TensorFlow-r0-11-on-TX1/"/>
+    <id>http://www.yuthon.com/2016/12/04/Installation-of-TensorFlow-r0-11-on-TX1/</id>
+    <published>2016-12-04T12:53:55.000Z</published>
+    <updated>2016-12-04T13:25:17.000Z</updated>
+    
+    <content type="html"><![CDATA[<p>今天折腾了一个下午, 特此记录一下其中遇到的坑, 主要还是因为 TX1 的 aarch64 架构, 以及小得可怜的内存与存储容量.</p>
+<a id="more"></a>
+<h2 id="Environment"><a href="#Environment" class="headerlink" title="Environment"></a>Environment</h2><ul>
+<li><strong>Hardware</strong>: NVIDIA Jetson TX1 Developer Kit</li>
+<li><strong>Software</strong>: JetPack 2.3.1<ul>
+<li>Ubuntu 16.04 64-bit (aarch64)</li>
+<li>CUDA 8.0</li>
+<li>cuDNN 5.1</li>
+</ul>
+</li>
+</ul>
+<h2 id="Installation"><a href="#Installation" class="headerlink" title="Installation"></a>Installation</h2><p>建议全程开HTTP/HTTPS代理, 否则国内下载速度堪忧.</p>
+<h3 id="Install-Java"><a href="#Install-Java" class="headerlink" title="Install Java"></a>Install Java</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">$ sudo add-apt-repository ppa:webupd8team/java</div><div class="line">$ sudo apt-get update</div><div class="line">$ sudo apt-get install oracle-java8-installer</div></pre></td></tr></table></figure>
+<h3 id="Install-dependencens"><a href="#Install-dependencens" class="headerlink" title="Install dependencens"></a>Install dependencens</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">$ sudo apt-get install git zip unzip autoconf automake libtool curl zlib1g-dev maven</div><div class="line">$ sudo apt-get install python-numpy swig python-dev python-wheel</div></pre></td></tr></table></figure>
+<h3 id="Build-protobuf"><a href="#Build-protobuf" class="headerlink" title="Build protobuf"></a>Build protobuf</h3><p>这里测 Protobuf 要编译两份, 分别给 grpc 和 Bazel 用.</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># For grpc-java build</span></div><div class="line">$ git <span class="built_in">clone</span> https://github.com/google/protobuf.git</div><div class="line">$ <span class="built_in">cd</span> protobuf</div><div class="line">$ git checkout master</div><div class="line">$ ./autogen.sh</div><div class="line">$ git checkout v3.0.0-beta-3</div><div class="line">$ ./autogen.sh</div><div class="line">$ LDFLAGS=-static ./configure --prefix=$(<span class="built_in">pwd</span>)/../</div><div class="line">$ sed -i <span class="_">-e</span> <span class="string">'s/LDFLAGS = -static/LDFLAGS = -all-static/'</span> ./src/Makefile</div><div class="line">$ make -j 4</div><div class="line">$ make install</div><div class="line"></div><div class="line"><span class="comment"># For bazel build</span></div><div class="line">$ git checkout v3.0.0-beta-2</div><div class="line">$./autogen.sh</div><div class="line">$ LDFLAGS=-static ./configure --prefix=$(<span class="built_in">pwd</span>)/../</div><div class="line">$ sed -i <span class="_">-e</span> <span class="string">'s/LDFLAGS = -static/LDFLAGS = -all-static/'</span> ./src/Makefile</div><div class="line">$ make -j 4</div><div class="line">$ <span class="built_in">cd</span> ..</div></pre></td></tr></table></figure>
+<blockquote>
+<p>注意: 给 Bazel 用的不用<code>make install</code>, 之后直接<code>cp</code>过去.</p>
+</blockquote>
+<h3 id="Build-grpc-java-compiler"><a href="#Build-grpc-java-compiler" class="headerlink" title="Build grpc-java compiler"></a>Build grpc-java compiler</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">$ git <span class="built_in">clone</span> https://github.com/neo-titans/odroid.git</div><div class="line">$ git <span class="built_in">clone</span> https://github.com/grpc/grpc-java-git</div><div class="line">$ <span class="built_in">cd</span> grpc-java/</div><div class="line">$ git checkout v0.15.0</div><div class="line">$ patch -p0 &lt; ../odroid/build_tensorflow/grpc-java.v0.15.0.patch</div><div class="line">$ CXXFLAGS=<span class="string">"-I<span class="variable">$(pwd)</span>/../include"</span> LDFLAGS=<span class="string">"-L<span class="variable">$(pwd)</span>/../lib"</span> ./gradlew java_pluginExecutable -Pprotoc=$(<span class="built_in">pwd</span>)/../bin/protoc</div><div class="line">$ <span class="built_in">cd</span> ..</div></pre></td></tr></table></figure>
+<h3 id="Build-bazel"><a href="#Build-bazel" class="headerlink" title="Build bazel"></a>Build bazel</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">$ git <span class="built_in">clone</span> https://github.com/bazelbuild/bazel.git</div><div class="line">$ <span class="built_in">cd</span> bazel</div><div class="line">$ git checkout 0.3.2</div><div class="line">$ cp ../protobuf/src/protoc third_party/protobuf/protoc-linux-arm32.exe</div><div class="line">$ cp ../grpc-java/compiler/build/exe/java_plugin/protoc-gen-grpc-java third_party/grpc/protoc-gen-grpc-java-0.15.0-linux-arm32.exe</div></pre></td></tr></table></figure>
+<p>在编译 Bazel 之前, 还需要改一些配置, 使得 Bazel 将 aarch64 认作 arm64, 以便编译成功.</p>
+<figure class="highlight diff"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div><div class="line">66</div><div class="line">67</div><div class="line">68</div><div class="line">69</div><div class="line">70</div><div class="line">71</div><div class="line">72</div><div class="line">73</div><div class="line">74</div><div class="line">75</div><div class="line">76</div><div class="line">77</div><div class="line">78</div><div class="line">79</div><div class="line">80</div><div class="line">81</div><div class="line">82</div><div class="line">83</div><div class="line">84</div><div class="line">85</div><div class="line">86</div><div class="line">87</div><div class="line">88</div><div class="line">89</div><div class="line">90</div></pre></td><td class="code"><pre><div class="line">diff --git a/compile.sh b/compile.sh</div><div class="line">index 53fc412..11035d9 100755</div><div class="line"><span class="comment">--- a/compile.sh</span></div><div class="line"><span class="comment">+++ b/compile.sh</span></div><div class="line">@@ -27,7 +27,7 @@ cd "$(dirname "$0")"</div><div class="line"> # Set the default verbose mode in buildenv.sh so that we do not display command</div><div class="line"> # output unless there is a failure.  We do this conditionally to offer the user</div><div class="line"> # a chance of overriding this in case they want to do so.</div><div class="line"><span class="deletion">-: $&#123;VERBOSE:=no&#125;</span></div><div class="line"><span class="addition">+: $&#123;VERBOSE:=yes&#125;</span></div><div class="line"></div><div class="line"> source scripts/bootstrap/buildenv.sh</div><div class="line"></div><div class="line">diff --git a/scripts/bootstrap/compile.sh b/scripts/bootstrap/compile.sh</div><div class="line">index 77372f0..657b254 100755</div><div class="line"><span class="comment">--- a/scripts/bootstrap/compile.sh</span></div><div class="line"><span class="comment">+++ b/scripts/bootstrap/compile.sh</span></div><div class="line">@@ -48,6 +48,7 @@ linux)</div><div class="line">   else</div><div class="line">     if [ "$&#123;MACHINE_IS_ARM&#125;" = 'yes' ]; then</div><div class="line">       PROTOC=$&#123;PROTOC:-third_party/protobuf/protoc-linux-arm32.exe&#125;</div><div class="line"><span class="addition">+      GRPC_JAVA_PLUGIN=$&#123;GRPC_JAVA_PLUGIN:-third_party/grpc/protoc-gen-grpc-java-0.15.0-linux-arm32.exe&#125;</span></div><div class="line">     else</div><div class="line">       PROTOC=$&#123;PROTOC:-third_party/protobuf/protoc-linux-x86_32.exe&#125;</div><div class="line">       GRPC_JAVA_PLUGIN=$&#123;GRPC_JAVA_PLUGIN:-third_party/grpc/protoc-gen-grpc-java-0.15.0-linux-x86_32.exe&#125;</div><div class="line">@@ -150,7 +151,7 @@ function java_compilation() &#123;</div><div class="line"></div><div class="line">   run "$&#123;JAVAC&#125;" -classpath "$&#123;classpath&#125;" -sourcepath "$&#123;sourcepath&#125;" \</div><div class="line">       -d "$&#123;output&#125;/classes" -source "$JAVA_VERSION" -target "$JAVA_VERSION" \</div><div class="line"><span class="deletion">-      -encoding UTF-8 "@$&#123;paramfile&#125;"</span></div><div class="line"><span class="addition">+      -encoding UTF-8 "@$&#123;paramfile&#125;" -J-Xmx500M</span></div><div class="line"></div><div class="line">   log "Extracting helper classes for $name..."</div><div class="line">   for f in $&#123;library_jars&#125; ; do</div><div class="line">diff --git a/src/main/java/com/google/devtools/build/lib/util/CPU.java b/src/main/java/com/google/devtools/build/lib/util/CPU.java</div><div class="line">index 41af4b1..4d80610 100644</div><div class="line"><span class="comment">--- a/src/main/java/com/google/devtools/build/lib/util/CPU.java</span></div><div class="line"><span class="comment">+++ b/src/main/java/com/google/devtools/build/lib/util/CPU.java</span></div><div class="line">@@ -26,7 +26,7 @@ public enum CPU &#123;</div><div class="line">   X86_32("x86_32", ImmutableSet.of("i386", "i486", "i586", "i686", "i786", "x86")),</div><div class="line">   X86_64("x86_64", ImmutableSet.of("amd64", "x86_64", "x64")),</div><div class="line">   PPC("ppc", ImmutableSet.of("ppc", "ppc64", "ppc64le")),</div><div class="line"><span class="deletion">-  ARM("arm", ImmutableSet.of("arm", "armv7l")),</span></div><div class="line"><span class="addition">+  ARM("arm", ImmutableSet.of("arm", "armv7l", "aarch64")),</span></div><div class="line">   UNKNOWN("unknown", ImmutableSet.&lt;String&gt;of());</div><div class="line"></div><div class="line">   private final String canonicalName;</div><div class="line">diff --git a/third_party/grpc/BUILD b/third_party/grpc/BUILD</div><div class="line">index 2ba07e3..c7925ff 100644</div><div class="line"><span class="comment">--- a/third_party/grpc/BUILD</span></div><div class="line"><span class="comment">+++ b/third_party/grpc/BUILD</span></div><div class="line">@@ -29,7 +29,7 @@ filegroup(</div><div class="line">         "//third_party:darwin": ["protoc-gen-grpc-java-0.15.0-osx-x86_64.exe"],</div><div class="line">         "//third_party:k8": ["protoc-gen-grpc-java-0.15.0-linux-x86_64.exe"],</div><div class="line">         "//third_party:piii": ["protoc-gen-grpc-java-0.15.0-linux-x86_32.exe"],</div><div class="line"><span class="deletion">-        "//third_party:arm": ["protoc-gen-grpc-java-0.15.0-linux-x86_32.exe"],</span></div><div class="line"><span class="addition">+        "//third_party:arm": ["protoc-gen-grpc-java-0.15.0-linux-arm32.exe"],</span></div><div class="line">         "//third_party:freebsd": ["protoc-gen-grpc-java-0.15.0-linux-x86_32.exe"],</div><div class="line">     &#125;),</div><div class="line"> )</div><div class="line">diff --git a/third_party/protobuf/BUILD b/third_party/protobuf/BUILD</div><div class="line">index 203fe51..4c2a316 100644</div><div class="line"><span class="comment">--- a/third_party/protobuf/BUILD</span></div><div class="line"><span class="comment">+++ b/third_party/protobuf/BUILD</span></div><div class="line">@@ -28,6 +28,7 @@ filegroup(</div><div class="line">         "//third_party:darwin": ["protoc-osx-x86_32.exe"],</div><div class="line">         "//third_party:k8": ["protoc-linux-x86_64.exe"],</div><div class="line">         "//third_party:piii": ["protoc-linux-x86_32.exe"],</div><div class="line"><span class="addition">+        "//third_party:arm": ["protoc-linux-arm32.exe"],</span></div><div class="line">         "//third_party:freebsd": ["protoc-linux-x86_32.exe"],</div><div class="line">     &#125;),</div><div class="line"> )</div><div class="line">diff --git a/tools/cpp/cc_configure.bzl b/tools/cpp/cc_configure.bzl</div><div class="line">index aeb0715..688835d 100644</div><div class="line"><span class="comment">--- a/tools/cpp/cc_configure.bzl</span></div><div class="line"><span class="comment">+++ b/tools/cpp/cc_configure.bzl</span></div><div class="line">@@ -150,7 +150,12 @@ def _get_cpu_value(repository_ctx):</div><div class="line">     return "x64_windows"</div><div class="line">   # Use uname to figure out whether we are on x86_32 or x86_64</div><div class="line">   result = repository_ctx.execute(["uname", "-m"])</div><div class="line"><span class="deletion">-  return "k8" if result.stdout.strip() in ["amd64", "x86_64", "x64"] else "piii"</span></div><div class="line"><span class="addition">+  machine = result.stdout.strip()</span></div><div class="line"><span class="addition">+  if machine in ["arm", "armv7l", "aarch64"]:</span></div><div class="line"><span class="addition">+   return "arm"</span></div><div class="line"><span class="addition">+  elif machine in ["amd64", "x86_64", "x64"]:</span></div><div class="line"><span class="addition">+   return "k8"</span></div><div class="line"><span class="addition">+  return "piii"</span></div><div class="line"></div><div class="line"></div><div class="line"> _INC_DIR_MARKER_BEGIN = "#include &lt;...&gt;"</div></pre></td></tr></table></figure>
+<p>之后编译安装:</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">$ ./compile.sh </div><div class="line">$ sudo cp output/bazel /usr/<span class="built_in">local</span>/bin</div><div class="line">$ <span class="built_in">cd</span> ..</div></pre></td></tr></table></figure>
+<h3 id="Build-Tensorflow"><a href="#Build-Tensorflow" class="headerlink" title="Build Tensorflow"></a>Build Tensorflow</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">$ git clone https://github.com/tensorflow/tensorflow.git</div><div class="line">$ git checkout r0.11</div></pre></td></tr></table></figure>
+<p>同样地, 修改配置文件:</p>
+<figure class="highlight diff"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div><div class="line">66</div><div class="line">67</div><div class="line">68</div><div class="line">69</div><div class="line">70</div><div class="line">71</div><div class="line">72</div><div class="line">73</div><div class="line">74</div><div class="line">75</div><div class="line">76</div><div class="line">77</div><div class="line">78</div><div class="line">79</div><div class="line">80</div><div class="line">81</div><div class="line">82</div><div class="line">83</div><div class="line">84</div><div class="line">85</div><div class="line">86</div><div class="line">87</div><div class="line">88</div><div class="line">89</div><div class="line">90</div><div class="line">91</div><div class="line">92</div><div class="line">93</div><div class="line">94</div><div class="line">95</div><div class="line">96</div><div class="line">97</div><div class="line">98</div><div class="line">99</div><div class="line">100</div><div class="line">101</div><div class="line">102</div><div class="line">103</div><div class="line">104</div></pre></td><td class="code"><pre><div class="line">diff --git a/tensorflow/core/kernels/BUILD b/tensorflow/core/kernels/BUILD</div><div class="line">index 2e04827..867aaca 100644</div><div class="line"><span class="comment">--- a/tensorflow/core/kernels/BUILD</span></div><div class="line"><span class="comment">+++ b/tensorflow/core/kernels/BUILD</span></div><div class="line">@@ -1184,7 +1184,7 @@ tf_kernel_libraries(</div><div class="line">         "segment_reduction_ops",</div><div class="line">         "scan_ops",</div><div class="line">         "sequence_ops",</div><div class="line"><span class="deletion">-        "sparse_matmul_op",</span></div><div class="line"><span class="addition">+       #DC "sparse_matmul_op",</span></div><div class="line">     ],</div><div class="line">     deps = [</div><div class="line">         ":bounds_check",</div><div class="line">diff --git a/tensorflow/core/kernels/cwise_op_gpu_select.cu.cc b/tensorflow/core/kernels/cwise_op_gpu_select.cu.cc</div><div class="line">index 02058a8..880252c 100644</div><div class="line"><span class="comment">--- a/tensorflow/core/kernels/cwise_op_gpu_select.cu.cc</span></div><div class="line"><span class="comment">+++ b/tensorflow/core/kernels/cwise_op_gpu_select.cu.cc</span></div><div class="line">@@ -43,8 +43,14 @@ struct BatchSelectFunctor&lt;GPUDevice, T&gt; &#123;</div><div class="line">     const int all_but_batch = then_flat_outer_dims.dimension(1);</div><div class="line"></div><div class="line"> #if !defined(EIGEN_HAS_INDEX_LIST)</div><div class="line"><span class="deletion">-    Eigen::array&lt;int, 2&gt; broadcast_dims&#123;&#123; 1, all_but_batch &#125;&#125;;</span></div><div class="line"><span class="deletion">-    Eigen::Tensor&lt;int, 2&gt;::Dimensions reshape_dims&#123;&#123; batch, 1 &#125;&#125;;</span></div><div class="line"><span class="addition">+    // Eigen::array&lt;int, 2&gt; broadcast_dims&#123;&#123; 1, all_but_batch &#125;&#125;;</span></div><div class="line"><span class="addition">+    Eigen::array&lt;int, 2&gt; broadcast_dims;</span></div><div class="line"><span class="addition">+    broadcast_dims[0] = 1;</span></div><div class="line"><span class="addition">+    broadcast_dims[1] = all_but_batch;</span></div><div class="line"><span class="addition">+    // Eigen::Tensor&lt;int, 2&gt;::Dimensions reshape_dims&#123;&#123; batch, 1 &#125;&#125;;</span></div><div class="line"><span class="addition">+    Eigen::Tensor&lt;int, 2&gt;::Dimensions reshape_dims;</span></div><div class="line"><span class="addition">+    reshape_dims[0] = batch;</span></div><div class="line"><span class="addition">+    reshape_dims[1] = 1;</span></div><div class="line"> #else</div><div class="line">     Eigen::IndexList&lt;Eigen::type2index&lt;1&gt;, int&gt; broadcast_dims;</div><div class="line">     broadcast_dims.set(1, all_but_batch);</div><div class="line">diff --git a/tensorflow/core/kernels/sparse_tensor_dense_matmul_op_gpu.cu.cc b/tensorflow/core/kernels/sparse_tensor_dense_matmul_op_gpu.cu.cc</div><div class="line">index a177696..75b67ba 100644</div><div class="line"><span class="comment">--- a/tensorflow/core/kernels/sparse_tensor_dense_matmul_op_gpu.cu.cc</span></div><div class="line">         ":bounds_check",</div><div class="line">diff --git a/tensorflow/core/kernels/cwise_op_gpu_select.cu.cc b/tensorflow/core/kernels/cwise_op_gpu_sele</div><div class="line">ct.cu.cc</div><div class="line">index 02058a8..880252c 100644</div><div class="line"><span class="comment">--- a/tensorflow/core/kernels/cwise_op_gpu_select.cu.cc</span></div><div class="line"><span class="comment">+++ b/tensorflow/core/kernels/cwise_op_gpu_select.cu.cc</span></div><div class="line">@@ -43,8 +43,14 @@ struct BatchSelectFunctor&lt;GPUDevice, T&gt; &#123;</div><div class="line">     const int all_but_batch = then_flat_outer_dims.dimension(1);</div><div class="line"></div><div class="line"> #if !defined(EIGEN_HAS_INDEX_LIST)</div><div class="line"><span class="deletion">-    Eigen::array&lt;int, 2&gt; broadcast_dims&#123;&#123; 1, all_but_batch &#125;&#125;;</span></div><div class="line"><span class="deletion">-    Eigen::Tensor&lt;int, 2&gt;::Dimensions reshape_dims&#123;&#123; batch, 1 &#125;&#125;;</span></div><div class="line"><span class="addition">+    // Eigen::array&lt;int, 2&gt; broadcast_dims&#123;&#123; 1, all_but_batch &#125;&#125;;</span></div><div class="line"><span class="addition">+    Eigen::array&lt;int, 2&gt; broadcast_dims;</span></div><div class="line"><span class="addition">+    broadcast_dims[0] = 1;</span></div><div class="line"><span class="addition">+    broadcast_dims[1] = all_but_batch;</span></div><div class="line"><span class="addition">+    // Eigen::Tensor&lt;int, 2&gt;::Dimensions reshape_dims&#123;&#123; batch, 1 &#125;&#125;;</span></div><div class="line"><span class="addition">+    Eigen::Tensor&lt;int, 2&gt;::Dimensions reshape_dims;</span></div><div class="line"><span class="addition">+    reshape_dims[0] = batch;</span></div><div class="line"><span class="addition">+    reshape_dims[1] = 1;</span></div><div class="line"> #else</div><div class="line">     Eigen::IndexList&lt;Eigen::type2index&lt;1&gt;, int&gt; broadcast_dims;</div><div class="line">     broadcast_dims.set(1, all_but_batch);</div><div class="line">diff --git a/tensorflow/core/kernels/sparse_tensor_dense_matmul_op_gpu.cu.cc b/tensorflow/core/kernels/spa</div><div class="line">rse_tensor_dense_matmul_op_gpu.cu.cc</div><div class="line">index a177696..75b67ba 100644</div><div class="line"><span class="comment">--- a/tensorflow/core/kernels/sparse_tensor_dense_matmul_op_gpu.cu.cc</span></div><div class="line"><span class="comment">+++ b/tensorflow/core/kernels/sparse_tensor_dense_matmul_op_gpu.cu.cc</span></div><div class="line">@@ -104,9 +104,17 @@ struct SparseTensorDenseMatMulFunctor&lt;GPUDevice, T, ADJ_A, ADJ_B&gt; &#123;</div><div class="line">     int n = (ADJ_B) ? b.dimension(0) : b.dimension(1);</div><div class="line"></div><div class="line"> #if !defined(EIGEN_HAS_INDEX_LIST)</div><div class="line"><span class="deletion">-    Eigen::Tensor&lt;int, 2&gt;::Dimensions matrix_1_by_nnz&#123;&#123; 1, nnz &#125;&#125;;</span></div><div class="line"><span class="deletion">-    Eigen::array&lt;int, 2&gt; n_by_1&#123;&#123; n, 1 &#125;&#125;;</span></div><div class="line"><span class="deletion">-    Eigen::array&lt;int, 1&gt; reduce_on_rows&#123;&#123; 0 &#125;&#125;;</span></div><div class="line"><span class="addition">+    // Eigen::Tensor&lt;int, 2&gt;::Dimensions matrix_1_by_nnz&#123;&#123; 1, nnz &#125;&#125;;</span></div><div class="line"><span class="addition">+    Eigen::Tensor&lt;int, 2&gt;::Dimensions matrix_1_by_nnz;</span></div><div class="line"><span class="addition">+    matrix_1_by_nnz[0] = 1;</span></div><div class="line"><span class="addition">+    matrix_1_by_nnz[1] = nnz;</span></div><div class="line"><span class="addition">+    // Eigen::array&lt;int, 2&gt; n_by_1&#123;&#123; n, 1 &#125;&#125;;</span></div><div class="line"><span class="addition">+    Eigen::Tensor&lt;int, 2&gt;::Dimensions matrix_1_by_nnz;</span></div><div class="line"><span class="addition">+    matrix_1_by_nnz[0] = 1;</span></div><div class="line"><span class="addition">+    matrix_1_by_nnz[1] = nnz;</span></div><div class="line"><span class="addition">+    // Eigen::array&lt;int, 2&gt; n_by_1&#123;&#123; n, 1 &#125;&#125;;</span></div><div class="line"><span class="addition">+    Eigen::array&lt;int, 2&gt; n_by_1;</span></div><div class="line"><span class="addition">+    n_by_1[0] = n;</span></div><div class="line"><span class="addition">+    n_by_1[1] = 1;</span></div><div class="line"><span class="addition">+    // Eigen::array&lt;int, 1&gt; reduce_on_rows&#123;&#123; 0 &#125;&#125;;</span></div><div class="line"><span class="addition">+    Eigen::array&lt;int, 1&gt; reduce_on_rows;</span></div><div class="line"><span class="addition">+    reduce_on_rows[0]= 0;</span></div><div class="line"> #else</div><div class="line">     Eigen::IndexList&lt;Eigen::type2index&lt;1&gt;, int&gt; matrix_1_by_nnz;</div><div class="line">     matrix_1_by_nnz.set(1, nnz);</div><div class="line">diff --git a/tensorflow/stream_executor/cuda/cuda_gpu_executor.cc b/tensorflow/stream_executor/cuda/cuda_gpu_executor.cc</div><div class="line">index 52256a7..1d027b9 100644</div><div class="line"><span class="comment">--- a/tensorflow/stream_executor/cuda/cuda_gpu_executor.cc</span></div><div class="line"><span class="comment">+++ b/tensorflow/stream_executor/cuda/cuda_gpu_executor.cc</span></div><div class="line">@@ -888,6 +888,9 @@ CudaContext* CUDAExecutor::cuda_context() &#123; return context_; &#125;</div><div class="line"> // For anything more complicated/prod-focused than this, you'll likely want to</div><div class="line"> // turn to gsys' topology modeling.</div><div class="line"> static int TryToReadNumaNode(const string &amp;pci_bus_id, int device_ordinal) &#123;</div><div class="line"><span class="addition">+// DC - make this clever later. ARM has no NUMA node, just return 0</span></div><div class="line"><span class="addition">+LOG(INFO) &lt;&lt; "ARM has no NUMA node, hardcoding to return zero";</span></div><div class="line"><span class="addition">+return 0;</span></div><div class="line"> #if defined(__APPLE__)</div><div class="line">   LOG(INFO) &lt;&lt; "OS X does not support NUMA - returning NUMA node zero";</div><div class="line">   return 0;</div></pre></td></tr></table></figure>
+<p>之后即可编译:</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">$ ./configure</div><div class="line">$ bazel build -c opt --jobs 2 --local_resources 1024,4.0,1.0 --config=cuda //tensorflow/tools/pip_package:build_pip_package</div></pre></td></tr></table></figure>
+<h2 id="Tips"><a href="#Tips" class="headerlink" title="Tips"></a>Tips</h2><h3 id="Swap-Memory"><a href="#Swap-Memory" class="headerlink" title="Swap Memory"></a>Swap Memory</h3><p>如果编译失败, 很有可能是内存不足的原因, 因此可以外接U盘或是SSD等, 并且将一部分缓存放在上面.</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">$ <span class="built_in">cd</span> /path/to/your/storage</div><div class="line">$ fallocate <span class="_">-l</span> 8G swapfile</div><div class="line">$ chmod 600 swapfile</div><div class="line">$ mkswap swapfile</div><div class="line">$ sudo swapon swapfile</div><div class="line">$ swapon <span class="_">-s</span></div></pre></td></tr></table></figure>
+<p>8G的 swap 空间应该是够用了, 如果还嫌不够可以再设个大点的.</p>
+<p>之后再运行 Bazel 编译:</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ build -c opt --local_resources 3072,4.0,1.0 --verbose_failures --config=cuda //tensorflow/tools/pip_package:build_pip_package</div></pre></td></tr></table></figure>
+<h3 id="Build-on-external-storage"><a href="#Build-on-external-storage" class="headerlink" title="Build on external storage"></a>Build on external storage</h3><p>整个安装过程所需的空间大概是3G以上, 而 TX1 装完系统之后只剩下了 4G 的剩余空间. 所以最好将安装时的根目录选在外置的存储上, 以免因为内置存储空间不足而导致失败.</p>
+<h2 id="References"><a href="#References" class="headerlink" title="References"></a>References</h2><ul>
+<li><a href="http://stackoverflow.com/questions/39783919/tensorflow-on-nvidia-tx1/" target="_blank" rel="external">http://stackoverflow.com/questions/39783919/tensorflow-on-nvidia-tx1/</a></li>
+<li><a href="https://github.com/tensorflow/tensorflow/issues/851" target="_blank" rel="external">https://github.com/tensorflow/tensorflow/issues/851</a></li>
+<li><a href="https://www.neotitans.net/install-tensorflow-on-odroid-c2.html" target="_blank" rel="external">https://www.neotitans.net/install-tensorflow-on-odroid-c2.html</a></li>
+</ul>
+]]></content>
+    
+    <summary type="html">
+    
+      &lt;p&gt;今天折腾了一个下午, 特此记录一下其中遇到的坑, 主要还是因为 TX1 的 aarch64 架构, 以及小得可怜的内存与存储容量.&lt;/p&gt;
+    
+    </summary>
+    
+      <category term="Experience" scheme="http://www.yuthon.com/categories/Experience/"/>
+    
+    
+      <category term="Tensorflow" scheme="http://www.yuthon.com/tags/Tensorflow/"/>
+    
+      <category term="Ubuntu" scheme="http://www.yuthon.com/tags/Ubuntu/"/>
+    
+      <category term="Deep Learning" scheme="http://www.yuthon.com/tags/Deep-Learning/"/>
+    
+      <category term="NVIDIA" scheme="http://www.yuthon.com/tags/NVIDIA/"/>
+    
+      <category term="Jetson TX1" scheme="http://www.yuthon.com/tags/Jetson-TX1/"/>
+    
+  </entry>
   
   <entry>
     <title>Train YOLOv2 on my own dataset</title>
@@ -958,9 +1029,9 @@
       <category term="Experience" scheme="http://www.yuthon.com/categories/Experience/"/>
     
     
-      <category term="macOS" scheme="http://www.yuthon.com/tags/macOS/"/>
-    
       <category term="Tensorflow" scheme="http://www.yuthon.com/tags/Tensorflow/"/>
+    
+      <category term="macOS" scheme="http://www.yuthon.com/tags/macOS/"/>
     
       <category term="Python" scheme="http://www.yuthon.com/tags/Python/"/>
     
@@ -2247,164 +2318,6 @@
       <category term="Apache2" scheme="http://www.yuthon.com/tags/Apache2/"/>
     
       <category term="MySQL" scheme="http://www.yuthon.com/tags/MySQL/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>Notes for Machine Learning - Week 6</title>
-    <link href="http://www.yuthon.com/2016/09/10/Coursera-Machine-Learning-Week-6/"/>
-    <id>http://www.yuthon.com/2016/09/10/Coursera-Machine-Learning-Week-6/</id>
-    <published>2016-09-10T07:18:41.000Z</published>
-    <updated>2016-09-21T14:09:50.000Z</updated>
-    
-    <content type="html"><![CDATA[<h1 id="Advice-for-Applying-Machine-Learning"><a href="#Advice-for-Applying-Machine-Learning" class="headerlink" title="Advice for Applying Machine Learning"></a>Advice for Applying Machine Learning</h1><h2 id="Evaluating-a-Learning-Algorithm"><a href="#Evaluating-a-Learning-Algorithm" class="headerlink" title="Evaluating a Learning Algorithm"></a>Evaluating a Learning Algorithm</h2><h3 id="Deciding-What-to-Try-Next"><a href="#Deciding-What-to-Try-Next" class="headerlink" title="Deciding What to Try Next"></a>Deciding What to Try Next</h3><p>Errors in your predictions can be troubleshooted by:</p>
-<ul>
-<li>Getting more training examples</li>
-<li>Trying smaller sets of features</li>
-<li>Trying additional features</li>
-<li>Trying adding polynomial features</li>
-<li>Increasing or decreasing $\lambda$</li>
-</ul>
-<p>Don’t just pick one of these avenues at random. We’ll explore diagnostic techniques for choosing one of the above solutions in the following sections.</p>
-<p>In the next few sections, We’ll first talk about how evaluate your learning algorithms and after that we’ll talk about some of these diagnostics which will hopefully let you much more effectively select more of the useful things to try mixing if your goal to improve the machine learning system. </p>
-<a id="more"></a>
-<h3 id="Evaluating-a-Hypothesis"><a href="#Evaluating-a-Hypothesis" class="headerlink" title="Evaluating a Hypothesis"></a>Evaluating a Hypothesis</h3><p>A hypothesis may have low error for the training examples but still be inaccurate (because of overfitting). And it may fail to generalize to new examples not in training set.</p>
-<p>With a given dataset of training examples, we can split up the data into two sets: a <strong>training set</strong> and a <strong>test set</strong>. (normally 70% for training set and 30% for test set)</p>
-<p>The training/testing procedure using these two sets is then:</p>
-<ol>
-<li><p>Learn $\Theta$ and minimize $J_{train}(\Theta)$ using the training set</p>
-</li>
-<li><p>Compute the test set error $J_{test}(\Theta)$</p>
-<ul>
-<li><p>For linear regression: $J_{test}(\Theta) = \dfrac{1}{2m_{test}} \sum_{i=1}^{m_{test}}(h_\Theta(x^{(i)}_{test}) - y^{(i)}_{test})^2$</p>
-</li>
-<li><p>For classification ~ Misclassification error (aka 0/1 misclassification error): </p>
-<p>$err(h_\Theta(x),y) = \begin{cases} 1 &amp; \mbox{if } h_\Theta(x) \geq 0.5\ and\ y = 0\ or\ h_\Theta(x) &lt; 0.5\ and\ y = 1 \\ 0 &amp; otherwise \end{cases}$</p>
-<ul>
-<li>This gives us a binary 0 or 1 error result based on a misclassification.</li>
-</ul>
-</li>
-<li><p>The average test error for the test set is</p>
-<p>$\text{Test Error} = \dfrac{1}{m_{test}} \sum^{m_{test}}_{i=1} err(h_\Theta(x^{(i)}_{test}), y^{(i)}_{test})$</p>
-<ul>
-<li>This gives us the proportion of the test data that was misclassified.</li>
-</ul>
-</li>
-</ul>
-</li>
-</ol>
-<h3 id="Model-Selection-and-Train-Validation-Test-Sets"><a href="#Model-Selection-and-Train-Validation-Test-Sets" class="headerlink" title="Model Selection and Train/Validation/Test Sets"></a>Model Selection and Train/Validation/Test Sets</h3><p>Once parameters $\theta _0, \theta _1, \dots , \theta _4$ were fit to some set of data (training set), the error of the parameters as measured on that data (the training error $J(\theta)$ ) is likely to be lower than the actual generalization error.</p>
-<ul>
-<li>Just because a learning algorithm fits a training set well, that does not mean it is a good hypothesis.</li>
-<li>The error of your hypothesis as measured on the data set with which you trained the parameters will be lower than any other data set.</li>
-</ul>
-<p>In order to choose the model of your hypothesis, you can test each degree of polynomial and look at the error result.</p>
-<p><strong>Without the Validation Set (bad method)</strong></p>
-<ol>
-<li>Optimize the parameters in $\Theta$ using the training set for each polynomial degree.</li>
-<li>Find the polynomial degree d with the least error using the test set.</li>
-<li>Estimate the generalization error also using the test set with $J_{test}(\Theta^{(d)})$, (d = theta from polynomial with lower error);</li>
-</ol>
-<p>In this case, we have trained one variable, d, or the degree of the polynomial, using the test set. I.e., our extra parameter is fit to the test set. This will cause our error value to be greater for any other set of data. <u>Then the performance of the fitted model on the training set is not predictive of how well the hypothesis will generalize to new examples.</u></p>
-<p><strong>Use of the CV set</strong></p>
-<p>To solve this, we can introduce a third set, the <strong>Cross Validation Set</strong> (交叉验证集), to serve as an intermediate set that we can train d with. Then our test set will give us an accurate, non-optimistic error.</p>
-<p>One example way to break down our dataset into the three sets is:</p>
-<ul>
-<li>Training set: 60%</li>
-<li>Cross validation set: 20%</li>
-<li>Test set: 20%</li>
-</ul>
-<p>We can now calculate three separate error values for the three different sets.</p>
-<p><strong>With the Validation Set (note: this method presumes we do not also use the CV set for regularization)</strong></p>
-<ol>
-<li>Optimize the parameters in $\Theta$ using the training set for each polynomial degree.</li>
-<li>Find the polynomial degree d with the least error using the cross validation set.</li>
-<li>Estimate the generalization error using the test set with $J_{test}(\Theta^{(d)})$, (d = theta from polynomial with lower error);</li>
-</ol>
-<p>This way, <u>the degree of the polynomial d has not been trained using the test set.</u></p>
-<blockquote>
-<p>Be aware that using the CV set to select ‘d’ means that we cannot also use it for the validation curve process of setting the lambda value.</p>
-</blockquote>
-<h2 id="Bias-vs-Variance"><a href="#Bias-vs-Variance" class="headerlink" title="Bias vs. Variance"></a>Bias vs. Variance</h2><h3 id="Diagnosing-Bias-vs-Variance"><a href="#Diagnosing-Bias-vs-Variance" class="headerlink" title="Diagnosing Bias vs. Variance"></a>Diagnosing Bias vs. Variance</h3><p>We’ll examine the relationship between the degree of the polynomial $d$ and the underfitting or overfitting of our hypothesis.</p>
-<ul>
-<li>We need to distinguish whether <strong>bias</strong> (偏差) or <strong>variance</strong> (方差) is the problem contributing to bad predictions.</li>
-<li><u>High bias is underfitting and high variance is overfitting.</u> We need to find a golden mean between these two.</li>
-</ul>
-<p>The training error will tend to <strong>decrease</strong> as we increase the degree d of the polynomial.</p>
-<p>At the same time, the cross validation error will tend to <strong>decrease</strong> as we increase d up to a point, and then it will <strong>increase</strong> as d is increased, forming a convex curve.</p>
-<ul>
-<li><strong>High bias (underfitting)</strong>: both $J_{train}(\Theta)$ and $J_{CV}(\Theta)$ will be high, and $J_{CV}(\Theta) \approx J_{train}(\Theta)$.</li>
-<li><strong>High variance (overfitting)</strong>: $J_{train}(\Theta)$ will be low but $J_{CV}(\Theta)$ will be high. And $J_{CV}(\Theta) \gg J_{train}(\Theta)$.</li>
-</ul>
-<p><img src="/images/Features-and-polynom-degree.png" alt="Features-and-polynom-degree"></p>
-<h3 id="Regularization-and-Bias-Variance"><a href="#Regularization-and-Bias-Variance" class="headerlink" title="Regularization and Bias/Variance"></a>Regularization and Bias/Variance</h3><p>The relationship of $\lambda$ to the training set and the variance set is as follows:</p>
-<ul>
-<li><strong>Low $\lambda$ (High variance, overfitting)</strong>: $J_{train}(\Theta)$ is low and $J_{CV}(\Theta)$ is high (high variance/overfitting).</li>
-<li><strong>Intermediate λ</strong>: $J_{train}(\Theta)$ and $J_{CV}(\Theta)$ are somewhat low and Jtrain(Θ)≈JCV(Θ).</li>
-<li><strong>Large $\lambda$ (High bias, underfitting)</strong>: both $J_{train}(\Theta)$ and $J_{CV}(\Theta)$ will be high (underfitting/high bias)<ul>
-<li>A large lambda heavily penalizes all the $\Theta$ parameters, which greatly simplifies the line of our resulting function, so causes underfitting.</li>
-</ul>
-</li>
-</ul>
-<p><img src="/images/Features-and-polynom-degree-fix.png" alt="Features-and-polynom-degree-fix.png"></p>
-<p>In order to choose the model and the regularization $\lambda$, we need:</p>
-<ol>
-<li>Create a list of lambda (i.e. $\lambda \in {0,0.01,0.02,0.04,0.08,0.16,0.32,0.64,1.28,2.56,5.12,10.24}$);</li>
-<li>Select a lambda to compute;</li>
-<li>Create a model set like degree of the polynomial or others;</li>
-<li>Select a model to learn $\Theta$;</li>
-<li>Learn the parameter $\Theta$ for the model selected, using $J_{train}(\Theta)$ <strong>with</strong> $\lambda$ selected (this will learn $\Theta$ for the next step);</li>
-<li>Compute the train error using the learned $\Theta$ (computed with λ ) on the $J_{train}(\Theta)$ <strong>without</strong> regularization or $\lambda = 0$;</li>
-<li>Compute the cross validation error using the learned $\Theta$ (computed with λ) on the $J_{CV}(\Theta)​$ <strong>without</strong> regularization or $\lambda = 0$;</li>
-<li>Do this for the entire model set and lambdas, then <u>select the best combo that produces the lowest error on the cross validation set</u>;</li>
-<li>Now if you need visualize to help you understand your decision, you can plot to the figure like above with: ($\lambda$ x Cost $J_{train}(\Theta)$) and ($\lambda$ x Cost $J_{CV}(\Theta)$);</li>
-<li>Now using the best combo $\Theta$ and $\lambda$, apply it on Jtest(Θ) to see if it has a good generalization of the problem.</li>
-<li>To help decide the best polynomial degree and $\lambda$ to use, we can diagnose with the learning curves, that is the next subject.</li>
-</ol>
-<h3 id="Learning-Curves"><a href="#Learning-Curves" class="headerlink" title="Learning Curves"></a>Learning Curves</h3><p>Supposed we use $h_\theta(x) = \theta_0 + \theta_1x + \theta_2x^2$, it’s clear that when $m=1, 2, 3$, we’ll get $0$ errors because we can always find a quadratic curve that exactly touches given points.</p>
-<ul>
-<li>As the training set gets larger, the error for a quadratic function increases.</li>
-<li>The error value will plateau out after a certain m, or training set size.</li>
-</ul>
-<p><img src="/images/learning-curves-m.png" alt="learning-curves-m.png"></p>
-<p><img src="/images/typical-learning-curve.png" alt="typical-learning-curve.png"></p>
-<h4 id="High-Bias"><a href="#High-Bias" class="headerlink" title="High Bias"></a>High Bias</h4><ul>
-<li><strong>Low training set size</strong>:  $J_{train}(\Theta)$ will be low and $J_{CV}(\Theta)$ will be high.</li>
-<li><strong>Large training set size</strong>: both $J_{train}(\Theta)$ and $J_{CV}(\Theta)$ will be high with $J_{train}(\Theta) \approx J_{CV}(\Theta)$.</li>
-</ul>
-<p>If a learning algorithm is suffering from <strong>high bias</strong>, getting more training data <strong>will not (by itself) help much</strong>.</p>
-<p><img src="/images/learning-curves-high-bias.png" alt="learning-curves-high-bias"></p>
-<p><img src="/images/typical-learning-curve-for-high-bias.png" alt="typical-learning-curve-for-high-bias"></p>
-<h4 id="High-Variance"><a href="#High-Variance" class="headerlink" title="High Variance"></a>High Variance</h4><ul>
-<li><strong>Low training set size</strong>:  $J_{train}(\Theta)$ will be low and $J_{CV}(\Theta)$ will be high.</li>
-<li><strong>Large training set size</strong>: $J_{train}(\Theta)$  increases with training set size and $J_{CV}(\Theta)$ continues to decrease without leveling off. Also, $J_{train}(\Theta) &lt; J_{CV}(\Theta)$ but the difference between them remains significant.</li>
-</ul>
-<p>If a learning algorithm is suffering from <strong>high variance</strong>, getting more training data is <strong>likely to help.</strong></p>
-<p><img src="/images/learning-curves-high-variance.png" alt="learning-curves-high-variance"></p>
-<p><img src="/images/typical-learning-curve-for-high-variance.png" alt="typical-learning-curve-for-high-variance"></p>
-]]></content>
-    
-    <summary type="html">
-    
-      &lt;h1 id=&quot;Advice-for-Applying-Machine-Learning&quot;&gt;&lt;a href=&quot;#Advice-for-Applying-Machine-Learning&quot; class=&quot;headerlink&quot; title=&quot;Advice for Applying Machine Learning&quot;&gt;&lt;/a&gt;Advice for Applying Machine Learning&lt;/h1&gt;&lt;h2 id=&quot;Evaluating-a-Learning-Algorithm&quot;&gt;&lt;a href=&quot;#Evaluating-a-Learning-Algorithm&quot; class=&quot;headerlink&quot; title=&quot;Evaluating a Learning Algorithm&quot;&gt;&lt;/a&gt;Evaluating a Learning Algorithm&lt;/h2&gt;&lt;h3 id=&quot;Deciding-What-to-Try-Next&quot;&gt;&lt;a href=&quot;#Deciding-What-to-Try-Next&quot; class=&quot;headerlink&quot; title=&quot;Deciding What to Try Next&quot;&gt;&lt;/a&gt;Deciding What to Try Next&lt;/h3&gt;&lt;p&gt;Errors in your predictions can be troubleshooted by:&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;Getting more training examples&lt;/li&gt;
-&lt;li&gt;Trying smaller sets of features&lt;/li&gt;
-&lt;li&gt;Trying additional features&lt;/li&gt;
-&lt;li&gt;Trying adding polynomial features&lt;/li&gt;
-&lt;li&gt;Increasing or decreasing $\lambda$&lt;/li&gt;
-&lt;/ul&gt;
-&lt;p&gt;Don’t just pick one of these avenues at random. We’ll explore diagnostic techniques for choosing one of the above solutions in the following sections.&lt;/p&gt;
-&lt;p&gt;In the next few sections, We’ll first talk about how evaluate your learning algorithms and after that we’ll talk about some of these diagnostics which will hopefully let you much more effectively select more of the useful things to try mixing if your goal to improve the machine learning system. &lt;/p&gt;
-    
-    </summary>
-    
-      <category term="Notes" scheme="http://www.yuthon.com/categories/Notes/"/>
-    
-    
-      <category term="Coursera" scheme="http://www.yuthon.com/tags/Coursera/"/>
-    
-      <category term="Machine Learning" scheme="http://www.yuthon.com/tags/Machine-Learning/"/>
     
   </entry>
   
