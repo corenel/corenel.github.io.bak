@@ -321,6 +321,8 @@ $ bazel-bin/tensorflow/tools/pip_package/build_pip_package /tmp/tensorflow_pkg
 $ sudo pip install /tmp/tensorflow_pkg/tensorflow-0.11.0-py2-none-any.whl
 ```
 
+这里有我自己编译好的 [tensorflow_gpu-0.11.0-py2-none-aarch64.whl](https://drive.google.com/open?id=0B0AsKkiz_kZRZG9BbFRxZ1FYWTg), 可供使用.
+
 ## Tips
 
 ### Swap Memory
