@@ -323,6 +323,32 @@ $ sudo pip install /tmp/tensorflow_pkg/tensorflow-0.11.0-py2-none-any.whl
 
 这里有我自己编译好的 [tensorflow_gpu-0.11.0-py2-none-aarch64.whl](https://drive.google.com/open?id=0B0AsKkiz_kZRZG9BbFRxZ1FYWTg), 可供使用.
 
+### Start using Tensorflow
+
+首先还得装一下 OpenCV 的 Python port:
+
+```bash
+$ sudo apt-get install -y libopencv4tegra–python
+```
+
+之后即可测试 TensorFlow 是否成功安装:
+
+```bash
+$ python
+Python 2.7.12 (default, Nov 19 2016, 06:48:10)
+[GCC 5.4.0 20160609] on linux2
+Type "help", "copyright", "credits" or "license" for more information.
+>>> import tensorflow as tf
+I tensorflow/stream_executor/dso_loader.cc:111] successfully opened CUDA library libcublas.so locally
+I tensorflow/stream_executor/dso_loader.cc:111] successfully opened CUDA library libcudnn.so locally
+I tensorflow/stream_executor/dso_loader.cc:111] successfully opened CUDA library libcufft.so locally
+I tensorflow/stream_executor/dso_loader.cc:111] successfully opened CUDA library libcuda.so.1 locally
+I tensorflow/stream_executor/dso_loader.cc:111] successfully opened CUDA library libcurand.so locally
+>>>
+```
+
+不报错即是安装成功.
+
 ## Tips
 
 ### Swap Memory
