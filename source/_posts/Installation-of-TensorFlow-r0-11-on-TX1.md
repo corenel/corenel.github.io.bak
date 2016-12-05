@@ -316,6 +316,9 @@ index 52256a7..1d027b9 100644
 ```bash
 $ ./configure
 $ bazel build -c opt --jobs 2 --local_resources 1024,4.0,1.0 --config=cuda //tensorflow/tools/pip_package:build_pip_package
+$ bazel-bin/tensorflow/tools/pip_package/build_pip_package /tmp/tensorflow_pkg
+# The name of the .whl file will depend on your platform.
+$ sudo pip install /tmp/tensorflow_pkg/tensorflow-0.11.0-py2-none-any.whl
 ```
 
 ## Tips
@@ -338,7 +341,7 @@ $ swapon -s
 之后再运行 Bazel 编译:
 
 ```bash
-$ build -c opt --local_resources 3072,4.0,1.0 --verbose_failures --config=cuda //tensorflow/tools/pip_package:build_pip_package
+$ bazel build -c opt --local_resources 3072,4.0,1.0 --verbose_failures --config=cuda //tensorflow/tools/pip_package:build_pip_package
 ```
 
 ### Build on external storage
