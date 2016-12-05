@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://www.yuthon.com/"/>
-  <updated>2016-12-05T10:54:46.000Z</updated>
+  <updated>2016-12-05T13:10:53.000Z</updated>
   <id>http://www.yuthon.com/</id>
   
   <author>
@@ -20,7 +20,7 @@
     <link href="http://www.yuthon.com/2016/12/04/Installation-of-TensorFlow-r0-11-on-TX1/"/>
     <id>http://www.yuthon.com/2016/12/04/Installation-of-TensorFlow-r0-11-on-TX1/</id>
     <published>2016-12-04T12:53:55.000Z</published>
-    <updated>2016-12-05T10:54:46.000Z</updated>
+    <updated>2016-12-05T13:10:53.000Z</updated>
     
     <content type="html"><![CDATA[<p>今天折腾了一个下午, 特此记录一下其中遇到的坑, 主要还是因为 TX1 的 aarch64 架构, 以及小得可怜的内存与存储容量.</p>
 <a id="more"></a>
@@ -53,6 +53,11 @@
 <p>之后即可编译:</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">$ ./configure</div><div class="line">$ bazel build -c opt --jobs 2 --local_resources 1024,4.0,1.0 --config=cuda //tensorflow/tools/pip_package:build_pip_package</div><div class="line">$ bazel-bin/tensorflow/tools/pip_package/build_pip_package /tmp/tensorflow_pkg</div><div class="line"><span class="comment"># The name of the .whl file will depend on your platform.</span></div><div class="line">$ sudo pip install /tmp/tensorflow_pkg/tensorflow-0.11.0-py2-none-any.whl</div></pre></td></tr></table></figure>
 <p>这里有我自己编译好的 <a href="https://drive.google.com/open?id=0B0AsKkiz_kZRZG9BbFRxZ1FYWTg" target="_blank" rel="external">tensorflow_gpu-0.11.0-py2-none-aarch64.whl</a>, 可供使用.</p>
+<h3 id="Start-using-Tensorflow"><a href="#Start-using-Tensorflow" class="headerlink" title="Start using Tensorflow"></a>Start using Tensorflow</h3><p>首先还得装一下 OpenCV 的 Python port:</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ sudo apt-get install -y libopencv4tegra–python</div></pre></td></tr></table></figure>
+<p>之后即可测试 TensorFlow 是否成功安装:</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line">$ python</div><div class="line">Python 2.7.12 (default, Nov 19 2016, 06:48:10)</div><div class="line">[GCC 5.4.0 20160609] on linux2</div><div class="line">Type <span class="string">"help"</span>, <span class="string">"copyright"</span>, <span class="string">"credits"</span> or <span class="string">"license"</span> <span class="keyword">for</span> more information.</div><div class="line">&gt;&gt;&gt; import tensorflow as tf</div><div class="line">I tensorflow/stream_executor/dso_loader.cc:111] successfully opened CUDA library libcublas.so locally</div><div class="line">I tensorflow/stream_executor/dso_loader.cc:111] successfully opened CUDA library libcudnn.so locally</div><div class="line">I tensorflow/stream_executor/dso_loader.cc:111] successfully opened CUDA library libcufft.so locally</div><div class="line">I tensorflow/stream_executor/dso_loader.cc:111] successfully opened CUDA library libcuda.so.1 locally</div><div class="line">I tensorflow/stream_executor/dso_loader.cc:111] successfully opened CUDA library libcurand.so locally</div><div class="line">&gt;&gt;&gt;</div></pre></td></tr></table></figure>
+<p>不报错即是安装成功.</p>
 <h2 id="Tips"><a href="#Tips" class="headerlink" title="Tips"></a>Tips</h2><h3 id="Swap-Memory"><a href="#Swap-Memory" class="headerlink" title="Swap Memory"></a>Swap Memory</h3><p>如果编译失败, 很有可能是内存不足的原因, 因此可以外接U盘或是SSD等, 并且将一部分缓存放在上面.</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">$ <span class="built_in">cd</span> /path/to/your/storage</div><div class="line">$ fallocate <span class="_">-l</span> 8G swapfile</div><div class="line">$ chmod 600 swapfile</div><div class="line">$ mkswap swapfile</div><div class="line">$ sudo swapon swapfile</div><div class="line">$ swapon <span class="_">-s</span></div></pre></td></tr></table></figure>
 <p>8G的 swap 空间应该是够用了, 如果还嫌不够可以再设个大点的.</p>
