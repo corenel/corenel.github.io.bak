@@ -74,7 +74,7 @@ $ cd ..
 
 ```bash
 $ git clone https://github.com/neo-titans/odroid.git
-$ git clone https://github.com/grpc/grpc-java-git
+$ git clone https://github.com/grpc/grpc-java.git
 $ cd grpc-java/
 $ git checkout v0.15.0
 $ patch -p0 < ../odroid/build_tensorflow/grpc-java.v0.15.0.patch
