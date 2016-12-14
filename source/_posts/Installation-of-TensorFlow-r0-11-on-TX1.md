@@ -242,33 +242,6 @@ index 02058a8..880252c 100644
 diff --git a/tensorflow/core/kernels/sparse_tensor_dense_matmul_op_gpu.cu.cc b/tensorflow/core/kernels/sparse_tensor_dense_matmul_op_gpu.cu.cc
 index a177696..75b67ba 100644
 --- a/tensorflow/core/kernels/sparse_tensor_dense_matmul_op_gpu.cu.cc
-         ":bounds_check",
-diff --git a/tensorflow/core/kernels/cwise_op_gpu_select.cu.cc b/tensorflow/core/kernels/cwise_op_gpu_sele
-ct.cu.cc
-index 02058a8..880252c 100644
---- a/tensorflow/core/kernels/cwise_op_gpu_select.cu.cc
-+++ b/tensorflow/core/kernels/cwise_op_gpu_select.cu.cc
-@@ -43,8 +43,14 @@ struct BatchSelectFunctor<GPUDevice, T> {
-     const int all_but_batch = then_flat_outer_dims.dimension(1);
-
- #if !defined(EIGEN_HAS_INDEX_LIST)
--    Eigen::array<int, 2> broadcast_dims{{ 1, all_but_batch }};
--    Eigen::Tensor<int, 2>::Dimensions reshape_dims{{ batch, 1 }};
-+    // Eigen::array<int, 2> broadcast_dims{{ 1, all_but_batch }};
-+    Eigen::array<int, 2> broadcast_dims;
-+    broadcast_dims[0] = 1;
-+    broadcast_dims[1] = all_but_batch;
-+    // Eigen::Tensor<int, 2>::Dimensions reshape_dims{{ batch, 1 }};
-+    Eigen::Tensor<int, 2>::Dimensions reshape_dims;
-+    reshape_dims[0] = batch;
-+    reshape_dims[1] = 1;
- #else
-     Eigen::IndexList<Eigen::type2index<1>, int> broadcast_dims;
-     broadcast_dims.set(1, all_but_batch);
-diff --git a/tensorflow/core/kernels/sparse_tensor_dense_matmul_op_gpu.cu.cc b/tensorflow/core/kernels/spa
-rse_tensor_dense_matmul_op_gpu.cu.cc
-index a177696..75b67ba 100644
---- a/tensorflow/core/kernels/sparse_tensor_dense_matmul_op_gpu.cu.cc
 +++ b/tensorflow/core/kernels/sparse_tensor_dense_matmul_op_gpu.cu.cc
 @@ -104,9 +104,17 @@ struct SparseTensorDenseMatMulFunctor<GPUDevice, T, ADJ_A, ADJ_B> {
      int n = (ADJ_B) ? b.dimension(0) : b.dimension(1);
