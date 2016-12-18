@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://www.yuthon.com/"/>
-  <updated>2016-12-14T14:09:22.000Z</updated>
+  <updated>2016-12-18T10:57:45.000Z</updated>
   <id>http://www.yuthon.com/</id>
   
   <author>
@@ -14,6 +14,61 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>Backup system partition on TX1</title>
+    <link href="http://www.yuthon.com/2016/12/18/Backup-system-partition-on-TX1/"/>
+    <id>http://www.yuthon.com/2016/12/18/Backup-system-partition-on-TX1/</id>
+    <published>2016-12-18T10:18:59.000Z</published>
+    <updated>2016-12-18T10:57:45.000Z</updated>
+    
+    <content type="html"><![CDATA[<p>由于实验室只有要用到多块 TX1 开发板, 然而一个个都用 JetPack 刷机, 再用自动化脚本装软件和依赖实在是太麻烦了, 因此我和梅老板就开始研究怎么直接备份 TX1 上的 Ubuntu 系统.</p>
+<a id="more"></a>
+<h2 id="Failed-attempts"><a href="#Failed-attempts" class="headerlink" title="Failed attempts"></a>Failed attempts</h2><p>最开始想的是直接用<code>dd</code>来备份整块 eMMC到外置的存储上, 于是尝试了</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ sudo dd <span class="keyword">if</span>=/dev/mmcblk0p1 of=/media/ubuntu/backup/backup.img</div></pre></td></tr></table></figure>
+<p>后来还发现可以用<code>ssh</code>来远程<code>dd</code></p>
+<ul>
+<li><strong>run from remote computer</strong>:</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ dd <span class="keyword">if</span>=/dev/mmcblk0p1 | gzip -1 - | ssh yuthon@mac dd of=image.gz</div></pre></td></tr></table></figure>
+<ul>
+<li><strong>run from local computer</strong>:</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ ssh ubuntu@tx1 <span class="string">"dd if=/dev/mmcblk0p1 | gzip -1 -"</span> | dd of=image.gz</div></pre></td></tr></table></figure>
+<p>之后, 我们发现<code>64_TX1/Linux_for_Tegra_64_tx1/rootfs</code>目录中应该就是之后需要拷到 TX1 的<code>/</code>目录下的内容. 因此我们直接将之前备份好的<code>bakcup.img</code>解压到了此目录下, 并使用 JetPack 重新 Flash OS.</p>
+<p>最后的结果是 TX1 在重启后卡在了登录界面, 经典的 login-loop.</p>
+<p>此方案, 扑街.</p>
+<h2 id="Using-tegraflash-py"><a href="#Using-tegraflash-py" class="headerlink" title="Using tegraflash.py"></a>Using <code>tegraflash.py</code></h2><p>Then we found a <a href="https://devtalk.nvidia.com/default/topic/898999/tx1-r23-1-new-flash-structure-how-to-clone-/" target="_blank" rel="external">post</a> on NVIDIA Developer Forums, and method in this post works for us.</p>
+<blockquote>
+<p>Assumed we’re in <code>64_TX1/Linux_for_Tegra_64_tx1/bootloader</code> directory.</p>
+</blockquote>
+<h3 id="Backup-an-image"><a href="#Backup-an-image" class="headerlink" title="Backup an image"></a>Backup an image</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ sudo ./tegraflash.py --bl cboot.bin --applet nvtboot_recovery.bin --chip 0x21 --cmd <span class="string">"read APP my_backup_image_APP.img"</span></div></pre></td></tr></table></figure>
+<h3 id="Restore-an-image"><a href="#Restore-an-image" class="headerlink" title="Restore an image"></a>Restore an image</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ sudo ./tegraflash.py --bl cboot.bin --applet nvtboot_recovery.bin --chip 0x21 --cmd <span class="string">"write APP my_backup_image_APP.img"</span></div></pre></td></tr></table></figure>
+<h3 id="One-more-thing"><a href="#One-more-thing" class="headerlink" title="One more thing"></a>One more thing</h3><p>It’s recommended in the post to use <code>flash.py</code> front-end instead of <code>tegraflash.py</code> to make sure you use the same L4T release version.</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># Backup</span></div><div class="line">$ sudo flash.sh -S 14580MiB jetson-tx1 mmcblk0p1</div><div class="line"><span class="comment"># Restore</span></div><div class="line">$ sudo flash.sh -r -S 14580MiB jetson-tx1 mmcblk0p1</div></pre></td></tr></table></figure>
+<p>Note that the <code>-r</code>  param re-uses <code>system.img</code> in <code>bootloader</code> directory, and if a clone file is there in place, that installs the clone.<br><strong>I haven’t tried this method, maybe you could have a try and report.</strong></p>
+]]></content>
+    
+    <summary type="html">
+    
+      &lt;p&gt;由于实验室只有要用到多块 TX1 开发板, 然而一个个都用 JetPack 刷机, 再用自动化脚本装软件和依赖实在是太麻烦了, 因此我和梅老板就开始研究怎么直接备份 TX1 上的 Ubuntu 系统.&lt;/p&gt;
+    
+    </summary>
+    
+      <category term="Experience" scheme="http://www.yuthon.com/categories/Experience/"/>
+    
+    
+      <category term="Tensorflow" scheme="http://www.yuthon.com/tags/Tensorflow/"/>
+    
+      <category term="NVIDIA" scheme="http://www.yuthon.com/tags/NVIDIA/"/>
+    
+      <category term="Jetson TX1" scheme="http://www.yuthon.com/tags/Jetson-TX1/"/>
+    
+      <category term="Ubuntu" scheme="http://www.yuthon.com/tags/Ubuntu/"/>
+    
+      <category term="Deep Learning" scheme="http://www.yuthon.com/tags/Deep-Learning/"/>
+    
+  </entry>
   
   <entry>
     <title>Installation of TensorFlow r0.11 on TX1</title>
@@ -82,13 +137,13 @@
     
       <category term="Tensorflow" scheme="http://www.yuthon.com/tags/Tensorflow/"/>
     
-      <category term="Ubuntu" scheme="http://www.yuthon.com/tags/Ubuntu/"/>
-    
-      <category term="Deep Learning" scheme="http://www.yuthon.com/tags/Deep-Learning/"/>
-    
       <category term="NVIDIA" scheme="http://www.yuthon.com/tags/NVIDIA/"/>
     
       <category term="Jetson TX1" scheme="http://www.yuthon.com/tags/Jetson-TX1/"/>
+    
+      <category term="Ubuntu" scheme="http://www.yuthon.com/tags/Ubuntu/"/>
+    
+      <category term="Deep Learning" scheme="http://www.yuthon.com/tags/Deep-Learning/"/>
     
   </entry>
   
@@ -1601,13 +1656,13 @@
       <category term="Experience" scheme="http://www.yuthon.com/categories/Experience/"/>
     
     
-      <category term="CUDA" scheme="http://www.yuthon.com/tags/CUDA/"/>
-    
       <category term="Tensorflow" scheme="http://www.yuthon.com/tags/Tensorflow/"/>
     
       <category term="Ubuntu" scheme="http://www.yuthon.com/tags/Ubuntu/"/>
     
       <category term="Deep Learning" scheme="http://www.yuthon.com/tags/Deep-Learning/"/>
+    
+      <category term="CUDA" scheme="http://www.yuthon.com/tags/CUDA/"/>
     
   </entry>
   
@@ -2254,76 +2309,6 @@
       <category term="Algorithm" scheme="http://www.yuthon.com/tags/Algorithm/"/>
     
       <category term="Data Structure" scheme="http://www.yuthon.com/tags/Data-Structure/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>Redmine configuration on Ubuntu 14.04</title>
-    <link href="http://www.yuthon.com/2016/09/15/Redmine-Configuration-on-Ubuntu-14-04/"/>
-    <id>http://www.yuthon.com/2016/09/15/Redmine-Configuration-on-Ubuntu-14-04/</id>
-    <published>2016-09-15T11:02:37.000Z</published>
-    <updated>2016-09-18T03:40:37.000Z</updated>
-    
-    <content type="html"><![CDATA[<p>最近实验室要搞团队协作与项目管理，所以梅老板派我去装个 Redmine。</p>
-<p>本文参考了 <a href="[http://www.redmine.org/projects/redmine/wiki/HowTo_Install_Redmine_on_Ubuntu_step_by_step](http://www.redmine.org/projects/redmine/wiki/HowTo_Install_Redmine_on_Ubuntu_step_by_step">HowTo Install Redmine on Ubuntu step by step</a>) 这篇官网的文章，并且根据实际情况有所改动。</p>
-<h1 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h1><p>首先自然是安装 Redmine 以及相关依赖：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">$ sudo apt-get install apache2 libapache2-mod-passenger</div><div class="line">$ sudo apt-get install mysql-server mysql-client</div><div class="line">$ sudo apt-get install redmine redmine-mysql</div></pre></td></tr></table></figure>
-<p>只得注意的是，安装 MySQL 的时候会要求设置数据库<code>root</code>用户的密码，这个密码在之后安装 Redmine 的时候需要。</p>
-<a id="more"></a>
-<p>同时注意安装<code>bundler</code></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">$ sudo gem update</div><div class="line">$ sudo gem install bundler</div></pre></td></tr></table></figure>
-<p>这时候 Redmine 应该已经可用了，可以到<code>/usr/share/redmine</code>下直接用 WEBrick 来测试</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">$ sudo bundle exec ruby script/rails server webrick -e production</div><div class="line">=&gt; Booting WEBrick</div><div class="line">=&gt; Rails 3.2.16 application starting in production on http://0.0.0.0:3000</div><div class="line">=&gt; Call with -d to detach</div><div class="line">=&gt; Ctrl-C to shutdown server</div><div class="line">[2016-09-15 00:18:34] INFO  WEBrick 1.3.1</div><div class="line">[2016-09-15 00:18:34] INFO  ruby 1.9.3 (2013-11-22) [x86_64-linux]</div><div class="line">[2016-09-15 00:18:34] INFO  WEBrick::HTTPServer#start: pid=12337 port=3000</div></pre></td></tr></table></figure>
-<p>能用的话，我们接下来来配置 Apache。</p>
-<h1 id="配置"><a href="#配置" class="headerlink" title="配置"></a>配置</h1><ol>
-<li><p>首先打开<code>/etc/apache2/mods-available/passenger.conf</code>，加一行<code>PassengerDefaultUser www-data</code>。之后整个文件看起来是这样：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">&lt;IfModule mod_passenger.c&gt;</div><div class="line">  PassengerDefaultUser www-data</div><div class="line">  PassengerRoot /usr/lib/ruby/vendor_ruby/phusion_passenger/locations.ini</div><div class="line">  PassengerDefaultRuby /usr/bin/ruby</div><div class="line">&lt;/IfModule&gt;</div></pre></td></tr></table></figure>
-</li>
-<li><p>然后创建软链接，把 Redmine 的文件目录和 Apache 的根目录连起来</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ sudo ln -s /usr/share/redmine/public /var/www/html/redmine</div></pre></td></tr></table></figure>
-</li>
-<li><p>接下来编辑<code>/etc/apache2/sites-available/000-default.conf</code>，把以下内容插在<code>&lt;VirtualHost&gt;...&lt;/VirtualHost&gt;</code>之间。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">&lt;Directory /var/www/html/redmine&gt;</div><div class="line">    RailsBaseURI /redmine</div><div class="line">    PassengerResolveSymlinksInDocumentRoot on</div><div class="line">&lt;/Directory&gt;</div></pre></td></tr></table></figure>
-<p>由于我手上的这台服务器的 80 端口被 Gitlab 占着，所以还需要换个端口，比如1234（不要忘了同时修改<code>/etc/apache2/ports.conf</code>中的监听端口号）：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">&lt;VirtualHost *:1234&gt;</div></pre></td></tr></table></figure>
-<p>同时，还可以设置服务器的地址：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">ServerName localhost</div></pre></td></tr></table></figure>
-<p>最后改完的<code>/etc/apache2/sites-available/000-default.conf</code>看起来如下：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line">&lt;VirtualHost *:1234&gt;</div><div class="line">        ServerAdmin webmaster@localhost</div><div class="line">        DocumentRoot /var/www</div><div class="line">        ServerName localhost</div><div class="line">        </div><div class="line">        ErrorLog $&#123;APACHE_LOG_DIR&#125;/error.log</div><div class="line">        CustomLog $&#123;APACHE_LOG_DIR&#125;/access.log combined</div><div class="line">        </div><div class="line">        &lt;Directory /var/www/html/redmine&gt;</div><div class="line">                RailsBaseURI /redmine</div><div class="line">                PassengerResolveSymlinksInDocumentRoot on</div><div class="line">        &lt;/Directory&gt;</div><div class="line">&lt;/VirtualHost&gt;</div></pre></td></tr></table></figure>
-</li>
-<li><p>创建并修改Gemfile.lock的权限：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">$ sudo touch /usr/share/redmine/Gemfile.lock</div><div class="line">$ sudo chown www-data:www-data /usr/share/redmine/Gemfile.lock</div></pre></td></tr></table></figure>
-</li>
-<li><p>修改<code>/etc/apache2/apache2.conf</code>，添加一行设置 Passenger 的根目录。不然只能访问到 Redmine 下的文件目录。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">PassengerAppRoot /usr/share/redmine</div></pre></td></tr></table></figure>
-</li>
-<li><p>重启 Apache：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">sudo service apache2 restart</div></pre></td></tr></table></figure>
-</li>
-<li><p>此时已经可以直接通过浏览器访问 <a href="http://127.0.0.1:1234" target="_blank" rel="external">http://127.0.0.1:1234</a> 了。</p>
-</li>
-</ol>
-<p>后续配置持续更新中</p>
-]]></content>
-    
-    <summary type="html">
-    
-      &lt;p&gt;最近实验室要搞团队协作与项目管理，所以梅老板派我去装个 Redmine。&lt;/p&gt;
-&lt;p&gt;本文参考了 &lt;a href=&quot;[http://www.redmine.org/projects/redmine/wiki/HowTo_Install_Redmine_on_Ubuntu_step_by_step](http://www.redmine.org/projects/redmine/wiki/HowTo_Install_Redmine_on_Ubuntu_step_by_step&quot;&gt;HowTo Install Redmine on Ubuntu step by step&lt;/a&gt;) 这篇官网的文章，并且根据实际情况有所改动。&lt;/p&gt;
-&lt;h1 id=&quot;安装&quot;&gt;&lt;a href=&quot;#安装&quot; class=&quot;headerlink&quot; title=&quot;安装&quot;&gt;&lt;/a&gt;安装&lt;/h1&gt;&lt;p&gt;首先自然是安装 Redmine 以及相关依赖：&lt;/p&gt;
-&lt;figure class=&quot;highlight plain&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;div class=&quot;line&quot;&gt;1&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;2&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;3&lt;/div&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;div class=&quot;line&quot;&gt;$ sudo apt-get install apache2 libapache2-mod-passenger&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;$ sudo apt-get install mysql-server mysql-client&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;$ sudo apt-get install redmine redmine-mysql&lt;/div&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
-&lt;p&gt;只得注意的是，安装 MySQL 的时候会要求设置数据库&lt;code&gt;root&lt;/code&gt;用户的密码，这个密码在之后安装 Redmine 的时候需要。&lt;/p&gt;
-    
-    </summary>
-    
-      <category term="Experience" scheme="http://www.yuthon.com/categories/Experience/"/>
-    
-    
-      <category term="Redmine" scheme="http://www.yuthon.com/tags/Redmine/"/>
-    
-      <category term="Apache2" scheme="http://www.yuthon.com/tags/Apache2/"/>
-    
-      <category term="MySQL" scheme="http://www.yuthon.com/tags/MySQL/"/>
     
   </entry>
   
