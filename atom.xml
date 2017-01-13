@@ -60,13 +60,13 @@
     
       <category term="Tensorflow" scheme="http://www.yuthon.com/tags/Tensorflow/"/>
     
-      <category term="NVIDIA" scheme="http://www.yuthon.com/tags/NVIDIA/"/>
-    
-      <category term="Jetson TX1" scheme="http://www.yuthon.com/tags/Jetson-TX1/"/>
-    
       <category term="Ubuntu" scheme="http://www.yuthon.com/tags/Ubuntu/"/>
     
       <category term="Deep Learning" scheme="http://www.yuthon.com/tags/Deep-Learning/"/>
+    
+      <category term="NVIDIA" scheme="http://www.yuthon.com/tags/NVIDIA/"/>
+    
+      <category term="Jetson TX1" scheme="http://www.yuthon.com/tags/Jetson-TX1/"/>
     
   </entry>
   
@@ -137,13 +137,13 @@
     
       <category term="Tensorflow" scheme="http://www.yuthon.com/tags/Tensorflow/"/>
     
-      <category term="NVIDIA" scheme="http://www.yuthon.com/tags/NVIDIA/"/>
-    
-      <category term="Jetson TX1" scheme="http://www.yuthon.com/tags/Jetson-TX1/"/>
-    
       <category term="Ubuntu" scheme="http://www.yuthon.com/tags/Ubuntu/"/>
     
       <category term="Deep Learning" scheme="http://www.yuthon.com/tags/Deep-Learning/"/>
+    
+      <category term="NVIDIA" scheme="http://www.yuthon.com/tags/NVIDIA/"/>
+    
+      <category term="Jetson TX1" scheme="http://www.yuthon.com/tags/Jetson-TX1/"/>
     
   </entry>
   
@@ -1656,13 +1656,13 @@
       <category term="Experience" scheme="http://www.yuthon.com/categories/Experience/"/>
     
     
+      <category term="CUDA" scheme="http://www.yuthon.com/tags/CUDA/"/>
+    
       <category term="Tensorflow" scheme="http://www.yuthon.com/tags/Tensorflow/"/>
     
       <category term="Ubuntu" scheme="http://www.yuthon.com/tags/Ubuntu/"/>
     
       <category term="Deep Learning" scheme="http://www.yuthon.com/tags/Deep-Learning/"/>
-    
-      <category term="CUDA" scheme="http://www.yuthon.com/tags/CUDA/"/>
     
   </entry>
   
