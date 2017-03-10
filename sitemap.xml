@@ -2,6 +2,13 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>http://www.yuthon.com/2017/03/10/TensorFlow-r1-0-on-TX1/</loc>
+    
+    <lastmod>2017-03-10T11:37:16.000Z</lastmod>
+    
+  </url>
+  
+  <url>
     <loc>http://www.yuthon.com/2016/12/18/Backup-system-partition-on-TX1/</loc>
     
     <lastmod>2016-12-18T10:57:45.000Z</lastmod>
@@ -233,14 +240,14 @@
   </url>
   
   <url>
-    <loc>http://www.yuthon.com/2016/04/12/CodeSchool-JavaScript-Best-Practices/</loc>
+    <loc>http://www.yuthon.com/2016/04/14/CodeSchool-Shaping-up-with-Angular.js/</loc>
     
     <lastmod>2016-05-16T11:51:43.000Z</lastmod>
     
   </url>
   
   <url>
-    <loc>http://www.yuthon.com/2016/04/09/CodeSchool-Javascript/</loc>
+    <loc>http://www.yuthon.com/2016/04/12/CodeSchool-JavaScript-Best-Practices/</loc>
     
     <lastmod>2016-05-16T11:51:43.000Z</lastmod>
     
@@ -254,7 +261,7 @@
   </url>
   
   <url>
-    <loc>http://www.yuthon.com/2016/04/14/CodeSchool-Shaping-up-with-Angular.js/</loc>
+    <loc>http://www.yuthon.com/2016/04/09/CodeSchool-Javascript/</loc>
     
     <lastmod>2016-05-16T11:51:43.000Z</lastmod>
     

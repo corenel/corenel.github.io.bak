@@ -4,6 +4,34 @@
 
     
   <url>
+    <loc>http://www.yuthon.com/2017/03/10/TensorFlow-r1-0-on-TX1/</loc>
+    <lastmod>2017-03-10T11:37:16.000Z</lastmod>
+    <data>
+        <display>
+        <title>TensorFlow r1.0 on TX1 (failed)</title>
+        <pubTime>2017-03-10T10:12:18.000Z</pubTime>
+        
+        <tag>NVIDIA</tag>
+         
+        <tag>Jetson TX1</tag>
+         
+        <tag>Ubuntu</tag>
+         
+        <tag>Deep Learning</tag>
+         
+        <tag>TensorFlow</tag>
+         
+         
+           
+             
+              <breadCrumb title="Experience" url="http://www.yuthon.com/categories/Experience/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
     <loc>http://www.yuthon.com/2016/12/18/Backup-system-partition-on-TX1/</loc>
     <lastmod>2016-12-18T10:57:45.000Z</lastmod>
     <data>
@@ -13,13 +41,13 @@
         
         <tag>Tensorflow</tag>
          
-        <tag>Ubuntu</tag>
-         
-        <tag>Deep Learning</tag>
-         
         <tag>NVIDIA</tag>
          
         <tag>Jetson TX1</tag>
+         
+        <tag>Ubuntu</tag>
+         
+        <tag>Deep Learning</tag>
          
          
            
@@ -41,13 +69,13 @@
         
         <tag>Tensorflow</tag>
          
-        <tag>Ubuntu</tag>
-         
-        <tag>Deep Learning</tag>
-         
         <tag>NVIDIA</tag>
          
         <tag>Jetson TX1</tag>
+         
+        <tag>Ubuntu</tag>
+         
+        <tag>Deep Learning</tag>
          
          
            
@@ -430,13 +458,13 @@
         <title>CUDA and Tensorflow Installation on Ubuntu 16.04</title>
         <pubTime>2016-10-25T12:53:50.000Z</pubTime>
         
-        <tag>CUDA</tag>
-         
         <tag>Tensorflow</tag>
          
         <tag>Ubuntu</tag>
          
         <tag>Deep Learning</tag>
+         
+        <tag>CUDA</tag>
          
          
            
@@ -740,12 +768,12 @@
 
     
   <url>
-    <loc>http://www.yuthon.com/2016/04/12/CodeSchool-JavaScript-Best-Practices/</loc>
+    <loc>http://www.yuthon.com/2016/04/14/CodeSchool-Shaping-up-with-Angular.js/</loc>
     <lastmod>2016-05-16T11:51:43.000Z</lastmod>
     <data>
         <display>
-        <title>Notes for Code School - JavaScript Best Practices</title>
-        <pubTime>2016-04-12T10:19:54.000Z</pubTime>
+        <title>Notes for Code School - Shaping up with Angular.js</title>
+        <pubTime>2016-04-14T13:19:22.000Z</pubTime>
         
         <tag>CodeSchool</tag>
          
@@ -762,12 +790,12 @@
 
     
   <url>
-    <loc>http://www.yuthon.com/2016/04/09/CodeSchool-Javascript/</loc>
+    <loc>http://www.yuthon.com/2016/04/12/CodeSchool-JavaScript-Best-Practices/</loc>
     <lastmod>2016-05-16T11:51:43.000Z</lastmod>
     <data>
         <display>
-        <title>Notes for Code School - JavaScript Road Trip</title>
-        <pubTime>2016-04-09T04:37:07.000Z</pubTime>
+        <title>Notes for Code School - JavaScript Best Practices</title>
+        <pubTime>2016-04-12T10:19:54.000Z</pubTime>
         
         <tag>CodeSchool</tag>
          
@@ -806,12 +834,12 @@
 
     
   <url>
-    <loc>http://www.yuthon.com/2016/04/14/CodeSchool-Shaping-up-with-Angular.js/</loc>
+    <loc>http://www.yuthon.com/2016/04/09/CodeSchool-Javascript/</loc>
     <lastmod>2016-05-16T11:51:43.000Z</lastmod>
     <data>
         <display>
-        <title>Notes for Code School - Shaping up with Angular.js</title>
-        <pubTime>2016-04-14T13:19:22.000Z</pubTime>
+        <title>Notes for Code School - JavaScript Road Trip</title>
+        <pubTime>2016-04-09T04:37:07.000Z</pubTime>
         
         <tag>CodeSchool</tag>
          
