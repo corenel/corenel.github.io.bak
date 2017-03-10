@@ -91,7 +91,7 @@ ERROR: /home/ubuntu/tensorflow/tensorflow/core/kernels/BUILD:2498:1: not all out
 Target //tensorflow/tools/pip_package:build_pip_package failed to build
 ```
 
-According to [this post](https://devtalk.nvidia.com/default/topic/987306/?comment=5059105), this may due to a bug of`nvcc`. An expert in NVIDIA says they solved it with their internal nvcc compiler, which is not yet available in JetPack. Maybe next release of JetPack (3.0 on March 14) will solve it. So I'll update this post then.
+According to [this post](https://devtalk.nvidia.com/default/topic/987306/?comment=5059105), this may due to a bug of `nvcc`. An expert in NVIDIA says they solved it with their internal nvcc compiler, which is not yet available in JetPack. Maybe next release of JetPack (3.0 on March 14) will solve it. So I'll update this post then.
 
 ## Acknowledgment
 
