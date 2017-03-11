@@ -5,10 +5,10 @@
     
   <url>
     <loc>http://www.yuthon.com/2017/03/10/TensorFlow-r1-0-on-TX1/</loc>
-    <lastmod>2017-03-10T11:37:16.000Z</lastmod>
+    <lastmod>2017-03-11T13:52:42.000Z</lastmod>
     <data>
         <display>
-        <title>TensorFlow r1.0 on TX1 (failed)</title>
+        <title>TensorFlow r1.0 on TX1 (now successful)</title>
         <pubTime>2017-03-10T10:12:18.000Z</pubTime>
         
         <tag>NVIDIA</tag>
@@ -768,28 +768,6 @@
 
     
   <url>
-    <loc>http://www.yuthon.com/2016/04/14/CodeSchool-Shaping-up-with-Angular.js/</loc>
-    <lastmod>2016-05-16T11:51:43.000Z</lastmod>
-    <data>
-        <display>
-        <title>Notes for Code School - Shaping up with Angular.js</title>
-        <pubTime>2016-04-14T13:19:22.000Z</pubTime>
-        
-        <tag>CodeSchool</tag>
-         
-        <tag>JavaScript</tag>
-         
-         
-           
-             
-              <breadCrumb title="Notes" url="http://www.yuthon.com/categories/Notes/"/>
-          
-        </display>
-    </data>
-    </url>
-
-    
-  <url>
     <loc>http://www.yuthon.com/2016/04/12/CodeSchool-JavaScript-Best-Practices/</loc>
     <lastmod>2016-05-16T11:51:43.000Z</lastmod>
     <data>
@@ -818,6 +796,28 @@
         <display>
         <title>Notes for Code School - Try jQuery</title>
         <pubTime>2016-04-13T09:24:09.000Z</pubTime>
+        
+        <tag>CodeSchool</tag>
+         
+        <tag>JavaScript</tag>
+         
+         
+           
+             
+              <breadCrumb title="Notes" url="http://www.yuthon.com/categories/Notes/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://www.yuthon.com/2016/04/14/CodeSchool-Shaping-up-with-Angular.js/</loc>
+    <lastmod>2016-05-16T11:51:43.000Z</lastmod>
+    <data>
+        <display>
+        <title>Notes for Code School - Shaping up with Angular.js</title>
+        <pubTime>2016-04-14T13:19:22.000Z</pubTime>
         
         <tag>CodeSchool</tag>
          

@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://www.yuthon.com/"/>
-  <updated>2017-03-10T11:37:16.000Z</updated>
+  <updated>2017-03-11T13:52:42.000Z</updated>
   <id>http://www.yuthon.com/</id>
   
   <author>
@@ -16,14 +16,15 @@
   <generator uri="http://hexo.io/">Hexo</generator>
   
   <entry>
-    <title>TensorFlow r1.0 on TX1 (failed)</title>
+    <title>TensorFlow r1.0 on TX1 (now successful)</title>
     <link href="http://www.yuthon.com/2017/03/10/TensorFlow-r1-0-on-TX1/"/>
     <id>http://www.yuthon.com/2017/03/10/TensorFlow-r1-0-on-TX1/</id>
     <published>2017-03-10T10:12:18.000Z</published>
-    <updated>2017-03-10T11:37:16.000Z</updated>
+    <updated>2017-03-11T13:52:42.000Z</updated>
     
     <content type="html"><![CDATA[<p>TensorFlow r1.0已经发布了不少时间，事实证明1.0版本在内存使用上改善了不少，以前一些在r0.11上内存满报错的程序在r1.0上能够正常运行了。同时，r1.0相较于r0.11在API上做了很大的改动，也有很多新的东西（比如Keras）将要集成进TF。</p>
-<p>总而言之，r1.0是未来的方向，所以说我希望将原先在TX1上装的r0.11换成r1.0。不过网上最新的教程还是只有r0.11的。<a href="https://github.com/rwightman" target="_blank" rel="external">rwightman</a>这位仁兄编译成功了r1.0alpha版本，并且放出了<a href="https://github.com/rwightman/tensorflow/releases/tag/v1.0.0-alpha-tegra-ugly_hack" target="_blank" rel="external">whl文件</a>，不过没有编译正式版。本文将阐述如何在TX1上安装TensorFlow r1.0的正式版本，不过目前由于<code>nvcc</code>的一个bug，还没有编译成功。</p>
+<p>总而言之，r1.0是未来的方向，所以说我希望将原先在TX1上装的r0.11换成r1.0。不过网上最新的教程还是只有r0.11的。<a href="https://github.com/rwightman" target="_blank" rel="external">rwightman</a>这位仁兄编译成功了r1.0alpha版本，并且放出了<a href="https://github.com/rwightman/tensorflow/releases/tag/v1.0.0-alpha-tegra-ugly_hack" target="_blank" rel="external">whl文件</a>，不过没有编译正式版。本文将阐述如何在TX1上安装TensorFlow r1.0的正式版本<del>，不过目前由于<code>nvcc</code>的一个bug，还没有编译成功</del>。</p>
+<p>Update: 做了一些非常ugly的改动之后编译成功了。</p>
 <a id="more"></a>
 <h2 id="Environment"><a href="#Environment" class="headerlink" title="Environment"></a>Environment</h2><p>Thsi article aims to install TensorFlow r1.0 on NVIDIA Jetson TX1 with JetPack 2.3.1:</p>
 <ul>
@@ -32,13 +33,13 @@
 <li>cuDNN 5.1.5 or 5.1.10</li>
 </ul>
 <blockquote>
-<p>Note that I still <strong>CAN’T</strong> build TensorFlow r1.0 yet. The reason is explained at the end of this post.</p>
+<p><del>Note that I still <strong>CAN’T</strong> build TensorFlow r1.0 yet. The reason is explained at the end of this post.</del></p>
 </blockquote>
 <h2 id="Preparation"><a href="#Preparation" class="headerlink" title="Preparation"></a>Preparation</h2><p>Before installation, you need to add swap space for TX1 since this device only has 4G memory and 16GB eMMC Storage. I use an external HDD via USB. Maybe you could use SSD for higher speed. </p>
 <p>Thanks to <a href="https://github.com/jetsonhacks" target="_blank" rel="external">jetsonhacks</a>, we can simply deal this with a script:</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">$ git <span class="built_in">clone</span> https://github.com/jetsonhacks/postFlashTX1.git</div><div class="line">$ sudo ./createSwapfile.sh <span class="_">-d</span> /path/to/swap/ <span class="_">-s</span> 8</div></pre></td></tr></table></figure>
 <p>8G swap is enough for compilation, and ensure you have <strong>&gt;5.5GB</strong> free space on TX1.</p>
-<h2 id="Install-Deps"><a href="#Install-Deps" class="headerlink" title="Install Deps"></a>Install Deps</h2><p>Thanks to <a href="https://github.com/jetsonhacks" target="_blank" rel="external">jetsonhacks</a>, we can deal with deps more convinently. I forked this repo and modify something to fit TF r1.0. </p>
+<h2 id="Install-Deps"><a href="#Install-Deps" class="headerlink" title="Install Deps"></a>Install Deps</h2><p>Thanks to <a href="https://github.com/jetsonhacks" target="_blank" rel="external">jetsonhacks</a>, we can deal with deps more convinently. I forked this repo and modify something to fit TF r1.0. You can just clone mine.</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">$ git <span class="built_in">clone</span> https://github.com/corenel/installTensorFlowTX1.git</div><div class="line">$ <span class="built_in">cd</span> installTensorFlowTX1</div><div class="line"><span class="comment"># tell the dynamic linker to use /usr/local/lib</span></div><div class="line">$ ./<span class="built_in">set</span>LocalLib.sh</div><div class="line"><span class="comment"># install prerequisties</span></div><div class="line">$ ./installPrerequisites.sh</div></pre></td></tr></table></figure>
 <blockquote>
 <p>If you meet an error that bazel can’t find <code>cudnn.h</code> in <code>/usr/lib/aarch64-linux-gnu/</code>, just download cuDNN from NVIDIA Developers website and place it into that path.</p>
@@ -50,6 +51,12 @@
 <h2 id="Problems"><a href="#Problems" class="headerlink" title="Problems"></a>Problems</h2><p>Until now, I still can’t build tensorflow successfully. An error occured:</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">ERROR: /home/ubuntu/tensorflow/tensorflow/core/kernels/BUILD:2498:1: output <span class="string">'tensorflow/core/kernels/_objs/softmax_op_gpu/tensorflow/core/kernels/softmax_op_gpu.cu.pic.o'</span> was not created.</div><div class="line">ERROR: /home/ubuntu/tensorflow/tensorflow/core/kernels/BUILD:2498:1: not all outputs were created or valid.</div><div class="line">Target //tensorflow/tools/pip_package:build_pip_package failed to build</div></pre></td></tr></table></figure>
 <p>According to <a href="https://devtalk.nvidia.com/default/topic/987306/?comment=5059105" target="_blank" rel="external">this post</a>, this may due to a bug of <code>nvcc</code>. An expert in NVIDIA says they solved it with their internal nvcc compiler, which is not yet available in JetPack. Maybe next release of JetPack (3.0 on March 14) will solve it. So I’ll update this post then.</p>
+<h2 id="An-ugly-hack"><a href="#An-ugly-hack" class="headerlink" title="An ugly hack"></a>An ugly hack</h2><p>Thanks to <a href="https://github.com/rwightman/tensorflow/commit/a1cde1d55f76a1d4eb806ba81d7c63fe72466e6d" target="_blank" rel="external">rwightman’s hack</a>,  I finally compiled TF1.0 successfully. Just following hacks:</p>
+<ul>
+<li>Revert Eigen to revision used in Tensorflow r0.11 to avoid cuda compile error</li>
+<li>Remove expm1 op that was added with new additions to Eigen</li>
+</ul>
+<p>My fork for <code>installTensorFlowTX1</code> has contained this hack. And my build for TensorFlow r1.0 can be find <a href="https://www.dropbox.com/s/m6bgd3sq8kggul7/tensorflow-1.0.1-cp27-cp27mu-linux_aarch64.whl?dl=0" target="_blank" rel="external">here</a>.</p>
 <h2 id="Acknowledgment"><a href="#Acknowledgment" class="headerlink" title="Acknowledgment"></a>Acknowledgment</h2><p>Thanks for following posts and issues:</p>
 <ul>
 <li>Github issue: <a href="https://github.com/tensorflow/tensorflow/issues/851" target="_blank" rel="external">tensorflow for Nvidia TX1</a></li>
@@ -61,7 +68,8 @@
     <summary type="html">
     
       &lt;p&gt;TensorFlow r1.0已经发布了不少时间，事实证明1.0版本在内存使用上改善了不少，以前一些在r0.11上内存满报错的程序在r1.0上能够正常运行了。同时，r1.0相较于r0.11在API上做了很大的改动，也有很多新的东西（比如Keras）将要集成进TF。&lt;/p&gt;
-&lt;p&gt;总而言之，r1.0是未来的方向，所以说我希望将原先在TX1上装的r0.11换成r1.0。不过网上最新的教程还是只有r0.11的。&lt;a href=&quot;https://github.com/rwightman&quot;&gt;rwightman&lt;/a&gt;这位仁兄编译成功了r1.0alpha版本，并且放出了&lt;a href=&quot;https://github.com/rwightman/tensorflow/releases/tag/v1.0.0-alpha-tegra-ugly_hack&quot;&gt;whl文件&lt;/a&gt;，不过没有编译正式版。本文将阐述如何在TX1上安装TensorFlow r1.0的正式版本，不过目前由于&lt;code&gt;nvcc&lt;/code&gt;的一个bug，还没有编译成功。&lt;/p&gt;
+&lt;p&gt;总而言之，r1.0是未来的方向，所以说我希望将原先在TX1上装的r0.11换成r1.0。不过网上最新的教程还是只有r0.11的。&lt;a href=&quot;https://github.com/rwightman&quot;&gt;rwightman&lt;/a&gt;这位仁兄编译成功了r1.0alpha版本，并且放出了&lt;a href=&quot;https://github.com/rwightman/tensorflow/releases/tag/v1.0.0-alpha-tegra-ugly_hack&quot;&gt;whl文件&lt;/a&gt;，不过没有编译正式版。本文将阐述如何在TX1上安装TensorFlow r1.0的正式版本&lt;del&gt;，不过目前由于&lt;code&gt;nvcc&lt;/code&gt;的一个bug，还没有编译成功&lt;/del&gt;。&lt;/p&gt;
+&lt;p&gt;Update: 做了一些非常ugly的改动之后编译成功了。&lt;/p&gt;
     
     </summary>
     
