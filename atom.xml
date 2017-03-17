@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://www.yuthon.com/"/>
-  <updated>2017-03-11T13:52:42.000Z</updated>
+  <updated>2017-03-17T08:27:51.000Z</updated>
   <id>http://www.yuthon.com/</id>
   
   <author>
@@ -20,7 +20,7 @@
     <link href="http://www.yuthon.com/2017/03/10/TensorFlow-r1-0-on-TX1/"/>
     <id>http://www.yuthon.com/2017/03/10/TensorFlow-r1-0-on-TX1/</id>
     <published>2017-03-10T10:12:18.000Z</published>
-    <updated>2017-03-11T13:52:42.000Z</updated>
+    <updated>2017-03-17T08:27:51.000Z</updated>
     
     <content type="html"><![CDATA[<p>TensorFlow r1.0已经发布了不少时间，事实证明1.0版本在内存使用上改善了不少，以前一些在r0.11上内存满报错的程序在r1.0上能够正常运行了。同时，r1.0相较于r0.11在API上做了很大的改动，也有很多新的东西（比如Keras）将要集成进TF。</p>
 <p>总而言之，r1.0是未来的方向，所以说我希望将原先在TX1上装的r0.11换成r1.0。不过网上最新的教程还是只有r0.11的。<a href="https://github.com/rwightman" target="_blank" rel="external">rwightman</a>这位仁兄编译成功了r1.0alpha版本，并且放出了<a href="https://github.com/rwightman/tensorflow/releases/tag/v1.0.0-alpha-tegra-ugly_hack" target="_blank" rel="external">whl文件</a>，不过没有编译正式版。本文将阐述如何在TX1上安装TensorFlow r1.0的正式版本<del>，不过目前由于<code>nvcc</code>的一个bug，还没有编译成功</del>。</p>
@@ -56,7 +56,10 @@
 <li>Revert Eigen to revision used in Tensorflow r0.11 to avoid cuda compile error</li>
 <li>Remove expm1 op that was added with new additions to Eigen</li>
 </ul>
-<p>My fork for <code>installTensorFlowTX1</code> has contained this hack. And my build for TensorFlow r1.0 can be find <a href="https://www.dropbox.com/s/m6bgd3sq8kggul7/tensorflow-1.0.1-cp27-cp27mu-linux_aarch64.whl?dl=0" target="_blank" rel="external">here</a>.</p>
+<p>My fork for <code>installTensorFlowTX1</code> has contained this hack. And my build for TensorFlow r1.0 with Python 2.7 can be find <a href="https://www.dropbox.com/s/m6bgd3sq8kggul7/tensorflow-1.0.1-cp27-cp27mu-linux_aarch64.whl?dl=0" target="_blank" rel="external">here</a>.</p>
+<blockquote>
+<p><strong>Update</strong>: <a href="https://github.com/barty777" target="_blank" rel="external">@barty777</a> build TF 1.0.1 with Python 3.5, and his wheel file can be found <a href="https://drive.google.com/open?id=0B2jw9AHXtUJ_OFJDV19TWTEyaWc" target="_blank" rel="external">here</a>.</p>
+</blockquote>
 <h2 id="Acknowledgment"><a href="#Acknowledgment" class="headerlink" title="Acknowledgment"></a>Acknowledgment</h2><p>Thanks for following posts and issues:</p>
 <ul>
 <li>Github issue: <a href="https://github.com/tensorflow/tensorflow/issues/851" target="_blank" rel="external">tensorflow for Nvidia TX1</a></li>
