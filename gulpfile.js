@@ -40,7 +40,7 @@ gulp.task('minify-js', function () {
 })
 
 gulp.task('default', [
-  'minify-html', 'minify-css', 'minify-js', 'minify-images'
+  'minify-css', 'minify-js', 'minify-images'
 ], function () {
   console.log('gulp task done!')
 })
