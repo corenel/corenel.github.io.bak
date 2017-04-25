@@ -1,5 +1,5 @@
 ---
-title: TensorFlow r1.0 on TX1 (failed)
+title: TensorFlow r1.0 on TX1 (now successful)
 date: 2017-03-10 18:12:18
 categories:
   - Experience
@@ -13,7 +13,9 @@ tags:
 
 TensorFlow r1.0已经发布了不少时间，事实证明1.0版本在内存使用上改善了不少，以前一些在r0.11上内存满报错的程序在r1.0上能够正常运行了。同时，r1.0相较于r0.11在API上做了很大的改动，也有很多新的东西（比如Keras）将要集成进TF。
 
-总而言之，r1.0是未来的方向，所以说我希望将原先在TX1上装的r0.11换成r1.0。不过网上最新的教程还是只有r0.11的。[rwightman](https://github.com/rwightman)这位仁兄编译成功了r1.0alpha版本，并且放出了[whl文件](https://github.com/rwightman/tensorflow/releases/tag/v1.0.0-alpha-tegra-ugly_hack)，不过没有编译正式版。本文将阐述如何在TX1上安装TensorFlow r1.0的正式版本，不过目前由于`nvcc`的一个bug，还没有编译成功。
+总而言之，r1.0是未来的方向，所以说我希望将原先在TX1上装的r0.11换成r1.0。不过网上最新的教程还是只有r0.11的。[rwightman](https://github.com/rwightman)这位仁兄编译成功了r1.0alpha版本，并且放出了[whl文件](https://github.com/rwightman/tensorflow/releases/tag/v1.0.0-alpha-tegra-ugly_hack)，不过没有编译正式版。本文将阐述如何在TX1上安装TensorFlow r1.0的正式版本~~，不过目前由于`nvcc`的一个bug，还没有编译成功~~。
+
+Update: 做了一些非常ugly的改动之后编译成功了。
 
 <!-- more -->
 
@@ -25,7 +27,7 @@ Thsi article aims to install TensorFlow r1.0 on NVIDIA Jetson TX1 with JetPack 2
 * CUDA 8.0
 * cuDNN 5.1.5 or 5.1.10
 
-> Note that I still **CAN'T** build TensorFlow r1.0 yet. The reason is explained at the end of this post.
+> ~~Note that I still **CAN'T** build TensorFlow r1.0 yet. The reason is explained at the end of this post.~~
 
 ## Preparation
 
@@ -42,7 +44,7 @@ $ sudo ./createSwapfile.sh -d /path/to/swap/ -s 8
 
 ## Install Deps
 
-Thanks to [jetsonhacks](https://github.com/jetsonhacks), we can deal with deps more convinently. I forked this repo and modify something to fit TF r1.0. 
+Thanks to [jetsonhacks](https://github.com/jetsonhacks), we can deal with deps more convinently. I forked this repo and modify something to fit TF r1.0. You can just clone mine.
 
 ```bash
 $ git clone https://github.com/corenel/installTensorFlowTX1.git
@@ -92,6 +94,18 @@ Target //tensorflow/tools/pip_package:build_pip_package failed to build
 ```
 
 According to [this post](https://devtalk.nvidia.com/default/topic/987306/?comment=5059105), this may due to a bug of `nvcc`. An expert in NVIDIA says they solved it with their internal nvcc compiler, which is not yet available in JetPack. Maybe next release of JetPack (3.0 on March 14) will solve it. So I'll update this post then.
+
+## An ugly hack
+
+Thanks to [rwightman's hack](https://github.com/rwightman/tensorflow/commit/a1cde1d55f76a1d4eb806ba81d7c63fe72466e6d),  I finally compiled TF1.0 successfully. Just following hacks:
+
+* Revert Eigen to revision used in Tensorflow r0.11 to avoid cuda compile error
+* Remove expm1 op that was added with new additions to Eigen
+
+
+My fork for `installTensorFlowTX1` has contained this hack. And my build for TensorFlow r1.0 with Python 2.7 can be find [here](https://www.dropbox.com/s/m6bgd3sq8kggul7/tensorflow-1.0.1-cp27-cp27mu-linux_aarch64.whl?dl=0).
+
+> **Update**: [@barty777](https://github.com/barty777) build TF 1.0.1 with Python 3.5, and his wheel file can be found [here](https://drive.google.com/open?id=0B2jw9AHXtUJ_OFJDV19TWTEyaWc).
 
 ## Acknowledgment
 
