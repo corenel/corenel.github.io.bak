@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://www.yuthon.com/"/>
-  <updated>2017-04-25T13:25:27.000Z</updated>
+  <updated>2017-04-27T07:53:23.000Z</updated>
   <id>http://www.yuthon.com/</id>
   
   <author>
@@ -16,16 +16,164 @@
   <generator uri="http://hexo.io/">Hexo</generator>
   
   <entry>
+    <title>Notes: From Faster-RCNN to Mask-RCNN by Shaoqing Ren</title>
+    <link href="http://www.yuthon.com/2017/04/27/Notes-From-Faster-RCNN-to-Mask-RCNN-by-Shaoqing-Ren/"/>
+    <id>http://www.yuthon.com/2017/04/27/Notes-From-Faster-RCNN-to-Mask-RCNN-by-Shaoqing-Ren/</id>
+    <published>2017-04-27T04:55:33.000Z</published>
+    <updated>2017-04-27T07:53:23.000Z</updated>
+    
+    <content type="html"><![CDATA[<p>That’s my notes for the lecture “From Faster-RCNN to Mask-RCNN” by Shaoqing Ren on April 26th, 2017.</p>
+<h2 id="Yesterday-–-background-and-pre-works-of-Mask-R-CNN"><a href="#Yesterday-–-background-and-pre-works-of-Mask-R-CNN" class="headerlink" title="Yesterday – background and pre-works of Mask R-CNN"></a>Yesterday – background and pre-works of Mask R-CNN</h2><h3 id="Key-functions"><a href="#Key-functions" class="headerlink" title="Key functions"></a>Key functions</h3><ul>
+<li><strong>Classification</strong> - What are in the image?</li>
+<li><strong>Localization</strong> - Where are they?</li>
+<li><strong>Mask (per pixel) classification</strong> - Where+ ?<ul>
+<li>More precise to bounding box</li>
+</ul>
+</li>
+<li><strong>Landmarks localization</strong> - What+, Where+ ?<ul>
+<li>Not only per-pixel mask, but also key points in the objects</li>
+</ul>
+</li>
+</ul>
+<a id="more"></a>
+<h3 id="Mask-R-CNN-Architecture"><a href="#Mask-R-CNN-Architecture" class="headerlink" title="Mask R-CNN Architecture"></a>Mask R-CNN Architecture</h3><p><img src="/images/architecture_of_mask_r-cnn.png" alt="Mask R-CNN Architecture"></p>
+<h3 id="Classification"><a href="#Classification" class="headerlink" title="Classification"></a>Classification</h3><p><img src="/images/classification_cnn.png" alt="CNN for classification"></p>
+<blockquote>
+<p>Please ignoring the bounding box in the image</p>
+</blockquote>
+<p>$$<br>\text{class} = Classifier(\text{image})<br>$$</p>
+<h4 id="Problems"><a href="#Problems" class="headerlink" title="Problems"></a>Problems</h4><ul>
+<li>High-level semantic concepts</li>
+<li>High efficiency</li>
+</ul>
+<h4 id="Solutions"><a href="#Solutions" class="headerlink" title="Solutions"></a>Solutions</h4><ul>
+<li><strong>SIFT</strong> or <strong>HOG</strong> (about 5 or 10 years ago)<ul>
+<li>Based on edge feature (low- level semantic infomations)</li>
+<li>Sometimes mistake two objects which people can distinguish easily<ul>
+<li>e.g.  mark the telegraph pole as a man</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><strong>CNN</strong> (nowadays)<ul>
+<li>Based on high-level semantic concepts<ul>
+<li>Rarely mistake objects. If it do so, people are likely to mix up them, too.</li>
+</ul>
+</li>
+<li>Translation invariance</li>
+<li>Scale invariance</li>
+</ul>
+</li>
+</ul>
+<h3 id="Detection"><a href="#Detection" class="headerlink" title="Detection"></a>Detection</h3><p><img src="/images/detection_concept.png" alt="Detection Concept"><br>$$<br>\text{location}=Classifier(\text{all patches of an image)} \<br>\text{precise_location}=Regressor(\text{image}, \text{rough_location})<br>$$</p>
+<h4 id="Problems-1"><a href="#Problems-1" class="headerlink" title="Problems"></a>Problems</h4><ul>
+<li>High efficiency</li>
+</ul>
+<h4 id="Solutions-1"><a href="#Solutions-1" class="headerlink" title="Solutions"></a>Solutions</h4><ul>
+<li><strong>Traverse</strong> all patches of an image and apply image classifier on them, then patches with highest scores are looked as locations of objects.<ul>
+<li>As long as the classifier is precise enough, and we are able to traverse millions of patches in an image, we can always get a satisfactory result.</li>
+<li>But the amount of calculations is too large. (about 1 or 10 millon) </li>
+</ul>
+</li>
+<li>Do <strong>Regression</strong> cosntantlty, starting from a rough location of an object, and finally we’ll get the precise object location.<ul>
+<li>Low amount of calculations. (about 10 or 100 times)</li>
+<li>Hard to locate many adjacent and similar objects</li>
+</ul>
+</li>
+<li>The state-of-the-art methods tend to use exhaustion on large-scale, and refine the rough localtions by regression on small-scale.</li>
+</ul>
+<h4 id="R-CNN"><a href="#R-CNN" class="headerlink" title="R-CNN"></a>R-CNN</h4><p><img src="/images/detection_rcnn.png" alt="RCNN"></p>
+<ul>
+<li>Use <strong>region proposal</strong> to decline millions of patches into 2~10k.</li>
+<li>Use classifier to determine the class of a patch</li>
+<li>Use BBox regression to refine the location</li>
+</ul>
+<h4 id="SPP-net-Fast-R-CNN"><a href="#SPP-net-Fast-R-CNN" class="headerlink" title="SPP-net / Fast R-CNN"></a>SPP-net / Fast R-CNN</h4><p><img src="/images/SPP_net_1.png" alt="SPP-net 1"></p>
+<p><img src="/images/SPP_net_2.png" alt="SPP-net 2"></p>
+<ul>
+<li>Use <strong>Pyramid Pooling / RoI-Pooling</strong> to generate a fixed-length representation regardless of image size/scale </li>
+</ul>
+<h4 id="Faster-R-CNN"><a href="#Faster-R-CNN" class="headerlink" title="Faster R-CNN"></a>Faster R-CNN</h4><p><img src="/images/Faster-RCNN_1.png" alt="Faster-RCNN"></p>
+<ul>
+<li>Use <strong>RPN</strong> (Region Proposal Network) that shares full-image convolutional features with the detection network, thus enabling nearly cost-free region proposals. <ul>
+<li>An RPN is a fully convolutional network that simultaneously predicts object bounds and objectness scores at each position.</li>
+<li>The RPN is trained end-to-end to generate high-quality region proposals, which are used by Fast R-CNN for detection.</li>
+<li>We further merge RPN and Fast R-CNN into a single network by sharing their convolutional features—using the recently popular terminology of neural networks with ‘attention’ mechanisms, the RPN component tells the unified network where to look. </li>
+</ul>
+</li>
+<li>Number of patches: $width \times height \times scales \times ratios$<ul>
+<li><code>scale</code> stands for the size of image and objects</li>
+<li><code>ratio</code> stands for the aspect ratio of filter</li>
+</ul>
+</li>
+</ul>
+<p><img src="/images/multiple_scales_ratios.png" alt="Multiple scales / ratios"></p>
+<p>Different schemes for addressing multiple scales and sizes.</p>
+<ul>
+<li>Pyramids of images and feature maps are built, and the classifier is run at all scales.</li>
+<li>Pyramids of filters with multiple scales/sizes are run on the feature map.</li>
+<li>Faster R-CNN use pyramids of reference boxes in the regression functions, which avoids enumerating images or filters of multiple scales or aspect ratios.</li>
+</ul>
+<h4 id="SSD-FPN"><a href="#SSD-FPN" class="headerlink" title="SSD / FPN"></a>SSD / FPN</h4><p><img src="/images/ssd_fpn.png" alt="SSD and FPN"></p>
+<ul>
+<li><strong>FPN (Feature Pyramid Network)</strong> exploit the inherent multi-scale, pyramidal hierarchy of deep convolutional networks to construct feature pyramids with marginal extra cost. A top-down architecture with lateral connections is developed for building high-level semantic feature maps at all scales.</li>
+</ul>
+<h3 id="Instance-Segmentation"><a href="#Instance-Segmentation" class="headerlink" title="Instance Segmentation"></a>Instance Segmentation</h3><p><img src="/images/instance_segmentation.png" alt="Instance Segmentation"></p>
+<ul>
+<li>Use <strong>Mask Regression</strong> to predict instance segmentation based on object bounding box.</li>
+<li>Replace RoI Pooling with <strong>RoI Align</strong></li>
+</ul>
+<h3 id="Keypoint-Detection"><a href="#Keypoint-Detection" class="headerlink" title="Keypoint Detection"></a>Keypoint Detection</h3><p><img src="/images/keypoint_detection.png" alt="Keypoint Detection"></p>
+<ul>
+<li>We make minor modifications to the segmentation system when adapting it for keypoints.</li>
+<li>For each of the $K$ keypoints of an instance, the training target is a one-hot $m \times m$ binary mask where only a single pixel is labeled as foreground.</li>
+</ul>
+<h2 id="Today-details-about-Mask-RCNN-and-comparisons"><a href="#Today-details-about-Mask-RCNN-and-comparisons" class="headerlink" title="Today - details about Mask-RCNN and comparisons"></a>Today - details about Mask-RCNN and comparisons</h2><p>(to be continued)</p>
+<h2 id="Future-discussions"><a href="#Future-discussions" class="headerlink" title="Future - discussions"></a>Future - discussions</h2><p>(to be continued)</p>
+]]></content>
+    
+    <summary type="html">
+    
+      &lt;p&gt;That’s my notes for the lecture “From Faster-RCNN to Mask-RCNN” by Shaoqing Ren on April 26th, 2017.&lt;/p&gt;
+&lt;h2 id=&quot;Yesterday-–-background-and-pre-works-of-Mask-R-CNN&quot;&gt;&lt;a href=&quot;#Yesterday-–-background-and-pre-works-of-Mask-R-CNN&quot; class=&quot;headerlink&quot; title=&quot;Yesterday – background and pre-works of Mask R-CNN&quot;&gt;&lt;/a&gt;Yesterday – background and pre-works of Mask R-CNN&lt;/h2&gt;&lt;h3 id=&quot;Key-functions&quot;&gt;&lt;a href=&quot;#Key-functions&quot; class=&quot;headerlink&quot; title=&quot;Key functions&quot;&gt;&lt;/a&gt;Key functions&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;Classification&lt;/strong&gt; - What are in the image?&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Localization&lt;/strong&gt; - Where are they?&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Mask (per pixel) classification&lt;/strong&gt; - Where+ ?&lt;ul&gt;
+&lt;li&gt;More precise to bounding box&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Landmarks localization&lt;/strong&gt; - What+, Where+ ?&lt;ul&gt;
+&lt;li&gt;Not only per-pixel mask, but also key points in the objects&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+    
+    </summary>
+    
+      <category term="Notes" scheme="http://www.yuthon.com/categories/Notes/"/>
+    
+    
+      <category term="Object Detection" scheme="http://www.yuthon.com/tags/Object-Detection/"/>
+    
+      <category term="Semantic Segmentation" scheme="http://www.yuthon.com/tags/Semantic-Segmentation/"/>
+    
+      <category term="Faster-RCNN" scheme="http://www.yuthon.com/tags/Faster-RCNN/"/>
+    
+      <category term="Mask-RCNN" scheme="http://www.yuthon.com/tags/Mask-RCNN/"/>
+    
+  </entry>
+  
+  <entry>
     <title>Modern C++ Libraries: Getting Started</title>
     <link href="http://www.yuthon.com/2017/04/25/Modern-C-Libraries-Getting-Started/"/>
     <id>http://www.yuthon.com/2017/04/25/Modern-C-Libraries-Getting-Started/</id>
     <published>2017-04-25T13:06:39.000Z</published>
-    <updated>2017-04-25T13:25:27.000Z</updated>
+    <updated>2017-04-27T07:48:51.000Z</updated>
     
     <content type="html"><![CDATA[<p>This post is a note for Modern C++ Libraries in Pluralsight.</p>
-<a id="more"></a>
 <h2 id="Assertions"><a href="#Assertions" class="headerlink" title="Assertions"></a>Assertions</h2><h3 id="Course-content"><a href="#Course-content" class="headerlink" title="Course content"></a>Course content</h3><p>An <strong>Assertion</strong> may be a function, but usually a macro, that brings your application to an immediate standstill if an assumption is broken.</p>
 <p>Assertions <strong>document the assumptions</strong> such that those assumptions can be <strong>validated</strong> usually at run time, but also increasingly at compile time.</p>
+<a id="more"></a>
 <ul>
 <li><p>Check pointers before using them (at run time):</p>
 <figure class="highlight c++"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">assert(pointer);</div></pre></td></tr></table></figure>
@@ -65,15 +213,17 @@
     <summary type="html">
     
       &lt;p&gt;This post is a note for Modern C++ Libraries in Pluralsight.&lt;/p&gt;
+&lt;h2 id=&quot;Assertions&quot;&gt;&lt;a href=&quot;#Assertions&quot; class=&quot;headerlink&quot; title=&quot;Assertions&quot;&gt;&lt;/a&gt;Assertions&lt;/h2&gt;&lt;h3 id=&quot;Course-content&quot;&gt;&lt;a href=&quot;#Course-content&quot; class=&quot;headerlink&quot; title=&quot;Course content&quot;&gt;&lt;/a&gt;Course content&lt;/h3&gt;&lt;p&gt;An &lt;strong&gt;Assertion&lt;/strong&gt; may be a function, but usually a macro, that brings your application to an immediate standstill if an assumption is broken.&lt;/p&gt;
+&lt;p&gt;Assertions &lt;strong&gt;document the assumptions&lt;/strong&gt; such that those assumptions can be &lt;strong&gt;validated&lt;/strong&gt; usually at run time, but also increasingly at compile time.&lt;/p&gt;
     
     </summary>
     
       <category term="Notes" scheme="http://www.yuthon.com/categories/Notes/"/>
     
     
-      <category term="C++" scheme="http://www.yuthon.com/tags/C/"/>
-    
       <category term="Pluralsight" scheme="http://www.yuthon.com/tags/Pluralsight/"/>
+    
+      <category term="C++" scheme="http://www.yuthon.com/tags/C/"/>
     
       <category term="C++11" scheme="http://www.yuthon.com/tags/C-11/"/>
     
@@ -143,13 +293,13 @@
       <category term="Experience" scheme="http://www.yuthon.com/categories/Experience/"/>
     
     
-      <category term="Ubuntu" scheme="http://www.yuthon.com/tags/Ubuntu/"/>
-    
-      <category term="Deep Learning" scheme="http://www.yuthon.com/tags/Deep-Learning/"/>
-    
       <category term="NVIDIA" scheme="http://www.yuthon.com/tags/NVIDIA/"/>
     
       <category term="Jetson TX1" scheme="http://www.yuthon.com/tags/Jetson-TX1/"/>
+    
+      <category term="Ubuntu" scheme="http://www.yuthon.com/tags/Ubuntu/"/>
+    
+      <category term="Deep Learning" scheme="http://www.yuthon.com/tags/Deep-Learning/"/>
     
       <category term="TensorFlow" scheme="http://www.yuthon.com/tags/TensorFlow/"/>
     
@@ -200,13 +350,13 @@
     
       <category term="Tensorflow" scheme="http://www.yuthon.com/tags/Tensorflow/"/>
     
-      <category term="Ubuntu" scheme="http://www.yuthon.com/tags/Ubuntu/"/>
-    
-      <category term="Deep Learning" scheme="http://www.yuthon.com/tags/Deep-Learning/"/>
-    
       <category term="NVIDIA" scheme="http://www.yuthon.com/tags/NVIDIA/"/>
     
       <category term="Jetson TX1" scheme="http://www.yuthon.com/tags/Jetson-TX1/"/>
+    
+      <category term="Ubuntu" scheme="http://www.yuthon.com/tags/Ubuntu/"/>
+    
+      <category term="Deep Learning" scheme="http://www.yuthon.com/tags/Deep-Learning/"/>
     
   </entry>
   
@@ -277,13 +427,13 @@
     
       <category term="Tensorflow" scheme="http://www.yuthon.com/tags/Tensorflow/"/>
     
-      <category term="Ubuntu" scheme="http://www.yuthon.com/tags/Ubuntu/"/>
-    
-      <category term="Deep Learning" scheme="http://www.yuthon.com/tags/Deep-Learning/"/>
-    
       <category term="NVIDIA" scheme="http://www.yuthon.com/tags/NVIDIA/"/>
     
       <category term="Jetson TX1" scheme="http://www.yuthon.com/tags/Jetson-TX1/"/>
+    
+      <category term="Ubuntu" scheme="http://www.yuthon.com/tags/Ubuntu/"/>
+    
+      <category term="Deep Learning" scheme="http://www.yuthon.com/tags/Deep-Learning/"/>
     
   </entry>
   
@@ -1796,13 +1946,13 @@
       <category term="Experience" scheme="http://www.yuthon.com/categories/Experience/"/>
     
     
-      <category term="CUDA" scheme="http://www.yuthon.com/tags/CUDA/"/>
-    
       <category term="Tensorflow" scheme="http://www.yuthon.com/tags/Tensorflow/"/>
     
       <category term="Ubuntu" scheme="http://www.yuthon.com/tags/Ubuntu/"/>
     
       <category term="Deep Learning" scheme="http://www.yuthon.com/tags/Deep-Learning/"/>
+    
+      <category term="CUDA" scheme="http://www.yuthon.com/tags/CUDA/"/>
     
   </entry>
   
@@ -2148,66 +2298,6 @@
       <category term="CS231n" scheme="http://www.yuthon.com/tags/CS231n/"/>
     
       <category term="Neural Network" scheme="http://www.yuthon.com/tags/Neural-Network/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>B-Human Code 浅析 - ScanGridProvider</title>
-    <link href="http://www.yuthon.com/2016/10/08/B-Human-Code-Brief-Analysis-2/"/>
-    <id>http://www.yuthon.com/2016/10/08/B-Human-Code-Brief-Analysis-2/</id>
-    <published>2016-10-08T11:18:19.000Z</published>
-    <updated>2016-10-09T08:36:32.000Z</updated>
-    
-    <content type="html"><![CDATA[<blockquote>
-<p>本系列的文章主要是根据 B-Human 的开源代码库<code>CodeRelease2015</code>以及历年的 Team Description Paper 写成. 由于个人的 C++ 水平有限, 难免有缺漏之处, 望发现后不吝赐教.</p>
-</blockquote>
-<h1 id="B-Human-Code-浅析"><a href="#B-Human-Code-浅析" class="headerlink" title="B-Human Code 浅析"></a>B-Human Code 浅析</h1><h2 id="Perception"><a href="#Perception" class="headerlink" title="Perception"></a>Perception</h2><h3 id="ScanGrid"><a href="#ScanGrid" class="headerlink" title="ScanGrid"></a>ScanGrid</h3><p>首先来看一个基础的类<code>ScanGrid</code>, 里面定义了由扫描线组成的网格. 这个类在<code>ScanGridProvider</code>以及<code>LineScanner</code> 中都有用到. </p>
-<a id="more"></a>
-<p>头文件如下:</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div></pre></td><td class="code"><pre><div class="line">STREAMABLE(ScanGrid,</div><div class="line">&#123;</div><div class="line">  STREAMABLE(Line,</div><div class="line">  &#123;</div><div class="line">    Line() = <span class="keyword">default</span>;</div><div class="line">    Line(<span class="keyword">int</span> x, <span class="keyword">int</span> y, <span class="keyword">unsigned</span> yMaxIndex),</div><div class="line"></div><div class="line">    (<span class="keyword">int</span>) x, <span class="comment">/**&lt; x coordinate of the scanline. */</span></div><div class="line">    (<span class="keyword">int</span>) yMax, <span class="comment">/**&lt; Maximum y coordinate (exclusive). */</span></div><div class="line">    (<span class="keyword">unsigned</span>) yMaxIndex, <span class="comment">/**&lt; Index of the lowest y coordinate relevant for this scanline. */</span></div><div class="line">  &#125;);</div><div class="line"></div><div class="line">  <span class="keyword">void</span> draw() <span class="keyword">const</span>,</div><div class="line"></div><div class="line">  (<span class="built_in">std</span>::<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt;) y, <span class="comment">/**&lt; All possible y coordinates of pixels to be scanned. */</span></div><div class="line">  (<span class="built_in">std</span>::<span class="built_in">vector</span>&lt;Line&gt;) lines, <span class="comment">/**&lt; Decription of all scanlines. */</span></div><div class="line">  (<span class="keyword">int</span>)(<span class="number">0</span>) fieldLimit, <span class="comment">/**&lt; Upper bound for all scanlines (exclusive). */</span></div><div class="line">  (<span class="keyword">unsigned</span>)(<span class="number">0</span>) lowResStart, <span class="comment">/**&lt; First index of low res grid. */</span></div><div class="line">  (<span class="keyword">unsigned</span>)(<span class="number">1</span>) lowResStep, <span class="comment">/**&lt; Steps between low res grid lines. */</span></div><div class="line">&#125;);</div><div class="line"></div><div class="line"><span class="keyword">inline</span> ScanGrid::Line::Line(<span class="keyword">int</span> x, <span class="keyword">int</span> yMax, <span class="keyword">unsigned</span> yMaxIndex) :</div><div class="line">  x(x), yMax(yMax), yMaxIndex(yMaxIndex)</div><div class="line">&#123;&#125;</div></pre></td></tr></table></figure>
-<p>原本的注释已经很清楚了, 我就不再多说什么.</p>
-<h3 id="ScanGridProvider"><a href="#ScanGridProvider" class="headerlink" title="ScanGridProvider"></a>ScanGridProvider</h3><p>这个模块主要是提供了一个由一堆竖线组成的扫描图像的网格. 生成的网格可供<code>LineScanner</code>使用. 头文件如下:</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div></pre></td><td class="code"><pre><div class="line">MODULE(ScanGridProvider,</div><div class="line">&#123;,</div><div class="line">  REQUIRES(BodyContour),</div><div class="line">  REQUIRES(CameraInfo),</div><div class="line">  REQUIRES(CameraMatrix),</div><div class="line">  REQUIRES(FieldDimensions),</div><div class="line">  PROVIDES(ScanGrid),</div><div class="line">  DEFINES_PARAMETERS(</div><div class="line">  &#123;,</div><div class="line">    (<span class="keyword">int</span>)(<span class="number">3</span>) minStepSize, <span class="comment">/**&lt; The minimum pixel distance between two neigboring scanlines. */</span></div><div class="line">    (<span class="keyword">int</span>)(<span class="number">25</span>) minNumOfLowResScanlines, <span class="comment">/**&lt; The minimum number of scanlines for low resolution. */</span></div><div class="line">    (<span class="keyword">float</span>)(<span class="number">0.9f</span>) lineWidthRatio, <span class="comment">/**&lt; The ratio of field line width that is sampled when scanning the image. */</span></div><div class="line">    (<span class="keyword">float</span>)(<span class="number">0.8f</span>) ballWidthRatio, <span class="comment">/**&lt; The ratio of ball width that is sampled when scanning the image. */</span></div><div class="line">  &#125;),</div><div class="line">&#125;);</div><div class="line"></div><div class="line"><span class="keyword">class</span> ScanGridProvider : <span class="keyword">public</span> ScanGridProviderBase</div><div class="line">&#123;</div><div class="line">  <span class="function"><span class="keyword">void</span> <span class="title">update</span><span class="params">(ScanGrid&amp; scanGrid)</span></span>;</div><div class="line">&#125;;</div></pre></td></tr></table></figure>
-<p>看看具体实现.</p>
-<p>首先是一段初始化以及是否继续生成网格的判断:</p>
-<ul>
-<li>摄像头参数矩阵未给定</li>
-<li>场地边界上的最远点不在视野内</li>
-<li>场地边界高度超过图像高度(视野完全在场地之内?)</li>
-<li>不能将图像左下与右下两点射影到场地上(视野完全在场地之外?)</li>
-</ul>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">void</span> ScanGridProvider::update(ScanGrid&amp; scanGrid)</div><div class="line">&#123;</div><div class="line">  <span class="comment">// 初始化网格信息</span></div><div class="line">  scanGrid.y.clear();</div><div class="line">  scanGrid.lines.clear();</div><div class="line"></div><div class="line">  <span class="keyword">if</span>(!theCameraMatrix.isValid)</div><div class="line">    <span class="keyword">return</span>; <span class="comment">// Cannot compute grid without camera matrix</span></div><div class="line"></div><div class="line">  <span class="comment">// Compute the furthest point away that could be part of the field given an unknown own position.</span></div><div class="line">  Vector2f pointInImage;</div><div class="line">  <span class="keyword">const</span> <span class="keyword">float</span> fieldDiagional = Vector2f(theFieldDimensions.boundary.x.getSize(), theFieldDimensions.boundary.y.getSize()).norm();</div><div class="line">  <span class="keyword">if</span>(!Transformation::robotWithCameraRotationToImage(Vector2f(fieldDiagional, <span class="number">0</span>), theCameraMatrix, theCameraInfo, pointInImage))</div><div class="line">    <span class="keyword">return</span>; <span class="comment">// Cannot project furthest possible point to image -&gt; no grid in image</span></div><div class="line"></div><div class="line">  scanGrid.fieldLimit = <span class="built_in">std</span>::max(<span class="keyword">static_cast</span>&lt;<span class="keyword">int</span>&gt;(pointInImage.y()), <span class="number">-1</span>);</div><div class="line">  <span class="keyword">if</span>(scanGrid.fieldLimit &gt;= theCameraInfo.height)</div><div class="line">    <span class="keyword">return</span>; <span class="comment">// Image is above field limit -&gt; no grid in image</span></div><div class="line"></div><div class="line">  <span class="comment">// Determine the maximum distance between scanlines at the bottom of the image not to miss the ball.</span></div><div class="line">  Vector2f leftOnField;</div><div class="line">  Vector2f rightOnField;</div><div class="line">  <span class="keyword">if</span>(!Transformation::imageToRobotWithCameraRotation(Vector2i(<span class="number">0</span>, theCameraInfo.height - <span class="number">1</span>), theCameraMatrix, theCameraInfo, leftOnField) ||</div><div class="line">     !Transformation::imageToRobotWithCameraRotation(Vector2i(theCameraInfo.width, theCameraInfo.height - <span class="number">1</span>), theCameraMatrix, theCameraInfo, rightOnField))</div><div class="line">    <span class="keyword">return</span>; <span class="comment">// Cannot project lower image border to field -&gt; no grid</span></div></pre></td></tr></table></figure>
-<p>接下来是要设置 x 方向的最大步长, 主要的考虑因素是扫描线的最小数量, 以及底部预计球的大小.</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">const</span> <span class="keyword">int</span> xStepUpperBound = theCameraInfo.width / minNumOfLowResScanlines;</div><div class="line"><span class="keyword">const</span> <span class="keyword">int</span> maxXStep = <span class="built_in">std</span>::min(xStepUpperBound,</div><div class="line">                              <span class="keyword">static_cast</span>&lt;<span class="keyword">int</span>&gt;(theCameraInfo.width *</div><div class="line">                                               theFieldDimensions.ballRadius * <span class="number">2.f</span> * </div><div class="line">                                               ballWidthRatio / </div><div class="line">                                               (leftOnField - rightOnField).norm()));</div></pre></td></tr></table></figure>
-<p>之后自下而上选取能够用来采样的 y 的值</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div></pre></td><td class="code"><pre><div class="line">Vector2f pointOnField = (leftOnField + rightOnField) / <span class="number">2.f</span>;</div><div class="line"></div><div class="line"><span class="comment">// Determine vertical sampling points of the grid</span></div><div class="line">scanGrid.y.reserve(theCameraInfo.height);</div><div class="line"><span class="keyword">const</span> <span class="keyword">float</span> fieldStep = theFieldDimensions.fieldLinesWidth * lineWidthRatio;</div><div class="line"><span class="keyword">bool</span> singleSteps = <span class="literal">false</span>;</div><div class="line"><span class="comment">// scanGrid.fieldLimit: Upper bound for all scanlines (exclusive).</span></div><div class="line"><span class="keyword">for</span>(<span class="keyword">int</span> y = theCameraInfo.height - <span class="number">1</span>; y &gt; scanGrid.fieldLimit;)</div><div class="line">&#123;</div><div class="line">  scanGrid.y.emplace_back(y);</div><div class="line">  <span class="comment">// Calc next vertical position for all scanlines.</span></div><div class="line">  <span class="keyword">if</span>(singleSteps)</div><div class="line">    --y;</div><div class="line">  <span class="keyword">else</span></div><div class="line">  &#123;</div><div class="line">    pointOnField.x() += fieldStep;</div><div class="line">    <span class="keyword">if</span>(!Transformation::robotWithCameraRotationToImage(pointOnField, theCameraMatrix, theCameraInfo, pointInImage))</div><div class="line">      <span class="keyword">break</span>;</div><div class="line">    <span class="keyword">const</span> <span class="keyword">int</span> y2 = y;</div><div class="line">    y = <span class="built_in">std</span>::min(y2 - <span class="number">1</span>, <span class="keyword">static_cast</span>&lt;<span class="keyword">int</span>&gt;(pointInImage.y() + <span class="number">0.5</span>));</div><div class="line">    singleSteps = y2 - <span class="number">1</span> == y;</div><div class="line">  &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<p>接下来是要设置 x 方向的最小步长, 主要的考虑因素是图像顶部预计球的大小.</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// Determine the maximum distance between scanlines at the top of the image not to miss the ball. Do not go below minStepSize.</span></div><div class="line"><span class="keyword">int</span> minXStep = minStepSize;</div><div class="line"><span class="keyword">if</span>(Transformation::imageToRobotWithCameraRotation(Vector2i(<span class="number">0</span>, <span class="number">0</span>), theCameraMatrix, theCameraInfo, leftOnField) &amp;&amp;</div><div class="line">   Transformation::imageToRobotWithCameraRotation(Vector2i(theCameraInfo.width, <span class="number">0</span>), theCameraMatrix, theCameraInfo, rightOnField))</div><div class="line">  minXStep = <span class="built_in">std</span>::max(minXStep, <span class="keyword">static_cast</span>&lt;<span class="keyword">int</span>&gt;(theCameraInfo.width *</div><div class="line">                                                 theFieldDimensions.ballRadius *</div><div class="line">                                                 <span class="number">2.f</span> * ballWidthRatio / </div><div class="line">                                                 (leftOnField - rightOnField).norm()));</div><div class="line">minXStep = <span class="built_in">std</span>::min(xStepUpperBound, minXStep);</div></pre></td></tr></table></figure>
-<p>然后是确认一个 x 方向的次大步长, 主要是满足$maxXStep2 = minXStep * 2^n, maxXStep2 &lt;= maxXStep$</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// Determine a max step size that fulfills maxXStep2 = minXStep * 2^n, maxXStep2 &lt;= maxXStep.</span></div><div class="line"><span class="comment">// Also compute lower y coordinates for the different lengths of scanlines.</span></div><div class="line"><span class="keyword">int</span> maxXStep2 = minXStep;</div><div class="line"><span class="built_in">std</span>::<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; yStarts;</div><div class="line"><span class="keyword">while</span>(maxXStep2 * <span class="number">2</span> &lt;= maxXStep)</div><div class="line">&#123;</div><div class="line">  <span class="keyword">float</span> distance = Geometry::getDistanceBySize(theCameraInfo, theFieldDimensions.ballRadius * ballWidthRatio, <span class="keyword">static_cast</span>&lt;<span class="keyword">float</span>&gt;(maxXStep2));</div><div class="line">  VERIFY(Transformation::robotWithCameraRotationToImage(Vector2f(distance, <span class="number">0</span>), theCameraMatrix, theCameraInfo, pointInImage));</div><div class="line">  yStarts.push_back(<span class="keyword">static_cast</span>&lt;<span class="keyword">int</span>&gt;(pointInImage.y() + <span class="number">0.5f</span>));</div><div class="line">  maxXStep2 *= <span class="number">2</span>;</div><div class="line">&#125;</div><div class="line">yStarts.push_back(theCameraInfo.height);</div></pre></td></tr></table></figure>
-<p>根据上一步计算出的<code>maxXStep2</code>, 建立一个2为比值的等比数列作为扫描线的长度.</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// Determine a pattern with the different lengths of scan lines, in which the longest appears once,</span></div><div class="line"><span class="comment">// the second longest twice, etc. The pattern starts with the longest.</span></div><div class="line"><span class="built_in">std</span>::<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; yStarts2(maxXStep2 / minXStep);</div><div class="line"><span class="keyword">for</span>(<span class="keyword">size_t</span> i = <span class="number">0</span>, step = <span class="number">1</span>; i &lt; yStarts.size(); ++i, step *= <span class="number">2</span>)</div><div class="line">  <span class="keyword">for</span>(<span class="keyword">size_t</span> j = <span class="number">0</span>; j &lt; yStarts2.size(); j += step)</div><div class="line">    yStarts2[j] = yStarts[i];</div></pre></td></tr></table></figure>
-<p>初始化扫描线与颜色区域的信息</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// Initialize the scan states and the regions.</span></div><div class="line"><span class="keyword">const</span> <span class="keyword">int</span> xStart = theCameraInfo.width % (theCameraInfo.width / minXStep - <span class="number">1</span>) / <span class="number">2</span>;</div><div class="line">scanGrid.lines.reserve((theCameraInfo.width - xStart) / minXStep);</div><div class="line"><span class="keyword">size_t</span> i = yStarts2.size() / <span class="number">2</span>; <span class="comment">// Start with the second longest scanline.</span></div><div class="line"><span class="keyword">for</span>(<span class="keyword">int</span> x = xStart; x &lt; theCameraInfo.width; x += minXStep)</div><div class="line">&#123;</div><div class="line">  <span class="keyword">int</span> yMax = <span class="built_in">std</span>::min(yStarts2[i++], theCameraInfo.height);</div><div class="line">  i %= yStarts2.size();</div><div class="line">  theBodyContour.clipBottom(x, yMax);</div><div class="line">  <span class="keyword">const</span> <span class="keyword">size_t</span> yMaxIndex = <span class="built_in">std</span>::upper_bound(scanGrid.y.begin(), scanGrid.y.end(), yMax + <span class="number">1</span>, <span class="built_in">std</span>::greater&lt;<span class="keyword">int</span>&gt;()) - scanGrid.y.begin();</div><div class="line">  scanGrid.lines.emplace_back(x, yMax, <span class="keyword">static_cast</span>&lt;<span class="keyword">unsigned</span>&gt;(yMaxIndex));</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<p>设置低分辨率的扫描线的信息</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// Set low resolution scanline info</span></div><div class="line">scanGrid.lowResStep = maxXStep2 / minXStep;</div><div class="line">scanGrid.lowResStart = scanGrid.lowResStep / <span class="number">2</span>;</div></pre></td></tr></table></figure>
-]]></content>
-    
-    <summary type="html">
-    
-      &lt;blockquote&gt;
-&lt;p&gt;本系列的文章主要是根据 B-Human 的开源代码库&lt;code&gt;CodeRelease2015&lt;/code&gt;以及历年的 Team Description Paper 写成. 由于个人的 C++ 水平有限, 难免有缺漏之处, 望发现后不吝赐教.&lt;/p&gt;
-&lt;/blockquote&gt;
-&lt;h1 id=&quot;B-Human-Code-浅析&quot;&gt;&lt;a href=&quot;#B-Human-Code-浅析&quot; class=&quot;headerlink&quot; title=&quot;B-Human Code 浅析&quot;&gt;&lt;/a&gt;B-Human Code 浅析&lt;/h1&gt;&lt;h2 id=&quot;Perception&quot;&gt;&lt;a href=&quot;#Perception&quot; class=&quot;headerlink&quot; title=&quot;Perception&quot;&gt;&lt;/a&gt;Perception&lt;/h2&gt;&lt;h3 id=&quot;ScanGrid&quot;&gt;&lt;a href=&quot;#ScanGrid&quot; class=&quot;headerlink&quot; title=&quot;ScanGrid&quot;&gt;&lt;/a&gt;ScanGrid&lt;/h3&gt;&lt;p&gt;首先来看一个基础的类&lt;code&gt;ScanGrid&lt;/code&gt;, 里面定义了由扫描线组成的网格. 这个类在&lt;code&gt;ScanGridProvider&lt;/code&gt;以及&lt;code&gt;LineScanner&lt;/code&gt; 中都有用到. &lt;/p&gt;
-    
-    </summary>
-    
-      <category term="Code Anaylsis" scheme="http://www.yuthon.com/categories/Code-Anaylsis/"/>
-    
-    
-      <category term="RoboCup" scheme="http://www.yuthon.com/tags/RoboCup/"/>
-    
-      <category term="C++" scheme="http://www.yuthon.com/tags/C/"/>
     
   </entry>
   

@@ -4,16 +4,42 @@
 
     
   <url>
+    <loc>http://www.yuthon.com/2017/04/27/Notes-From-Faster-RCNN-to-Mask-RCNN-by-Shaoqing-Ren/</loc>
+    <lastmod>2017-04-27T07:53:23.000Z</lastmod>
+    <data>
+        <display>
+        <title>Notes: From Faster-RCNN to Mask-RCNN by Shaoqing Ren</title>
+        <pubTime>2017-04-27T04:55:33.000Z</pubTime>
+        
+        <tag>Object Detection</tag>
+         
+        <tag>Semantic Segmentation</tag>
+         
+        <tag>Faster-RCNN</tag>
+         
+        <tag>Mask-RCNN</tag>
+         
+         
+           
+             
+              <breadCrumb title="Notes" url="http://www.yuthon.com/categories/Notes/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
     <loc>http://www.yuthon.com/2017/04/25/Modern-C-Libraries-Getting-Started/</loc>
-    <lastmod>2017-04-25T13:25:27.000Z</lastmod>
+    <lastmod>2017-04-27T07:48:51.000Z</lastmod>
     <data>
         <display>
         <title>Modern C++ Libraries: Getting Started</title>
         <pubTime>2017-04-25T13:06:39.000Z</pubTime>
         
-        <tag>C++</tag>
-         
         <tag>Pluralsight</tag>
+         
+        <tag>C++</tag>
          
         <tag>C++11</tag>
          
@@ -35,13 +61,13 @@
         <title>TensorFlow r1.0 on TX1 (now successful)</title>
         <pubTime>2017-03-10T10:12:18.000Z</pubTime>
         
-        <tag>Ubuntu</tag>
-         
-        <tag>Deep Learning</tag>
-         
         <tag>NVIDIA</tag>
          
         <tag>Jetson TX1</tag>
+         
+        <tag>Ubuntu</tag>
+         
+        <tag>Deep Learning</tag>
          
         <tag>TensorFlow</tag>
          
@@ -65,13 +91,13 @@
         
         <tag>Tensorflow</tag>
          
-        <tag>Ubuntu</tag>
-         
-        <tag>Deep Learning</tag>
-         
         <tag>NVIDIA</tag>
          
         <tag>Jetson TX1</tag>
+         
+        <tag>Ubuntu</tag>
+         
+        <tag>Deep Learning</tag>
          
          
            
@@ -93,13 +119,13 @@
         
         <tag>Tensorflow</tag>
          
-        <tag>Ubuntu</tag>
-         
-        <tag>Deep Learning</tag>
-         
         <tag>NVIDIA</tag>
          
         <tag>Jetson TX1</tag>
+         
+        <tag>Ubuntu</tag>
+         
+        <tag>Deep Learning</tag>
          
          
            
@@ -482,13 +508,13 @@
         <title>CUDA and Tensorflow Installation on Ubuntu 16.04</title>
         <pubTime>2016-10-25T12:53:50.000Z</pubTime>
         
-        <tag>CUDA</tag>
-         
         <tag>Tensorflow</tag>
          
         <tag>Ubuntu</tag>
          
         <tag>Deep Learning</tag>
+         
+        <tag>CUDA</tag>
          
          
            
@@ -554,9 +580,9 @@
         <title>B-Human Code 浅析 - LineScanner</title>
         <pubTime>2016-10-07T13:58:08.000Z</pubTime>
         
-        <tag>RoboCup</tag>
-         
         <tag>C++</tag>
+         
+        <tag>RoboCup</tag>
          
          
            
@@ -576,9 +602,9 @@
         <title>B-Human Code 浅析 - ScanGridProvider</title>
         <pubTime>2016-10-08T11:18:19.000Z</pubTime>
         
-        <tag>RoboCup</tag>
-         
         <tag>C++</tag>
+         
+        <tag>RoboCup</tag>
          
          
            
@@ -814,12 +840,12 @@
 
     
   <url>
-    <loc>http://www.yuthon.com/2016/04/13/CodeSchool-Try-jQuery/</loc>
+    <loc>http://www.yuthon.com/2016/04/14/CodeSchool-Shaping-up-with-Angular.js/</loc>
     <lastmod>2016-05-16T11:51:43.000Z</lastmod>
     <data>
         <display>
-        <title>Notes for Code School - Try jQuery</title>
-        <pubTime>2016-04-13T09:24:09.000Z</pubTime>
+        <title>Notes for Code School - Shaping up with Angular.js</title>
+        <pubTime>2016-04-14T13:19:22.000Z</pubTime>
         
         <tag>CodeSchool</tag>
          
@@ -836,12 +862,12 @@
 
     
   <url>
-    <loc>http://www.yuthon.com/2016/04/14/CodeSchool-Shaping-up-with-Angular.js/</loc>
+    <loc>http://www.yuthon.com/2016/04/13/CodeSchool-Try-jQuery/</loc>
     <lastmod>2016-05-16T11:51:43.000Z</lastmod>
     <data>
         <display>
-        <title>Notes for Code School - Shaping up with Angular.js</title>
-        <pubTime>2016-04-14T13:19:22.000Z</pubTime>
+        <title>Notes for Code School - Try jQuery</title>
+        <pubTime>2016-04-13T09:24:09.000Z</pubTime>
         
         <tag>CodeSchool</tag>
          
