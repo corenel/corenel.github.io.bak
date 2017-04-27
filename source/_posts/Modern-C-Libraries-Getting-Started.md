@@ -10,8 +10,6 @@ tags:
 ---
 This post is a note for Modern C++ Libraries in Pluralsight.
 
-<!-- more -->
-
 ## Assertions
 
 ### Course content
@@ -19,6 +17,8 @@ This post is a note for Modern C++ Libraries in Pluralsight.
 An **Assertion** may be a function, but usually a macro, that brings your application to an immediate standstill if an assumption is broken.
 
 Assertions **document the assumptions** such that those assumptions can be **validated** usually at run time, but also increasingly at compile time.
+
+<!-- more -->
 
 - Check pointers before using them (at run time):
 
