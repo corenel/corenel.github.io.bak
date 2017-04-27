@@ -1,16 +1,16 @@
 ---
-title: 'Notes: From Faster-RCNN to Mask-RCNN by Shaoqing Ren'
+title: 'Notes: From Faster R-CNN to Mask R-CNN'
 date: 2017-04-27 12:55:33
 categories:
 - Notes
 tags:
   - Object Detection
   - Semantic Segmentation
-  - Faster-RCNN
-  - Mask-RCNN
+  - Faster R-CNN
+  - Mask R-CNN
 ---
 
-That's my notes for the lecture "From Faster-RCNN to Mask-RCNN" by Shaoqing Ren on April 26th, 2017.
+That's my notes for the talk "From Faster-RCNN to Mask-RCNN" by Shaoqing Ren on April 26th, 2017.
 
 ## Yesterday – background and pre-works of Mask R-CNN
 
@@ -140,8 +140,78 @@ Different schemes for addressing multiple scales and sizes.
 
 ## Today - details about Mask-RCNN and comparisons
 
-(to be continued)
+### RoI Align
 
-## Future - discussions
+![RoI Align 1](/images/roi_align_1.png)
 
-(to be continued)
+* RoI pooling contains two step of coordinates quantization: from original image into feature map (divide by stride) and from feature map into roi feature (use grid). **Those quantizations cause a huge loss of location precision.**
+  * e.g. we have two boxes whose coordinate are 1.1 and 2.2, and the stride of feature map is 16, then they're the same in the feature map.
+* **RoI Align** remove those two quantizations, and **manipulate coordinates on continuous domain**, which increase the location accuracy greatly.
+
+![Ablations for Mask R-CNN](/images/table_of_mask_rcnn.png)
+
+* RoI Align really improves the result.
+* Moreover, note that with RoIAlign, using stride-32 C5 features (30.9 AP) is more accurate than using stride-16 C4 features (30.3 AP, Table 2c). **RoIAlign largely resolves the long-standing challenge of using large-stride features for detection and segmentation.**
+  * Without RoIAlign, AP in ResNet-50-C4 is better than that in C5 with RoIPooling, i.e., large stride is worse.Thus many precious work try to find methods to get better results in smaller stride. Now with RoIAlign, we can consider whether to use those tricks.
+
+### Multinomial vs. Independent Masks
+
+* **Replace softmax with sigmoid**.
+  * Mask R-CNN decouples mask and class prediction: as the existing box branch predicts the class label, we generate a mask for each class without competition among classes (by a per-pixel sigmoid and a binary loss).
+  * In Table 2b, we compare this to using a per-pixel softmax and a multinomial loss (as com- monly used in FCN). This alternative couples the tasks of mask and class prediction, and results in a severe loss in mask AP (5.5 points).
+  * The result suggests that **once the instance has been classified as a whole (by the box branch), it is sufficient to predict a binary mask without concern for the categories**, which makes the model easier to train.
+
+### Multi-task Cascade vs. Joint Learning
+
+![Multi-task Cascade vs. Joint Learning](/images/multitask_cascase_vs_joint_learning.png)
+
+* Cascading and paralleling are adopted alternately.
+* On training time, three tasks of Mask R-CNN are **paralleling trained**.
+* But **on testing time, we do classification and bbox regression first, and then use those results to get masks**.
+  * BBox regression may change the location of bbox, so we should wait it to be done.
+  * After bbox regression, we may adopt NMS or other methods to reduce the number of boxes. That decreases the workload of segmenting masks. 
+* **Adding the mask branch** to the box-only (i.e., Faster R-CNN) or keypoint-only versions consistently **improves these tasks**.
+  * However, adding the keypoint branch reduces the box/mask AP slightly, suggest- ing that while keypoint detection benefits from multitask training, it does not in turn help the other tasks. 
+  * Nevertheless, learning all three tasks jointly enables a unified system to efficiently predict all outputs simultaneously (Figure 6).
+
+![Table for Mask R-CNN](/images/table_of_mask_rcnn_2.png)
+
+### Comparison on Human Keypoints 
+
+* Table 4 shows that our result (62.7 APkp) is 0.9 pointshigher than the COCO 2016 keypoint detection winner [4]that uses a multi-stage processing pipeline (see caption ofTable 4). Our method is considerably simpler and faster.
+* More importantly, we have a unified model that can si-multaneously predict boxes, segments, and keypoints whilerunning at 5 fps.
+
+### Results
+
+![Keypoint detection results](/images/keypoint_detection_result.png)
+
+![More results of Mask R-CNN on COCO test images](/images/mask_rcnn_results.png)
+
+## Future - discussion
+
+### Order of key functions?
+
+* Order of classification, localization, mask classification and landmarks localization?
+* Top down or Buttom up?
+  * Mask R-CNN uses Top-down method.
+  * the COCO 2016 keypoint detection winner CMU-Pose+++ uses Buttom-up method.
+    * Detect key points first (don't know which keypoint belongs to which person)'
+    * Then gradually stitch them together
+
+### Precious & semantic label
+
+![Precious & semantic label](/images/precious_and_semantic_label.png)
+
+box-level label -> instance segmentation & keypoints detection -> instance seg with body parts
+
+### Semantic 3D reconstruction
+
+![Semantic 3D reconstruction](/images/semantic_reconstruction.png)
+
+### Future
+
+- the performance & system improves rapidly
+- join a team, keep going
+- always try, thinking and discussion
+- understand and structure the world
+
