@@ -4,20 +4,20 @@
 
     
   <url>
-    <loc>http://www.yuthon.com/2017/04/27/Notes-From-Faster-RCNN-to-Mask-RCNN-by-Shaoqing-Ren/</loc>
-    <lastmod>2017-04-27T07:53:23.000Z</lastmod>
+    <loc>http://www.yuthon.com/2017/04/27/Notes-From-Faster-R-CNN-to-Mask-R-CNN/</loc>
+    <lastmod>2017-04-27T11:15:16.000Z</lastmod>
     <data>
         <display>
-        <title>Notes: From Faster-RCNN to Mask-RCNN by Shaoqing Ren</title>
+        <title>Notes: From Faster R-CNN to Mask R-CNN</title>
         <pubTime>2017-04-27T04:55:33.000Z</pubTime>
         
         <tag>Object Detection</tag>
          
         <tag>Semantic Segmentation</tag>
          
-        <tag>Faster-RCNN</tag>
+        <tag>Faster R-CNN</tag>
          
-        <tag>Mask-RCNN</tag>
+        <tag>Mask R-CNN</tag>
          
          
            
@@ -818,12 +818,12 @@
 
     
   <url>
-    <loc>http://www.yuthon.com/2016/04/12/CodeSchool-JavaScript-Best-Practices/</loc>
+    <loc>http://www.yuthon.com/2016/04/14/CodeSchool-Shaping-up-with-Angular.js/</loc>
     <lastmod>2016-05-16T11:51:43.000Z</lastmod>
     <data>
         <display>
-        <title>Notes for Code School - JavaScript Best Practices</title>
-        <pubTime>2016-04-12T10:19:54.000Z</pubTime>
+        <title>Notes for Code School - Shaping up with Angular.js</title>
+        <pubTime>2016-04-14T13:19:22.000Z</pubTime>
         
         <tag>CodeSchool</tag>
          
@@ -840,12 +840,12 @@
 
     
   <url>
-    <loc>http://www.yuthon.com/2016/04/14/CodeSchool-Shaping-up-with-Angular.js/</loc>
+    <loc>http://www.yuthon.com/2016/04/12/CodeSchool-JavaScript-Best-Practices/</loc>
     <lastmod>2016-05-16T11:51:43.000Z</lastmod>
     <data>
         <display>
-        <title>Notes for Code School - Shaping up with Angular.js</title>
-        <pubTime>2016-04-14T13:19:22.000Z</pubTime>
+        <title>Notes for Code School - JavaScript Best Practices</title>
+        <pubTime>2016-04-12T10:19:54.000Z</pubTime>
         
         <tag>CodeSchool</tag>
          

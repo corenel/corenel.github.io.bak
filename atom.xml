@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://www.yuthon.com/"/>
-  <updated>2017-04-27T07:53:23.000Z</updated>
+  <updated>2017-04-27T11:15:16.000Z</updated>
   <id>http://www.yuthon.com/</id>
   
   <author>
@@ -16,13 +16,13 @@
   <generator uri="http://hexo.io/">Hexo</generator>
   
   <entry>
-    <title>Notes: From Faster-RCNN to Mask-RCNN by Shaoqing Ren</title>
-    <link href="http://www.yuthon.com/2017/04/27/Notes-From-Faster-RCNN-to-Mask-RCNN-by-Shaoqing-Ren/"/>
-    <id>http://www.yuthon.com/2017/04/27/Notes-From-Faster-RCNN-to-Mask-RCNN-by-Shaoqing-Ren/</id>
+    <title>Notes: From Faster R-CNN to Mask R-CNN</title>
+    <link href="http://www.yuthon.com/2017/04/27/Notes-From-Faster-R-CNN-to-Mask-R-CNN/"/>
+    <id>http://www.yuthon.com/2017/04/27/Notes-From-Faster-R-CNN-to-Mask-R-CNN/</id>
     <published>2017-04-27T04:55:33.000Z</published>
-    <updated>2017-04-27T07:53:23.000Z</updated>
+    <updated>2017-04-27T11:15:16.000Z</updated>
     
-    <content type="html"><![CDATA[<p>That’s my notes for the lecture “From Faster-RCNN to Mask-RCNN” by Shaoqing Ren on April 26th, 2017.</p>
+    <content type="html"><![CDATA[<p>That’s my notes for the talk “From Faster-RCNN to Mask-RCNN” by Shaoqing Ren on April 26th, 2017.</p>
 <h2 id="Yesterday-–-background-and-pre-works-of-Mask-R-CNN"><a href="#Yesterday-–-background-and-pre-works-of-Mask-R-CNN" class="headerlink" title="Yesterday – background and pre-works of Mask R-CNN"></a>Yesterday – background and pre-works of Mask R-CNN</h2><h3 id="Key-functions"><a href="#Key-functions" class="headerlink" title="Key functions"></a>Key functions</h3><ul>
 <li><strong>Classification</strong> - What are in the image?</li>
 <li><strong>Localization</strong> - Where are they?</li>
@@ -128,13 +128,78 @@
 <li>We make minor modifications to the segmentation system when adapting it for keypoints.</li>
 <li>For each of the $K$ keypoints of an instance, the training target is a one-hot $m \times m$ binary mask where only a single pixel is labeled as foreground.</li>
 </ul>
-<h2 id="Today-details-about-Mask-RCNN-and-comparisons"><a href="#Today-details-about-Mask-RCNN-and-comparisons" class="headerlink" title="Today - details about Mask-RCNN and comparisons"></a>Today - details about Mask-RCNN and comparisons</h2><p>(to be continued)</p>
-<h2 id="Future-discussions"><a href="#Future-discussions" class="headerlink" title="Future - discussions"></a>Future - discussions</h2><p>(to be continued)</p>
+<h2 id="Today-details-about-Mask-RCNN-and-comparisons"><a href="#Today-details-about-Mask-RCNN-and-comparisons" class="headerlink" title="Today - details about Mask-RCNN and comparisons"></a>Today - details about Mask-RCNN and comparisons</h2><h3 id="RoI-Align"><a href="#RoI-Align" class="headerlink" title="RoI Align"></a>RoI Align</h3><p><img src="/images/roi_align_1.png" alt="RoI Align 1"></p>
+<ul>
+<li>RoI pooling contains two step of coordinates quantization: from original image into feature map (divide by stride) and from feature map into roi feature (use grid). <strong>Those quantizations cause a huge loss of location precision.</strong><ul>
+<li>e.g. we have two boxes whose coordinate are 1.1 and 2.2, and the stride of feature map is 16, then they’re the same in the feature map.</li>
+</ul>
+</li>
+<li><strong>RoI Align</strong> remove those two quantizations, and <strong>manipulate coordinates on continuous domain</strong>, which increase the location accuracy greatly.</li>
+</ul>
+<p><img src="/images/table_of_mask_rcnn.png" alt="Ablations for Mask R-CNN"></p>
+<ul>
+<li>RoI Align really improves the result.</li>
+<li>Moreover, note that with RoIAlign, using stride-32 C5 features (30.9 AP) is more accurate than using stride-16 C4 features (30.3 AP, Table 2c). <strong>RoIAlign largely resolves the long-standing challenge of using large-stride features for detection and segmentation.</strong><ul>
+<li>Without RoIAlign, AP in ResNet-50-C4 is better than that in C5 with RoIPooling, i.e., large stride is worse.Thus many precious work try to find methods to get better results in smaller stride. Now with RoIAlign, we can consider whether to use those tricks.</li>
+</ul>
+</li>
+</ul>
+<h3 id="Multinomial-vs-Independent-Masks"><a href="#Multinomial-vs-Independent-Masks" class="headerlink" title="Multinomial vs. Independent Masks"></a>Multinomial vs. Independent Masks</h3><ul>
+<li><strong>Replace softmax with sigmoid</strong>.<ul>
+<li>Mask R-CNN decouples mask and class prediction: as the existing box branch predicts the class label, we generate a mask for each class without competition among classes (by a per-pixel sigmoid and a binary loss).</li>
+<li>In Table 2b, we compare this to using a per-pixel softmax and a multinomial loss (as com- monly used in FCN). This alternative couples the tasks of mask and class prediction, and results in a severe loss in mask AP (5.5 points).</li>
+<li>The result suggests that <strong>once the instance has been classified as a whole (by the box branch), it is sufficient to predict a binary mask without concern for the categories</strong>, which makes the model easier to train.</li>
+</ul>
+</li>
+</ul>
+<h3 id="Multi-task-Cascade-vs-Joint-Learning"><a href="#Multi-task-Cascade-vs-Joint-Learning" class="headerlink" title="Multi-task Cascade vs. Joint Learning"></a>Multi-task Cascade vs. Joint Learning</h3><p><img src="/images/multitask_cascase_vs_joint_learning.png" alt="Multi-task Cascade vs. Joint Learning"></p>
+<ul>
+<li>Cascading and paralleling are adopted alternately.</li>
+<li>On training time, three tasks of Mask R-CNN are <strong>paralleling trained</strong>.</li>
+<li>But <strong>on testing time, we do classification and bbox regression first, and then use those results to get masks</strong>.<ul>
+<li>BBox regression may change the location of bbox, so we should wait it to be done.</li>
+<li>After bbox regression, we may adopt NMS or other methods to reduce the number of boxes. That decreases the workload of segmenting masks. </li>
+</ul>
+</li>
+<li><strong>Adding the mask branch</strong> to the box-only (i.e., Faster R-CNN) or keypoint-only versions consistently <strong>improves these tasks</strong>.<ul>
+<li>However, adding the keypoint branch reduces the box/mask AP slightly, suggest- ing that while keypoint detection benefits from multitask training, it does not in turn help the other tasks. </li>
+<li>Nevertheless, learning all three tasks jointly enables a unified system to efficiently predict all outputs simultaneously (Figure 6).</li>
+</ul>
+</li>
+</ul>
+<p><img src="/images/table_of_mask_rcnn_2.png" alt="Table for Mask R-CNN"></p>
+<h3 id="Comparison-on-Human-Keypoints"><a href="#Comparison-on-Human-Keypoints" class="headerlink" title="Comparison on Human Keypoints"></a>Comparison on Human Keypoints</h3><ul>
+<li>Table 4 shows that our result (62.7 APkp) is 0.9 pointshigher than the COCO 2016 keypoint detection winner [4]that uses a multi-stage processing pipeline (see caption ofTable 4). Our method is considerably simpler and faster.</li>
+<li>More importantly, we have a unified model that can si-multaneously predict boxes, segments, and keypoints whilerunning at 5 fps.</li>
+</ul>
+<h3 id="Results"><a href="#Results" class="headerlink" title="Results"></a>Results</h3><p><img src="/images/keypoint_detection_result.png" alt="Keypoint detection results"></p>
+<p><img src="/images/mask_rcnn_results.png" alt="More results of Mask R-CNN on COCO test images"></p>
+<h2 id="Future-discussion"><a href="#Future-discussion" class="headerlink" title="Future - discussion"></a>Future - discussion</h2><h3 id="Order-of-key-functions"><a href="#Order-of-key-functions" class="headerlink" title="Order of key functions?"></a>Order of key functions?</h3><ul>
+<li>Order of classification, localization, mask classification and landmarks localization?</li>
+<li>Top down or Buttom up?<ul>
+<li>Mask R-CNN uses Top-down method.</li>
+<li>the COCO 2016 keypoint detection winner CMU-Pose+++ uses Buttom-up method.<ul>
+<li>Detect key points first (don’t know which keypoint belongs to which person)’</li>
+<li>Then gradually stitch them together</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h3 id="Precious-amp-semantic-label"><a href="#Precious-amp-semantic-label" class="headerlink" title="Precious &amp; semantic label"></a>Precious &amp; semantic label</h3><p><img src="/images/precious_and_semantic_label.png" alt="Precious &amp; semantic label"></p>
+<p>box-level label -&gt; instance segmentation &amp; keypoints detection -&gt; instance seg with body parts</p>
+<h3 id="Semantic-3D-reconstruction"><a href="#Semantic-3D-reconstruction" class="headerlink" title="Semantic 3D reconstruction"></a>Semantic 3D reconstruction</h3><p><img src="/images/semantic_reconstruction.png" alt="Semantic 3D reconstruction"></p>
+<h3 id="Future"><a href="#Future" class="headerlink" title="Future"></a>Future</h3><ul>
+<li>the performance &amp; system improves rapidly</li>
+<li>join a team, keep going</li>
+<li>always try, thinking and discussion</li>
+<li>understand and structure the world</li>
+</ul>
 ]]></content>
     
     <summary type="html">
     
-      &lt;p&gt;That’s my notes for the lecture “From Faster-RCNN to Mask-RCNN” by Shaoqing Ren on April 26th, 2017.&lt;/p&gt;
+      &lt;p&gt;That’s my notes for the talk “From Faster-RCNN to Mask-RCNN” by Shaoqing Ren on April 26th, 2017.&lt;/p&gt;
 &lt;h2 id=&quot;Yesterday-–-background-and-pre-works-of-Mask-R-CNN&quot;&gt;&lt;a href=&quot;#Yesterday-–-background-and-pre-works-of-Mask-R-CNN&quot; class=&quot;headerlink&quot; title=&quot;Yesterday – background and pre-works of Mask R-CNN&quot;&gt;&lt;/a&gt;Yesterday – background and pre-works of Mask R-CNN&lt;/h2&gt;&lt;h3 id=&quot;Key-functions&quot;&gt;&lt;a href=&quot;#Key-functions&quot; class=&quot;headerlink&quot; title=&quot;Key functions&quot;&gt;&lt;/a&gt;Key functions&lt;/h3&gt;&lt;ul&gt;
 &lt;li&gt;&lt;strong&gt;Classification&lt;/strong&gt; - What are in the image?&lt;/li&gt;
 &lt;li&gt;&lt;strong&gt;Localization&lt;/strong&gt; - Where are they?&lt;/li&gt;
@@ -157,9 +222,9 @@
     
       <category term="Semantic Segmentation" scheme="http://www.yuthon.com/tags/Semantic-Segmentation/"/>
     
-      <category term="Faster-RCNN" scheme="http://www.yuthon.com/tags/Faster-RCNN/"/>
+      <category term="Faster R-CNN" scheme="http://www.yuthon.com/tags/Faster-R-CNN/"/>
     
-      <category term="Mask-RCNN" scheme="http://www.yuthon.com/tags/Mask-RCNN/"/>
+      <category term="Mask R-CNN" scheme="http://www.yuthon.com/tags/Mask-R-CNN/"/>
     
   </entry>
   
