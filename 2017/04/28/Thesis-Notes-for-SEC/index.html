@@ -106,7 +106,7 @@ github: https://github.com/kolesman/SEC">
 
 arxiv: https://arxiv.org/abs/1603.06098
 github: https://github.com/kolesman/SEC">
-<meta property="og:updated_time" content="2017-04-28T02:03:44.000Z">
+<meta property="og:updated_time" content="2017-04-28T03:28:37.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Thesis Notes for SEC">
 <meta name="twitter:description" content="This is my notes for Seed, Expand and Constrain: Three Principles for Weakly-Supervised Image Segmentation.
@@ -380,7 +380,7 @@ github: https://github.com/kolesman/SEC">
               
                 <span class="post-meta-item-text">Post modified</span>
               
-              <time title="Post modified" itemprop="dateModified" datetime="2017-04-28T10:03:44+08:00">
+              <time title="Post modified" itemprop="dateModified" datetime="2017-04-28T11:28:37+08:00">
                 2017-04-28
               </time>
             
@@ -458,6 +458,20 @@ github: https://github.com/kolesman/SEC">
 <li><strong>constrain-to-boundary loss</strong>：根据 image-level label 训练出来的网络很少能够捕捉到图像中物体的精确边缘，而且仅仅在测试的时候在网络后面套一层全连接的 CRF 也往往难以完全克服这个缺陷。这是因为按照传统方法训练出来的网络，即便是对于未标记的区域，也倾向于有比较高的置信度。于是本文提出了一种新的 loss， 能够使得网络在训练的时候就减轻不精确的边缘预测。这一 loss 主要是对预测得到的 mask 进行约束，使其能在一定程度上遵循低层次的图像信息，特别是物体的边缘这样的重要信息。</li>
 </ul>
 <p>文中将这一方法称为<strong>SEC</strong>，即 <strong>S</strong>eed，<strong>E</strong>xpand和<strong>C</strong>onstrain。之后将分块介绍其具体实现。</p>
+<h2 id="Related-Work"><a href="#Related-Work" class="headerlink" title="Related Work"></a>Related Work</h2><p>现有的 image-level 弱监督语义分割的方法主要可以分为三类：</p>
+<ul>
+<li><strong>基于图的方法（graph-based Model）</strong>：根据图像内或图像间的部分（segments）或是超像素（superpixels）的相似性来推断其标签。</li>
+<li><strong>多实例学习（multiple instance learning）</strong>：使用 per-image loss function 来进行训练，本质上是保持了图像中能够被用来生成 mask 的一种空间表示。<ul>
+<li>例如 MIL-FCN 以及 MIL-ILP，其区别主要在于 pooling 策略，也就是说它们如何将其内在的空间表示转换到 per-image labels。</li>
+</ul>
+</li>
+<li><strong>自学习（self-training）</strong>：模型本身使用基于 EM-like 的方法来生成 pixel-level 的标注，然后再来训练 fully-supervised 的分割网络。<ul>
+<li>例如 EM-Adapt 以及 CCNN，其区别在于如何将 per-image annotation 转换到 mask 并保持其一致性。</li>
+<li>SN_B 又增加了额外的步骤来创建于合并多个目标的proposal。</li>
+</ul>
+</li>
+</ul>
+<p>文中介绍的 SEC 包含了后两类方法，即其既使用了 per-image 的 loss，也使用了 per-pixel 的 loss 形式。</p>
 <p>（To be continued）</p>
 
       
@@ -704,7 +718,7 @@ github: https://github.com/kolesman/SEC">
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Introduction"><span class="nav-number">1.</span> <span class="nav-text">Introduction</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Introduction"><span class="nav-number">1.</span> <span class="nav-text">Introduction</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Related-Work"><span class="nav-number">2.</span> <span class="nav-text">Related Work</span></a></li></ol></div>
             
 
           </div>

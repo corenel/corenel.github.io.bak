@@ -5,7 +5,7 @@
     
   <url>
     <loc>http://www.yuthon.com/2017/04/28/Thesis-Notes-for-SEC/</loc>
-    <lastmod>2017-04-28T02:03:44.000Z</lastmod>
+    <lastmod>2017-04-28T03:28:37.000Z</lastmod>
     <data>
         <display>
         <title>Thesis Notes for SEC</title>
@@ -83,13 +83,13 @@
         <title>TensorFlow r1.0 on TX1 (now successful)</title>
         <pubTime>2017-03-10T10:12:18.000Z</pubTime>
         
-        <tag>NVIDIA</tag>
-         
-        <tag>Jetson TX1</tag>
-         
         <tag>Ubuntu</tag>
          
         <tag>Deep Learning</tag>
+         
+        <tag>NVIDIA</tag>
+         
+        <tag>Jetson TX1</tag>
          
         <tag>TensorFlow</tag>
          
@@ -113,13 +113,13 @@
         
         <tag>Tensorflow</tag>
          
-        <tag>NVIDIA</tag>
-         
-        <tag>Jetson TX1</tag>
-         
         <tag>Ubuntu</tag>
          
         <tag>Deep Learning</tag>
+         
+        <tag>NVIDIA</tag>
+         
+        <tag>Jetson TX1</tag>
          
          
            
@@ -141,13 +141,13 @@
         
         <tag>Tensorflow</tag>
          
-        <tag>NVIDIA</tag>
-         
-        <tag>Jetson TX1</tag>
-         
         <tag>Ubuntu</tag>
          
         <tag>Deep Learning</tag>
+         
+        <tag>NVIDIA</tag>
+         
+        <tag>Jetson TX1</tag>
          
          
            
@@ -530,13 +530,13 @@
         <title>CUDA and Tensorflow Installation on Ubuntu 16.04</title>
         <pubTime>2016-10-25T12:53:50.000Z</pubTime>
         
+        <tag>CUDA</tag>
+         
         <tag>Tensorflow</tag>
          
         <tag>Ubuntu</tag>
          
         <tag>Deep Learning</tag>
-         
-        <tag>CUDA</tag>
          
          
            
@@ -840,6 +840,28 @@
 
     
   <url>
+    <loc>http://www.yuthon.com/2016/04/12/CodeSchool-JavaScript-Best-Practices/</loc>
+    <lastmod>2016-05-16T11:51:43.000Z</lastmod>
+    <data>
+        <display>
+        <title>Notes for Code School - JavaScript Best Practices</title>
+        <pubTime>2016-04-12T10:19:54.000Z</pubTime>
+        
+        <tag>CodeSchool</tag>
+         
+        <tag>JavaScript</tag>
+         
+         
+           
+             
+              <breadCrumb title="Notes" url="http://www.yuthon.com/categories/Notes/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
     <loc>http://www.yuthon.com/2016/04/13/CodeSchool-Try-jQuery/</loc>
     <lastmod>2016-05-16T11:51:43.000Z</lastmod>
     <data>
@@ -868,28 +890,6 @@
         <display>
         <title>Notes for Code School - JavaScript Road Trip</title>
         <pubTime>2016-04-09T04:37:07.000Z</pubTime>
-        
-        <tag>CodeSchool</tag>
-         
-        <tag>JavaScript</tag>
-         
-         
-           
-             
-              <breadCrumb title="Notes" url="http://www.yuthon.com/categories/Notes/"/>
-          
-        </display>
-    </data>
-    </url>
-
-    
-  <url>
-    <loc>http://www.yuthon.com/2016/04/12/CodeSchool-JavaScript-Best-Practices/</loc>
-    <lastmod>2016-05-16T11:51:43.000Z</lastmod>
-    <data>
-        <display>
-        <title>Notes for Code School - JavaScript Best Practices</title>
-        <pubTime>2016-04-12T10:19:54.000Z</pubTime>
         
         <tag>CodeSchool</tag>
          
