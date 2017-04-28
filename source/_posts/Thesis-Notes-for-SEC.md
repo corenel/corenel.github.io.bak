@@ -25,4 +25,17 @@ This is my notes for **Seed, Expand and Constrain: Three Principles for Weakly-S
 
 文中将这一方法称为**SEC**，即 **S**eed，**E**xpand和**C**onstrain。之后将分块介绍其具体实现。
 
+## Related Work
+
+现有的 image-level 弱监督语义分割的方法主要可以分为三类：
+
+* **基于图的方法（graph-based Model）**：根据图像内或图像间的部分（segments）或是超像素（superpixels）的相似性来推断其标签。
+* **多实例学习（multiple instance learning）**：使用 per-image loss function 来进行训练，本质上是保持了图像中能够被用来生成 mask 的一种空间表示。
+  * 例如 MIL-FCN 以及 MIL-ILP，其区别主要在于 pooling 策略，也就是说它们如何将其内在的空间表示转换到 per-image labels。
+* **自学习（self-training）**：模型本身使用基于 EM-like 的方法来生成 pixel-level 的标注，然后再来训练 fully-supervised 的分割网络。
+  * 例如 EM-Adapt 以及 CCNN，其区别在于如何将 per-image annotation 转换到 mask 并保持其一致性。
+  * SN_B 又增加了额外的步骤来创建于合并多个目标的proposal。
+
+文中介绍的 SEC 包含了后两类方法，即其既使用了 per-image 的 loss，也使用了 per-pixel 的 loss 形式。
+
 （To be continued）
