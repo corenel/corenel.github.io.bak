@@ -108,7 +108,7 @@ arxiv: https://arxiv.org/abs/1603.06098
 github: https://github.com/kolesman/SEC">
 <meta property="og:image" content="http://www.yuthon.com/images/illustratio_of_SEC.png">
 <meta property="og:image" content="http://www.yuthon.com/images/illustration_of_weak_localization.png">
-<meta property="og:updated_time" content="2017-04-29T14:27:15.000Z">
+<meta property="og:updated_time" content="2017-05-01T06:22:19.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Thesis Notes for SEC">
 <meta name="twitter:description" content="This is my notes for Seed, Expand and Constrain: Three Principles for Weakly-Supervised Image Segmentation.
@@ -383,8 +383,8 @@ github: https://github.com/kolesman/SEC">
               
                 <span class="post-meta-item-text">Post modified</span>
               
-              <time title="Post modified" itemprop="dateModified" datetime="2017-04-29T22:27:15+08:00">
-                2017-04-29
+              <time title="Post modified" itemprop="dateModified" datetime="2017-05-01T14:22:19+08:00">
+                2017-05-01
               </time>
             
           </span>
@@ -576,9 +576,18 @@ github: https://github.com/kolesman/SEC">
 <p>当然，这种 weak location 或者说 location cues 并没有精确到能直接拿来当 full and accurate segmentation masks 的地步。不过还是可以用来指导弱监督分割网络的。文中提到的 <em>seeding loss</em> 主要是用来使得网络只匹配 weak localization 的 landmark，而无视图像中的其他部分。<em>seeding loss</em> $L_{seed}$ 的定义如下：<br>$$<br>L_{seed}(f(X), T, S_c) = - \frac{1}{\sum_{c\in T} |S_c|} \sum_{c\in T} \sum_{u\in S_c} log f_{u,c}(X)<br>$$<br>需要注意的是，文章中的 weak location 是预先计算好的，并非在训练过程中生成。前景用的是 <em>Learning deep features for discriminative localization</em>，背景用的是 <em>Deep inside convolutional networks: Visualising image classification models and saliency maps</em> 中的方法</p>
 <h3 id="Expansion-loss-with-global-weighted-rank-pooling"><a href="#Expansion-loss-with-global-weighted-rank-pooling" class="headerlink" title="Expansion loss with global weighted rank pooling"></a>Expansion loss with global weighted rank pooling</h3><p>要度量分割后的 mask 与原来的 image-level 标签的一致程度的话，可以把每个像素的分割的得分合起来形成一个总的分类得分，然后再套上个 loss function 就能用来训练多标签的图像分类了。一般来说，有两种比较常用的方法：</p>
 <ul>
-<li>一个是 GMP (global max-pooling)，对于一张图像$X$，每个类$c$的得分就是所有像素的该类得分的最大值$max_{u\in {1,\dots,n}} f_{u,c} (X)$。</li>
-<li>另外一个就是 GAP (global average-pooling) ，得分是所有像素该类得分的平均值$\frac{1}{n} \sum ^n _{u=1} f_{u,c} (X)$</li>
+<li>一个是 GMP (global max-pooling)，对于一张图像$X$，每个类$c$的得分就是所有像素的该类得分的最大值$max_{u\in {1,\dots,n}} f_{u,c} (X)$。GMP 仅仅鼓励单个位置的响应变得很高，因此常常低估了目标的大小。</li>
+<li>另外一个就是 GAP (global average-pooling) ，得分是所有像素该类得分的平均值$\frac{1}{n} \sum ^n _{u=1} f_{u,c} (X)$。而 GAP 鼓励所有的响应都变高，因此常常高估了目标的大小。</li>
 </ul>
+<p>文中提出了一个叫做 GWRP 的方法，具体来说是这样的：对于一个类$c\in C$，定义其预测得分的一个降序排列$I^c = {i_1, \dots, i_n}$，即$f_{i_1, c} (x) \ge f_{i_2, c} (x) \ge \dots \ge f_{i_n, c} (x)$ 。同时令$d_c$为类别$c$得分的衰减系数。那么 GWRP 的分类得分$G_c(f(X), d_c)$可定义为：<br>$$<br>G_c (f(X); d_c) = \frac{1}{Z(d_c)} \sum ^n _{j=1} (d_c)^{-1} f_{i_j, c} (X) \text{, where } Z(d_c) = \sum ^n _{j=1} (d_c) ^ {j-1}<br>$$<br>值得注意的是，当$d_c = 0$时，GWRP 即为 GMP （$0^0=1$），而当$d_c = 1$时，GWRP 为 GAP。也就是说， GWRP 是前述两种方法的一个泛化形式，通过$d_c$来控制。</p>
+<p>原则上来说，可以给每个类和每张图片设置不同的衰减系数$d_c$，不过这就需要知道每个类里面的物体通常的大小这样的先验知识，显然我们用的弱监督是没有这类信息的。因此，文中只设置了三个不同的$d_c$：</p>
+<ul>
+<li>$d_{+}$：在图像中出现了的类别的衰减系数</li>
+<li>$d_{-}$：在图像中未出现的类别的衰减系数</li>
+<li>$d_{bg}$：图像背景类别的衰减系数。</li>
+</ul>
+<p>这三个系数的具体取值见 Section 4。</p>
+<p>综上，<em>expansion loss</em> 的完整形式如下：<br>$$<br>\begin{align} L_{expand}(f(X), T) = &amp;-\frac{1}{|T|} \sum _{c\in T} log G_c (f(X);d_{+}) \\ &amp;-\frac{1}{|C’ \backslash T|} \sum _{c\in C’\backslash T} log G_c (f(X);d_{-}) \\ &amp;- logG_{c^{bg}} (f(X);d_{bg}) \end{align}<br>$$</p>
 <p>（To be continued）</p>
 
       
