@@ -91,14 +91,14 @@ L\_{seed}(f(X), T, S\_c) = - \frac{1}{\sum\_{c\in T} |S\_c|} \sum\_{c\in T} \sum
 $$
 需要注意的是，文章中的 weak location 是预先计算好的，并非在训练过程中生成。前景用的是 *Learning deep features for discriminative localization*，背景用的是 *Deep inside convolutional networks: Visualising image classification models and saliency maps* 中的方法
 
-### Expansion loss with global weighted rank pooling
+#### Expansion loss with global weighted rank pooling
 
 要度量分割后的 mask 与原来的 image-level 标签的一致程度的话，可以把每个像素的分割的得分合起来形成一个总的分类得分，然后再套上个 loss function 就能用来训练多标签的图像分类了。一般来说，有两种比较常用的方法：
 
-* 一个是 GMP (global max-pooling)，对于一张图像$X$，每个类$c$的得分就是所有像素的该类得分的最大值$max\_{u\in \{1,\dots,n\}} f\_{u,c} (X)$。GMP 仅仅鼓励单个位置的响应变得很高，因此常常低估了目标的大小。
+* 一个是 **GMP (global max-pooling)**，对于一张图像$X$，每个类$c$的得分就是所有像素的该类得分的最大值$max\_{u\in \{1,\dots,n\}} f\_{u,c} (X)$。GMP 仅仅鼓励单个位置的响应变得很高，因此常常低估了目标的大小。
 * 另外一个就是 GAP (global average-pooling) ，得分是所有像素该类得分的平均值$\frac{1}{n} \sum ^n \_{u=1} f\_{u,c} (X)$。而 GAP 鼓励所有的响应都变高，因此常常高估了目标的大小。
 
-文中提出了一个叫做 GWRP 的方法，具体来说是这样的：对于一个类$c\in C$，定义其预测得分的一个降序排列$I^c = \{i_1, \dots, i\_n\}$，即$f\_{i\_1, c} (x) \ge f\_{i\_2, c} (x) \ge \dots \ge f\_{i\_n, c} (x)$ 。同时令$d_c$为类别$c$得分的衰减系数。那么 GWRP 的分类得分$G\_c(f(X), d\_c)$可定义为：
+文中提出了一个叫做 **GWRP** 的方法，具体来说是这样的：对于一个类$c\in C$，定义其预测得分的一个降序排列$I^c = \{i_1, \dots, i\_n\}$，即$f\_{i\_1, c} (x) \ge f\_{i\_2, c} (x) \ge \dots \ge f\_{i\_n, c} (x)$ 。同时令$d_c$为类别$c$得分的衰减系数。那么 GWRP 的分类得分$G\_c(f(X), d\_c)$可定义为：
 $$
 G\_c (f(X); d\_c) = \frac{1}{Z(d\_c)} \sum ^n \_{j=1} (d\_c)^{-1} f\_{i\_j, c} (X) \text{, where } Z(d\_c) = \sum ^n \_{j=1} (d\_c) ^ {j-1}
 $$
@@ -110,12 +110,73 @@ $$
 * $d\_{-}$：在图像中未出现的类别的衰减系数
 * $d\_{bg}$：图像背景类别的衰减系数。
 
-这三个系数的具体取值见 Section 4。
+这三个系数的具体取值见第四节。
 
 综上，*expansion loss* 的完整形式如下：
 $$
 \begin{align} L\_{expand}(f(X), T) = &-\frac{1}{|T|} \sum \_{c\in T} log G\_c (f(X);d\_{+}) \\\\ &-\frac{1}{|C' \backslash T|} \sum \_{c\in C'\backslash T} log G\_c (f(X);d\_{-}) \\\\ &- logG\_{c^{bg}} (f(X);d\_{bg}) \end{align}
 $$
 
+#### Constrain-to-boundary loss
+
+使用 *constrain-to-boundary loss* 的思想是要惩罚网络，使其不要预测出和输入图像的色彩与空间信息不连续的分割。也就是说，要**鼓励网络学习到生成与目标边界相匹配的分割 mask**。
+
+具体来说，就是构建了一个全连接的 CRF 层，$Q(X,f(X))$，unary potentials 用的是分割网络预测出的对数概率得分，pairwise potentials 则是只取决于图像像素的定值参数形式。为了与分割 mask 的分辨率相匹配，还要对图像 $X$ 降采样。具体的方式见第四节。
+
+总而言之， *constrain-to-boundary loss* 被定义为网络输出与 CRF 输出之间的 KL 散度：
+$$
+L\_{constrain} (X, f(X)) = \frac{1}{n} \sum ^n \_{u=1} \sum \_{c\in C} Q\_{u,c} (X, f(X)) log \frac{Q\_{u,c}(X, f(X))}{f\_{u,c}(X)}
+$$
+这一构建形式的公式能够很好地达到预期目标。其能鼓励网络输出与 CRF 的输出接近，而 CRF 的输出又被确信是能够遵循图像边缘的。
+
+### Training
+
+既然要训练，那么反向传播肯定是要的，因此各个层都要是可微的。其它层都没什么问题，全连接 CRF 层的梯度计算方法见 *Random field model for integration of local informationand global information* 。
+
+## Experiments
+
+### Experiment setup
+
+#### Dataset and evaluation metric
+
+文中**用的数据集是 PASCAL VOC 2012**，含背景在内共21个类别。原版的 VOC 2012 的语义分割部分的图像很少，训练集、验证集、测试集分别是1464、1449、1456张图像。所以文章里还**用了 SegmentationAug 的扩充数据集**，里面总共有10582张弱标注的图像，这个数量基本上够了。
+
+至于与其他方法的对比是在验证集与测试集上进行比较。因为验证集的 ground truth 是向公众开放的，所以主要在验证集上研究一些 SEC 中不同组件之间的相互影响。而测试集必须在 PASCAL VOC 的官方服务器上才能得到结果的，因此就只是用来对比结果。
+
+**性能度量用的是最常见的 mIoU**。
+
+#### Segmentation network
+
+本文所选用的分割网络是基于 VGG-16 修改而来的 DeepLab-CRF-LargeFOV，输入为321x321，输出41x41的 mask。除了最后一层预测层初始化为均值为0方差为0.01的正态分布外，其余卷积层都按照 VGG 原本的方式初始化。
+
+#### Localization network
+
+定位网络也是根据 VGG-16 改的，训练的话是用 SegmentationAug 数据集训练一个多标签分类的问题。详细的方法和参数在文章的附录里面。值得注意的是，在训练的时候，为了提高效率，降低计算复杂度，localization cues是预先生成好的。
+
+#### Optimization
+
+用的是传统的 batched SGD来训练。总计8000次迭代，batch size为15，dropout rate为0.5，weight decay为0.0005。初始 learning rate 为0.001，每2000次迭代除以10。
+
+硬件设备用的是 TITAN-X，训练一次大约7到8小时。
+
+#### Decay parameters
+
+经验法则如下：
+
+* 对于那些没有出现在图像中的类别，我们希望预测的像素越少越好。所以说令$d\_{-}=0$，即使用GMP。
+* 对于那些出现在图像中的类别，建议前10%的得分能够占到总得分之和的50%。对于41x41的mask来说，差不多相当于$d\_{+}=0.996$。
+* 对于背景类别，建议千30%的得分占到总得分之和的50%，在文中是$d\_{bg}=0.999$
+
+#### Fully-connected CRF at training time
+
+Pairwise parameter 照搬 *Efficient inference in fully connected CRFs with gaus- sian edge potentials* 这篇文章的默认值，除了把所有的空间距离项乘了12（为了与预测出来的 mask 大小相匹配，文中把原始图像降采样了）。
+
+#### Inference at test time
+
+分割网络最终输出的图像大小比原始图像小，因此还需要经过上采样以及过一遍全连接 CRF 来 refine。
+
+![The schematic illustration of our approach at test time](/images/schematic_illustration_at_test_time.png)
+
+### Results
 
 （To be continued）
