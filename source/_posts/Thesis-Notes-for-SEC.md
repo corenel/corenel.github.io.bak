@@ -95,7 +95,27 @@ $$
 
 要度量分割后的 mask 与原来的 image-level 标签的一致程度的话，可以把每个像素的分割的得分合起来形成一个总的分类得分，然后再套上个 loss function 就能用来训练多标签的图像分类了。一般来说，有两种比较常用的方法：
 
-* 一个是 GMP (global max-pooling)，对于一张图像$X$，每个类$c$的得分就是所有像素的该类得分的最大值$max\_{u\in \{1,\dots,n\}} f\_{u,c} (X)$。
-* 另外一个就是 GAP (global average-pooling) ，得分是所有像素该类得分的平均值$\frac{1}{n} \sum ^n \_{u=1} f\_{u,c} (X)$
+* 一个是 GMP (global max-pooling)，对于一张图像$X$，每个类$c$的得分就是所有像素的该类得分的最大值$max\_{u\in \{1,\dots,n\}} f\_{u,c} (X)$。GMP 仅仅鼓励单个位置的响应变得很高，因此常常低估了目标的大小。
+* 另外一个就是 GAP (global average-pooling) ，得分是所有像素该类得分的平均值$\frac{1}{n} \sum ^n \_{u=1} f\_{u,c} (X)$。而 GAP 鼓励所有的响应都变高，因此常常高估了目标的大小。
+
+文中提出了一个叫做 GWRP 的方法，具体来说是这样的：对于一个类$c\in C$，定义其预测得分的一个降序排列$I^c = \{i_1, \dots, i\_n\}$，即$f\_{i\_1, c} (x) \ge f\_{i\_2, c} (x) \ge \dots \ge f\_{i\_n, c} (x)$ 。同时令$d_c$为类别$c$得分的衰减系数。那么 GWRP 的分类得分$G\_c(f(X), d\_c)$可定义为：
+$$
+G\_c (f(X); d\_c) = \frac{1}{Z(d\_c)} \sum ^n \_{j=1} (d\_c)^{-1} f\_{i\_j, c} (X) \text{, where } Z(d\_c) = \sum ^n \_{j=1} (d\_c) ^ {j-1}
+$$
+值得注意的是，当$d\_c = 0$时，GWRP 即为 GMP （$0^0=1$），而当$d\_c = 1$时，GWRP 为 GAP。也就是说， GWRP 是前述两种方法的一个泛化形式，通过$d\_c$来控制。
+
+原则上来说，可以给每个类和每张图片设置不同的衰减系数$d\_c$，不过这就需要知道每个类里面的物体通常的大小这样的先验知识，显然我们用的弱监督是没有这类信息的。因此，文中只设置了三个不同的$d\_c$：
+
+* $d\_{+}$：在图像中出现了的类别的衰减系数
+* $d\_{-}$：在图像中未出现的类别的衰减系数
+* $d\_{bg}$：图像背景类别的衰减系数。
+
+这三个系数的具体取值见 Section 4。
+
+综上，*expansion loss* 的完整形式如下：
+$$
+\begin{align} L\_{expand}(f(X), T) = &-\frac{1}{|T|} \sum \_{c\in T} log G\_c (f(X);d\_{+}) \\\\ &-\frac{1}{|C' \backslash T|} \sum \_{c\in C'\backslash T} log G\_c (f(X);d\_{-}) \\\\ &- logG\_{c^{bg}} (f(X);d\_{bg}) \end{align}
+$$
+
 
 （To be continued）
