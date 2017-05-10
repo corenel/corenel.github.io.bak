@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://www.yuthon.com/"/>
-  <updated>2017-05-01T11:14:15.000Z</updated>
+  <updated>2017-05-10T14:51:01.000Z</updated>
   <id>http://www.yuthon.com/</id>
   
   <author>
@@ -16,11 +16,48 @@
   <generator uri="http://hexo.io/">Hexo</generator>
   
   <entry>
+    <title>Thesis Notes for Amortized Inference and Learning in Latent CRF</title>
+    <link href="http://www.yuthon.com/2017/05/10/Thesis-Notes-for-Amortized-Inference-and-Learning-in-Latent-CRF/"/>
+    <id>http://www.yuthon.com/2017/05/10/Thesis-Notes-for-Amortized-Inference-and-Learning-in-Latent-CRF/</id>
+    <published>2017-05-10T14:05:31.000Z</published>
+    <updated>2017-05-10T14:51:01.000Z</updated>
+    
+    <content type="html"><![CDATA[<p>This is my notes for <strong>Amortized Inference and Learning in Latent Conditional Random Fields for Weakly-Supervised Semantic Image Segmentation</strong>.</p>
+<ul>
+<li>arxiv: <a href="https://arxiv.org/abs/1705.01262" target="_blank" rel="external">https://arxiv.org/abs/1705.01262</a></li>
+</ul>
+<h2 id="Abstract"><a href="#Abstract" class="headerlink" title="Abstract"></a>Abstract</h2><p>CRF在图像分割任务中经常被用来作为post-processing步骤，以优化结果。一般的做法就是用分割网络输出的pixel-level的各类的概率分布作为CRF的unary potential，然后用<em>Efficient inference in fully connected CRFs with Gaussian edge potentials</em>里面的方法来设置pairwise potential。</p>
+<p>强监督的语义分割用这个方法当然很好，但是弱监督的话，因为没有pixel-level的标签，要把image-level的标签有选择地广播到所有像素还是一个很艰苦的工作。通常用的方法是基于localization cues的，比如说用saliency maps、objectness priors或者bounding boxes等等，就像之前介绍的<a href="http://www.yuthon.com/2017/04/28/Thesis-Notes-for-SEC/">SEC那篇文章</a>一样。</p>
+<p>不过这篇文章里面用的不是localization cues的那一套，而是把pixel-level的标签作为CRF的latent variables（隐变量），然后把图像本身以及image-level的标签作为observed variables（观测变量）。然后想通过训练inference network以估计在给定observed variables的情况下latent variables的后验分布（posterior distribution）这样的方法，把latent variables的inference cost分摊到整个数据集中。</p>
+<blockquote>
+<p>讲真上边这一句话我也读着不是很懂，慢慢看之后的说明就能理解了。</p>
+</blockquote>
+<p>这种方法的好处在于，inference network（也就是分割网络）的训练可以是end-to-end的，并不需要另外去生成localization cues。此外，用这种方法训练出来的模型也不需要post-processing步骤。</p>
+<p>这种方法的预测精度与使用了saliency masks的方法（比如说SEC）相近，也算是一种新的研究方向。</p>
+<h2 id="Introduction"><a href="#Introduction" class="headerlink" title="Introduction"></a>Introduction</h2><p>(To be continued…)</p>
+]]></content>
+    
+    <summary type="html">
+    
+      &lt;p&gt;This is my notes for &lt;strong&gt;Amortized Inference and Learning in Latent Conditional Random Fields for Weakly-Supervised Semantic Image Se
+    
+    </summary>
+    
+      <category term="Thesis Notes" scheme="http://www.yuthon.com/categories/Thesis-Notes/"/>
+    
+    
+      <category term="Deep Learning" scheme="http://www.yuthon.com/tags/Deep-Learning/"/>
+    
+      <category term="Semantic Segmentation" scheme="http://www.yuthon.com/tags/Semantic-Segmentation/"/>
+    
+  </entry>
+  
+  <entry>
     <title>Thesis Notes for SEC</title>
     <link href="http://www.yuthon.com/2017/04/28/Thesis-Notes-for-SEC/"/>
     <id>http://www.yuthon.com/2017/04/28/Thesis-Notes-for-SEC/</id>
     <published>2017-04-28T01:13:33.000Z</published>
-    <updated>2017-05-01T11:14:15.000Z</updated>
+    <updated>2017-05-10T14:06:08.000Z</updated>
     
     <content type="html"><![CDATA[<p>This is my notes for <strong>Seed, Expand and Constrain: Three Principles for Weakly-Supervised Image Segmentation</strong>.</p>
 <ul>
@@ -177,7 +214,7 @@
 <ul>
 <li>对于那些没有出现在图像中的类别，我们希望预测的像素越少越好。所以说令$d_{-}=0$，即使用GMP。</li>
 <li>对于那些出现在图像中的类别，建议前10%的得分能够占到总得分之和的50%。对于41x41的mask来说，差不多相当于$d_{+}=0.996$。</li>
-<li>对于背景类别，建议千30%的得分占到总得分之和的50%，在文中是$d_{bg}=0.999$</li>
+<li>对于背景类别，建议前30%的得分占到总得分之和的50%，在文中是$d_{bg}=0.999$</li>
 </ul>
 <h4 id="Fully-connected-CRF-at-training-time"><a href="#Fully-connected-CRF-at-training-time" class="headerlink" title="Fully-connected CRF at training time"></a>Fully-connected CRF at training time</h4><p>Pairwise parameter 照搬 <em>Efficient inference in fully connected CRFs with gaus- sian edge potentials</em> 这篇文章的默认值，除了把所有的空间距离项乘了12（为了与预测出来的 mask 大小相匹配，文中把原始图像降采样了）。</p>
 <h4 id="Inference-at-test-time"><a href="#Inference-at-test-time" class="headerlink" title="Inference at test time"></a>Inference at test time</h4><p>分割网络最终输出的图像大小比原始图像小，因此还需要经过上采样以及过一遍全连接 CRF 来 refine。</p>
@@ -195,7 +232,7 @@
     
     </summary>
     
-      <category term="Notes" scheme="http://www.yuthon.com/categories/Notes/"/>
+      <category term="Thesis Notes" scheme="http://www.yuthon.com/categories/Thesis-Notes/"/>
     
     
       <category term="Deep Learning" scheme="http://www.yuthon.com/tags/Deep-Learning/"/>
@@ -2207,128 +2244,6 @@
       <category term="Deep Learning" scheme="http://www.yuthon.com/tags/Deep-Learning/"/>
     
       <category term="CUDA" scheme="http://www.yuthon.com/tags/CUDA/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>Notes for CS231n Convolutional Neural Network</title>
-    <link href="http://www.yuthon.com/2016/10/19/Notes-for-CS231n-CNN/"/>
-    <id>http://www.yuthon.com/2016/10/19/Notes-for-CS231n-CNN/</id>
-    <published>2016-10-19T03:06:30.000Z</published>
-    <updated>2016-10-20T12:23:24.000Z</updated>
-    
-    <content type="html"><![CDATA[<blockquote>
-<p>本文主要对于 CS231n 课程自带的 Lecture Notes 的一些补充与总结. 建议先看原版的 Lecture Notes:</p>
-<ul>
-<li><a href="http://cs231n.github.io/convolutional-networks/" target="_blank" rel="external">Convolutional Neural Networks: Architectures, Convolution / Pooling Layers</a></li>
-</ul>
-<p>或者可以看知乎专栏中的中文翻译:</p>
-<ul>
-<li><a href="https://zhuanlan.zhihu.com/p/22038289?refer=intelligentunit" target="_blank" rel="external">CS231n课程笔记翻译：卷积神经网络笔记 </a></li>
-</ul>
-<p>另外, 本文主要根据讲课的 Slides 上的顺序来, 与 Lecture Notes 的顺序略有不同.</p>
-</blockquote>
-<a id="more"></a>
-<h1 id="Lecture-7"><a href="#Lecture-7" class="headerlink" title="Lecture 7"></a>Lecture 7</h1><h2 id="Introduction"><a href="#Introduction" class="headerlink" title="Introduction"></a>Introduction</h2><p>CNN 主要有以下的层(layer):</p>
-<ul>
-<li>卷积层 (Conv Layer): 通过不同的 filter 进行卷积操作, 来增加 depth</li>
-<li>ReLU 层</li>
-<li>汇聚层 / 池化层 (Pooling Layer): 进行 down-sampling, 减小空间尺寸</li>
-<li>全连接层 (Full-connected Layer): 放在最后进行 classification, 相当于普通的 NN</li>
-</ul>
-<p><img src="/images/CNN_structure.png" alt="CNN_structure"></p>
-<blockquote>
-<p>CNN 相对于 NN 来说, 其结构基于输入数据是图像这么一个假设. 基于该假设, 我们就向结构中添加了一些特有的性质. 这些特有属性使得前向传播函数实现起来更高效, 并且大幅度降低了网络中参数的数量. 这也是 CNN 更适用于图像方面的原因.</p>
-</blockquote>
-<h3 id="Conv-layer"><a href="#Conv-layer" class="headerlink" title="Conv layer"></a>Conv layer</h3><p>主要需要了解以下几个概念:</p>
-<ul>
-<li><p><strong>滤波器(Filter)</strong>: 又叫卷积核 (Kernel), 尺寸较小 (例如5x5x3). 通过在输入数据上滑动来生成新的 Activation Map / Feature Map.</p>
-<p><img src="/images/conv_layer_filter.png" alt="conv_layer_filter"></p>
-<ul>
-<li>滤波器的深度须与输入数据的深度一致. 也就是说输入 32x32x3 的图像, 其对应的滤波器的尺寸必须是 FxFx3.</li>
-<li>下一层的深度取决于这层用了几个滤波器</li>
-<li>滤波器的尺寸又称感受野 (Receptive Field)</li>
-</ul>
-</li>
-<li><p><strong>步长 (Stride)</strong>: 即指滤波器每次移动几个像素. 通常步长为奇数.</p>
-<p><img src="/images/CNN_stride.png" alt="CNN_stride"></p>
-</li>
-<li><p><strong>零填充 (Zero-padding)</strong>: 用来保证滤波器完整平滑地划过输入数据, 不出现非整数的问题. 同时还能够用来保持输入与输出数据具有相同的尺寸, 即令$P=(F-1)/2$.</p>
-<p><img src="/images/CNN_padding.png" alt="CNN_padding"></p>
-</li>
-</ul>
-<p>如是这般, 宽度与高度不断缩小, 深度不断增加, 信息提取得更为抽象.</p>
-<p><img src="/images/CNN_layers.png" alt="CNN_layers"></p>
-<p><strong>总结</strong></p>
-<ul>
-<li>输入数据尺寸$W_1 \times H_1 \times D_1$</li>
-<li>需要的超参数<ul>
-<li>滤波器数量$K$, 通常是2的几次幂, 例如32, 64, 128, 512等</li>
-<li>滤波器尺寸$F$, 通常为1, 3, 5等</li>
-<li>步长$S$, 通常为1或2</li>
-<li>零填充数量$P$</li>
-</ul>
-</li>
-<li>输出数据尺寸$W_2 \times H_2 \times D_2$<ul>
-<li>$W_2 = (W_1 - F + 2P) / S + 1$</li>
-<li>$H_2 = (H_1 - F + 2P) / S + 1$ (通常$W_1=H_1,W_2=H_2$)</li>
-<li>$D_2 = K$</li>
-</ul>
-</li>
-<li>就参数共享来说, 每个滤波器有$F\cdot F\cdot D_1$个权重参数, 总共有$(F\cdot F\cdot D_1)\cdot K$个权重参数 (weights) 和$K$个偏差参数 (biases).</li>
-<li>在输出数据体中, 第$d$层 (尺寸$W_2\times H_2$) 深度切片(depth slice)是由第$d$个滤波器在输入数据体上以$S$为补偿进行有效的卷积, 并且偏移了第$d$个偏差之后得到的.</li>
-<li>有时候会有$1\times 1\times D$的滤波器, 其也是有效的. 因为它有深度, 实际上进行的是一个$D$维的点积.</li>
-</ul>
-<h2 id="Pooling-layer"><a href="#Pooling-layer" class="headerlink" title="Pooling layer"></a>Pooling layer</h2><ul>
-<li>makes the representations smaller and more manageable </li>
-<li><p>operates over each activation map independently</p>
-<p><img src="/images/pooling_layer.png" alt="pooling_layer"></p>
-</li>
-</ul>
-<p><strong>总结</strong></p>
-<ul>
-<li>输入数据尺寸$W_1 \times H_1 \times D_1$</li>
-<li>需要的超参数<ul>
-<li>滤波器尺寸$F$, 通常为2或3</li>
-<li>步长$S$, 通常为2</li>
-</ul>
-</li>
-<li>输出数据尺寸$W_2 \times H_2 \times D_2$<ul>
-<li>$W_2 = (W_1 - F) / S + 1$</li>
-<li>$H_2 = (H_1 - F) / S + 1$ (通常$W_1=H_1,W_2=H_2$)</li>
-<li>$D_2 = D_1$</li>
-</ul>
-</li>
-<li>由于是固定的计算, 因此没有引入参数.</li>
-<li>通常不在汇聚层中使用零填充</li>
-</ul>
-<h2 id="Case-study"><a href="#Case-study" class="headerlink" title="Case study"></a>Case study</h2><p>To be continued…</p>
-]]></content>
-    
-    <summary type="html">
-    
-      &lt;blockquote&gt;
-&lt;p&gt;本文主要对于 CS231n 课程自带的 Lecture Notes 的一些补充与总结. 建议先看原版的 Lecture Notes:&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;&lt;a href=&quot;http://cs231n.github.io/convolutional-networks/&quot;&gt;Convolutional Neural Networks: Architectures, Convolution / Pooling Layers&lt;/a&gt;&lt;/li&gt;
-&lt;/ul&gt;
-&lt;p&gt;或者可以看知乎专栏中的中文翻译:&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;&lt;a href=&quot;https://zhuanlan.zhihu.com/p/22038289?refer=intelligentunit&quot;&gt;CS231n课程笔记翻译：卷积神经网络笔记 &lt;/a&gt;&lt;/li&gt;
-&lt;/ul&gt;
-&lt;p&gt;另外, 本文主要根据讲课的 Slides 上的顺序来, 与 Lecture Notes 的顺序略有不同.&lt;/p&gt;
-&lt;/blockquote&gt;
-    
-    </summary>
-    
-      <category term="Notes" scheme="http://www.yuthon.com/categories/Notes/"/>
-    
-    
-      <category term="Deep Learning" scheme="http://www.yuthon.com/tags/Deep-Learning/"/>
-    
-      <category term="CS231n" scheme="http://www.yuthon.com/tags/CS231n/"/>
-    
-      <category term="Convolutional Neural Network" scheme="http://www.yuthon.com/tags/Convolutional-Neural-Network/"/>
     
   </entry>
   

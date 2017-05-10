@@ -4,8 +4,30 @@
 
     
   <url>
+    <loc>http://www.yuthon.com/2017/05/10/Thesis-Notes-for-Amortized-Inference-and-Learning-in-Latent-CRF/</loc>
+    <lastmod>2017-05-10T14:51:01.000Z</lastmod>
+    <data>
+        <display>
+        <title>Thesis Notes for Amortized Inference and Learning in Latent CRF</title>
+        <pubTime>2017-05-10T14:05:31.000Z</pubTime>
+        
+        <tag>Deep Learning</tag>
+         
+        <tag>Semantic Segmentation</tag>
+         
+         
+           
+             
+              <breadCrumb title="Thesis Notes" url="http://www.yuthon.com/categories/Thesis-Notes/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
     <loc>http://www.yuthon.com/2017/04/28/Thesis-Notes-for-SEC/</loc>
-    <lastmod>2017-05-01T11:14:15.000Z</lastmod>
+    <lastmod>2017-05-10T14:06:08.000Z</lastmod>
     <data>
         <display>
         <title>Thesis Notes for SEC</title>
@@ -18,7 +40,7 @@
          
            
              
-              <breadCrumb title="Notes" url="http://www.yuthon.com/categories/Notes/"/>
+              <breadCrumb title="Thesis Notes" url="http://www.yuthon.com/categories/Thesis-Notes/"/>
           
         </display>
     </data>

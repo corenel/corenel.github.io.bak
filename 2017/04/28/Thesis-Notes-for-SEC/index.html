@@ -109,7 +109,7 @@ github: https://github.com/kolesman/SEC">
 <meta property="og:image" content="http://www.yuthon.com/images/illustratio_of_SEC.png">
 <meta property="og:image" content="http://www.yuthon.com/images/illustration_of_weak_localization.png">
 <meta property="og:image" content="http://www.yuthon.com/images/schematic_illustration_at_test_time.png">
-<meta property="og:updated_time" content="2017-05-01T11:14:15.000Z">
+<meta property="og:updated_time" content="2017-05-10T14:06:08.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Thesis Notes for SEC">
 <meta name="twitter:description" content="This is my notes for Seed, Expand and Constrain: Three Principles for Weakly-Supervised Image Segmentation.
@@ -384,8 +384,8 @@ github: https://github.com/kolesman/SEC">
               
                 <span class="post-meta-item-text">Post modified</span>
               
-              <time title="Post modified" itemprop="dateModified" datetime="2017-05-01T19:14:15+08:00">
-                2017-05-01
+              <time title="Post modified" itemprop="dateModified" datetime="2017-05-10T22:06:08+08:00">
+                2017-05-10
               </time>
             
           </span>
@@ -404,8 +404,8 @@ github: https://github.com/kolesman/SEC">
               
               
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Notes/" itemprop="url" rel="index">
-                    <span itemprop="name">Notes</span>
+                  <a href="/categories/Thesis-Notes/" itemprop="url" rel="index">
+                    <span itemprop="name">Thesis Notes</span>
                   </a>
                 </span>
 
@@ -604,7 +604,7 @@ github: https://github.com/kolesman/SEC">
 <ul>
 <li>对于那些没有出现在图像中的类别，我们希望预测的像素越少越好。所以说令$d_{-}=0$，即使用GMP。</li>
 <li>对于那些出现在图像中的类别，建议前10%的得分能够占到总得分之和的50%。对于41x41的mask来说，差不多相当于$d_{+}=0.996$。</li>
-<li>对于背景类别，建议千30%的得分占到总得分之和的50%，在文中是$d_{bg}=0.999$</li>
+<li>对于背景类别，建议前30%的得分占到总得分之和的50%，在文中是$d_{bg}=0.999$</li>
 </ul>
 <h4 id="Fully-connected-CRF-at-training-time"><a href="#Fully-connected-CRF-at-training-time" class="headerlink" title="Fully-connected CRF at training time"></a>Fully-connected CRF at training time</h4><p>Pairwise parameter 照搬 <em>Efficient inference in fully connected CRFs with gaus- sian edge potentials</em> 这篇文章的默认值，除了把所有的空间距离项乘了12（为了与预测出来的 mask 大小相匹配，文中把原始图像降采样了）。</p>
 <h4 id="Inference-at-test-time"><a href="#Inference-at-test-time" class="headerlink" title="Inference at test time"></a>Inference at test time</h4><p>分割网络最终输出的图像大小比原始图像小，因此还需要经过上采样以及过一遍全连接 CRF 来 refine。</p>
@@ -678,6 +678,10 @@ github: https://github.com/kolesman/SEC">
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2017/05/10/Thesis-Notes-for-Amortized-Inference-and-Learning-in-Latent-CRF/" rel="prev" title="Thesis Notes for Amortized Inference and Learning in Latent CRF">
+                Thesis Notes for Amortized Inference and Learning in Latent CRF <i class="fa fa-chevron-right"></i>
+              </a>
             
           </div>
         </div>
@@ -756,7 +760,7 @@ github: https://github.com/kolesman/SEC">
           
             <div class="site-state-item site-state-posts">
               <a href="/archives">
-                <span class="site-state-item-count">39</span>
+                <span class="site-state-item-count">40</span>
                 <span class="site-state-item-name">posts</span>
               </a>
             </div>
