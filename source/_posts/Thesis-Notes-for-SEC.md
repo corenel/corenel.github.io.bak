@@ -2,7 +2,7 @@
 title: Thesis Notes for SEC
 date: 2017-04-28 09:13:33
 categories:
-- Notes
+- Thesis Notes
 tags:
   - Semantic Segmentation
   - Deep Learning
@@ -165,7 +165,7 @@ $$
 
 * 对于那些没有出现在图像中的类别，我们希望预测的像素越少越好。所以说令$d\_{-}=0$，即使用GMP。
 * 对于那些出现在图像中的类别，建议前10%的得分能够占到总得分之和的50%。对于41x41的mask来说，差不多相当于$d\_{+}=0.996$。
-* 对于背景类别，建议千30%的得分占到总得分之和的50%，在文中是$d\_{bg}=0.999$
+* 对于背景类别，建议前30%的得分占到总得分之和的50%，在文中是$d\_{bg}=0.999$
 
 #### Fully-connected CRF at training time
 
