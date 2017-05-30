@@ -55,4 +55,53 @@ $$
 
 ### Variational Lower Bound
 
-(To be continued...)
+用了一个变分分布$q(z|x,y)$，通过以下变换得到了$\log p(y|x)$的一个下界：
+$$
+\begin{align}
+\log p(y|x) & = \log \sum \_z p(z|x) p(y|z,x) \\\\
+& = \log \sum \_z q(z|y,x) \frac{p(y|z,x)p(z|x)}{q(z|y,x)} \\\\
+& \ge \sum \_z q(z|y,x) \log \frac{p(y|z,x)p(z|x)}{q(z|y,x)} \\\\
+& = -KL(q(z|y,x)||p(z|x)) + E\_{q(z|x,y)} \log p(y|z,x)
+\end{align}
+$$
+下界的第一项使得变分分布$q(z|y,x)$趋向于与图像$x$的先验分布$p(z|x)$接近，也就是说，使得$q所产生的分割遮罩在一定程度上遵循图像中的位置信息与色彩信息。也就是保持了局部的一致性。下界的第二项则能够使得变分分布所产生的遮罩能够提升图像分类的得分，即确保了pixel-level的标签与image-level标签一致。
+
+假设变分分布$q(z|y,x)$可以被完全地因式分解，其具体定义如下：
+$$
+q(z|x,y)= \prod \_{j=1}^m q(z\_j | y,x) \\
+$$
+
+$$
+q(z\_{jk}=1|x,y) = \frac{\exp (g\_{jk}(x))}{\sum ^K\_{k'=1} \exp (g\_{jk'}(x))} \equiv \varphi_{jk} (x)
+$$
+
+其中$g$是全卷积网络或者说是分割网络，$\{g\_{jk}(x), 1 \le j \le m, 1\le k \le K \}$则是$g$对$x$的输出。
+
+![AI-LCRF_inference_network](/images/AI-LCRF_inference_network.png)
+
+### Gradient of the Lower Bound
+
+下界的第一项其实是基于$g$的输出的KL散度损失，该损失的梯度可以精确计算出来的。第二项的梯度可以使用MCMC采样来估计。
+
+![AI-LCRF_total_network](/images/AI-LCRF_total_network.png)
+
+具体的推导过程可以看原论文的2.2节。
+
+## Experiments
+
+在PASCAL VOC 2012上的表现很不错，能够与SEC等方法相媲美了。
+
+![AI-LCRF_results](/images/AI-LCRF_results.png)
+
+![AI-LCRF_quantitative_results](/images/AI-LCRF_quantitative_results.png)
+
+## Conclusion
+
+* 这是语义分割领域里面，第一篇在CRF中使用CNN来做inference network的文章，效果还很不错；
+* 该方法相比所有的不用saliency maps的方法来说，结果都要好；
+* 该方法的预测精度和用了saliency maps的方法相差无几
+* 该方法表明传统的概率模型与CNN结合之后能得到很好的效果。
+
+## Future
+
+个人感觉这篇文章所用的方法还是很有借鉴意义的，不用很多tricks，不靠saliency maps就能达到这么高的mIoU。可以改进的地方我想应该有两个，一个是$p(z|x,y)$的形式可以修改，比如说参考ScribbleSup的，把纹理、色彩、空间之类的低阶信息都考虑上。另外，$p(y\_k |x,z)$的计算方式也可以修改。总而言之，这还是一片比较粗糙的文章，还有很多需要精雕细琢的地方。
