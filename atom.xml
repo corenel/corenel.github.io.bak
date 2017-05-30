@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://www.yuthon.com/"/>
-  <updated>2017-05-30T08:32:21.000Z</updated>
+  <updated>2017-05-30T14:05:10.000Z</updated>
   <id>http://www.yuthon.com/</id>
   
   <author>
@@ -20,7 +20,7 @@
     <link href="http://www.yuthon.com/2017/05/10/Thesis-Notes-for-Amortized-Inference-and-Learning-in-Latent-CRF/"/>
     <id>http://www.yuthon.com/2017/05/10/Thesis-Notes-for-Amortized-Inference-and-Learning-in-Latent-CRF/</id>
     <published>2017-05-10T14:05:31.000Z</published>
-    <updated>2017-05-30T08:32:21.000Z</updated>
+    <updated>2017-05-30T14:05:10.000Z</updated>
     
     <content type="html"><![CDATA[<p>This is my notes for <strong>Amortized Inference and Learning in Latent Conditional Random Fields for Weakly-Supervised Semantic Image Segmentation</strong>.</p>
 <ul>
@@ -66,7 +66,24 @@
 <p><img src="/images/the_latent_CRF.png" alt="the_latent_CRF"></p>
 <p>当给定图像$x$的时候，image-level的标签$y$的条件分布如下所示，目标则是能最大化$\sum^n_{i=1} log p(y^{(i)}|x^{(i)})$。<br>$$<br>p(y|x) = \sum_z p(z|x)p(y|z,x)<br>$$<br>定义$p(z|x)$为CRF的pairwise项，同时也是<strong>先验概率（Prior）</strong>：<br>$$<br>p(z|x) \propto exp \left(-\sum_{j&lt;j’} k(t_j, t_{j’})\mu (z_j, z_{j’}))\right)<br>$$<br>其中$t_j$为位置$j$处像素的feature vector，$\mu (z_j, z_{j’})$为两个标签之间的compatibility。$p(z|x)$的意义在于<strong>使得相邻且色彩相似的像素具有同一标签。</strong>需要注意的是$p(z|x)$并不用训练，相反，需要学习的是作为CRF的unary potential的$p(y|z,x)$。</p>
 <p>不过由于从$p(z|x,y)$进行采样在计算上十分困难，因此不能用EM法来最大化$\log p(y|z,x)$，具体分析可见原论文。因此需要用其他方法来达成目的。该文章使用的方法是最大化$p(y|x)$的下界，来使得$p(y|x)$最大。</p>
-<h3 id="Variational-Lower-Bound"><a href="#Variational-Lower-Bound" class="headerlink" title="Variational Lower Bound"></a>Variational Lower Bound</h3><p>(To be continued…)</p>
+<h3 id="Variational-Lower-Bound"><a href="#Variational-Lower-Bound" class="headerlink" title="Variational Lower Bound"></a>Variational Lower Bound</h3><p>用了一个变分分布$q(z|x,y)$，通过以下变换得到了$\log p(y|x)$的一个下界：<br>$$<br>\begin{align}<br>\log p(y|x) &amp; = \log \sum _z p(z|x) p(y|z,x) \\<br>&amp; = \log \sum _z q(z|y,x) \frac{p(y|z,x)p(z|x)}{q(z|y,x)} \\<br>&amp; \ge \sum _z q(z|y,x) \log \frac{p(y|z,x)p(z|x)}{q(z|y,x)} \\<br>&amp; = -KL(q(z|y,x)||p(z|x)) + E_{q(z|x,y)} \log p(y|z,x)<br>\end{align}<br>$$<br>下界的第一项使得变分分布$q(z|y,x)$趋向于与图像$x$的先验分布$p(z|x)$接近，也就是说，使得$q所产生的分割遮罩在一定程度上遵循图像中的位置信息与色彩信息。也就是保持了局部的一致性。下界的第二项则能够使得变分分布所产生的遮罩能够提升图像分类的得分，即确保了pixel-level的标签与image-level标签一致。</p>
+<p>假设变分分布$q(z|y,x)$可以被完全地因式分解，其具体定义如下：<br>$$<br>q(z|x,y)= \prod _{j=1}^m q(z_j | y,x) \<br>$$</p>
+<p>$$<br>q(z_{jk}=1|x,y) = \frac{\exp (g_{jk}(x))}{\sum ^K_{k’=1} \exp (g_{jk’}(x))} \equiv \varphi_{jk} (x)<br>$$</p>
+<p>其中$g$是全卷积网络或者说是分割网络，${g_{jk}(x), 1 \le j \le m, 1\le k \le K }$则是$g$对$x$的输出。</p>
+<p><img src="/images/AI-LCRF_inference_network.png" alt="AI-LCRF_inference_network"></p>
+<h3 id="Gradient-of-the-Lower-Bound"><a href="#Gradient-of-the-Lower-Bound" class="headerlink" title="Gradient of the Lower Bound"></a>Gradient of the Lower Bound</h3><p>下界的第一项其实是基于$g$的输出的KL散度损失，该损失的梯度可以精确计算出来的。第二项的梯度可以使用MCMC采样来估计。</p>
+<p><img src="/images/AI-LCRF_total_network.png" alt="AI-LCRF_total_network"></p>
+<p>具体的推导过程可以看原论文的2.2节。</p>
+<h2 id="Experiments"><a href="#Experiments" class="headerlink" title="Experiments"></a>Experiments</h2><p>在PASCAL VOC 2012上的表现很不错，能够与SEC等方法相媲美了。</p>
+<p><img src="/images/AI-LCRF_results.png" alt="AI-LCRF_results"></p>
+<p><img src="/images/AI-LCRF_quantitative_results.png" alt="AI-LCRF_quantitative_results"></p>
+<h2 id="Conclusion"><a href="#Conclusion" class="headerlink" title="Conclusion"></a>Conclusion</h2><ul>
+<li>这是语义分割领域里面，第一篇在CRF中使用CNN来做inference network的文章，效果还很不错；</li>
+<li>该方法相比所有的不用saliency maps的方法来说，结果都要好；</li>
+<li>该方法的预测精度和用了saliency maps的方法相差无几</li>
+<li>该方法表明传统的概率模型与CNN结合之后能得到很好的效果。</li>
+</ul>
+<h2 id="Future"><a href="#Future" class="headerlink" title="Future"></a>Future</h2><p>个人感觉这篇文章所用的方法还是很有借鉴意义的，不用很多tricks，不靠saliency maps就能达到这么高的mIoU。可以改进的地方我想应该有两个，一个是$p(z|x,y)$的形式可以修改，比如说参考ScribbleSup的，把纹理、色彩、空间之类的低阶信息都考虑上。另外，$p(y_k |x,z)$的计算方式也可以修改。总而言之，这还是一片比较粗糙的文章，还有很多需要精雕细琢的地方。</p>
 ]]></content>
     
     <summary type="html">
