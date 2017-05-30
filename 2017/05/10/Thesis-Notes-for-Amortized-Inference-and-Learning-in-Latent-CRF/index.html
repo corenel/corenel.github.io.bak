@@ -96,26 +96,25 @@
 
 <meta name="description" content="This is my notes for Amortized Inference and Learning in Latent Conditional Random Fields for Weakly-Supervised Semantic Image Segmentation.
 
-arxiv: https://arxiv.org/abs/1705.01262
-
-AbstractCRF在图像分割任">
+arXiv:1705.01262
+Poster &amp;amp; Slides">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Thesis Notes for Amortized Inference and Learning in Latent CRF">
 <meta property="og:url" content="http://www.yuthon.com/2017/05/10/Thesis-Notes-for-Amortized-Inference-and-Learning-in-Latent-CRF/index.html">
 <meta property="og:site_name" content="Yuthon's blog">
 <meta property="og:description" content="This is my notes for Amortized Inference and Learning in Latent Conditional Random Fields for Weakly-Supervised Semantic Image Segmentation.
 
-arxiv: https://arxiv.org/abs/1705.01262
-
-AbstractCRF在图像分割任">
-<meta property="og:updated_time" content="2017-05-10T14:51:01.000Z">
+arXiv:1705.01262
+Poster &amp;amp; Slides">
+<meta property="og:image" content="http://www.yuthon.com/images/the_latent_CRF.png">
+<meta property="og:updated_time" content="2017-05-30T08:32:21.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Thesis Notes for Amortized Inference and Learning in Latent CRF">
 <meta name="twitter:description" content="This is my notes for Amortized Inference and Learning in Latent Conditional Random Fields for Weakly-Supervised Semantic Image Segmentation.
 
-arxiv: https://arxiv.org/abs/1705.01262
-
-AbstractCRF在图像分割任">
+arXiv:1705.01262
+Poster &amp;amp; Slides">
+<meta name="twitter:image" content="http://www.yuthon.com/images/the_latent_CRF.png">
 
 
 
@@ -383,8 +382,8 @@ AbstractCRF在图像分割任">
               
                 <span class="post-meta-item-text">Post modified</span>
               
-              <time title="Post modified" itemprop="dateModified" datetime="2017-05-10T22:51:01+08:00">
-                2017-05-10
+              <time title="Post modified" itemprop="dateModified" datetime="2017-05-30T16:32:21+08:00">
+                2017-05-30
               </time>
             
           </span>
@@ -450,17 +449,49 @@ AbstractCRF在图像分割任">
       
         <p>This is my notes for <strong>Amortized Inference and Learning in Latent Conditional Random Fields for Weakly-Supervised Semantic Image Segmentation</strong>.</p>
 <ul>
-<li>arxiv: <a href="https://arxiv.org/abs/1705.01262" target="_blank" rel="external">https://arxiv.org/abs/1705.01262</a></li>
+<li><a href="https://arxiv.org/abs/1705.01262" target="_blank" rel="external">arXiv:1705.01262</a></li>
+<li><a href="http://www.ece.iisc.ernet.in/~divsymposium/EECS2017/slides_posters/EECS_2017_paper_31.pdf" target="_blank" rel="external">Poster &amp; Slides</a></li>
 </ul>
-<h2 id="Abstract"><a href="#Abstract" class="headerlink" title="Abstract"></a>Abstract</h2><p>CRF在图像分割任务中经常被用来作为post-processing步骤，以优化结果。一般的做法就是用分割网络输出的pixel-level的各类的概率分布作为CRF的unary potential，然后用<em>Efficient inference in fully connected CRFs with Gaussian edge potentials</em>里面的方法来设置pairwise potential。</p>
-<p>强监督的语义分割用这个方法当然很好，但是弱监督的话，因为没有pixel-level的标签，要把image-level的标签有选择地广播到所有像素还是一个很艰苦的工作。通常用的方法是基于localization cues的，比如说用saliency maps、objectness priors或者bounding boxes等等，就像之前介绍的<a href="http://www.yuthon.com/2017/04/28/Thesis-Notes-for-SEC/">SEC那篇文章</a>一样。</p>
-<p>不过这篇文章里面用的不是localization cues的那一套，而是把pixel-level的标签作为CRF的latent variables（隐变量），然后把图像本身以及image-level的标签作为observed variables（观测变量）。然后想通过训练inference network以估计在给定observed variables的情况下latent variables的后验分布（posterior distribution）这样的方法，把latent variables的inference cost分摊到整个数据集中。</p>
+<a id="more"></a>
+<h2 id="Introduction"><a href="#Introduction" class="headerlink" title="Introduction"></a>Introduction</h2><p>CRF属于判别式的图模型，通常被用来标注或分析序列资料。2014年左右的时候，CRF也被用来做图像分割。但是随着深度学习的兴起，CRF慢慢就沦为了进行post-precessing的工具，以优化结果。一般的做法就是用分割网络输出的pixel-level的各类的概率分布作为CRF的unary potential，然后用<em>Efficient inference in fully connected CRFs with Gaussian edge potentials</em>里面的方法来设置pairwise potential。</p>
+<p>强监督的语义分割用这个方法当然很好，但是弱监督的话，因为没有pixel-level的标签，要把image-level的标签有选择地广播到所有像素还是一个很艰苦的工作。通常用的方法是基于localization cues的，比如说用saliency maps、objectness priors或者bounding boxes等等，就像之前介绍的<a href="http://www.yuthon.com/2017/04/28/Thesis-Notes-for-SEC/">SEC</a>一样。</p>
+<p>不过这篇文章里面用的不是localization cues的那一套，而是<strong>把pixel-level的标签作为CRF的latent variables（隐变量），然后把图像本身以及image-level的标签作为observed variables（观测变量）</strong>。然后想通过训练inference network以估计在给定observed variables的情况下latent variables的后验分布（posterior distribution）这样的方法，把latent variables的inference cost分摊到整个数据集中。值得注意的是，这种方法并没有学习CRF的uanry potential，而是要训练inference network，使其输出的pixel-level标签在全局上与image-level标签一致，在局部上与附近的标签一致。</p>
 <blockquote>
 <p>讲真上边这一句话我也读着不是很懂，慢慢看之后的说明就能理解了。</p>
 </blockquote>
 <p>这种方法的好处在于，inference network（也就是分割网络）的训练可以是end-to-end的，并不需要另外去生成localization cues。此外，用这种方法训练出来的模型也不需要post-processing步骤。</p>
 <p>这种方法的预测精度与使用了saliency masks的方法（比如说SEC）相近，也算是一种新的研究方向。</p>
-<h2 id="Introduction"><a href="#Introduction" class="headerlink" title="Introduction"></a>Introduction</h2><p>(To be continued…)</p>
+<h2 id="The-proposed-model"><a href="#The-proposed-model" class="headerlink" title="The proposed model"></a>The proposed model</h2><table>
+<thead>
+<tr>
+<th style="text-align:center">Symbol</th>
+<th style="text-align:left">Description</th>
+<th style="text-align:left">Note</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">$x^{(i)}$</td>
+<td style="text-align:left">第$i$幅图像</td>
+<td style="text-align:left">$1\le i \le n$</td>
+</tr>
+<tr>
+<td style="text-align:center">$y^{(i)}$</td>
+<td style="text-align:left">第$i$幅图像对应的image-level标签</td>
+<td style="text-align:left">Each $y^{(i)}$ is a boolean vector whose length equals the number of classes used for training.</td>
+</tr>
+<tr>
+<td style="text-align:center">$z^{(i)}=(z^{(i)}_j)$</td>
+<td style="text-align:left">第$i$幅图像对应pixel-level标签</td>
+<td style="text-align:left">$1\le j\le m$, and we use one-hot encoding for $z^{(i)}_j$</td>
+</tr>
+</tbody>
+</table>
+<p>本文的目标是，给定$(x^{(i)}, y^{(i)}), 1\le i \le n$的情况下，本算法希望能够学习到一个从$x^{(i)}$到$y^{(i)}$的映射关系，其能够对pixel-level的标注$z^{(i)}$做出推断。</p>
+<p><img src="/images/the_latent_CRF.png" alt="the_latent_CRF"></p>
+<p>当给定图像$x$的时候，image-level的标签$y$的条件分布如下所示，目标则是能最大化$\sum^n_{i=1} log p(y^{(i)}|x^{(i)})$。<br>$$<br>p(y|x) = \sum_z p(z|x)p(y|z,x)<br>$$<br>定义$p(z|x)$为CRF的pairwise项，同时也是<strong>先验概率（Prior）</strong>：<br>$$<br>p(z|x) \propto exp \left(-\sum_{j&lt;j’} k(t_j, t_{j’})\mu (z_j, z_{j’}))\right)<br>$$<br>其中$t_j$为位置$j$处像素的feature vector，$\mu (z_j, z_{j’})$为两个标签之间的compatibility。$p(z|x)$的意义在于<strong>使得相邻且色彩相似的像素具有同一标签。</strong>需要注意的是$p(z|x)$并不用训练，相反，需要学习的是作为CRF的unary potential的$p(y|z,x)$。</p>
+<p>不过由于从$p(z|x,y)$进行采样在计算上十分困难，因此不能用EM法来最大化$\log p(y|z,x)$，具体分析可见原论文。因此需要用其他方法来达成目的。该文章使用的方法是最大化$p(y|x)$的下界，来使得$p(y|x)$最大。</p>
+<h3 id="Variational-Lower-Bound"><a href="#Variational-Lower-Bound" class="headerlink" title="Variational Lower Bound"></a>Variational Lower Bound</h3><p>(To be continued…)</p>
 
       
     </div>
@@ -706,7 +737,7 @@ AbstractCRF在图像分割任">
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Abstract"><span class="nav-number">1.</span> <span class="nav-text">Abstract</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Introduction"><span class="nav-number">2.</span> <span class="nav-text">Introduction</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Introduction"><span class="nav-number">1.</span> <span class="nav-text">Introduction</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#The-proposed-model"><span class="nav-number">2.</span> <span class="nav-text">The proposed model</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Variational-Lower-Bound"><span class="nav-number">2.1.</span> <span class="nav-text">Variational Lower Bound</span></a></li></ol></li></ol></div>
             
 
           </div>
