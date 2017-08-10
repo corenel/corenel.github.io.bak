@@ -3,6 +3,8 @@ var cleanCSS = require('gulp-clean-css')
 var uglify = require('gulp-uglify')
 var htmlmin = require('gulp-htmlmin')
 var imagemin = require('gulp-imagemin')
+var pump = require('pump')
+var babel = require('gulp-babel')
 
 gulp.task('minify-css', function () {
   return gulp.src(['public/**/*.css', '!public/**/*.min.css'])
@@ -33,14 +35,25 @@ gulp.task('minify-html', function () {
              .pipe(gulp.dest('public'))
 })
 
-gulp.task('minify-js', function () {
-  return gulp.src(['public/**/*.js', '!public/**/*.min.js'])
-             .pipe(uglify())
-             .pipe(gulp.dest('public'))
+// gulp.task('minify-js', function () {
+  // return gulp.src(['public/**/*.js', '!public/**/*.min.js'])
+             // .pipe(uglify())
+             // .pipe(gulp.dest('public'))
+// })
+gulp.task('minify-js', function (cb) {
+  pump([
+        gulp.src(['public/**/*.js', '!public/**/*.min.js']),
+		babel({presets: ['es2015']}),
+        uglify(),
+        gulp.dest('public')
+    ],
+    cb
+  );
 })
 
+
 gulp.task('default', [
-  'minify-css', 'minify-js', 'minify-images'
+  'minify-css', 'minify-images', 'minify-html', 'minify-js'
 ], function () {
   console.log('gulp task done!')
 })
