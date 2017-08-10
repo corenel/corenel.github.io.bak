@@ -1,122 +1,10 @@
-<!doctype html>
-
-
-
-  
-
-
-<html class="theme-next pisces use-motion" lang="en">
-<head>
-  <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="UTF-8"/>
-<meta http-equiv="X-UA-Compatible" content="IE=edge" />
-<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
-
-
-
-
-
-
-<meta http-equiv="Cache-Control" content="no-transform" />
-<meta http-equiv="Cache-Control" content="no-siteapp" />
-
-
-
-  <meta name="google-site-verification" content="BGEL63KNRW25AkpCy3shpRdMWDHE9LZTAFS3XSHtFK8" />
-
-
-
-
-
-
-
-
-
-
-
-
-
-  
-  
-  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
-
-
-
-
-  
-  
-  
-  
-
-  
-    
-    
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-    
-    
-    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
-  
-
-
-
-
-
-
-<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
-
-<link href="/css/main.css?v=5.1.1" rel="stylesheet" type="text/css" />
-
-
-  <meta name="keywords" content="Pluralsight,C++,C++11," />
-
-
-
-
-
-  <link rel="alternate" href="/atom.xml" title="Yuthon's blog" type="application/atom+xml" />
-
-
-
-
-  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.1" />
-
-
-
-
-
-
-<meta name="description" content="This post is a note for Modern C++ Libraries in Pluralsight.
-AssertionsCourse contentAn Assertion may be a function, but usually a macro, that brings your application to an immediate standstill if an">
-<meta property="og:type" content="article">
-<meta property="og:title" content="Modern C++ Libraries: Getting Started">
-<meta property="og:url" content="http://www.yuthon.com/2017/04/25/Modern-C-Libraries-Getting-Started/index.html">
-<meta property="og:site_name" content="Yuthon's blog">
-<meta property="og:description" content="This post is a note for Modern C++ Libraries in Pluralsight.
-AssertionsCourse contentAn Assertion may be a function, but usually a macro, that brings your application to an immediate standstill if an">
-<meta property="og:updated_time" content="2017-04-27T07:48:51.000Z">
-<meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Modern C++ Libraries: Getting Started">
-<meta name="twitter:description" content="This post is a note for Modern C++ Libraries in Pluralsight.
-AssertionsCourse contentAn Assertion may be a function, but usually a macro, that brings your application to an immediate standstill if an">
-
-
-
-<script type="text/javascript" id="hexo.configurations">
-  var NexT = window.NexT || {};
+<!DOCTYPE html><html class="theme-next pisces use-motion" lang="en"><head><!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1"><meta name="theme-color" content="#222"><meta http-equiv="Cache-Control" content="no-transform"><meta http-equiv="Cache-Control" content="no-siteapp"><meta name="google-site-verification" content="BGEL63KNRW25AkpCy3shpRdMWDHE9LZTAFS3XSHtFK8"><link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css"><link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css"><link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css"><link href="/css/main.css?v=5.1.2" rel="stylesheet" type="text/css"><meta name="keywords" content="Pluralsight,C++,C++11,"><link rel="alternate" href="/atom.xml" title="Yuthon's blog" type="application/atom+xml"><link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.2"><meta name="description" content="This post is a note for Modern C++ Libraries in Pluralsight. AssertionsCourse contentAn Assertion may be a function, but usually a macro, that brings your application to an immediate standstill if an"><meta name="keywords" content="Pluralsight,C++,C++11"><meta property="og:type" content="article"><meta property="og:title" content="Modern C++ Libraries: Getting Started"><meta property="og:url" content="http://www.yuthon.com/2017/04/25/Modern-C-Libraries-Getting-Started/index.html"><meta property="og:site_name" content="Yuthon&#39;s blog"><meta property="og:description" content="This post is a note for Modern C++ Libraries in Pluralsight. AssertionsCourse contentAn Assertion may be a function, but usually a macro, that brings your application to an immediate standstill if an"><meta property="og:locale" content="en"><meta property="og:updated_time" content="2017-04-27T07:48:51.000Z"><meta name="twitter:card" content="summary"><meta name="twitter:title" content="Modern C++ Libraries: Getting Started"><meta name="twitter:description" content="This post is a note for Modern C++ Libraries in Pluralsight. AssertionsCourse contentAn Assertion may be a function, but usually a macro, that brings your application to an immediate standstill if an"><script type="text/javascript" id="hexo.configurations">var NexT = window.NexT || {};
   var CONFIG = {
     root: '/',
     scheme: 'Pisces',
-    sidebar: {"position":"left","display":"hide","offset":12,"offset_float":0,"b2t":false,"scrollpercent":false},
+    sidebar: {"position":"left","display":"hide","offset":12,"offset_float":12,"b2t":false,"scrollpercent":false,"onmobile":false},
     fancybox: true,
+    tabs: true,
     motion: true,
     duoshuo: {
       userId: '0',
@@ -129,755 +17,14 @@ AssertionsCourse contentAn Assertion may be a function, but usually a macro, tha
       hits: {"per_page":10},
       labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
     }
-  };
-</script>
-
-
-
-  <link rel="canonical" href="http://www.yuthon.com/2017/04/25/Modern-C-Libraries-Getting-Started/"/>
-
-
-
-
-
-  <title>Modern C++ Libraries: Getting Started | Yuthon's blog</title><!-- hexo-inject:begin --><!-- hexo-inject:end -->
-</head>
-
-<body itemscope itemtype="http://schema.org/WebPage" lang="en">
-
-  
-
-
-
-
-<!-- hexo-inject:begin --><!-- hexo-inject:end --><script>
-  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  };</script><link rel="canonical" href="http://www.yuthon.com/2017/04/25/Modern-C-Libraries-Getting-Started/"><title>Modern C++ Libraries: Getting Started | Yuthon's blog</title><script>(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
             (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
           m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
   })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
   ga('create', 'UA-76233259-1', 'auto');
-  ga('send', 'pageview');
-</script>
-
-
-
-
-
-
-
-
-
-
-
-  
-  
-    
-  
-
-  <div class="container sidebar-position-left page-post-detail ">
-    <div class="headband"></div>
-
-    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
-      <div class="header-inner"><div class="site-brand-wrapper">
-  <div class="site-meta ">
-    
-
-    <div class="custom-logo-site-title">
-      <a href="/"  class="brand" rel="start">
-        <span class="logo-line-before"><i></i></span>
-        <span class="site-title">Yuthon's blog</span>
-        <span class="logo-line-after"><i></i></span>
-      </a>
-    </div>
-      
-        <p class="site-subtitle"></p>
-      
-  </div>
-
-  <div class="site-nav-toggle">
-    <button>
-      <span class="btn-bar"></span>
-      <span class="btn-bar"></span>
-      <span class="btn-bar"></span>
-    </button>
-  </div>
-</div>
-
-<nav class="site-nav">
-  
-
-  
-    <ul id="menu" class="menu">
-      
-        
-        <li class="menu-item menu-item-home">
-          <a href="/" rel="section">
-            
-              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
-            
-            Home
-          </a>
-        </li>
-      
-        
-        <li class="menu-item menu-item-categories">
-          <a href="/categories" rel="section">
-            
-              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
-            
-            Categories
-          </a>
-        </li>
-      
-        
-        <li class="menu-item menu-item-archives">
-          <a href="/archives" rel="section">
-            
-              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
-            
-            Archives
-          </a>
-        </li>
-      
-        
-        <li class="menu-item menu-item-tags">
-          <a href="/tags" rel="section">
-            
-              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
-            
-            Tags
-          </a>
-        </li>
-      
-        
-        <li class="menu-item menu-item-sitemap">
-          <a href="/sitemap.xml" rel="section">
-            
-              <i class="menu-item-icon fa fa-fw fa-sitemap"></i> <br />
-            
-            Sitemap
-          </a>
-        </li>
-      
-
-      
-        <li class="menu-item menu-item-search">
-          
-            <a href="javascript:;" class="popup-trigger">
-          
-            
-              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
-            
-            Search
-          </a>
-        </li>
-      
-    </ul>
-  
-
-  
-    <div class="site-search">
-      
-  <div class="popup search-popup local-search-popup">
-  <div class="local-search-header clearfix">
-    <span class="search-icon">
-      <i class="fa fa-search"></i>
-    </span>
-    <span class="popup-btn-close">
-      <i class="fa fa-times-circle"></i>
-    </span>
-    <div class="local-search-input-wrapper">
-      <input autocapitalize="off" autocomplete="off" autocorrect="off"
-             placeholder="Searching..." spellcheck="false"
-             type="text" id="local-search-input">
-    </div>
-  </div>
-  <div id="local-search-result"></div>
-</div>
-
-
-
-    </div>
-  
-</nav>
-
-
-
- </div>
-    </header>
-
-    <main id="main" class="main">
-      <div class="main-inner">
-        <div class="content-wrap">
-          <div id="content" class="content">
-            
-
-  <div id="posts" class="posts-expand">
-    
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="http://www.yuthon.com/2017/04/25/Modern-C-Libraries-Getting-Started/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Yusu Pan">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/uploads/avatar.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Yuthon's blog">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-            
-            
-              
-                Modern C++ Libraries: Getting Started
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">Posted on</span>
-              
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2017-04-25T21:06:39+08:00">
-                2017-04-25
-              </time>
-            
-
-            
-              <span class="post-meta-divider">|</span>
-            
-
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-check-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">Post modified</span>
-              
-              <time title="Post modified" itemprop="dateModified" datetime="2017-04-27T15:48:51+08:00">
-                2017-04-27
-              </time>
-            
-          </span>
-
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">In</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Notes/" itemprop="url" rel="index">
-                    <span itemprop="name">Notes</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-              <span class="post-comments-count">
-                <span class="post-meta-divider">|</span>
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-comment-o"></i>
-                </span>
-                <a href="/2017/04/25/Modern-C-Libraries-Getting-Started/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count disqus-comment-count"
-                        data-disqus-identifier="2017/04/25/Modern-C-Libraries-Getting-Started/" itemprop="commentCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        <p>This post is a note for Modern C++ Libraries in Pluralsight.</p>
-<h2 id="Assertions"><a href="#Assertions" class="headerlink" title="Assertions"></a>Assertions</h2><h3 id="Course-content"><a href="#Course-content" class="headerlink" title="Course content"></a>Course content</h3><p>An <strong>Assertion</strong> may be a function, but usually a macro, that brings your application to an immediate standstill if an assumption is broken.</p>
-<p>Assertions <strong>document the assumptions</strong> such that those assumptions can be <strong>validated</strong> usually at run time, but also increasingly at compile time.</p>
-<a id="more"></a>
-<ul>
-<li><p>Check pointers before using them (at run time):</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">assert(pointer);</div></pre></td></tr></table></figure>
-</li>
-<li><p>Confirm the  validity of some input at the boundary of application or component (at run time):</p>
-</li>
-<li><p>Confirm some expressions at compile time (no need to execute)</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">static_assert</span>(<span class="keyword">sizeof</span>(<span class="keyword">float</span>) == <span class="number">4</span>, <span class="string">"I can’t float like that!"</span>);</div></pre></td></tr></table></figure>
-</li>
-</ul>
-<p><strong>Static or compile time Assertions</strong> are checked staticially during build. And <strong>Runtime Assertions</strong> are typically conditionally complied and included owning debug builds and stripped out of release or free builds.</p>
-<blockquote>
-<p>Runtime Assertions must not include expression that the application relies upon. It should not change the application state in any way.</p>
-</blockquote>
-<h3 id="C-documentation"><a href="#C-documentation" class="headerlink" title="C++ documentation"></a>C++ documentation</h3><h4 id="assert"><a href="#assert" class="headerlink" title="assert"></a>assert</h4><p>The definition of the macro <code>assert</code> depends on another macro, <strong><code>NDEBUG</code></strong>, which is not defined by the standard library.</p>
-<p>If <code>NDEBUG</code> is defined as a macro name at the point in the source code where <code>&lt;cassert&gt;</code> is included, then <code>assert</code> does nothing.</p>
-<p>If <code>NDEBUG</code> is not defined, then <code>assert</code> checks if its argument (which must have scalar type) compares equal to zero. If it does, <code>assert</code> outputs implementation-specific diagnostic information on the standard error output and calls <em>std::abort</em>.</p>
-<h5 id="Notes"><a href="#Notes" class="headerlink" title="Notes"></a>Notes</h5><p>Because <code>assert</code> is a <em>function-like macro</em>, commas anywhere in condition that are not protected by parentheses are interpreted as macro argument separators. Such commas are often found in template argument lists:</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">assert(<span class="built_in">std</span>::is_same_v&lt;<span class="keyword">int</span>, <span class="keyword">int</span>&gt;); <span class="comment">// error: assert does not take two arguments</span></div><div class="line">assert((<span class="built_in">std</span>::is_same_v&lt;<span class="keyword">int</span>, <span class="keyword">int</span>&gt;)); <span class="comment">// OK: one argument</span></div><div class="line"><span class="keyword">static_assert</span>(<span class="built_in">std</span>::is_same_v&lt;<span class="keyword">int</span>, <span class="keyword">int</span>&gt;); <span class="comment">// OK: not a macro</span></div></pre></td></tr></table></figure>
-<h5 id="Example"><a href="#Example" class="headerlink" title="Example"></a>Example</h5><figure class="highlight c++"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;iostream&gt;</span></span></div><div class="line"><span class="comment">// uncomment to disable assert()</span></div><div class="line"><span class="comment">// #define NDEBUG</span></div><div class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;cassert&gt;</span></span></div><div class="line"> </div><div class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span></div><div class="line">&#123;</div><div class="line">    assert(<span class="number">2</span>+<span class="number">2</span>==<span class="number">4</span>);</div><div class="line">    <span class="built_in">std</span>::<span class="built_in">cout</span> &lt;&lt; <span class="string">"Execution continues past the first assert\n"</span>;</div><div class="line">    assert(<span class="number">2</span>+<span class="number">2</span>==<span class="number">5</span>);</div><div class="line">    <span class="built_in">std</span>::<span class="built_in">cout</span> &lt;&lt; <span class="string">"Execution continues past the second assert\n"</span>;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<p>Possible output:</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">Execution continues past the first assert</div><div class="line">test: test.cc:10: int main(): Assertion `2+2==5&apos; failed.</div><div class="line">Aborted</div></pre></td></tr></table></figure>
-<h4 id="Static-Assertion"><a href="#Static-Assertion" class="headerlink" title="Static Assertion"></a>Static Assertion</h4><p>Performs compile-time assertion checking</p>
-<h5 id="Note"><a href="#Note" class="headerlink" title="Note"></a>Note</h5><p>Since message has to be a string literal, it cannot contain dynamic information or even a constant expression that is not a string literal itself. In particular, it cannot contain the name of the template type argument.</p>
-<h5 id="Example-1"><a href="#Example-1" class="headerlink" title="Example"></a>Example</h5><figure class="highlight c++"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div></pre></td><td class="code"><pre><div class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;type_traits&gt;</span></span></div><div class="line"> </div><div class="line"><span class="keyword">template</span> &lt;<span class="keyword">class</span> T&gt;</div><div class="line"><span class="function"><span class="keyword">void</span> <span class="title">swap</span><span class="params">(T&amp; a, T&amp; b)</span></span></div><div class="line">&#123;</div><div class="line">    <span class="keyword">static_assert</span>(<span class="built_in">std</span>::is_copy_constructible&lt;T&gt;::value,</div><div class="line">                  <span class="string">"Swap requires copying"</span>);</div><div class="line">    <span class="keyword">static_assert</span>(<span class="built_in">std</span>::is_nothrow_move_constructible&lt;T&gt;::value</div><div class="line">               &amp;&amp; <span class="built_in">std</span>::is_nothrow_move_assignable&lt;T&gt;::value,</div><div class="line">                  <span class="string">"Swap may throw"</span>);</div><div class="line">    <span class="keyword">auto</span> c = b;</div><div class="line">    b = a;</div><div class="line">    a = c;</div><div class="line">&#125;</div><div class="line"> </div><div class="line"><span class="keyword">template</span> &lt;<span class="keyword">class</span> T&gt;</div><div class="line"><span class="keyword">struct</span> data_structure</div><div class="line">&#123;</div><div class="line">    <span class="keyword">static_assert</span>(<span class="built_in">std</span>::is_default_constructible&lt;T&gt;::value,</div><div class="line">                  <span class="string">"Data Structure requires default-constructible elements"</span>);</div><div class="line">&#125;;</div><div class="line"> </div><div class="line"><span class="keyword">struct</span> no_copy</div><div class="line">&#123;</div><div class="line">    no_copy ( <span class="keyword">const</span> no_copy&amp; ) = <span class="keyword">delete</span>;</div><div class="line">    no_copy () = <span class="keyword">default</span>;</div><div class="line">&#125;;</div><div class="line"> </div><div class="line"><span class="keyword">struct</span> no_default</div><div class="line">&#123;</div><div class="line">    no_default () = <span class="keyword">delete</span>;</div><div class="line">&#125;;</div><div class="line"> </div><div class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span></div><div class="line">&#123;</div><div class="line">    <span class="keyword">int</span> a, b;</div><div class="line">    swap(a, b);</div><div class="line"> </div><div class="line">    no_copy nc_a, nc_b;</div><div class="line">    swap(nc_a, nc_b); <span class="comment">// 1</span></div><div class="line"> </div><div class="line">    data_structure&lt;<span class="keyword">int</span>&gt; ds_ok;</div><div class="line">    data_structure&lt;no_default&gt; ds_error; <span class="comment">// 2</span></div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<p>Possible output:</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">1: error: static assertion failed: Swap requires copying</div><div class="line">2: error: static assertion failed: Data Structure requires default-constructible elements</div></pre></td></tr></table></figure>
-<h2 id="VERIFY"><a href="#VERIFY" class="headerlink" title="VERIFY"></a>VERIFY</h2><p><code>Verify</code> behaves exactly the same as Assert in debug builds. Indeed it is an Assertion. But in release builds it drops the verification, but keeps the expression. </p>
-<p>Unlike runtime Assertions the Verify macro is used for those cases where the expression is essential to the applications operation and cannot simply be stripped out of release builds.</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="meta">#<span class="meta-keyword">ifndef</span> NDEBUG</span></div><div class="line"><span class="meta">#<span class="meta-keyword">define</span> VERIFY assert</span></div><div class="line"><span class="meta">#<span class="meta-keyword">else</span></span></div><div class="line"><span class="meta">#<span class="meta-keyword">define</span> VERIFY(experssion) (expression)</span></div><div class="line"><span class="meta">#<span class="meta-keyword">endif</span></span></div></pre></td></tr></table></figure>
-<h2 id="TRACE"><a href="#TRACE" class="headerlink" title="TRACE"></a>TRACE</h2><p><code>Trace</code> macro is to provide formatted output for the debugger to display, but that can be stripped out of release builds. </p>
-<p>Following code works only in VC++:</p>
-<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div><div class="line">66</div><div class="line">67</div></pre></td><td class="code"><pre><div class="line">#include &lt;stdio.h&gt;</div><div class="line">#include &lt;windows.h&gt;</div><div class="line"></div><div class="line">#ifdef _DEBUG</div><div class="line">inline auto Trace(wchar_t const * format, ...) -&gt; void</div><div class="line">&#123;</div><div class="line">    va_list args;</div><div class="line">    va_start(args, format);</div><div class="line"></div><div class="line">    wchar_t buffer [256];</div><div class="line"></div><div class="line">    ASSERT(-1 != _vsnwprintf_s(buffer,</div><div class="line">                               _countof(buffer) -1,</div><div class="line">                               format,</div><div class="line">                               args));</div><div class="line"></div><div class="line">    va_end(args);</div><div class="line"></div><div class="line">    OutputDebugString(buffer);</div><div class="line">&#125;</div><div class="line"></div><div class="line">struct Tracer</div><div class="line">&#123;</div><div class="line">    char const * m_filename;</div><div class="line">    unsigned m_line;</div><div class="line"></div><div class="line">    Tracer(char const * filename, unsigned const line) :</div><div class="line">        m_filename &#123; filename &#125;,</div><div class="line">        m_line &#123; line &#125;</div><div class="line">    &#123;</div><div class="line"></div><div class="line">    &#125;</div><div class="line"></div><div class="line">    template &lt;typename... Args&gt;</div><div class="line">    auto operator()(wchar_t const * format, Args... args) const -&gt; void</div><div class="line">    &#123;</div><div class="line">        wchar_t buffer [256];</div><div class="line"></div><div class="line">        auto count = swprintf_s(buffer,</div><div class="line">                                L"%S(%d): ",</div><div class="line">                                m_filename,</div><div class="line">                                m_line);</div><div class="line"></div><div class="line">        ASSERT(-1 != count);</div><div class="line"></div><div class="line">        ASSERT(-1 != _snwprintf_s(buffer + count,</div><div class="line">                                  _countof(buffer) - count,</div><div class="line">                                  _countof(buffer) - count - 1,</div><div class="line">                                  format,</div><div class="line">                                  args...));</div><div class="line"></div><div class="line">        OutputDebugString(buffer);</div><div class="line">    &#125;</div><div class="line">&#125;;</div><div class="line"></div><div class="line">#endif</div><div class="line"></div><div class="line">#ifdef _DEBUG</div><div class="line">#define TRACE Tracer(__FILE__, __LINE__)</div><div class="line">#else</div><div class="line">#define TRACE __noop</div><div class="line">#endif</div><div class="line"></div><div class="line">auto main() -&gt; int</div><div class="line">&#123;</div><div class="line">    TRACE(L"1 + 2 = %d\n", 1 + 2);</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<h2 id="My-point"><a href="#My-point" class="headerlink" title="My point"></a>My point</h2><p>Assertions are useful, however, <code>VERIFY</code> and <code>TRACE</code> can be repalced by other logging libaries.</p>
-
-      
-    </div>
-
-    <div>
-      
-        
-
-      
-    </div>
-
-    <div>
-      
-        
-
-      
-    </div>
-
-    <div>
-      
-        
-  <ul class="post-copyright">
-    <li class="post-copyright-author">
-      <strong>Post author:</strong>
-      Yusu Pan
-    </li>
-    <li class="post-copyright-link">
-      <strong>Post link:</strong>
-      <a href="http://www.yuthon.com/2017/04/25/Modern-C-Libraries-Getting-Started/" title="Modern C++ Libraries: Getting Started">http://www.yuthon.com/2017/04/25/Modern-C-Libraries-Getting-Started/</a>
-    </li>
-    <li class="post-copyright-license">
-      <strong>Copyright Notice: </strong>
-      All articles in this blog are licensed under <a href="https://creativecommons.org/licenses/by-nc-sa/3.0/" rel="external nofollow" target="_blank">CC BY-NC-SA 3.0</a> unless stating additionally.
-    </li>
-  </ul>
-
-
-      
-    </div>
-
-    <footer class="post-footer">
-      
-        <div class="post-tags">
-          
-            <a href="/tags/Pluralsight/" rel="tag"># Pluralsight</a>
-          
-            <a href="/tags/C/" rel="tag"># C++</a>
-          
-            <a href="/tags/C-11/" rel="tag"># C++11</a>
-          
-        </div>
-      
-
-      
-        
-      
-
-      
-        <div class="post-nav">
-          <div class="post-nav-next post-nav-item">
-            
-              <a href="/2017/03/10/TensorFlow-r1-0-on-TX1/" rel="next" title="TensorFlow r1.0 on TX1 (now successful)">
-                <i class="fa fa-chevron-left"></i> TensorFlow r1.0 on TX1 (now successful)
-              </a>
-            
-          </div>
-
-          <span class="post-nav-divider"></span>
-
-          <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2017/04/27/Notes-From-Faster-R-CNN-to-Mask-R-CNN/" rel="prev" title="Notes: From Faster R-CNN to Mask R-CNN">
-                Notes: From Faster R-CNN to Mask R-CNN <i class="fa fa-chevron-right"></i>
-              </a>
-            
-          </div>
-        </div>
-      
-
-      
-      
-    </footer>
-  </article>
-
-
-
-    <div class="post-spread">
-      
-    </div>
-  </div>
-
-
-          </div>
-          
-
-
-          
-  <div class="comments" id="comments">
-    
-      <div id="disqus_thread">
-        <noscript>
-          Please enable JavaScript to view the
-          <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a>
-        </noscript>
-      </div>
-    
-  </div>
-
-
-        </div>
-        
-          
-  
-  <div class="sidebar-toggle">
-    <div class="sidebar-toggle-line-wrap">
-      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
-      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
-      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
-    </div>
-  </div>
-
-  <aside id="sidebar" class="sidebar">
-    <div class="sidebar-inner">
-
-      
-
-      
-        <ul class="sidebar-nav motion-element">
-          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
-            Table of Contents
-          </li>
-          <li class="sidebar-nav-overview" data-target="site-overview">
-            Overview
-          </li>
-        </ul>
-      
-
-      <section class="site-overview sidebar-panel">
-        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
-          <img class="site-author-image" itemprop="image"
-               src="/uploads/avatar.png"
-               alt="Yusu Pan" />
-          <p class="site-author-name" itemprop="name">Yusu Pan</p>
-           
-              <p class="site-description motion-element" itemprop="description">We've been gaining one good thing through losing another.</p>
-          
-        </div>
-        <nav class="site-state motion-element">
-
-          
-            <div class="site-state-item site-state-posts">
-              <a href="/archives">
-                <span class="site-state-item-count">40</span>
-                <span class="site-state-item-name">posts</span>
-              </a>
-            </div>
-          
-
-          
-            
-            
-            <div class="site-state-item site-state-categories">
-              <a href="/categories/index.html">
-                <span class="site-state-item-count">5</span>
-                <span class="site-state-item-name">categories</span>
-              </a>
-            </div>
-          
-
-          
-            
-            
-            <div class="site-state-item site-state-tags">
-              <a href="/tags/index.html">
-                <span class="site-state-item-count">47</span>
-                <span class="site-state-item-name">tags</span>
-              </a>
-            </div>
-          
-
-        </nav>
-
-        
-          <div class="feed-link motion-element">
-            <a href="/atom.xml" rel="alternate">
-              <i class="fa fa-rss"></i>
-              RSS
-            </a>
-          </div>
-        
-
-        <div class="links-of-author motion-element">
-          
-            
-              <span class="links-of-author-item">
-                <a href="https://github.com/corenel" target="_blank" title="GitHub">
-                  
-                    <i class="fa fa-fw fa-github"></i>
-                  
-                  GitHub
-                </a>
-              </span>
-            
-              <span class="links-of-author-item">
-                <a href="https://twitter.com/corenel" target="_blank" title="Twitter">
-                  
-                    <i class="fa fa-fw fa-twitter"></i>
-                  
-                  Twitter
-                </a>
-              </span>
-            
-              <span class="links-of-author-item">
-                <a href="http://www.zhihu.com/people/pan-yu-su" target="_blank" title="Zhihu">
-                  
-                    <i class="fa fa-fw fa-globe"></i>
-                  
-                  Zhihu
-                </a>
-              </span>
-            
-          
-        </div>
-
-        
-        
-          <div class="cc-license motion-element" itemprop="license">
-            <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" class="cc-opacity" target="_blank">
-              <img src="/images/cc-by-nc-sa.svg" alt="Creative Commons" />
-            </a>
-          </div>
-        
-
-        
-        
-
-        
-
-
-      </section>
-
-      
-      <!--noindex-->
-        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
-          <div class="post-toc">
-
-            
-              
-            
-
-            
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Assertions"><span class="nav-number">1.</span> <span class="nav-text">Assertions</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Course-content"><span class="nav-number">1.1.</span> <span class="nav-text">Course content</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#C-documentation"><span class="nav-number">1.2.</span> <span class="nav-text">C++ documentation</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#assert"><span class="nav-number">1.2.1.</span> <span class="nav-text">assert</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#Notes"><span class="nav-number">1.2.1.1.</span> <span class="nav-text">Notes</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#Example"><span class="nav-number">1.2.1.2.</span> <span class="nav-text">Example</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Static-Assertion"><span class="nav-number">1.2.2.</span> <span class="nav-text">Static Assertion</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#Note"><span class="nav-number">1.2.2.1.</span> <span class="nav-text">Note</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#Example-1"><span class="nav-number">1.2.2.2.</span> <span class="nav-text">Example</span></a></li></ol></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#VERIFY"><span class="nav-number">2.</span> <span class="nav-text">VERIFY</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#TRACE"><span class="nav-number">3.</span> <span class="nav-text">TRACE</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#My-point"><span class="nav-number">4.</span> <span class="nav-text">My point</span></a></li></ol></div>
-            
-
-          </div>
-        </section>
-      <!--/noindex-->
-      
-
-      
-
-    </div>
-  </aside>
-
-
-        
-      </div>
-    </main>
-
-    <footer id="footer" class="footer">
-      <div class="footer-inner">
-        <div class="copyright" >
-  
-  &copy;  2015 - 
-  <span itemprop="copyrightYear">2017</span>
-  <span class="with-love">
-    <i class="fa fa-heart"></i>
-  </span>
-  <span class="author" itemprop="copyrightHolder">Yusu Pan</span>
-</div>
-
-
-<div class="powered-by">
-  Powered by <a class="theme-link" href="https://hexo.io">Hexo</a>
-</div>
-
-<div class="theme-info">
-  Theme -
-  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
-    NexT.Pisces
-  </a>
-</div>
-
-
-        
-
-        
-      </div>
-    </footer>
-
-    
-      <div class="back-to-top">
-        <i class="fa fa-arrow-up"></i>
-        
-      </div>
-    
-
-  </div>
-
-  
-
-<script type="text/javascript">
-  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+  ga('send', 'pageview');</script><!-- hexo-inject:begin --><!-- hexo-inject:end --></head><body itemscope itemtype="http://schema.org/WebPage" lang="en"><!-- hexo-inject:begin --><!-- hexo-inject:end --><div class="container sidebar-position-left page-post-detail"><div class="headband"></div><header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="header-inner"><div class="site-brand-wrapper"><div class="site-meta"><div class="custom-logo-site-title"><a href="/" class="brand" rel="start"><span class="logo-line-before"><i></i></span> <span class="site-title">Yuthon's blog</span> <span class="logo-line-after"><i></i></span></a></div><p class="site-subtitle"></p></div><div class="site-nav-toggle"><button><span class="btn-bar"></span> <span class="btn-bar"></span> <span class="btn-bar"></span></button></div></div><nav class="site-nav"><ul id="menu" class="menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="menu-item-icon fa fa-fw fa-home"></i><br>Home</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="menu-item-icon fa fa-fw fa-archive"></i><br>Archives</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="menu-item-icon fa fa-fw fa-tags"></i><br>Tags</a></li><li class="menu-item menu-item-search"><a href="javascript:;" class="popup-trigger"><i class="menu-item-icon fa fa-search fa-fw"></i><br>Search</a></li></ul><div class="site-search"><div class="popup search-popup local-search-popup"><div class="local-search-header clearfix"><span class="search-icon"><i class="fa fa-search"></i> </span><span class="popup-btn-close"><i class="fa fa-times-circle"></i></span><div class="local-search-input-wrapper"><input autocomplete="off" placeholder="Searching..." spellcheck="false" type="text" id="local-search-input"></div></div><div id="local-search-result"></div></div></div></nav></div></header><main id="main" class="main"><div class="main-inner"><div class="content-wrap"><div id="content" class="content"><div id="posts" class="posts-expand"><article class="post post-type-normal" itemscope itemtype="http://schema.org/Article"><div class="post-block"><link itemprop="mainEntityOfPage" href="http://www.yuthon.com/2017/04/25/Modern-C-Libraries-Getting-Started/"><span hidden itemprop="author" itemscope itemtype="http://schema.org/Person"><meta itemprop="name" content="Yusu Pan"><meta itemprop="description" content=""><meta itemprop="image" content="/uploads/avatar.png"></span><span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization"><meta itemprop="name" content="Yuthon's blog"></span><header class="post-header"><h1 class="post-title" itemprop="name headline">Modern C++ Libraries: Getting Started</h1><div class="post-meta"><span class="post-time"><span class="post-meta-item-icon"><i class="fa fa-calendar-o"></i> </span><span class="post-meta-item-text">Posted on</span> <time title="Post created" itemprop="dateCreated datePublished" datetime="2017-04-25T21:06:39+08:00">2017-04-25 </time><span class="post-meta-divider">|</span> <span class="post-meta-item-icon"><i class="fa fa-calendar-check-o"></i> </span><span class="post-meta-item-text">Post modified</span> <time title="Post modified" itemprop="dateModified" datetime="2017-04-27T15:48:51+08:00">2017-04-27 </time></span><span class="post-category"><span class="post-meta-divider">|</span> <span class="post-meta-item-icon"><i class="fa fa-folder-o"></i> </span><span class="post-meta-item-text">In</span> <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/Notes/" itemprop="url" rel="index"><span itemprop="name">Notes</span> </a></span></span><span class="post-comments-count"><span class="post-meta-divider">|</span> <span class="post-meta-item-icon"><i class="fa fa-comment-o"></i> </span><a href="/2017/04/25/Modern-C-Libraries-Getting-Started/#comments" itemprop="discussionUrl"><span class="post-comments-count disqus-comment-count" data-disqus-identifier="2017/04/25/Modern-C-Libraries-Getting-Started/" itemprop="commentCount"></span></a></span></div></header><div class="post-body" itemprop="articleBody"><p>This post is a note for Modern C++ Libraries in Pluralsight.</p><h2 id="Assertions"><a href="#Assertions" class="headerlink" title="Assertions"></a>Assertions</h2><h3 id="Course-content"><a href="#Course-content" class="headerlink" title="Course content"></a>Course content</h3><p>An <strong>Assertion</strong> may be a function, but usually a macro, that brings your application to an immediate standstill if an assumption is broken.</p><p>Assertions <strong>document the assumptions</strong> such that those assumptions can be <strong>validated</strong> usually at run time, but also increasingly at compile time.</p><a id="more"></a><ul><li><p>Check pointers before using them (at run time):</p><figure class="highlight c++"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">assert(pointer);</div></pre></td></tr></table></figure></li><li><p>Confirm the validity of some input at the boundary of application or component (at run time):</p></li><li><p>Confirm some expressions at compile time (no need to execute)</p><figure class="highlight c++"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">static_assert</span>(<span class="keyword">sizeof</span>(<span class="keyword">float</span>) == <span class="number">4</span>, <span class="string">"I can’t float like that!"</span>);</div></pre></td></tr></table></figure></li></ul><p><strong>Static or compile time Assertions</strong> are checked staticially during build. And <strong>Runtime Assertions</strong> are typically conditionally complied and included owning debug builds and stripped out of release or free builds.</p><blockquote><p>Runtime Assertions must not include expression that the application relies upon. It should not change the application state in any way.</p></blockquote><h3 id="C-documentation"><a href="#C-documentation" class="headerlink" title="C++ documentation"></a>C++ documentation</h3><h4 id="assert"><a href="#assert" class="headerlink" title="assert"></a>assert</h4><p>The definition of the macro <code>assert</code> depends on another macro, <strong><code>NDEBUG</code></strong>, which is not defined by the standard library.</p><p>If <code>NDEBUG</code> is defined as a macro name at the point in the source code where <code>&lt;cassert&gt;</code> is included, then <code>assert</code> does nothing.</p><p>If <code>NDEBUG</code> is not defined, then <code>assert</code> checks if its argument (which must have scalar type) compares equal to zero. If it does, <code>assert</code> outputs implementation-specific diagnostic information on the standard error output and calls <em>std::abort</em>.</p><h5 id="Notes"><a href="#Notes" class="headerlink" title="Notes"></a>Notes</h5><p>Because <code>assert</code> is a <em>function-like macro</em>, commas anywhere in condition that are not protected by parentheses are interpreted as macro argument separators. Such commas are often found in template argument lists:</p><figure class="highlight c++"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">assert(<span class="built_in">std</span>::is_same_v&lt;<span class="keyword">int</span>, <span class="keyword">int</span>&gt;); <span class="comment">// error: assert does not take two arguments</span></div><div class="line">assert((<span class="built_in">std</span>::is_same_v&lt;<span class="keyword">int</span>, <span class="keyword">int</span>&gt;)); <span class="comment">// OK: one argument</span></div><div class="line"><span class="keyword">static_assert</span>(<span class="built_in">std</span>::is_same_v&lt;<span class="keyword">int</span>, <span class="keyword">int</span>&gt;); <span class="comment">// OK: not a macro</span></div></pre></td></tr></table></figure><h5 id="Example"><a href="#Example" class="headerlink" title="Example"></a>Example</h5><figure class="highlight c++"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;iostream&gt;</span></span></div><div class="line"><span class="comment">// uncomment to disable assert()</span></div><div class="line"><span class="comment">// #define NDEBUG</span></div><div class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;cassert&gt;</span></span></div><div class="line"> </div><div class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span></div><div class="line"><span class="function"></span>&#123;</div><div class="line">    assert(<span class="number">2</span>+<span class="number">2</span>==<span class="number">4</span>);</div><div class="line">    <span class="built_in">std</span>::<span class="built_in">cout</span> &lt;&lt; <span class="string">"Execution continues past the first assert\n"</span>;</div><div class="line">    assert(<span class="number">2</span>+<span class="number">2</span>==<span class="number">5</span>);</div><div class="line">    <span class="built_in">std</span>::<span class="built_in">cout</span> &lt;&lt; <span class="string">"Execution continues past the second assert\n"</span>;</div><div class="line">&#125;</div></pre></td></tr></table></figure><p>Possible output:</p><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">Execution continues past the first assert</div><div class="line">test: test.cc:10: int main(): Assertion `2+2==5&apos; failed.</div><div class="line">Aborted</div></pre></td></tr></table></figure><h4 id="Static-Assertion"><a href="#Static-Assertion" class="headerlink" title="Static Assertion"></a>Static Assertion</h4><p>Performs compile-time assertion checking</p><h5 id="Note"><a href="#Note" class="headerlink" title="Note"></a>Note</h5><p>Since message has to be a string literal, it cannot contain dynamic information or even a constant expression that is not a string literal itself. In particular, it cannot contain the name of the template type argument.</p><h5 id="Example-1"><a href="#Example-1" class="headerlink" title="Example"></a>Example</h5><figure class="highlight c++"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div></pre></td><td class="code"><pre><div class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;type_traits&gt;</span></span></div><div class="line"> </div><div class="line"><span class="keyword">template</span> &lt;<span class="class"><span class="keyword">class</span> <span class="title">T</span>&gt;</span></div><div class="line"><span class="class"><span class="title">void</span> <span class="title">swap</span>(<span class="title">T</span>&amp; <span class="title">a</span>, <span class="title">T</span>&amp; <span class="title">b</span>)</span></div><div class="line"><span class="class">&#123;</span></div><div class="line">    <span class="keyword">static_assert</span>(<span class="built_in">std</span>::is_copy_constructible&lt;T&gt;::value,</div><div class="line">                  <span class="string">"Swap requires copying"</span>);</div><div class="line">    <span class="keyword">static_assert</span>(<span class="built_in">std</span>::is_nothrow_move_constructible&lt;T&gt;::value</div><div class="line">               &amp;&amp; <span class="built_in">std</span>::is_nothrow_move_assignable&lt;T&gt;::value,</div><div class="line">                  <span class="string">"Swap may throw"</span>);</div><div class="line">    <span class="keyword">auto</span> c = b;</div><div class="line">    b = a;</div><div class="line">    a = c;</div><div class="line">&#125;</div><div class="line"> </div><div class="line"><span class="keyword">template</span> &lt;<span class="class"><span class="keyword">class</span> <span class="title">T</span>&gt;</span></div><div class="line"><span class="class"><span class="title">struct</span> <span class="title">data_structure</span></span></div><div class="line"><span class="class">&#123;</span></div><div class="line">    <span class="keyword">static_assert</span>(<span class="built_in">std</span>::is_default_constructible&lt;T&gt;::value,</div><div class="line">                  <span class="string">"Data Structure requires default-constructible elements"</span>);</div><div class="line">&#125;;</div><div class="line"> </div><div class="line"><span class="class"><span class="keyword">struct</span> <span class="title">no_copy</span></span></div><div class="line"><span class="class">&#123;</span></div><div class="line">    no_copy ( <span class="keyword">const</span> no_copy&amp; ) = <span class="keyword">delete</span>;</div><div class="line">    no_copy () = <span class="keyword">default</span>;</div><div class="line">&#125;;</div><div class="line"> </div><div class="line"><span class="class"><span class="keyword">struct</span> <span class="title">no_default</span></span></div><div class="line"><span class="class">&#123;</span></div><div class="line">    no_default () = <span class="keyword">delete</span>;</div><div class="line">&#125;;</div><div class="line"> </div><div class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span></div><div class="line"><span class="function"></span>&#123;</div><div class="line">    <span class="keyword">int</span> a, b;</div><div class="line">    swap(a, b);</div><div class="line"> </div><div class="line">    no_copy nc_a, nc_b;</div><div class="line">    swap(nc_a, nc_b); <span class="comment">// 1</span></div><div class="line"> </div><div class="line">    data_structure&lt;<span class="keyword">int</span>&gt; ds_ok;</div><div class="line">    data_structure&lt;no_default&gt; ds_error; <span class="comment">// 2</span></div><div class="line">&#125;</div></pre></td></tr></table></figure><p>Possible output:</p><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">1: error: static assertion failed: Swap requires copying</div><div class="line">2: error: static assertion failed: Data Structure requires default-constructible elements</div></pre></td></tr></table></figure><h2 id="VERIFY"><a href="#VERIFY" class="headerlink" title="VERIFY"></a>VERIFY</h2><p><code>Verify</code> behaves exactly the same as Assert in debug builds. Indeed it is an Assertion. But in release builds it drops the verification, but keeps the expression.</p><p>Unlike runtime Assertions the Verify macro is used for those cases where the expression is essential to the applications operation and cannot simply be stripped out of release builds.</p><figure class="highlight c++"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="meta">#<span class="meta-keyword">ifndef</span> NDEBUG</span></div><div class="line"><span class="meta">#<span class="meta-keyword">define</span> VERIFY assert</span></div><div class="line"><span class="meta">#<span class="meta-keyword">else</span></span></div><div class="line"><span class="meta">#<span class="meta-keyword">define</span> VERIFY(experssion) (expression)</span></div><div class="line"><span class="meta">#<span class="meta-keyword">endif</span></span></div></pre></td></tr></table></figure><h2 id="TRACE"><a href="#TRACE" class="headerlink" title="TRACE"></a>TRACE</h2><p><code>Trace</code> macro is to provide formatted output for the debugger to display, but that can be stripped out of release builds.</p><p>Following code works only in VC++:</p><figure class="highlight c++"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div><div class="line">66</div><div class="line">67</div></pre></td><td class="code"><pre><div class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;stdio.h&gt;</span></span></div><div class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;windows.h&gt;</span></span></div><div class="line"></div><div class="line"><span class="meta">#<span class="meta-keyword">ifdef</span> _DEBUG</span></div><div class="line">inline auto Trace(wchar_t const * format, ...) -&gt; void</div><div class="line">&#123;</div><div class="line">    va_list args;</div><div class="line">    va_start(args, format);</div><div class="line"></div><div class="line">    <span class="keyword">wchar_t</span> buffer [<span class="number">256</span>];</div><div class="line"></div><div class="line">    ASSERT(<span class="number">-1</span> != _vsnwprintf_s(buffer,</div><div class="line">                               _countof(buffer) <span class="number">-1</span>,</div><div class="line">                               format,</div><div class="line">                               args));</div><div class="line"></div><div class="line">    va_end(args);</div><div class="line"></div><div class="line">    OutputDebugString(buffer);</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="class"><span class="keyword">struct</span> <span class="title">Tracer</span></span></div><div class="line"><span class="class">&#123;</span></div><div class="line">    <span class="keyword">char</span> <span class="keyword">const</span> * m_filename;</div><div class="line">    <span class="keyword">unsigned</span> m_line;</div><div class="line"></div><div class="line">    Tracer(<span class="keyword">char</span> <span class="keyword">const</span> * filename, <span class="keyword">unsigned</span> <span class="keyword">const</span> line) :</div><div class="line">        m_filename &#123; filename &#125;,</div><div class="line">        m_line &#123; line &#125;</div><div class="line">    &#123;</div><div class="line"></div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="keyword">template</span> &lt;<span class="keyword">typename</span>... Args&gt;</div><div class="line">    auto operator()(wchar_t const * format, Args... args) const -&gt; void</div><div class="line">    &#123;</div><div class="line">        <span class="keyword">wchar_t</span> buffer [<span class="number">256</span>];</div><div class="line"></div><div class="line">        <span class="keyword">auto</span> count = swprintf_s(buffer,</div><div class="line">                                <span class="string">L"%S(%d): "</span>,</div><div class="line">                                m_filename,</div><div class="line">                                m_line);</div><div class="line"></div><div class="line">        ASSERT(<span class="number">-1</span> != count);</div><div class="line"></div><div class="line">        ASSERT(<span class="number">-1</span> != _snwprintf_s(buffer + count,</div><div class="line">                                  _countof(buffer) - count,</div><div class="line">                                  _countof(buffer) - count - <span class="number">1</span>,</div><div class="line">                                  format,</div><div class="line">                                  args...));</div><div class="line"></div><div class="line">        OutputDebugString(buffer);</div><div class="line">    &#125;</div><div class="line">&#125;;</div><div class="line"></div><div class="line"><span class="meta">#<span class="meta-keyword">endif</span></span></div><div class="line"></div><div class="line"><span class="meta">#<span class="meta-keyword">ifdef</span> _DEBUG</span></div><div class="line"><span class="meta">#<span class="meta-keyword">define</span> TRACE Tracer(__FILE__, __LINE__)</span></div><div class="line"><span class="meta">#<span class="meta-keyword">else</span></span></div><div class="line"><span class="meta">#<span class="meta-keyword">define</span> TRACE __noop</span></div><div class="line"><span class="meta">#<span class="meta-keyword">endif</span></span></div><div class="line"></div><div class="line">auto main() -&gt; int</div><div class="line">&#123;</div><div class="line">    TRACE(<span class="string">L"1 + 2 = %d\n"</span>, <span class="number">1</span> + <span class="number">2</span>);</div><div class="line">&#125;</div></pre></td></tr></table></figure><h2 id="My-point"><a href="#My-point" class="headerlink" title="My point"></a>My point</h2><p>Assertions are useful, however, <code>VERIFY</code> and <code>TRACE</code> can be repalced by other logging libaries.</p></div><div><ul class="post-copyright"><li class="post-copyright-author"><strong>Post author:</strong> Yusu Pan</li><li class="post-copyright-link"><strong>Post link:</strong> <a href="http://www.yuthon.com/2017/04/25/Modern-C-Libraries-Getting-Started/" title="Modern C++ Libraries: Getting Started">http://www.yuthon.com/2017/04/25/Modern-C-Libraries-Getting-Started/</a></li><li class="post-copyright-license"><strong>Copyright Notice: </strong>All articles in this blog are licensed under <a href="https://creativecommons.org/licenses/by-nc-sa/3.0/" rel="external nofollow" target="_blank">CC BY-NC-SA 3.0</a> unless stating additionally.</li></ul></div><footer class="post-footer"><div class="post-tags"><a href="/tags/Pluralsight/" rel="tag"># Pluralsight</a> <a href="/tags/C/" rel="tag"># C++</a> <a href="/tags/C-11/" rel="tag"># C++11</a></div><div class="post-nav"><div class="post-nav-next post-nav-item"><a href="/2017/03/10/TensorFlow-r1-0-on-TX1/" rel="next" title="TensorFlow r1.0 on TX1 (now successful)"><i class="fa fa-chevron-left"></i> TensorFlow r1.0 on TX1 (now successful)</a></div><span class="post-nav-divider"></span><div class="post-nav-prev post-nav-item"><a href="/2017/04/27/Notes-From-Faster-R-CNN-to-Mask-R-CNN/" rel="prev" title="Notes: From Faster R-CNN to Mask R-CNN">Notes: From Faster R-CNN to Mask R-CNN <i class="fa fa-chevron-right"></i></a></div></div></footer></div></article><div class="post-spread"></div></div></div><div class="comments" id="comments"><div id="disqus_thread"><noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript></div></div></div><div class="sidebar-toggle"><div class="sidebar-toggle-line-wrap"><span class="sidebar-toggle-line sidebar-toggle-line-first"></span> <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span> <span class="sidebar-toggle-line sidebar-toggle-line-last"></span></div></div><aside id="sidebar" class="sidebar"><div class="sidebar-inner"><ul class="sidebar-nav motion-element"><li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">Table of Contents</li><li class="sidebar-nav-overview" data-target="site-overview">Overview</li></ul><section class="site-overview sidebar-panel"><div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person"><img class="site-author-image" itemprop="image" src="/uploads/avatar.png" alt="Yusu Pan"><p class="site-author-name" itemprop="name">Yusu Pan</p><p class="site-description motion-element" itemprop="description">We've been gaining one good thing through losing another.</p></div><nav class="site-state motion-element"><div class="site-state-item site-state-posts"><a href="/archives/"><span class="site-state-item-count">41</span> <span class="site-state-item-name">posts</span></a></div><div class="site-state-item site-state-categories"><a href="/categories/index.html"><span class="site-state-item-count">5</span> <span class="site-state-item-name">categories</span></a></div><div class="site-state-item site-state-tags"><a href="/tags/index.html"><span class="site-state-item-count">47</span> <span class="site-state-item-name">tags</span></a></div></nav><div class="feed-link motion-element"><a href="/atom.xml" rel="alternate"><i class="fa fa-rss"></i> RSS</a></div><div class="links-of-author motion-element"><span class="links-of-author-item"><a href="https://github.com/corenel" target="_blank" title="GitHub"><i class="fa fa-fw fa-github"></i> GitHub </a></span><span class="links-of-author-item"><a href="https://twitter.com/corenel" target="_blank" title="Twitter"><i class="fa fa-fw fa-twitter"></i> Twitter </a></span><span class="links-of-author-item"><a href="http://www.zhihu.com/people/pan-yu-su" target="_blank" title="Zhihu"><i class="fa fa-fw fa-globe"></i> Zhihu</a></span></div><div class="cc-license motion-element" itemprop="license"><a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" class="cc-opacity" target="_blank"><img src="/images/cc-by-nc-sa.svg" alt="Creative Commons"></a></div></section><!--noindex--><section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active"><div class="post-toc"><div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Assertions"><span class="nav-number">1.</span> <span class="nav-text">Assertions</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Course-content"><span class="nav-number">1.1.</span> <span class="nav-text">Course content</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#C-documentation"><span class="nav-number">1.2.</span> <span class="nav-text">C++ documentation</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#assert"><span class="nav-number">1.2.1.</span> <span class="nav-text">assert</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#Notes"><span class="nav-number">1.2.1.1.</span> <span class="nav-text">Notes</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#Example"><span class="nav-number">1.2.1.2.</span> <span class="nav-text">Example</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Static-Assertion"><span class="nav-number">1.2.2.</span> <span class="nav-text">Static Assertion</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#Note"><span class="nav-number">1.2.2.1.</span> <span class="nav-text">Note</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#Example-1"><span class="nav-number">1.2.2.2.</span> <span class="nav-text">Example</span></a></li></ol></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#VERIFY"><span class="nav-number">2.</span> <span class="nav-text">VERIFY</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#TRACE"><span class="nav-number">3.</span> <span class="nav-text">TRACE</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#My-point"><span class="nav-number">4.</span> <span class="nav-text">My point</span></a></li></ol></div></div></section><!--/noindex--></div></aside></div></main><footer id="footer" class="footer"><div class="footer-inner"><div class="copyright">&copy; 2015 - <span itemprop="copyrightYear">2017</span> <span class="with-love"><i class="fa fa-heart"></i> </span><span class="author" itemprop="copyrightHolder">Yusu Pan</span></div><div class="powered-by">Powered by <a class="theme-link" href="https://hexo.io">Hexo</a></div><div class="theme-info">Theme - <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">NexT.Pisces</a></div></div></footer><div class="back-to-top"><i class="fa fa-arrow-up"></i></div></div><script type="text/javascript">if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
     window.Promise = null;
-  }
-</script>
-
-
-
-
-
-
-
-
-
-  
-
-
-
-
-
-
-
-
-
-
-
-
-  
-  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
-
-  
-  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
-
-  
-  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
-
-  
-  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
-
-  
-  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
-
-  
-  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
-
-
-  
-
-
-  <script type="text/javascript" src="/js/src/utils.js?v=5.1.1"></script>
-
-  <script type="text/javascript" src="/js/src/motion.js?v=5.1.1"></script>
-
-
-
-  
-  
-
-
-  <script type="text/javascript" src="/js/src/affix.js?v=5.1.1"></script>
-
-  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.1"></script>
-
-
-
-  
-  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.1"></script>
-<script type="text/javascript" src="/js/src/post-details.js?v=5.1.1"></script>
-
-
-
-  
-
-
-  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.1"></script>
-
-
-
-  
-
-
-  
-
-    
-      <script id="dsq-count-scr" src="https://yuthons-blog.disqus.com/count.js" async></script>
-    
-
-    
-      <script type="text/javascript">
-        var disqus_config = function () {
+  }</script><script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script><script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script><script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script><script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script><script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script><script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script><script type="text/javascript" src="/js/src/utils.js?v=5.1.2"></script><script type="text/javascript" src="/js/src/motion.js?v=5.1.2"></script><script type="text/javascript" src="/js/src/affix.js?v=5.1.2"></script><script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.2"></script><script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.2"></script><script type="text/javascript" src="/js/src/post-details.js?v=5.1.2"></script><script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.2"></script><script id="dsq-count-scr" src="https://yuthons-blog.disqus.com/count.js" async></script><script type="text/javascript">var disqus_config = function () {
           this.page.url = 'http://www.yuthon.com/2017/04/25/Modern-C-Libraries-Getting-Started/';
           this.page.identifier = '2017/04/25/Modern-C-Libraries-Getting-Started/';
           this.page.title = 'Modern C++ Libraries: Getting Started';
@@ -885,45 +32,15 @@ AssertionsCourse contentAn Assertion may be a function, but usually a macro, tha
         var d = document, s = d.createElement('script');
         s.src = 'https://yuthons-blog.disqus.com/embed.js';
         s.setAttribute('data-timestamp', '' + +new Date());
-        (d.head || d.body).appendChild(s);
-      </script>
-    
-
-  
-
-
-
-
-	
-
-
-
-
-
-  
-
-
-
-
-
-  
-
-
-
-
-
-
-
-
-  
-
-  <script type="text/javascript">
-    // Popup Window;
+        (d.head || d.body).appendChild(s);</script><script type="text/javascript">// Popup Window;
     var isfetched = false;
+    var isXml = true;
     // Search DB path;
     var search_path = "search.xml";
     if (search_path.length === 0) {
       search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
     }
     var path = "/" + search_path;
     // monitor main search box;
@@ -943,27 +60,41 @@ AssertionsCourse contentAn Assertion may be a function, but usually a macro, tha
         .css('overflow', 'hidden');
       $('.search-popup-overlay').click(onPopupClose);
       $('.popup').toggle();
-      $('#local-search-input').focus();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
     }
 
     // search function;
     var searchFunc = function(path, search_id, content_id) {
       'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
       $.ajax({
         url: path,
-        dataType: "xml",
+        dataType: isXml ? "xml" : "json",
         async: true,
-        success: function( xmlResponse ) {
+        success: function(res) {
           // get the contents from search data
           isfetched = true;
           $('.popup').detach().appendTo('.header-inner');
-          var datas = $( "entry", xmlResponse ).map(function() {
+          var datas = isXml ? $("entry", res).map(function() {
             return {
-              title: $( "title", this ).text(),
+              title: $("title", this).text(),
               content: $("content",this).text(),
-              url: $( "url" , this).text()
+              url: $("url" , this).text()
             };
-          }).get();
+          }).get() : res;
           var input = document.getElementById(search_id);
           var resultContent = document.getElementById(content_id);
           var inputEventFunction = function() {
@@ -1184,9 +315,15 @@ AssertionsCourse contentAn Assertion may be a function, but usually a macro, tha
               }
             });
           }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
           proceedsearch();
         }
-      });}
+      });
+    }
 
     // handle and trigger popup window;
     $('.popup-trigger').click(function(e) {
@@ -1208,44 +345,15 @@ AssertionsCourse contentAn Assertion may be a function, but usually a macro, tha
       if (shouldDismissSearchPopup) {
         onPopupClose();
       }
-    });
-  </script>
-
-
-
-
-
-  
-
-  
-
-  
-  
-    <script type="text/x-mathjax-config">
-      MathJax.Hub.Config({
+    });</script><script type="text/x-mathjax-config">MathJax.Hub.Config({
         tex2jax: {
           inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
           processEscapes: true,
           skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
         }
-      });
-    </script>
-
-    <script type="text/x-mathjax-config">
-      MathJax.Hub.Queue(function() {
+      });</script><script type="text/x-mathjax-config">MathJax.Hub.Queue(function() {
         var all = MathJax.Hub.getAllJax(), i;
         for (i=0; i < all.length; i += 1) {
           all[i].SourceElement().parentNode.className += ' has-jax';
         }
-      });
-    </script>
-    <script type="text/javascript" src="//cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script><!-- hexo-inject:begin --><!-- hexo-inject:end -->
-  
-
-
-  
-
-  
-
-</body>
-</html>
+      });</script><script type="text/javascript" src="//cdn.bootcss.com/mathjax/2.7.1/latest.js?config=TeX-AMS-MML_HTMLorMML"></script><!-- hexo-inject:begin --><!-- hexo-inject:end --></body></html>

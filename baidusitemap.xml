@@ -4,6 +4,28 @@
 
     
   <url>
+    <loc>http://www.yuthon.com/2017/06/14/Let-s-talk-about-zero-shot-learning/</loc>
+    <lastmod>2017-06-14T06:43:31.000Z</lastmod>
+    <data>
+        <display>
+        <title>Let's talk about Zero-Shot Learning.</title>
+        <pubTime>2017-06-14T06:20:01.000Z</pubTime>
+        
+        <tag>Deep Learning</tag>
+         
+        <tag>Semantic Segmentation</tag>
+         
+         
+           
+             
+              <breadCrumb title="Thesis Notes" url="http://www.yuthon.com/categories/Thesis-Notes/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
     <loc>http://www.yuthon.com/2017/05/10/Thesis-Notes-for-Amortized-Inference-and-Learning-in-Latent-CRF/</loc>
     <lastmod>2017-05-30T14:05:10.000Z</lastmod>
     <data>
@@ -55,9 +77,9 @@
         <title>Notes: From Faster R-CNN to Mask R-CNN</title>
         <pubTime>2017-04-27T04:55:33.000Z</pubTime>
         
-        <tag>Object Detection</tag>
-         
         <tag>Semantic Segmentation</tag>
+         
+        <tag>Object Detection</tag>
          
         <tag>Faster R-CNN</tag>
          

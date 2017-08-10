@@ -1,119 +1,10 @@
-<!doctype html>
-
-
-
-  
-
-
-<html class="theme-next pisces use-motion" lang="en">
-<head>
-  <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="UTF-8"/>
-<meta http-equiv="X-UA-Compatible" content="IE=edge" />
-<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
-
-
-
-
-
-
-<meta http-equiv="Cache-Control" content="no-transform" />
-<meta http-equiv="Cache-Control" content="no-siteapp" />
-
-
-
-  <meta name="google-site-verification" content="BGEL63KNRW25AkpCy3shpRdMWDHE9LZTAFS3XSHtFK8" />
-
-
-
-
-
-
-
-
-
-
-
-
-
-  
-  
-  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
-
-
-
-
-  
-  
-  
-  
-
-  
-    
-    
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-    
-    
-    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
-  
-
-
-
-
-
-
-<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
-
-<link href="/css/main.css?v=5.1.1" rel="stylesheet" type="text/css" />
-
-
-  <meta name="keywords" content="Tensorflow,Ubuntu,Deep Learning,CUDA," />
-
-
-
-
-
-  <link rel="alternate" href="/atom.xml" title="Yuthon's blog" type="application/atom+xml" />
-
-
-
-
-  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.1" />
-
-
-
-
-
-
-<meta name="description" content="昨天折腾了一个下午开发环境的配置，记录一下其中遇到的坑。">
-<meta property="og:type" content="article">
-<meta property="og:title" content="CUDA and Tensorflow Installation on Ubuntu 16.04">
-<meta property="og:url" content="http://www.yuthon.com/2016/10/25/CUDA-and-Tensorflow-Installation-on-Ubuntu-16-04/index.html">
-<meta property="og:site_name" content="Yuthon's blog">
-<meta property="og:description" content="昨天折腾了一个下午开发环境的配置，记录一下其中遇到的坑。">
-<meta property="og:updated_time" content="2016-10-30T07:01:16.000Z">
-<meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="CUDA and Tensorflow Installation on Ubuntu 16.04">
-<meta name="twitter:description" content="昨天折腾了一个下午开发环境的配置，记录一下其中遇到的坑。">
-
-
-
-<script type="text/javascript" id="hexo.configurations">
-  var NexT = window.NexT || {};
+<!DOCTYPE html><html class="theme-next pisces use-motion" lang="en"><head><!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1"><meta name="theme-color" content="#222"><meta http-equiv="Cache-Control" content="no-transform"><meta http-equiv="Cache-Control" content="no-siteapp"><meta name="google-site-verification" content="BGEL63KNRW25AkpCy3shpRdMWDHE9LZTAFS3XSHtFK8"><link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css"><link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css"><link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css"><link href="/css/main.css?v=5.1.2" rel="stylesheet" type="text/css"><meta name="keywords" content="Tensorflow,Ubuntu,Deep Learning,CUDA,"><link rel="alternate" href="/atom.xml" title="Yuthon's blog" type="application/atom+xml"><link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.2"><meta name="description" content="昨天折腾了一个下午开发环境的配置，记录一下其中遇到的坑。"><meta name="keywords" content="Tensorflow,Ubuntu,Deep Learning,CUDA"><meta property="og:type" content="article"><meta property="og:title" content="CUDA and Tensorflow Installation on Ubuntu 16.04"><meta property="og:url" content="http://www.yuthon.com/2016/10/25/CUDA-and-Tensorflow-Installation-on-Ubuntu-16-04/index.html"><meta property="og:site_name" content="Yuthon&#39;s blog"><meta property="og:description" content="昨天折腾了一个下午开发环境的配置，记录一下其中遇到的坑。"><meta property="og:locale" content="en"><meta property="og:updated_time" content="2016-10-30T07:01:16.000Z"><meta name="twitter:card" content="summary"><meta name="twitter:title" content="CUDA and Tensorflow Installation on Ubuntu 16.04"><meta name="twitter:description" content="昨天折腾了一个下午开发环境的配置，记录一下其中遇到的坑。"><script type="text/javascript" id="hexo.configurations">var NexT = window.NexT || {};
   var CONFIG = {
     root: '/',
     scheme: 'Pisces',
-    sidebar: {"position":"left","display":"hide","offset":12,"offset_float":0,"b2t":false,"scrollpercent":false},
+    sidebar: {"position":"left","display":"hide","offset":12,"offset_float":12,"b2t":false,"scrollpercent":false,"onmobile":false},
     fancybox: true,
+    tabs: true,
     motion: true,
     duoshuo: {
       userId: '0',
@@ -126,850 +17,14 @@
       hits: {"per_page":10},
       labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
     }
-  };
-</script>
-
-
-
-  <link rel="canonical" href="http://www.yuthon.com/2016/10/25/CUDA-and-Tensorflow-Installation-on-Ubuntu-16-04/"/>
-
-
-
-
-
-  <title>CUDA and Tensorflow Installation on Ubuntu 16.04 | Yuthon's blog</title><!-- hexo-inject:begin --><!-- hexo-inject:end -->
-</head>
-
-<body itemscope itemtype="http://schema.org/WebPage" lang="en">
-
-  
-
-
-
-
-<!-- hexo-inject:begin --><!-- hexo-inject:end --><script>
-  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  };</script><link rel="canonical" href="http://www.yuthon.com/2016/10/25/CUDA-and-Tensorflow-Installation-on-Ubuntu-16-04/"><title>CUDA and Tensorflow Installation on Ubuntu 16.04 | Yuthon's blog</title><script>(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
             (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
           m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
   })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
   ga('create', 'UA-76233259-1', 'auto');
-  ga('send', 'pageview');
-</script>
-
-
-
-
-
-
-
-
-
-
-
-  
-  
-    
-  
-
-  <div class="container sidebar-position-left page-post-detail ">
-    <div class="headband"></div>
-
-    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
-      <div class="header-inner"><div class="site-brand-wrapper">
-  <div class="site-meta ">
-    
-
-    <div class="custom-logo-site-title">
-      <a href="/"  class="brand" rel="start">
-        <span class="logo-line-before"><i></i></span>
-        <span class="site-title">Yuthon's blog</span>
-        <span class="logo-line-after"><i></i></span>
-      </a>
-    </div>
-      
-        <p class="site-subtitle"></p>
-      
-  </div>
-
-  <div class="site-nav-toggle">
-    <button>
-      <span class="btn-bar"></span>
-      <span class="btn-bar"></span>
-      <span class="btn-bar"></span>
-    </button>
-  </div>
-</div>
-
-<nav class="site-nav">
-  
-
-  
-    <ul id="menu" class="menu">
-      
-        
-        <li class="menu-item menu-item-home">
-          <a href="/" rel="section">
-            
-              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
-            
-            Home
-          </a>
-        </li>
-      
-        
-        <li class="menu-item menu-item-categories">
-          <a href="/categories" rel="section">
-            
-              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
-            
-            Categories
-          </a>
-        </li>
-      
-        
-        <li class="menu-item menu-item-archives">
-          <a href="/archives" rel="section">
-            
-              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
-            
-            Archives
-          </a>
-        </li>
-      
-        
-        <li class="menu-item menu-item-tags">
-          <a href="/tags" rel="section">
-            
-              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
-            
-            Tags
-          </a>
-        </li>
-      
-        
-        <li class="menu-item menu-item-sitemap">
-          <a href="/sitemap.xml" rel="section">
-            
-              <i class="menu-item-icon fa fa-fw fa-sitemap"></i> <br />
-            
-            Sitemap
-          </a>
-        </li>
-      
-
-      
-        <li class="menu-item menu-item-search">
-          
-            <a href="javascript:;" class="popup-trigger">
-          
-            
-              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
-            
-            Search
-          </a>
-        </li>
-      
-    </ul>
-  
-
-  
-    <div class="site-search">
-      
-  <div class="popup search-popup local-search-popup">
-  <div class="local-search-header clearfix">
-    <span class="search-icon">
-      <i class="fa fa-search"></i>
-    </span>
-    <span class="popup-btn-close">
-      <i class="fa fa-times-circle"></i>
-    </span>
-    <div class="local-search-input-wrapper">
-      <input autocapitalize="off" autocomplete="off" autocorrect="off"
-             placeholder="Searching..." spellcheck="false"
-             type="text" id="local-search-input">
-    </div>
-  </div>
-  <div id="local-search-result"></div>
-</div>
-
-
-
-    </div>
-  
-</nav>
-
-
-
- </div>
-    </header>
-
-    <main id="main" class="main">
-      <div class="main-inner">
-        <div class="content-wrap">
-          <div id="content" class="content">
-            
-
-  <div id="posts" class="posts-expand">
-    
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="http://www.yuthon.com/2016/10/25/CUDA-and-Tensorflow-Installation-on-Ubuntu-16-04/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Yusu Pan">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/uploads/avatar.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Yuthon's blog">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-            
-            
-              
-                CUDA and Tensorflow Installation on Ubuntu 16.04
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">Posted on</span>
-              
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2016-10-25T20:53:50+08:00">
-                2016-10-25
-              </time>
-            
-
-            
-              <span class="post-meta-divider">|</span>
-            
-
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-check-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">Post modified</span>
-              
-              <time title="Post modified" itemprop="dateModified" datetime="2016-10-30T15:01:16+08:00">
-                2016-10-30
-              </time>
-            
-          </span>
-
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">In</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Experience/" itemprop="url" rel="index">
-                    <span itemprop="name">Experience</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-              <span class="post-comments-count">
-                <span class="post-meta-divider">|</span>
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-comment-o"></i>
-                </span>
-                <a href="/2016/10/25/CUDA-and-Tensorflow-Installation-on-Ubuntu-16-04/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count disqus-comment-count"
-                        data-disqus-identifier="2016/10/25/CUDA-and-Tensorflow-Installation-on-Ubuntu-16-04/" itemprop="commentCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        <p>昨天折腾了一个下午开发环境的配置，记录一下其中遇到的坑。</p>
-<a id="more"></a>
-<h2 id="硬件配置"><a href="#硬件配置" class="headerlink" title="硬件配置"></a>硬件配置</h2><p>我的硬件配置(XPS 15 9550):</p>
-<ul>
-<li>CPU: i5 6300HQ</li>
-<li>GPU: GTX960M 2G</li>
-<li>内存: 16G DDR4 2133</li>
-<li>硬盘: 512G SM951 NVMe</li>
-</ul>
-<blockquote>
-<p>基本上就只处于玩票的状态, 实验室快给我配1080啊~~~</p>
-</blockquote>
-<p>上一个 NVIDIA 钦定的 DevBox <a href="http://www.nvidia.com/object/deep-learning-system.html" target="_blank" rel="external">配置</a>:</p>
-<table>
-<thead>
-<tr>
-<th style="text-align:left">Name</th>
-<th>Description</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td style="text-align:left">GPUs</td>
-<td>8x Tesla P100</td>
-</tr>
-<tr>
-<td style="text-align:left">TFLOPS (GPU FP16 /CPU FP32)</td>
-<td>170/3</td>
-</tr>
-<tr>
-<td style="text-align:left">GPU Memory</td>
-<td>16 GB per GPU</td>
-</tr>
-<tr>
-<td style="text-align:left">CPU</td>
-<td>Dual 20-core Intel® Xeon®E5-2698 v4 2.2 GHz</td>
-</tr>
-<tr>
-<td style="text-align:left">NVIDIA CUDA® Cores</td>
-<td>28672</td>
-</tr>
-<tr>
-<td style="text-align:left">System Memory</td>
-<td>512 GB 2133 MHz DDR4</td>
-</tr>
-<tr>
-<td style="text-align:left">Storage</td>
-<td>4x 1.92 TB SSD RAID 0</td>
-</tr>
-<tr>
-<td style="text-align:left">Network</td>
-<td>Dual 10 GbE, 4 IB EDR</td>
-</tr>
-<tr>
-<td style="text-align:left">Software</td>
-<td>Ubuntu Server Linux OSDGX-1 Recommended GPUDriver</td>
-</tr>
-<tr>
-<td style="text-align:left">System Weight</td>
-<td>134 lbs</td>
-</tr>
-<tr>
-<td style="text-align:left">System Dimensions</td>
-<td>866 D x 444 W x 131 H (mm)</td>
-</tr>
-<tr>
-<td style="text-align:left">Packing Dimensions</td>
-<td>1180 D x 730 W x 284 H (mm)</td>
-</tr>
-<tr>
-<td style="text-align:left">Maximum Power Requirements</td>
-<td>3200W</td>
-</tr>
-<tr>
-<td style="text-align:left">Operating Temperature Range</td>
-<td>10 - 30°C</td>
-</tr>
-</tbody>
-</table>
-<p>这简直是吾辈梦想神机啊… 然而要 <strong>$129000</strong> !</p>
-<h2 id="系统环境"><a href="#系统环境" class="headerlink" title="系统环境"></a>系统环境</h2><p>推荐是用 Ubuntu 最新的 LTS 版本 16.04.1, 对 Skylake 系列的 CPU 和主板的支持都很不错. 关于在 XPS 15 9550 上的详细配置过程, 我计划稍后专门写一篇.</p>
-<p>本来想在 macOS 上跑的, 奈何黑苹果不支持独显.</p>
-<h2 id="安装-CUDA"><a href="#安装-CUDA" class="headerlink" title="安装 CUDA"></a>安装 CUDA</h2><p><a href="https://developer.nvidia.com/cuda-downloads" target="_blank" rel="external">CUDA</a> 与 <a href="https://developer.nvidia.com/cudnn" target="_blank" rel="external">cuDNN</a> 的安装在 NVIDIA 与 Tensorflow的官网上都有<a href="https://www.tensorflow.org/versions/r0.11/get_started/os_setup.html#optional-install-cuda-gpus-on-linux" target="_blank" rel="external">详细说明</a>, 此处仅就一些关键环节作出说明.</p>
-<ul>
-<li><p>禁用开源的 Nouveau 驱动</p>
-<ul>
-<li><p>首先看看有没有在使用这个开源驱动:</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ lsmod | grep nouveau</div></pre></td></tr></table></figure>
-</li>
-<li><p>创建<code>/etc/modprobe.d/blacklist-nouveau.conf</code>文件, 并写入以下内容</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">blacklist nouveau</div><div class="line">options nouveau modeset=0</div></pre></td></tr></table></figure>
-</li>
-<li><p>重启kernel initramfs</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ sudo update-initramfs -u</div></pre></td></tr></table></figure>
-</li>
-</ul>
-</li>
-<li><p>从ppa源下载最新版的驱动(&gt;364), 或者使用 CUDA-Toolkit 自带的驱动:</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">$ sudo apt-get purge nvidia-*</div><div class="line">$ sudo add-apt-repository ppa:graphics-drivers/ppa</div><div class="line">$ sudo apt-get update</div><div class="line">$ sudo apt-get install nvidia-370</div></pre></td></tr></table></figure>
-</li>
-<li><p>下载 CUDA 的 runfile (local) 版本, 不要使用apt-get 的方式, 保证获取到的是最新的版本 (目前是8.0).</p>
-</li>
-<li><p>安装过程中, 需要<code>Ctrl+Alt+F1</code>切换到 tty 界面, 然后关闭 X server:</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ sudo service lightdm stop</div></pre></td></tr></table></figure>
-<p>之后再执行安装过程</p>
-</li>
-<li><p>安装过程中, 如果是像我一样的 Intel 核显 + NVIDIA 独显的, <strong>绝对不要装 OpenGL</strong>, 否则重启后会陷入 login loop.</p>
-</li>
-<li><p>安装完成之后, 设置环境变量:</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">export LD_LIBRARY_PATH=&quot;$LD_LIBRARY_PATH:/usr/local/cuda/lib64:/usr/local/cuda/extras/CUPTI/lib64&quot;</div><div class="line">export CUDA_HOME=/usr/local/cuda</div></pre></td></tr></table></figure>
-</li>
-</ul>
-<h2 id="安装-cuDNN"><a href="#安装-cuDNN" class="headerlink" title="安装 cuDNN"></a>安装 cuDNN</h2><p>从<a href="https://developer.nvidia.com/cudnn" target="_blank" rel="external">官网</a>下载之后, 执行以下命令 (目前最新版本5.1):</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">tar xvzf cudnn-8.0-linux-x64-v5.1-ga.tgz</div><div class="line">sudo cp cuda/include/cudnn.h /usr/local/cuda/include</div><div class="line">sudo cp cuda/lib64/libcudnn* /usr/local/cuda/lib64</div><div class="line">sudo chmod a+r /usr/local/cuda/include/cudnn.h /usr/local/cuda/lib64/libcudnn*</div></pre></td></tr></table></figure>
-<h2 id="安装Tensorflow"><a href="#安装Tensorflow" class="headerlink" title="安装Tensorflow"></a>安装Tensorflow</h2><p>这是最纠结的一步, 之前按照别人教程说最好从源码编译支持 GPU. 但是由于国内的网络环境, 源码编译需要下一堆的依赖包, 速度超级慢. 因此还是使用官网推荐的 pip 安装方式:</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line"># Get pip</div><div class="line">$ sudo apt-get install python-pip python-dev</div><div class="line"></div><div class="line"># Ubuntu/Linux 64-bit, GPU enabled, Python 2.7</div><div class="line"># Requires CUDA toolkit 8.0 and CuDNN v5. For other versions, see &quot;Install from sources&quot; below.</div><div class="line">$ export TF_BINARY_URL=https://storage.googleapis.com/tensorflow/linux/gpu/tensorflow-0.11.0rc1-cp27-none-linux_x86_64.whl</div><div class="line"></div><div class="line"># Python 2</div><div class="line">$ sudo pip install --upgrade $TF_BINARY_URL</div></pre></td></tr></table></figure>
-<blockquote>
-<ul>
-<li>可以先把<code>tensorflow-0.11.0rc1-cp27-none-linux_x86_64.whl</code>下下来, 本地执行安装命令</li>
-<li>可以使用国内的 pip 源, 加快安装依赖的速度</li>
-</ul>
-</blockquote>
-<h2 id="测试-Tensorflow"><a href="#测试-Tensorflow" class="headerlink" title="测试 Tensorflow"></a>测试 Tensorflow</h2><p>用下面的小例子来测试下 Tensorflow 安装得成不成功:</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line">$ python</div><div class="line">...</div><div class="line">&gt;&gt;&gt; import tensorflow as tf</div><div class="line">&gt;&gt;&gt; hello = tf.constant(&apos;Hello, TensorFlow!&apos;)</div><div class="line">&gt;&gt;&gt; sess = tf.Session()</div><div class="line">&gt;&gt;&gt; print(sess.run(hello))</div><div class="line">Hello, TensorFlow!</div><div class="line">&gt;&gt;&gt; a = tf.constant(10)</div><div class="line">&gt;&gt;&gt; b = tf.constant(32)</div><div class="line">&gt;&gt;&gt; print(sess.run(a + b))</div><div class="line">42</div><div class="line">&gt;&gt;&gt;</div></pre></td></tr></table></figure>
-<p>在 <code>import</code>的同时, 还会显示 CUDA 方面与 GPU 方面的信息.</p>
-<p>至此大功告成!</p>
-<h2 id="Docker-for-tensorflow"><a href="#Docker-for-tensorflow" class="headerlink" title="Docker for tensorflow"></a>Docker for tensorflow</h2><p>其实在这期间还试过直接用装了 Tensorflow 的 Docker 镜像, 也有支持 GPU 的版本. 各位如有兴趣可以试试:</p>
-<ul>
-<li><a href="https://github.com/tensorflow/tensorflow/tree/master/tensorflow/tools/docker" target="_blank" rel="external">Github - Using TensorFlow via Docker</a></li>
-<li><a href="https://github.com/saiprashanths/dl-docker" target="_blank" rel="external">Github - An all-in-one Docker image for deep learning. Contains all the popular DL frameworks (TensorFlow, Theano, Torch, Caffe, etc.)</a></li>
-</ul>
-
-      
-    </div>
-
-    <div>
-      
-        
-
-      
-    </div>
-
-    <div>
-      
-        
-
-      
-    </div>
-
-    <div>
-      
-        
-  <ul class="post-copyright">
-    <li class="post-copyright-author">
-      <strong>Post author:</strong>
-      Yusu Pan
-    </li>
-    <li class="post-copyright-link">
-      <strong>Post link:</strong>
-      <a href="http://www.yuthon.com/2016/10/25/CUDA-and-Tensorflow-Installation-on-Ubuntu-16-04/" title="CUDA and Tensorflow Installation on Ubuntu 16.04">http://www.yuthon.com/2016/10/25/CUDA-and-Tensorflow-Installation-on-Ubuntu-16-04/</a>
-    </li>
-    <li class="post-copyright-license">
-      <strong>Copyright Notice: </strong>
-      All articles in this blog are licensed under <a href="https://creativecommons.org/licenses/by-nc-sa/3.0/" rel="external nofollow" target="_blank">CC BY-NC-SA 3.0</a> unless stating additionally.
-    </li>
-  </ul>
-
-
-      
-    </div>
-
-    <footer class="post-footer">
-      
-        <div class="post-tags">
-          
-            <a href="/tags/Tensorflow/" rel="tag"># Tensorflow</a>
-          
-            <a href="/tags/Ubuntu/" rel="tag"># Ubuntu</a>
-          
-            <a href="/tags/Deep-Learning/" rel="tag"># Deep Learning</a>
-          
-            <a href="/tags/CUDA/" rel="tag"># CUDA</a>
-          
-        </div>
-      
-
-      
-        
-      
-
-      
-        <div class="post-nav">
-          <div class="post-nav-next post-nav-item">
-            
-              <a href="/2016/10/19/Notes-for-CS231n-CNN/" rel="next" title="Notes for CS231n Convolutional Neural Network">
-                <i class="fa fa-chevron-left"></i> Notes for CS231n Convolutional Neural Network
-              </a>
-            
-          </div>
-
-          <span class="post-nav-divider"></span>
-
-          <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2016/10/30/Traffic-Prediction-Using-LSTM/" rel="prev" title="Traffic Prediction Using LSTM">
-                Traffic Prediction Using LSTM <i class="fa fa-chevron-right"></i>
-              </a>
-            
-          </div>
-        </div>
-      
-
-      
-      
-    </footer>
-  </article>
-
-
-
-    <div class="post-spread">
-      
-    </div>
-  </div>
-
-
-          </div>
-          
-
-
-          
-  <div class="comments" id="comments">
-    
-      <div id="disqus_thread">
-        <noscript>
-          Please enable JavaScript to view the
-          <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a>
-        </noscript>
-      </div>
-    
-  </div>
-
-
-        </div>
-        
-          
-  
-  <div class="sidebar-toggle">
-    <div class="sidebar-toggle-line-wrap">
-      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
-      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
-      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
-    </div>
-  </div>
-
-  <aside id="sidebar" class="sidebar">
-    <div class="sidebar-inner">
-
-      
-
-      
-        <ul class="sidebar-nav motion-element">
-          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
-            Table of Contents
-          </li>
-          <li class="sidebar-nav-overview" data-target="site-overview">
-            Overview
-          </li>
-        </ul>
-      
-
-      <section class="site-overview sidebar-panel">
-        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
-          <img class="site-author-image" itemprop="image"
-               src="/uploads/avatar.png"
-               alt="Yusu Pan" />
-          <p class="site-author-name" itemprop="name">Yusu Pan</p>
-           
-              <p class="site-description motion-element" itemprop="description">We've been gaining one good thing through losing another.</p>
-          
-        </div>
-        <nav class="site-state motion-element">
-
-          
-            <div class="site-state-item site-state-posts">
-              <a href="/archives">
-                <span class="site-state-item-count">40</span>
-                <span class="site-state-item-name">posts</span>
-              </a>
-            </div>
-          
-
-          
-            
-            
-            <div class="site-state-item site-state-categories">
-              <a href="/categories/index.html">
-                <span class="site-state-item-count">5</span>
-                <span class="site-state-item-name">categories</span>
-              </a>
-            </div>
-          
-
-          
-            
-            
-            <div class="site-state-item site-state-tags">
-              <a href="/tags/index.html">
-                <span class="site-state-item-count">47</span>
-                <span class="site-state-item-name">tags</span>
-              </a>
-            </div>
-          
-
-        </nav>
-
-        
-          <div class="feed-link motion-element">
-            <a href="/atom.xml" rel="alternate">
-              <i class="fa fa-rss"></i>
-              RSS
-            </a>
-          </div>
-        
-
-        <div class="links-of-author motion-element">
-          
-            
-              <span class="links-of-author-item">
-                <a href="https://github.com/corenel" target="_blank" title="GitHub">
-                  
-                    <i class="fa fa-fw fa-github"></i>
-                  
-                  GitHub
-                </a>
-              </span>
-            
-              <span class="links-of-author-item">
-                <a href="https://twitter.com/corenel" target="_blank" title="Twitter">
-                  
-                    <i class="fa fa-fw fa-twitter"></i>
-                  
-                  Twitter
-                </a>
-              </span>
-            
-              <span class="links-of-author-item">
-                <a href="http://www.zhihu.com/people/pan-yu-su" target="_blank" title="Zhihu">
-                  
-                    <i class="fa fa-fw fa-globe"></i>
-                  
-                  Zhihu
-                </a>
-              </span>
-            
-          
-        </div>
-
-        
-        
-          <div class="cc-license motion-element" itemprop="license">
-            <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" class="cc-opacity" target="_blank">
-              <img src="/images/cc-by-nc-sa.svg" alt="Creative Commons" />
-            </a>
-          </div>
-        
-
-        
-        
-
-        
-
-
-      </section>
-
-      
-      <!--noindex-->
-        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
-          <div class="post-toc">
-
-            
-              
-            
-
-            
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#硬件配置"><span class="nav-number">1.</span> <span class="nav-text">硬件配置</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#系统环境"><span class="nav-number">2.</span> <span class="nav-text">系统环境</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#安装-CUDA"><span class="nav-number">3.</span> <span class="nav-text">安装 CUDA</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#安装-cuDNN"><span class="nav-number">4.</span> <span class="nav-text">安装 cuDNN</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#安装Tensorflow"><span class="nav-number">5.</span> <span class="nav-text">安装Tensorflow</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#测试-Tensorflow"><span class="nav-number">6.</span> <span class="nav-text">测试 Tensorflow</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Docker-for-tensorflow"><span class="nav-number">7.</span> <span class="nav-text">Docker for tensorflow</span></a></li></ol></div>
-            
-
-          </div>
-        </section>
-      <!--/noindex-->
-      
-
-      
-
-    </div>
-  </aside>
-
-
-        
-      </div>
-    </main>
-
-    <footer id="footer" class="footer">
-      <div class="footer-inner">
-        <div class="copyright" >
-  
-  &copy;  2015 - 
-  <span itemprop="copyrightYear">2017</span>
-  <span class="with-love">
-    <i class="fa fa-heart"></i>
-  </span>
-  <span class="author" itemprop="copyrightHolder">Yusu Pan</span>
-</div>
-
-
-<div class="powered-by">
-  Powered by <a class="theme-link" href="https://hexo.io">Hexo</a>
-</div>
-
-<div class="theme-info">
-  Theme -
-  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
-    NexT.Pisces
-  </a>
-</div>
-
-
-        
-
-        
-      </div>
-    </footer>
-
-    
-      <div class="back-to-top">
-        <i class="fa fa-arrow-up"></i>
-        
-      </div>
-    
-
-  </div>
-
-  
-
-<script type="text/javascript">
-  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+  ga('send', 'pageview');</script><!-- hexo-inject:begin --><!-- hexo-inject:end --></head><body itemscope itemtype="http://schema.org/WebPage" lang="en"><!-- hexo-inject:begin --><!-- hexo-inject:end --><div class="container sidebar-position-left page-post-detail"><div class="headband"></div><header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="header-inner"><div class="site-brand-wrapper"><div class="site-meta"><div class="custom-logo-site-title"><a href="/" class="brand" rel="start"><span class="logo-line-before"><i></i></span> <span class="site-title">Yuthon's blog</span> <span class="logo-line-after"><i></i></span></a></div><p class="site-subtitle"></p></div><div class="site-nav-toggle"><button><span class="btn-bar"></span> <span class="btn-bar"></span> <span class="btn-bar"></span></button></div></div><nav class="site-nav"><ul id="menu" class="menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="menu-item-icon fa fa-fw fa-home"></i><br>Home</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="menu-item-icon fa fa-fw fa-archive"></i><br>Archives</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="menu-item-icon fa fa-fw fa-tags"></i><br>Tags</a></li><li class="menu-item menu-item-search"><a href="javascript:;" class="popup-trigger"><i class="menu-item-icon fa fa-search fa-fw"></i><br>Search</a></li></ul><div class="site-search"><div class="popup search-popup local-search-popup"><div class="local-search-header clearfix"><span class="search-icon"><i class="fa fa-search"></i> </span><span class="popup-btn-close"><i class="fa fa-times-circle"></i></span><div class="local-search-input-wrapper"><input autocomplete="off" placeholder="Searching..." spellcheck="false" type="text" id="local-search-input"></div></div><div id="local-search-result"></div></div></div></nav></div></header><main id="main" class="main"><div class="main-inner"><div class="content-wrap"><div id="content" class="content"><div id="posts" class="posts-expand"><article class="post post-type-normal" itemscope itemtype="http://schema.org/Article"><div class="post-block"><link itemprop="mainEntityOfPage" href="http://www.yuthon.com/2016/10/25/CUDA-and-Tensorflow-Installation-on-Ubuntu-16-04/"><span hidden itemprop="author" itemscope itemtype="http://schema.org/Person"><meta itemprop="name" content="Yusu Pan"><meta itemprop="description" content=""><meta itemprop="image" content="/uploads/avatar.png"></span><span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization"><meta itemprop="name" content="Yuthon's blog"></span><header class="post-header"><h1 class="post-title" itemprop="name headline">CUDA and Tensorflow Installation on Ubuntu 16.04</h1><div class="post-meta"><span class="post-time"><span class="post-meta-item-icon"><i class="fa fa-calendar-o"></i> </span><span class="post-meta-item-text">Posted on</span> <time title="Post created" itemprop="dateCreated datePublished" datetime="2016-10-25T20:53:50+08:00">2016-10-25 </time><span class="post-meta-divider">|</span> <span class="post-meta-item-icon"><i class="fa fa-calendar-check-o"></i> </span><span class="post-meta-item-text">Post modified</span> <time title="Post modified" itemprop="dateModified" datetime="2016-10-30T15:01:16+08:00">2016-10-30 </time></span><span class="post-category"><span class="post-meta-divider">|</span> <span class="post-meta-item-icon"><i class="fa fa-folder-o"></i> </span><span class="post-meta-item-text">In</span> <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/Experience/" itemprop="url" rel="index"><span itemprop="name">Experience</span> </a></span></span><span class="post-comments-count"><span class="post-meta-divider">|</span> <span class="post-meta-item-icon"><i class="fa fa-comment-o"></i> </span><a href="/2016/10/25/CUDA-and-Tensorflow-Installation-on-Ubuntu-16-04/#comments" itemprop="discussionUrl"><span class="post-comments-count disqus-comment-count" data-disqus-identifier="2016/10/25/CUDA-and-Tensorflow-Installation-on-Ubuntu-16-04/" itemprop="commentCount"></span></a></span></div></header><div class="post-body" itemprop="articleBody"><p>昨天折腾了一个下午开发环境的配置，记录一下其中遇到的坑。</p><a id="more"></a><h2 id="硬件配置"><a href="#硬件配置" class="headerlink" title="硬件配置"></a>硬件配置</h2><p>我的硬件配置(XPS 15 9550):</p><ul><li>CPU: i5 6300HQ</li><li>GPU: GTX960M 2G</li><li>内存: 16G DDR4 2133</li><li>硬盘: 512G SM951 NVMe</li></ul><blockquote><p>基本上就只处于玩票的状态, 实验室快给我配1080啊~~~</p></blockquote><p>上一个 NVIDIA 钦定的 DevBox <a href="http://www.nvidia.com/object/deep-learning-system.html" target="_blank" rel="external">配置</a>:</p><table><thead><tr><th style="text-align:left">Name</th><th>Description</th></tr></thead><tbody><tr><td style="text-align:left">GPUs</td><td>8x Tesla P100</td></tr><tr><td style="text-align:left">TFLOPS (GPU FP16 /CPU FP32)</td><td>170/3</td></tr><tr><td style="text-align:left">GPU Memory</td><td>16 GB per GPU</td></tr><tr><td style="text-align:left">CPU</td><td>Dual 20-core Intel® Xeon®E5-2698 v4 2.2 GHz</td></tr><tr><td style="text-align:left">NVIDIA CUDA® Cores</td><td>28672</td></tr><tr><td style="text-align:left">System Memory</td><td>512 GB 2133 MHz DDR4</td></tr><tr><td style="text-align:left">Storage</td><td>4x 1.92 TB SSD RAID 0</td></tr><tr><td style="text-align:left">Network</td><td>Dual 10 GbE, 4 IB EDR</td></tr><tr><td style="text-align:left">Software</td><td>Ubuntu Server Linux OSDGX-1 Recommended GPUDriver</td></tr><tr><td style="text-align:left">System Weight</td><td>134 lbs</td></tr><tr><td style="text-align:left">System Dimensions</td><td>866 D x 444 W x 131 H (mm)</td></tr><tr><td style="text-align:left">Packing Dimensions</td><td>1180 D x 730 W x 284 H (mm)</td></tr><tr><td style="text-align:left">Maximum Power Requirements</td><td>3200W</td></tr><tr><td style="text-align:left">Operating Temperature Range</td><td>10 - 30°C</td></tr></tbody></table><p>这简直是吾辈梦想神机啊… 然而要 <strong>$129000</strong> !</p><h2 id="系统环境"><a href="#系统环境" class="headerlink" title="系统环境"></a>系统环境</h2><p>推荐是用 Ubuntu 最新的 LTS 版本 16.04.1, 对 Skylake 系列的 CPU 和主板的支持都很不错. 关于在 XPS 15 9550 上的详细配置过程, 我计划稍后专门写一篇.</p><p>本来想在 macOS 上跑的, 奈何黑苹果不支持独显.</p><h2 id="安装-CUDA"><a href="#安装-CUDA" class="headerlink" title="安装 CUDA"></a>安装 CUDA</h2><p><a href="https://developer.nvidia.com/cuda-downloads" target="_blank" rel="external">CUDA</a> 与 <a href="https://developer.nvidia.com/cudnn" target="_blank" rel="external">cuDNN</a> 的安装在 NVIDIA 与 Tensorflow的官网上都有<a href="https://www.tensorflow.org/versions/r0.11/get_started/os_setup.html#optional-install-cuda-gpus-on-linux" target="_blank" rel="external">详细说明</a>, 此处仅就一些关键环节作出说明.</p><ul><li><p>禁用开源的 Nouveau 驱动</p><ul><li><p>首先看看有没有在使用这个开源驱动:</p><figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="meta">$</span><span class="bash"> lsmod | grep nouveau</span></div></pre></td></tr></table></figure></li><li><p>创建<code>/etc/modprobe.d/blacklist-nouveau.conf</code>文件, 并写入以下内容</p><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">blacklist nouveau</div><div class="line">options nouveau modeset=0</div></pre></td></tr></table></figure></li><li><p>重启kernel initramfs</p><figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="meta">$</span><span class="bash"> sudo update-initramfs -u</span></div></pre></td></tr></table></figure></li></ul></li><li><p>从ppa源下载最新版的驱动(&gt;364), 或者使用 CUDA-Toolkit 自带的驱动:</p><figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="meta">$</span><span class="bash"> sudo apt-get purge nvidia-*</span></div><div class="line"><span class="meta">$</span><span class="bash"> sudo add-apt-repository ppa:graphics-drivers/ppa</span></div><div class="line"><span class="meta">$</span><span class="bash"> sudo apt-get update</span></div><div class="line"><span class="meta">$</span><span class="bash"> sudo apt-get install nvidia-370</span></div></pre></td></tr></table></figure></li><li><p>下载 CUDA 的 runfile (local) 版本, 不要使用apt-get 的方式, 保证获取到的是最新的版本 (目前是8.0).</p></li><li><p>安装过程中, 需要<code>Ctrl+Alt+F1</code>切换到 tty 界面, 然后关闭 X server:</p><figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="meta">$</span><span class="bash"> sudo service lightdm stop</span></div></pre></td></tr></table></figure><p>之后再执行安装过程</p></li><li><p>安装过程中, 如果是像我一样的 Intel 核显 + NVIDIA 独显的, <strong>绝对不要装 OpenGL</strong>, 否则重启后会陷入 login loop.</p></li><li><p>安装完成之后, 设置环境变量:</p><figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">export LD_LIBRARY_PATH="$LD_LIBRARY_PATH:/usr/local/cuda/lib64:/usr/local/cuda/extras/CUPTI/lib64"</div><div class="line">export CUDA_HOME=/usr/local/cuda</div></pre></td></tr></table></figure></li></ul><h2 id="安装-cuDNN"><a href="#安装-cuDNN" class="headerlink" title="安装 cuDNN"></a>安装 cuDNN</h2><p>从<a href="https://developer.nvidia.com/cudnn" target="_blank" rel="external">官网</a>下载之后, 执行以下命令 (目前最新版本5.1):</p><figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">tar xvzf cudnn-8.0-linux-x64-v5.1-ga.tgz</div><div class="line">sudo cp cuda/include/cudnn.h /usr/local/cuda/include</div><div class="line">sudo cp cuda/lib64/libcudnn* /usr/local/cuda/lib64</div><div class="line">sudo chmod a+r /usr/local/cuda/include/cudnn.h /usr/local/cuda/lib64/libcudnn*</div></pre></td></tr></table></figure><h2 id="安装Tensorflow"><a href="#安装Tensorflow" class="headerlink" title="安装Tensorflow"></a>安装Tensorflow</h2><p>这是最纠结的一步, 之前按照别人教程说最好从源码编译支持 GPU. 但是由于国内的网络环境, 源码编译需要下一堆的依赖包, 速度超级慢. 因此还是使用官网推荐的 pip 安装方式:</p><figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line"><span class="meta">#</span><span class="bash"> Get pip</span></div><div class="line"><span class="meta">$</span><span class="bash"> sudo apt-get install python-pip python-dev</span></div><div class="line"></div><div class="line"><span class="meta">#</span><span class="bash"> Ubuntu/Linux 64-bit, GPU enabled, Python 2.7</span></div><div class="line"><span class="meta">#</span><span class="bash"> Requires CUDA toolkit 8.0 and CuDNN v5. For other versions, see <span class="string">"Install from sources"</span> below.</span></div><div class="line"><span class="meta">$</span><span class="bash"> <span class="built_in">export</span> TF_BINARY_URL=https://storage.googleapis.com/tensorflow/linux/gpu/tensorflow-0.11.0rc1-cp27-none-linux_x86_64.whl</span></div><div class="line"></div><div class="line"><span class="meta">#</span><span class="bash"> Python 2</span></div><div class="line"><span class="meta">$</span><span class="bash"> sudo pip install --upgrade <span class="variable">$TF_BINARY_URL</span></span></div></pre></td></tr></table></figure><blockquote><ul><li>可以先把<code>tensorflow-0.11.0rc1-cp27-none-linux_x86_64.whl</code>下下来, 本地执行安装命令</li><li>可以使用国内的 pip 源, 加快安装依赖的速度</li></ul></blockquote><h2 id="测试-Tensorflow"><a href="#测试-Tensorflow" class="headerlink" title="测试 Tensorflow"></a>测试 Tensorflow</h2><p>用下面的小例子来测试下 Tensorflow 安装得成不成功:</p><figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line"><span class="meta">$</span><span class="bash"> python</span></div><div class="line">...</div><div class="line"><span class="meta">&gt;</span><span class="bash">&gt;&gt; import tensorflow as tf</span></div><div class="line"><span class="meta">&gt;</span><span class="bash">&gt;&gt; hello = tf.constant(<span class="string">'Hello, TensorFlow!'</span>)</span></div><div class="line"><span class="meta">&gt;</span><span class="bash">&gt;&gt; sess = tf.Session()</span></div><div class="line"><span class="meta">&gt;</span><span class="bash">&gt;&gt; <span class="built_in">print</span>(sess.run(hello))</span></div><div class="line">Hello, TensorFlow!</div><div class="line"><span class="meta">&gt;</span><span class="bash">&gt;&gt; a = tf.constant(10)</span></div><div class="line"><span class="meta">&gt;</span><span class="bash">&gt;&gt; b = tf.constant(32)</span></div><div class="line"><span class="meta">&gt;</span><span class="bash">&gt;&gt; <span class="built_in">print</span>(sess.run(a + b))</span></div><div class="line">42</div><div class="line"><span class="meta">&gt;</span><span class="bash">&gt;&gt;</span></div></pre></td></tr></table></figure><p>在 <code>import</code>的同时, 还会显示 CUDA 方面与 GPU 方面的信息.</p><p>至此大功告成!</p><h2 id="Docker-for-tensorflow"><a href="#Docker-for-tensorflow" class="headerlink" title="Docker for tensorflow"></a>Docker for tensorflow</h2><p>其实在这期间还试过直接用装了 Tensorflow 的 Docker 镜像, 也有支持 GPU 的版本. 各位如有兴趣可以试试:</p><ul><li><a href="https://github.com/tensorflow/tensorflow/tree/master/tensorflow/tools/docker" target="_blank" rel="external">Github - Using TensorFlow via Docker</a></li><li><a href="https://github.com/saiprashanths/dl-docker" target="_blank" rel="external">Github - An all-in-one Docker image for deep learning. Contains all the popular DL frameworks (TensorFlow, Theano, Torch, Caffe, etc.)</a></li></ul></div><div><ul class="post-copyright"><li class="post-copyright-author"><strong>Post author:</strong> Yusu Pan</li><li class="post-copyright-link"><strong>Post link:</strong> <a href="http://www.yuthon.com/2016/10/25/CUDA-and-Tensorflow-Installation-on-Ubuntu-16-04/" title="CUDA and Tensorflow Installation on Ubuntu 16.04">http://www.yuthon.com/2016/10/25/CUDA-and-Tensorflow-Installation-on-Ubuntu-16-04/</a></li><li class="post-copyright-license"><strong>Copyright Notice: </strong>All articles in this blog are licensed under <a href="https://creativecommons.org/licenses/by-nc-sa/3.0/" rel="external nofollow" target="_blank">CC BY-NC-SA 3.0</a> unless stating additionally.</li></ul></div><footer class="post-footer"><div class="post-tags"><a href="/tags/Tensorflow/" rel="tag"># Tensorflow</a> <a href="/tags/Ubuntu/" rel="tag"># Ubuntu</a> <a href="/tags/Deep-Learning/" rel="tag"># Deep Learning</a> <a href="/tags/CUDA/" rel="tag"># CUDA</a></div><div class="post-nav"><div class="post-nav-next post-nav-item"><a href="/2016/10/19/Notes-for-CS231n-CNN/" rel="next" title="Notes for CS231n Convolutional Neural Network"><i class="fa fa-chevron-left"></i> Notes for CS231n Convolutional Neural Network</a></div><span class="post-nav-divider"></span><div class="post-nav-prev post-nav-item"><a href="/2016/10/30/Traffic-Prediction-Using-LSTM/" rel="prev" title="Traffic Prediction Using LSTM">Traffic Prediction Using LSTM <i class="fa fa-chevron-right"></i></a></div></div></footer></div></article><div class="post-spread"></div></div></div><div class="comments" id="comments"><div id="disqus_thread"><noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript></div></div></div><div class="sidebar-toggle"><div class="sidebar-toggle-line-wrap"><span class="sidebar-toggle-line sidebar-toggle-line-first"></span> <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span> <span class="sidebar-toggle-line sidebar-toggle-line-last"></span></div></div><aside id="sidebar" class="sidebar"><div class="sidebar-inner"><ul class="sidebar-nav motion-element"><li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">Table of Contents</li><li class="sidebar-nav-overview" data-target="site-overview">Overview</li></ul><section class="site-overview sidebar-panel"><div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person"><img class="site-author-image" itemprop="image" src="/uploads/avatar.png" alt="Yusu Pan"><p class="site-author-name" itemprop="name">Yusu Pan</p><p class="site-description motion-element" itemprop="description">We've been gaining one good thing through losing another.</p></div><nav class="site-state motion-element"><div class="site-state-item site-state-posts"><a href="/archives/"><span class="site-state-item-count">41</span> <span class="site-state-item-name">posts</span></a></div><div class="site-state-item site-state-categories"><a href="/categories/index.html"><span class="site-state-item-count">5</span> <span class="site-state-item-name">categories</span></a></div><div class="site-state-item site-state-tags"><a href="/tags/index.html"><span class="site-state-item-count">47</span> <span class="site-state-item-name">tags</span></a></div></nav><div class="feed-link motion-element"><a href="/atom.xml" rel="alternate"><i class="fa fa-rss"></i> RSS</a></div><div class="links-of-author motion-element"><span class="links-of-author-item"><a href="https://github.com/corenel" target="_blank" title="GitHub"><i class="fa fa-fw fa-github"></i> GitHub </a></span><span class="links-of-author-item"><a href="https://twitter.com/corenel" target="_blank" title="Twitter"><i class="fa fa-fw fa-twitter"></i> Twitter </a></span><span class="links-of-author-item"><a href="http://www.zhihu.com/people/pan-yu-su" target="_blank" title="Zhihu"><i class="fa fa-fw fa-globe"></i> Zhihu</a></span></div><div class="cc-license motion-element" itemprop="license"><a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" class="cc-opacity" target="_blank"><img src="/images/cc-by-nc-sa.svg" alt="Creative Commons"></a></div></section><!--noindex--><section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active"><div class="post-toc"><div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#硬件配置"><span class="nav-number">1.</span> <span class="nav-text">硬件配置</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#系统环境"><span class="nav-number">2.</span> <span class="nav-text">系统环境</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#安装-CUDA"><span class="nav-number">3.</span> <span class="nav-text">安装 CUDA</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#安装-cuDNN"><span class="nav-number">4.</span> <span class="nav-text">安装 cuDNN</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#安装Tensorflow"><span class="nav-number">5.</span> <span class="nav-text">安装Tensorflow</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#测试-Tensorflow"><span class="nav-number">6.</span> <span class="nav-text">测试 Tensorflow</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Docker-for-tensorflow"><span class="nav-number">7.</span> <span class="nav-text">Docker for tensorflow</span></a></li></ol></div></div></section><!--/noindex--></div></aside></div></main><footer id="footer" class="footer"><div class="footer-inner"><div class="copyright">&copy; 2015 - <span itemprop="copyrightYear">2017</span> <span class="with-love"><i class="fa fa-heart"></i> </span><span class="author" itemprop="copyrightHolder">Yusu Pan</span></div><div class="powered-by">Powered by <a class="theme-link" href="https://hexo.io">Hexo</a></div><div class="theme-info">Theme - <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">NexT.Pisces</a></div></div></footer><div class="back-to-top"><i class="fa fa-arrow-up"></i></div></div><script type="text/javascript">if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
     window.Promise = null;
-  }
-</script>
-
-
-
-
-
-
-
-
-
-  
-
-
-
-
-
-
-
-
-
-
-
-
-  
-  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
-
-  
-  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
-
-  
-  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
-
-  
-  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
-
-  
-  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
-
-  
-  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
-
-
-  
-
-
-  <script type="text/javascript" src="/js/src/utils.js?v=5.1.1"></script>
-
-  <script type="text/javascript" src="/js/src/motion.js?v=5.1.1"></script>
-
-
-
-  
-  
-
-
-  <script type="text/javascript" src="/js/src/affix.js?v=5.1.1"></script>
-
-  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.1"></script>
-
-
-
-  
-  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.1"></script>
-<script type="text/javascript" src="/js/src/post-details.js?v=5.1.1"></script>
-
-
-
-  
-
-
-  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.1"></script>
-
-
-
-  
-
-
-  
-
-    
-      <script id="dsq-count-scr" src="https://yuthons-blog.disqus.com/count.js" async></script>
-    
-
-    
-      <script type="text/javascript">
-        var disqus_config = function () {
+  }</script><script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script><script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script><script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script><script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script><script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script><script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script><script type="text/javascript" src="/js/src/utils.js?v=5.1.2"></script><script type="text/javascript" src="/js/src/motion.js?v=5.1.2"></script><script type="text/javascript" src="/js/src/affix.js?v=5.1.2"></script><script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.2"></script><script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.2"></script><script type="text/javascript" src="/js/src/post-details.js?v=5.1.2"></script><script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.2"></script><script id="dsq-count-scr" src="https://yuthons-blog.disqus.com/count.js" async></script><script type="text/javascript">var disqus_config = function () {
           this.page.url = 'http://www.yuthon.com/2016/10/25/CUDA-and-Tensorflow-Installation-on-Ubuntu-16-04/';
           this.page.identifier = '2016/10/25/CUDA-and-Tensorflow-Installation-on-Ubuntu-16-04/';
           this.page.title = 'CUDA and Tensorflow Installation on Ubuntu 16.04';
@@ -977,45 +32,15 @@
         var d = document, s = d.createElement('script');
         s.src = 'https://yuthons-blog.disqus.com/embed.js';
         s.setAttribute('data-timestamp', '' + +new Date());
-        (d.head || d.body).appendChild(s);
-      </script>
-    
-
-  
-
-
-
-
-	
-
-
-
-
-
-  
-
-
-
-
-
-  
-
-
-
-
-
-
-
-
-  
-
-  <script type="text/javascript">
-    // Popup Window;
+        (d.head || d.body).appendChild(s);</script><script type="text/javascript">// Popup Window;
     var isfetched = false;
+    var isXml = true;
     // Search DB path;
     var search_path = "search.xml";
     if (search_path.length === 0) {
       search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
     }
     var path = "/" + search_path;
     // monitor main search box;
@@ -1035,27 +60,41 @@
         .css('overflow', 'hidden');
       $('.search-popup-overlay').click(onPopupClose);
       $('.popup').toggle();
-      $('#local-search-input').focus();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
     }
 
     // search function;
     var searchFunc = function(path, search_id, content_id) {
       'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
       $.ajax({
         url: path,
-        dataType: "xml",
+        dataType: isXml ? "xml" : "json",
         async: true,
-        success: function( xmlResponse ) {
+        success: function(res) {
           // get the contents from search data
           isfetched = true;
           $('.popup').detach().appendTo('.header-inner');
-          var datas = $( "entry", xmlResponse ).map(function() {
+          var datas = isXml ? $("entry", res).map(function() {
             return {
-              title: $( "title", this ).text(),
+              title: $("title", this).text(),
               content: $("content",this).text(),
-              url: $( "url" , this).text()
+              url: $("url" , this).text()
             };
-          }).get();
+          }).get() : res;
           var input = document.getElementById(search_id);
           var resultContent = document.getElementById(content_id);
           var inputEventFunction = function() {
@@ -1276,9 +315,15 @@
               }
             });
           }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
           proceedsearch();
         }
-      });}
+      });
+    }
 
     // handle and trigger popup window;
     $('.popup-trigger').click(function(e) {
@@ -1300,44 +345,15 @@
       if (shouldDismissSearchPopup) {
         onPopupClose();
       }
-    });
-  </script>
-
-
-
-
-
-  
-
-  
-
-  
-  
-    <script type="text/x-mathjax-config">
-      MathJax.Hub.Config({
+    });</script><script type="text/x-mathjax-config">MathJax.Hub.Config({
         tex2jax: {
           inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
           processEscapes: true,
           skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
         }
-      });
-    </script>
-
-    <script type="text/x-mathjax-config">
-      MathJax.Hub.Queue(function() {
+      });</script><script type="text/x-mathjax-config">MathJax.Hub.Queue(function() {
         var all = MathJax.Hub.getAllJax(), i;
         for (i=0; i < all.length; i += 1) {
           all[i].SourceElement().parentNode.className += ' has-jax';
         }
-      });
-    </script>
-    <script type="text/javascript" src="//cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script><!-- hexo-inject:begin --><!-- hexo-inject:end -->
-  
-
-
-  
-
-  
-
-</body>
-</html>
+      });</script><script type="text/javascript" src="//cdn.bootcss.com/mathjax/2.7.1/latest.js?config=TeX-AMS-MML_HTMLorMML"></script><!-- hexo-inject:begin --><!-- hexo-inject:end --></body></html>
