@@ -4,6 +4,36 @@
 
     
   <url>
+    <loc>http://www.yuthon.com/2017/08/12/Something-about-GAN/</loc>
+    <lastmod>2017-08-12T11:56:29.000Z</lastmod>
+    <data>
+        <display>
+        <title>Something about GAN</title>
+        <pubTime>2017-08-12T11:24:14.000Z</pubTime>
+        
+        <tag>Deep Learning</tag>
+         
+        <tag>Generative Adversarial Networks</tag>
+         
+        <tag>GANs</tag>
+         
+        <tag>DCGAN</tag>
+         
+        <tag>WGAN</tag>
+         
+        <tag>WGAN-GP</tag>
+         
+         
+           
+             
+              <breadCrumb title="Thesis Notes" url="http://www.yuthon.com/categories/Thesis-Notes/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
     <loc>http://www.yuthon.com/2017/06/14/Let-s-talk-about-zero-shot-learning/</loc>
     <lastmod>2017-06-14T06:43:31.000Z</lastmod>
     <data>
@@ -127,13 +157,13 @@
         <title>TensorFlow r1.0 on TX1 (now successful)</title>
         <pubTime>2017-03-10T10:12:18.000Z</pubTime>
         
-        <tag>NVIDIA</tag>
-         
-        <tag>Jetson TX1</tag>
-         
         <tag>Ubuntu</tag>
          
         <tag>Deep Learning</tag>
+         
+        <tag>NVIDIA</tag>
+         
+        <tag>Jetson TX1</tag>
          
         <tag>TensorFlow</tag>
          
@@ -157,13 +187,13 @@
         
         <tag>Tensorflow</tag>
          
-        <tag>NVIDIA</tag>
-         
-        <tag>Jetson TX1</tag>
-         
         <tag>Ubuntu</tag>
          
         <tag>Deep Learning</tag>
+         
+        <tag>NVIDIA</tag>
+         
+        <tag>Jetson TX1</tag>
          
          
            
@@ -185,13 +215,13 @@
         
         <tag>Tensorflow</tag>
          
-        <tag>NVIDIA</tag>
-         
-        <tag>Jetson TX1</tag>
-         
         <tag>Ubuntu</tag>
          
         <tag>Deep Learning</tag>
+         
+        <tag>NVIDIA</tag>
+         
+        <tag>Jetson TX1</tag>
          
          
            
@@ -574,13 +604,13 @@
         <title>CUDA and Tensorflow Installation on Ubuntu 16.04</title>
         <pubTime>2016-10-25T12:53:50.000Z</pubTime>
         
+        <tag>CUDA</tag>
+         
         <tag>Tensorflow</tag>
          
         <tag>Ubuntu</tag>
          
         <tag>Deep Learning</tag>
-         
-        <tag>CUDA</tag>
          
          
            
@@ -884,28 +914,6 @@
 
     
   <url>
-    <loc>http://www.yuthon.com/2016/04/12/CodeSchool-JavaScript-Best-Practices/</loc>
-    <lastmod>2016-05-16T11:51:43.000Z</lastmod>
-    <data>
-        <display>
-        <title>Notes for Code School - JavaScript Best Practices</title>
-        <pubTime>2016-04-12T10:19:54.000Z</pubTime>
-        
-        <tag>CodeSchool</tag>
-         
-        <tag>JavaScript</tag>
-         
-         
-           
-             
-              <breadCrumb title="Notes" url="http://www.yuthon.com/categories/Notes/"/>
-          
-        </display>
-    </data>
-    </url>
-
-    
-  <url>
     <loc>http://www.yuthon.com/2016/04/09/CodeSchool-Javascript/</loc>
     <lastmod>2016-05-16T11:51:43.000Z</lastmod>
     <data>
@@ -934,6 +942,28 @@
         <display>
         <title>Notes for Code School - Shaping up with Angular.js</title>
         <pubTime>2016-04-14T13:19:22.000Z</pubTime>
+        
+        <tag>CodeSchool</tag>
+         
+        <tag>JavaScript</tag>
+         
+         
+           
+             
+              <breadCrumb title="Notes" url="http://www.yuthon.com/categories/Notes/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://www.yuthon.com/2016/04/12/CodeSchool-JavaScript-Best-Practices/</loc>
+    <lastmod>2016-05-16T11:51:43.000Z</lastmod>
+    <data>
+        <display>
+        <title>Notes for Code School - JavaScript Best Practices</title>
+        <pubTime>2016-04-12T10:19:54.000Z</pubTime>
         
         <tag>CodeSchool</tag>
          

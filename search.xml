@@ -1,6 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title><![CDATA[Something about GAN]]></title>
+    <url>%2F2017%2F08%2F12%2FSomething-about-GAN%2F</url>
+    <content type="text"><![CDATA[最近在看关于GANs的论文，并且自己动手用PyTorch写了一些经典文章的实现，想要稍微总结一下，故有此文。在最后我总结了我自己看过的有关GANs的一些比较好的资源，希望对读者有所帮助。 （待填坑……） Further Reading最后总结一些我在学习过程中看过的比较好的资料以及代码实现： pytorch-tutorial: 我见到的最好的PyTorch入门教程，简洁清晰明了，有其他DL框架使用经验以及Python基础的朋友适用。一上来看不懂的话，可以先看官方的60分钟入门教程之后，再看这个。 NIPS 2016 Tutorial: Generative Adversarial Networks: Iran Goodfellow在NIPS2016上的教程演讲，很好地介绍了GANs的基本思想和应用。前面的数学推导看不懂的话，可以结合DeepLearningBook（中译版已经上市，本人忝为校对之一）。同时，还可以结合slides看，slides上的都写得很简练，tutorial中则做了相似的说明。可惜的是，当时WGAN及其变种还没有出来，因此在这篇tutorial中没有提到。 几篇代表论文以及相关的代码实现： GAN: paper, code (pytorch-tutorial) DCGAN: paper, code (PyTorch official example), code (pytorch-tutorial) WGAN: paper, code (PyTorch) WGAN-GP: https://arxiv.org/abs/1704.00028, code (PyTorch) 我自己的代码实现，欢迎指正：GAN-Zoo]]></content>
+      <categories>
+        <category>Thesis Notes</category>
+      </categories>
+      <tags>
+        <tag>Deep Learning</tag>
+        <tag>Generative Adversarial Networks</tag>
+        <tag>GANs</tag>
+        <tag>DCGAN</tag>
+        <tag>WGAN</tag>
+        <tag>WGAN-GP</tag>
+      </tags>
+  </entry>
+  <entry>
     <title><![CDATA[Let's talk about Zero-Shot Learning.]]></title>
     <url>%2F2017%2F06%2F14%2FLet-s-talk-about-zero-shot-learning%2F</url>
     <content type="text"><![CDATA[最近在看Zero-Shot learning方面的文章，有些想要记录备忘的东西，就写在这儿吧。 诸位如果对此有兴趣，可以参考以下的讲座或者文章： Zero-Shot Learning Tutorial | CVPR 2017 （未开始） Zero-Shot Learning Tutorial | ECCV 2016 （上一讲座16年的版本，Slides） Semantic Autoencoder for Zero-Shot Learning （CVPR2017） Zero-Shot Learning-The Good, the Bad and the Ugly（CVPR2017） DeepLearningBook Chapter 15 Representation Learning （中文版见Github）]]></content>
@@ -71,10 +87,10 @@
         <category>Experience</category>
       </categories>
       <tags>
-        <tag>NVIDIA</tag>
-        <tag>Jetson TX1</tag>
         <tag>Ubuntu</tag>
         <tag>Deep Learning</tag>
+        <tag>NVIDIA</tag>
+        <tag>Jetson TX1</tag>
         <tag>TensorFlow</tag>
       </tags>
   </entry>
@@ -87,10 +103,10 @@
       </categories>
       <tags>
         <tag>Tensorflow</tag>
-        <tag>NVIDIA</tag>
-        <tag>Jetson TX1</tag>
         <tag>Ubuntu</tag>
         <tag>Deep Learning</tag>
+        <tag>NVIDIA</tag>
+        <tag>Jetson TX1</tag>
       </tags>
   </entry>
   <entry>
@@ -102,10 +118,10 @@
       </categories>
       <tags>
         <tag>Tensorflow</tag>
-        <tag>NVIDIA</tag>
-        <tag>Jetson TX1</tag>
         <tag>Ubuntu</tag>
         <tag>Deep Learning</tag>
+        <tag>NVIDIA</tag>
+        <tag>Jetson TX1</tag>
       </tags>
   </entry>
   <entry>
@@ -277,10 +293,10 @@
         <category>Experience</category>
       </categories>
       <tags>
+        <tag>CUDA</tag>
         <tag>Tensorflow</tag>
         <tag>Ubuntu</tag>
         <tag>Deep Learning</tag>
-        <tag>CUDA</tag>
       </tags>
   </entry>
   <entry>

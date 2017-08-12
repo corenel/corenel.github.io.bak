@@ -2,6 +2,13 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>http://www.yuthon.com/2017/08/12/Something-about-GAN/</loc>
+    
+    <lastmod>2017-08-12T11:56:29.000Z</lastmod>
+    
+  </url>
+  
+  <url>
     <loc>http://www.yuthon.com/2017/06/14/Let-s-talk-about-zero-shot-learning/</loc>
     
     <lastmod>2017-06-14T06:43:31.000Z</lastmod>
@@ -275,13 +282,6 @@
   </url>
   
   <url>
-    <loc>http://www.yuthon.com/2016/04/12/CodeSchool-JavaScript-Best-Practices/</loc>
-    
-    <lastmod>2016-05-16T11:51:43.000Z</lastmod>
-    
-  </url>
-  
-  <url>
     <loc>http://www.yuthon.com/2016/04/09/CodeSchool-Javascript/</loc>
     
     <lastmod>2016-05-16T11:51:43.000Z</lastmod>
@@ -290,6 +290,13 @@
   
   <url>
     <loc>http://www.yuthon.com/2016/04/14/CodeSchool-Shaping-up-with-Angular.js/</loc>
+    
+    <lastmod>2016-05-16T11:51:43.000Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://www.yuthon.com/2016/04/12/CodeSchool-JavaScript-Best-Practices/</loc>
     
     <lastmod>2016-05-16T11:51:43.000Z</lastmod>
     
