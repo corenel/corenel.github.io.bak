@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://www.yuthon.com/"/>
-  <updated>2017-08-13T07:44:46.000Z</updated>
+  <updated>2017-08-13T08:45:46.000Z</updated>
   <id>http://www.yuthon.com/</id>
   
   <author>
@@ -20,7 +20,7 @@
     <link href="http://www.yuthon.com/2017/08/12/Something-about-GANs/"/>
     <id>http://www.yuthon.com/2017/08/12/Something-about-GANs/</id>
     <published>2017-08-12T11:24:14.000Z</published>
-    <updated>2017-08-13T07:44:46.000Z</updated>
+    <updated>2017-08-13T08:45:46.000Z</updated>
     
     <content type="html"><![CDATA[<p>最近在看关于GANs的论文，并且自己动手用PyTorch写了一些经典文章的实现，想要稍微总结一下，故有此文。在最后我总结了我自己看过的有关GANs的一些比较好的资源，希望对读者有所帮助。</p>
 <p>（待填坑……）</p>
@@ -55,7 +55,12 @@
 </ul>
 <p>从下图可以看出，heuristicly designed non-saturating cost在$D(G(z))$变化的时候，其方差较小，因此是比较合适作为生成器代价函数的选择的。</p>
 <p><img src="/images/cost_functions_of_GANs.png" alt="cost_functions_of_GANs"></p>
-<h2 id="DCGAN"><a href="#DCGAN" class="headerlink" title="DCGAN"></a>DCGAN</h2><p>（待填坑……）</p>
+<h2 id="DCGAN"><a href="#DCGAN" class="headerlink" title="DCGAN"></a>DCGAN</h2><p>DCGAN即使用了全卷积网络的GANs，一般特指<a href="https://arxiv.org/abs/1511.06434" target="_blank" rel="external">这篇paper</a>中的网络结构。目前几乎所有的GANs都或多或少地借鉴了DCGAN的架构。DCGAN的主要创新点在于：</p>
+<ul>
+<li><strong>同时在判别器与生成器网络中使用了Batch Normalization层。</strong>当然，为了能够学到真实数据分布正确的均值（mean）与规模（scale），判别器的首层与生成器的末层没有加BN层。</li>
+<li><strong>整个网络架构借鉴了the all-convolutional net</strong>（不是FCN），不含pooling和“unpooling”层，增加表示维度是靠<code>stride=1</code>的转置卷积（transposed convolition）实现的。</li>
+</ul>
+<p>总而言之，就是换了原始的GAN中的网络架构，把FC层都换成了带BN层的卷积层。</p>
 <h2 id="WGAN-amp-WGAN-GP"><a href="#WGAN-amp-WGAN-GP" class="headerlink" title="WGAN &amp; WGAN-GP"></a>WGAN &amp; WGAN-GP</h2><p>（待填坑……）</p>
 <h2 id="GANs-in-Practice"><a href="#GANs-in-Practice" class="headerlink" title="GANs in Practice"></a>GANs in Practice</h2><h3 id="MLP-GAN"><a href="#MLP-GAN" class="headerlink" title="MLP-GAN"></a>MLP-GAN</h3><p>使用多层感知机（MLP）来构建判别器与生成器的网络，可以说得上是最为简单的GANs了。可以根据这个来摸清楚GANs自身的一套工作流程到底是怎么样的，为之后实现复杂的GANs网络做个铺垫。本小节相关代码在<a href="https://github.com/corenel/GAN-Zoo/tree/master/GAN" target="_blank" rel="external">GAN-Zoo/GAN</a>中。</p>
 <p>首先我们需要训练集，比如说我们这里用到的MNIST数据集。PyTorch在这点上做得很好，对于一些常用的数据集都自带有loader，不用自己写了。相关代码见<a href="https://github.com/corenel/GAN-Zoo/blob/master/GAN/data_loader.py" target="_blank" rel="external">GAN-Zoo/GAN/data_loader.py</a>。</p>
@@ -75,6 +80,24 @@
 <p><img src="/images/GAN_real_images.png" alt="GAN_real_images"></p>
 <p><img src="/images/GAN_fake_images-300.png" alt="GAN_fake_images-300"></p>
 <p>第一张是MNIST数据集中的，第二张是通过GANs生成的（300次迭代）。虽然第二张还有些不尽如人意之处（迭代次数太少），但是总体上来说，已经非常接近真实的数字图片了。这就是GANs的威力！</p>
+<h3 id="DCGAN-1"><a href="#DCGAN-1" class="headerlink" title="DCGAN"></a>DCGAN</h3><p>DCGAN与MLP-GAN的代码相差不多，基本上就是重新写一遍model的事。为了测试DCGAN的capacity，我将MNIST数据集换成了CIFAR-10数据集。相关代码见<a href="https://github.com/corenel/GAN-Zoo/tree/master/DCGAN" target="_blank" rel="external">GAN-Zoo/DCGAN</a>。</p>
+<p>不过这次的结果只能说是差强人意，20次迭代后生成的图像还算不错（毕竟CIFAR-10的分辨率是<code>28*28</code>）：</p>
+<p><img src="/images/DCGAN-fake-20-700.png" alt="DCGAN-fake-20-700"></p>
+<p>但是继续训练的话，GANs训练不稳定的问题就出现了。到24次迭代的时候，由于判别器已经非常精准，导致生成器的loss固定在了27左右动弹不得，从而生成的图像变成了一团噪声：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">Epoch [24/25] Step [200/782]:d_loss=2.160674767992532e-07 g_loss=27.614051818847656 D(x)=2.160674767992532e-07 D(G(z))=0.0</div><div class="line">Epoch [24/25] Step [210/782]:d_loss=6.410500191122992e-06 g_loss=27.623014450073242 D(x)=6.410500191122992e-06 D(G(z))=0.0</div><div class="line">Epoch [24/25] Step [220/782]:d_loss=1.5441528375959024e-06 g_loss=27.62175750732422 D(x)=1.5441528375959024e-06 D(G(z))=0.0</div><div class="line">Epoch [24/25] Step [230/782]:d_loss=3.24100881243794e-07 g_loss=27.62472152709961 D(x)=3.24100881243794e-07 D(G(z))=0.0</div><div class="line">...</div></pre></td></tr></table></figure>
+<p><img src="/images/DCGAN-fake-24-300.png" alt="DCGAN-fake-24-300"></p>
+<p>不过到了第25次迭代，DCGAN似乎又略微恢复了正常：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">Epoch [25/25] Step [10/782]:d_loss=0.32297325134277344 g_loss=8.964262962341309 D(x)=0.3229268193244934 D(G(z))=4.6418874262599275e-05</div><div class="line">Epoch [25/25] Step [20/782]:d_loss=0.006471103988587856 g_loss=7.038626194000244 D(x)=0.0035153746139258146 D(G(z))=0.002955729141831398</div><div class="line">Epoch [25/25] Step [30/782]:d_loss=0.17143061757087708 g_loss=12.035135269165039 D(x)=0.17115993797779083 D(G(z))=0.0002706760715227574</div><div class="line">Epoch [25/25] Step [40/782]:d_loss=0.21678031980991364 g_loss=11.419050216674805 D(x)=0.004731819964945316 D(G(z))=0.2120485007762909</div></pre></td></tr></table></figure>
+<p><a href="/images/DCGAN-fake-25-700.png">DCGAN-fake-25-700</a></p>
+<p>当然，让GANs训练变得稳定的方法不是没有，<a href="https://github.com/soumith/ganhacks" target="_blank" rel="external">这里</a>就列举了不少tricks：</p>
+<ul>
+<li>避免稀疏的梯度：不要使用ReLU或者Max Pooling，尽量用LeakyReLU；</li>
+<li>使用软标签（soft and noisy labels），也就是说真实标签与虚假标签不要是固定的<code>1</code>或者<code>0</code>，最好加点噪声上去；</li>
+<li>在真实样本的输入上也加点随时间衰减的噪声</li>
+<li>给生成器加Dropout层</li>
+<li>……</li>
+</ul>
+<p>这样的trick是还有很多，有些我试过确实有用，还有些则不是很确定，属于玄学范畴。不过与其用一大堆额tricks，还不如直接简单粗暴地上WGAN吧！</p>
 <p>（待填坑……）</p>
 <!-- more -->
 <h2 id="Further-Reading"><a href="#Further-Reading" class="headerlink" title="Further Reading"></a>Further Reading</h2><p>最后总结一些我在学习过程中看过的比较好的资料以及代码实现：</p>
@@ -88,7 +111,11 @@
 <li>WGAN-GP: <a href="https://arxiv.org/abs/1704.00028" target="_blank" rel="external">https://arxiv.org/abs/1704.00028</a>, <a href="https://github.com/caogang/wgan-gp" target="_blank" rel="external">code (PyTorch)</a></li>
 </ul>
 </li>
-<li>我自己的代码实现，欢迎指正：<a href="https://github.com/corenel/GAN-Zoo" target="_blank" rel="external">GAN-Zoo</a></li>
+<li>我自己对上述论文的代码实现，欢迎指正：<a href="https://github.com/corenel/GAN-Zoo" target="_blank" rel="external">GAN-Zoo</a></li>
+<li>一些有趣的GANs应用<ul>
+<li><a href="http://make.girls.moe/technical_report.pdf" target="_blank" rel="external">Create Anime Characters with A.I. !</a>：一篇非常有意思的技术文章，生成的头像插图质量非常高。（<a href="http://make.girls.moe/" target="_blank" rel="external">online demo</a>）</li>
+</ul>
+</li>
 </ul>
 ]]></content>
     
