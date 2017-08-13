@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://www.yuthon.com/"/>
-  <updated>2017-08-13T05:58:37.000Z</updated>
+  <updated>2017-08-13T07:44:46.000Z</updated>
   <id>http://www.yuthon.com/</id>
   
   <author>
@@ -20,7 +20,7 @@
     <link href="http://www.yuthon.com/2017/08/12/Something-about-GANs/"/>
     <id>http://www.yuthon.com/2017/08/12/Something-about-GANs/</id>
     <published>2017-08-12T11:24:14.000Z</published>
-    <updated>2017-08-13T05:58:37.000Z</updated>
+    <updated>2017-08-13T07:44:46.000Z</updated>
     
     <content type="html"><![CDATA[<p>最近在看关于GANs的论文，并且自己动手用PyTorch写了一些经典文章的实现，想要稍微总结一下，故有此文。在最后我总结了我自己看过的有关GANs的一些比较好的资源，希望对读者有所帮助。</p>
 <p>（待填坑……）</p>
@@ -55,6 +55,26 @@
 </ul>
 <p>从下图可以看出，heuristicly designed non-saturating cost在$D(G(z))$变化的时候，其方差较小，因此是比较合适作为生成器代价函数的选择的。</p>
 <p><img src="/images/cost_functions_of_GANs.png" alt="cost_functions_of_GANs"></p>
+<h2 id="DCGAN"><a href="#DCGAN" class="headerlink" title="DCGAN"></a>DCGAN</h2><p>（待填坑……）</p>
+<h2 id="WGAN-amp-WGAN-GP"><a href="#WGAN-amp-WGAN-GP" class="headerlink" title="WGAN &amp; WGAN-GP"></a>WGAN &amp; WGAN-GP</h2><p>（待填坑……）</p>
+<h2 id="GANs-in-Practice"><a href="#GANs-in-Practice" class="headerlink" title="GANs in Practice"></a>GANs in Practice</h2><h3 id="MLP-GAN"><a href="#MLP-GAN" class="headerlink" title="MLP-GAN"></a>MLP-GAN</h3><p>使用多层感知机（MLP）来构建判别器与生成器的网络，可以说得上是最为简单的GANs了。可以根据这个来摸清楚GANs自身的一套工作流程到底是怎么样的，为之后实现复杂的GANs网络做个铺垫。本小节相关代码在<a href="https://github.com/corenel/GAN-Zoo/tree/master/GAN" target="_blank" rel="external">GAN-Zoo/GAN</a>中。</p>
+<p>首先我们需要训练集，比如说我们这里用到的MNIST数据集。PyTorch在这点上做得很好，对于一些常用的数据集都自带有loader，不用自己写了。相关代码见<a href="https://github.com/corenel/GAN-Zoo/blob/master/GAN/data_loader.py" target="_blank" rel="external">GAN-Zoo/GAN/data_loader.py</a>。</p>
+<p>有了数据集之后就需要自己定义模型的网络结构了，具体到GANs就是<a href="https://github.com/corenel/GAN-Zoo/blob/master/GAN/models.py#L6-L22" target="_blank" rel="external">判别器</a>与<a href="https://github.com/corenel/GAN-Zoo/blob/master/GAN/models.py#L25-L41" target="_blank" rel="external">生成器</a>的定义。这里贴一段判别器的定义，可以看出PyTorch在网络定义方面还是很方便的（和Keras差不多）。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div></pre></td><td class="code"><pre><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">Discriminator</span><span class="params">(nn.Module)</span>:</span></div><div class="line">    <span class="string">"""Model for Discriminator."""</span></div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self, input_size, hidden_size, output_size)</span>:</span></div><div class="line">        <span class="string">"""Init for Discriminator model."""</span></div><div class="line">        super(Discriminator, self).__init__()</div><div class="line">        self.layer = nn.Sequential(nn.Linear(input_size, hidden_size),</div><div class="line">                                   nn.LeakyReLU(<span class="number">0.2</span>),</div><div class="line">                                   nn.Linear(hidden_size, hidden_size),</div><div class="line">                                   nn.LeakyReLU(<span class="number">0.2</span>),</div><div class="line">                                   nn.Linear(hidden_size, output_size),</div><div class="line">                                   nn.Sigmoid())</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">forward</span><span class="params">(self, x)</span>:</span></div><div class="line">        <span class="string">"""Forward step for Discriminator model."""</span></div><div class="line">        out = self.layer(x)</div><div class="line">        <span class="keyword">return</span> out</div></pre></td></tr></table></figure>
+<p>定义完模型，之后就是整个网络的训练过程了：</p>
+<ul>
+<li><a href="https://github.com/corenel/GAN-Zoo/blob/master/GAN/main.py#L17-L37" target="_blank" rel="external">初始化阶段</a>：初始化models、criterion（<code>nn.BCELoss()</code>）以及optimizer（<code>nn.optim.Adam()</code>），检查cuda是否可用（<code>nn.cuda.is_available()</code>），能用的话就上GPU跑。</li>
+<li>网络训练阶段：<ul>
+<li><a href="https://github.com/corenel/GAN-Zoo/blob/master/GAN/main.py#L49-L78" target="_blank" rel="external">训练判别器</a>：主要分为两个步骤，首先从数据集中读取样本，判别器forward一遍，然后和真实标签（<code>1</code>）做loss并backward；其次，生成随机噪声而后经过生成器的forward得到生成样本，再喂给判别器，与虚假标签（<code>0</code>）做loss并backward。最后由optimizer更新判别器网络的参数。</li>
+<li><a href="https://github.com/corenel/GAN-Zoo/blob/master/GAN/main.py#L80-L105" target="_blank" rel="external">训练生成器</a>：首先生成随机噪声，而后通过生成器网络生成虚假样本，再通过判别器网络得到loss，并更新生成器网络。值得注意的是，<a href="https://github.com/corenel/GAN-Zoo/blob/master/GAN/main.py#L91" target="_blank" rel="external">生成器的loss的计算</a>用的是真实标签（<code>1</code>），也就是上述的heuristicly designed non-saturating cost。</li>
+<li><a href="https://github.com/corenel/GAN-Zoo/blob/master/GAN/main.py#L107-L131" target="_blank" rel="external">输出log并保存model</a></li>
+</ul>
+</li>
+</ul>
+<p>非常简单的代码，但是生成出来的数字的效果还是很不错的。</p>
+<p><img src="/images/GAN_real_images.png" alt="GAN_real_images"></p>
+<p><img src="/images/GAN_fake_images-300.png" alt="GAN_fake_images-300"></p>
+<p>第一张是MNIST数据集中的，第二张是通过GANs生成的（300次迭代）。虽然第二张还有些不尽如人意之处（迭代次数太少），但是总体上来说，已经非常接近真实的数字图片了。这就是GANs的威力！</p>
 <p>（待填坑……）</p>
 <!-- more -->
 <h2 id="Further-Reading"><a href="#Further-Reading" class="headerlink" title="Further Reading"></a>Further Reading</h2><p>最后总结一些我在学习过程中看过的比较好的资料以及代码实现：</p>
