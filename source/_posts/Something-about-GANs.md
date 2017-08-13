@@ -91,13 +91,20 @@ $$
   $$
 
 
+
+
 从下图可以看出，heuristicly designed non-saturating cost在$D(G(z))$变化的时候，其方差较小，因此是比较合适作为生成器代价函数的选择的。
 
 ![cost_functions_of_GANs](/images/cost_functions_of_GANs.png)
 
 ## DCGAN
 
-（待填坑……）
+DCGAN即使用了全卷积网络的GANs，一般特指[这篇paper](https://arxiv.org/abs/1511.06434)中的网络结构。目前几乎所有的GANs都或多或少地借鉴了DCGAN的架构。DCGAN的主要创新点在于：
+
+- **同时在判别器与生成器网络中使用了Batch Normalization层。**当然，为了能够学到真实数据分布正确的均值（mean）与规模（scale），判别器的首层与生成器的末层没有加BN层。
+- **整个网络架构借鉴了the all-convolutional net**（不是FCN），不含pooling和“unpooling”层，增加表示维度是靠`stride=1`的转置卷积（transposed convolition）实现的。
+
+总而言之，就是换了原始的GAN中的网络架构，把FC层都换成了带BN层的卷积层。
 
 ## WGAN & WGAN-GP
 
@@ -149,6 +156,47 @@ class Discriminator(nn.Module):
 
 第一张是MNIST数据集中的，第二张是通过GANs生成的（300次迭代）。虽然第二张还有些不尽如人意之处（迭代次数太少），但是总体上来说，已经非常接近真实的数字图片了。这就是GANs的威力！
 
+### DCGAN
+
+DCGAN与MLP-GAN的代码相差不多，基本上就是重新写一遍model的事。为了测试DCGAN的capacity，我将MNIST数据集换成了CIFAR-10数据集。相关代码见[GAN-Zoo/DCGAN](https://github.com/corenel/GAN-Zoo/tree/master/DCGAN)。
+
+不过这次的结果只能说是差强人意，20次迭代后生成的图像还算不错（毕竟CIFAR-10的分辨率是`28*28`）：
+
+![DCGAN-fake-20-700](/images/DCGAN-fake-20-700.png)
+
+但是继续训练的话，GANs训练不稳定的问题就出现了。到24次迭代的时候，由于判别器已经非常精准，导致生成器的loss固定在了27左右动弹不得，从而生成的图像变成了一团噪声：
+
+```shell
+Epoch [24/25] Step [200/782]:d_loss=2.160674767992532e-07 g_loss=27.614051818847656 D(x)=2.160674767992532e-07 D(G(z))=0.0
+Epoch [24/25] Step [210/782]:d_loss=6.410500191122992e-06 g_loss=27.623014450073242 D(x)=6.410500191122992e-06 D(G(z))=0.0
+Epoch [24/25] Step [220/782]:d_loss=1.5441528375959024e-06 g_loss=27.62175750732422 D(x)=1.5441528375959024e-06 D(G(z))=0.0
+Epoch [24/25] Step [230/782]:d_loss=3.24100881243794e-07 g_loss=27.62472152709961 D(x)=3.24100881243794e-07 D(G(z))=0.0
+...
+```
+
+![DCGAN-fake-24-300](/images/DCGAN-fake-24-300.png)
+
+不过到了第25次迭代，DCGAN似乎又略微恢复了正常：
+
+```Shell
+Epoch [25/25] Step [10/782]:d_loss=0.32297325134277344 g_loss=8.964262962341309 D(x)=0.3229268193244934 D(G(z))=4.6418874262599275e-05
+Epoch [25/25] Step [20/782]:d_loss=0.006471103988587856 g_loss=7.038626194000244 D(x)=0.0035153746139258146 D(G(z))=0.002955729141831398
+Epoch [25/25] Step [30/782]:d_loss=0.17143061757087708 g_loss=12.035135269165039 D(x)=0.17115993797779083 D(G(z))=0.0002706760715227574
+Epoch [25/25] Step [40/782]:d_loss=0.21678031980991364 g_loss=11.419050216674805 D(x)=0.004731819964945316 D(G(z))=0.2120485007762909
+```
+
+[DCGAN-fake-25-700](/images/DCGAN-fake-25-700.png)
+
+当然，让GANs训练变得稳定的方法不是没有，[这里](https://github.com/soumith/ganhacks)就列举了不少tricks：
+
+- 避免稀疏的梯度：不要使用ReLU或者Max Pooling，尽量用LeakyReLU；
+- 使用软标签（soft and noisy labels），也就是说真实标签与虚假标签不要是固定的`1`或者`0`，最好加点噪声上去；
+- 在真实样本的输入上也加点随时间衰减的噪声
+- 给生成器加Dropout层
+- ……
+
+这样的trick是还有很多，有些我试过确实有用，还有些则不是很确定，属于玄学范畴。不过与其用一大堆额tricks，还不如直接简单粗暴地上WGAN吧！
+
 （待填坑……）
 
 <!-- more -->
@@ -164,4 +212,6 @@ class Discriminator(nn.Module):
   - DCGAN: [paper](https://arxiv.org/abs/1511.06434), [code (PyTorch official example)](https://github.com/pytorch/examples/tree/master/dcgan), [code (pytorch-tutorial)](https://github.com/yunjey/pytorch-tutorial/tree/master/tutorials/03-advanced/deep_convolutional_gan)
   - WGAN: [paper](https://arxiv.org/abs/1701.07875), [code (PyTorch)](https://github.com/martinarjovsky/WassersteinGAN)
   - WGAN-GP: [https://arxiv.org/abs/1704.00028](https://arxiv.org/abs/1704.00028), [code (PyTorch)](https://github.com/caogang/wgan-gp)
-- 我自己的代码实现，欢迎指正：[GAN-Zoo](https://github.com/corenel/GAN-Zoo)
+- 我自己对上述论文的代码实现，欢迎指正：[GAN-Zoo](https://github.com/corenel/GAN-Zoo)
+- 一些有趣的GANs应用
+  - [Create Anime Characters with A.I. !](http://make.girls.moe/technical_report.pdf)：一篇非常有意思的技术文章，生成的头像插图质量非常高。（[online demo](http://make.girls.moe/)）
