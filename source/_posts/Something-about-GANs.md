@@ -44,10 +44,21 @@ $$
 \theta ^*=\arg \min D\_{KL} (p\_{data} (x) \parallel p\_{model} (x;\theta))
 $$
 
-好了，说了这么多，让我们再把话题转向生成模型的分类。生成模型可以根据其计算似然及其梯度，或者近似估计这些值的方法来进行分类。
+好了，说了这么多，让我们再把话题转向生成模型的分类。生成模型可以根据其计算似然及其梯度，或者近似估计这些值的方法来进行分类。其中值得注意的有FBVNs、VAE以及GANs。GANs属于右边的那一类，能够隐式地得到概率密度，并直接从中生成样本。
 
 ![taxonomy_for_generative_models](/images/taxonomy_for_generative_models.png)
 
+GANs相对于其他的生成模型，其优点主要在于：
+
+- GANs能够并行地生成样本，而非FBVNs那样只能串行；
+- GANs在设计上的约束很少，不像玻尔兹曼机（Boltzmann Machine）那样只能用少数几种概率分布，也不像非线性ICA那样，要求生成器必须可逆并且隐式编码（latent code）$z$必须与数据集中的样本$x$具有相同的维度；
+- GANs不需要马尔科夫链（Markov chains），这点不同于玻尔兹曼机以及GSNs；
+- GANs不需要使用微分边界（variational bound），并且GANs里面用到的模型早已被证明是万能逼近器（universial approximators），因此GANs能够保证渐进一致（asymptotically consistent）。相比而言，某些VAEs虽然推测是渐进一致的，但是没有得到证明；
+- 最后一点，GANs就目前的效果来说，其生成出来的样本的质量比用其他生成模型得到的要好。
+
+当然，原始的GANs有一点是非常让人头疼的，就是它的训练过程本质上是寻找一场比赛的纳什均衡（Nash equilibrium）的过程，这导致GANs很难稳定的训练。当然，之后要提到的WGAN在一定程度上解决了这问题。
+
+## How do GANs Work?
 
 （待填坑……）
 
@@ -58,7 +69,7 @@ $$
 最后总结一些我在学习过程中看过的比较好的资料以及代码实现：
 
 - [pytorch-tutorial](https://github.com/yunjey/pytorch-tutorial): 我见到的最好的PyTorch入门教程，简洁清晰明了，有其他DL框架使用经验以及Python基础的朋友适用。一上来看不懂的话，可以先看官方的60分钟入门教程之后，再看这个。
-- [NIPS 2016 Tutorial: Generative Adversarial Networks](http://arxiv.org/abs/1701.00160): Iran Goodfellow在NIPS2016上的教程演讲，很好地介绍了GANs的基本思想和应用。前面的数学推导看不懂的话，可以结合[DeepLearningBook](http://www.deeplearningbook.org/)（[中译版](http://www.epubit.com.cn/book/details/4278)已经上市，本人忝为校对之一）。同时，还可以结合slides看，slides上的都写得很简练，tutorial中则做了相似的说明。可惜的是，当时WGAN及其变种还没有出来，因此在这篇tutorial中没有提到。
+- [NIPS 2016 Tutorial: Generative Adversarial Networks](http://arxiv.org/abs/1701.00160): Iran Goodfellow在NIPS2016上的教程演讲，很好地介绍了GANs的基本思想和应用。前面的数学推导看不懂的话，可以结合[DeepLearningBook](http://www.deeplearningbook.org/)（[中译版](http://www.epubit.com.cn/book/details/4278)已经上市，本人忝为校对之一）。同时，还可以结合slides看，slides上的都写得很简练，tutorial中则做了详细的说明。可惜的是，当时WGAN及其变种还没有出来，因此在这篇tutorial中没有提到。
 - 几篇代表论文以及相关的代码实现：
   - GAN: [paper](https://arxiv.org/abs/1406.2661), [code (pytorch-tutorial)](https://github.com/yunjey/pytorch-tutorial/blob/master/tutorials/02-intermediate/generative_adversarial_network/main.py#L34-L50)
   - DCGAN: [paper](https://arxiv.org/abs/1511.06434), [code (PyTorch official example)](https://github.com/pytorch/examples/tree/master/dcgan), [code (pytorch-tutorial)](https://github.com/yunjey/pytorch-tutorial/tree/master/tutorials/03-advanced/deep_convolutional_gan)
