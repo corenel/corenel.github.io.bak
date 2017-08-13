@@ -94,6 +94,10 @@ $$
 
 
 
+
+
+
+
 从下图可以看出，heuristicly designed non-saturating cost在$D(G(z))$变化的时候，其方差较小，因此是比较合适作为生成器代价函数的选择的。
 
 ![cost_functions_of_GANs](/images/cost_functions_of_GANs.png)
@@ -132,6 +136,43 @@ KL散度都不存在了，那还优化个毛？不过这难不倒千千万万机
 为了优化生成模型的参数$\theta$，我们希望定义的模型能够使得映射$\theta \mapsto \mathbb{P\_\theta}$连续。这里的连续指的是当一连串的参数$\theta\_t$收敛于一个值$\theta$，概率$\mathbb{P}\_{\theta\_t}$也能收敛于$\mathbb{P}\_\theta$。不过这种连续性取决于我们选择的距离度量。距离度量越弱，概率分布越容易瘦脸，则越容易定义一个从$\theta$空间到$\mathbb{P}\_\theta$空间的连续的映射。我们这里关注映射$\theta \mapsto \mathbb{P\_\theta}$连续性的原因是，**我们希望$\theta \mapsto \rho(\mathbb{P}\_{\theta}, \mathbb{P}\_r)$的损失函数是连续的（方便梯度下降训练），而这等价于在使用距离度量$\rho$的情况下映射$\theta \mapsto \mathbb{P\_\theta}$连续。**
 
 ### Different Disrances
+
+令$\mathcal{X}$为紧致的度量集合（例如图像空间$[0,1]^d$），$\Sigma$为$\mathcal{X}$的Borel子集，$\operatorname{Prob}(\mathcal{X})$为$\mathcal{X}$上的概率度量空间，则可以定义两个分布$\mathbb{P}\_r, \mathbb{P}\_g \in \operatorname{Prob}(\mathcal{X})$之间的距离或是散度如下：
+
+- **TV距离（The Total Variation distance）**
+  $$
+  \delta (\mathbb{P}\_r, \mathbb{P}\_g) = \underset{A\in\Sigma}{\sup} |\mathbb{P}\_r (A) - \mathbb{P}\_g(A)|
+  $$
+
+- **KL散度（The Kullback-Leibler divergence）**：注意KL散度是不对称的，而且在例如$P\_g (x) = 0$且$P\_r (x) > 0$的情况下会变成无穷。
+  $$
+  KL(\mathbb{P}\_r \parallel \mathbb{P}\_g) = \int \log \left( \frac{P\_r (x)}{P\_g (x)} \right) P\_r (x) d \mu (x)
+  $$
+
+- **JS散度（The Jensen-Shannon divergence）**：其中$\mathbb{P}\_m= (\mathbb{P}\_r + \mathbb{P}\_g) / 2$。JS散度是对称的，并且始终是有定义的。DCGAN的生成器的损失函数就是JS散度形式的，但是JS散度也会导致一些问题。
+  $$
+  JS(\mathbb{P}\_r, \mathbb{P}\_g) = KL(\mathbb{P}\_r \parallel \mathbb{P}\_m) + KL(\mathbb{P}\_g \parallel \mathbb{P}\_m)
+  $$
+
+- **EM距离（The Earth-Mover distance or Wasserstein-1）**：其中$\prod(\mathbb{P}\_r, \mathbb{P}\_g)$表示所有边际概率为$\mathbb{P}\_r$与$\mathbb{P}\_g$的联合分布$\gamma (x,y)$的集合。直观地说，$\gamma (x,y)$表示了为了将分布$\mathbb{P}\_r$变换成$\mathbb{P}\_g$所需要的从$x$移到$y$的”质量“的多少。而EM距离则代表了最优搬运方案的代价。
+  $$
+  W(\mathbb{P}\_r, \mathbb{P}\_g) = \underset{\gamma\in\prod(\mathbb{P}\_r, \mathbb{P}\_g)}{\inf} \mathbb{E} \_{(x,y)\sim \gamma} \left[ \parallel x- y\parallel \right]
+  $$
+
+
+
+为了比较这几个距离度量的优劣，WGAN设计了一个例子：令$Z \sim U[0,1]$，$\mathbb{P}\_0$为$(0, Z) \in \mathbb{R}^2$的分布（$x$坐标为$0$，$y$坐标为$Z$，实际上就是分布在点$(0,0)$到点$(0,1)$这条线段上）。令生成样本分布为$g\_\theta (z)=(\theta, z)$，其中以$\theta$作为唯一的实值参数（实际上就就是沿着$x$轴左右移动之前提到的线段）。
+
+![WGAN_example_1](/images/WGAN_example_1.png)
+
+则前文所述的各个距离度量的表达式为：
+
+- $W(\mathbb{P}\_\theta, \mathbb{P}\_0) = |\theta|$
+- $JS(\mathbb{P}\_\theta, \mathbb{P}\_0) =  \begin{cases} \log 2, & \text{if } \theta \ne 0 \\\\  0, & \text{if } \theta = 0 \end{cases}$
+- $KL(\mathbb{P}\_\theta, \mathbb{P}\_0) = (\mathbb{P}\_0, \mathbb{P}\_\theta) = \begin{cases} +\infty, & \text{if } \theta \ne 0 \\\\  0, & \text{if } \theta = 0 \end{cases}$
+- $\delta(\mathbb{P}\_\theta, \mathbb{P}\_0) = \begin{cases} 1, & \text{if } \theta \ne 0 \\\\  0, & \text{if } \theta = 0 \end{cases}$
+
+可以看出，当$\theta \_t \to 0$，只有EM距离能够使得序列$(\mathbb{P}\_{\theta \_t}) \_{t \in N}$收敛于$\mathbb{P}\_0$，而其他的JS散度、KL散度、KL散度取反或者TV距离都不能。这说明**在EM距离下，我们能够通过梯度下降的方式习得低维流形上的概率分布，而在其他距离度量下甚至连损失函数的连续性都不能保证，更遑论习得概率分布了。**一句话，EM距离大法好！因此，WGAN将EM距离（又称Wasserstein-1距离）作为两个概率分布之间的距离度量，从而推导损失函数的表达式。
 
 （待填坑……）
 
