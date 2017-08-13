@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://www.yuthon.com/"/>
-  <updated>2017-08-13T13:23:28.000Z</updated>
+  <updated>2017-08-13T14:44:23.000Z</updated>
   <id>http://www.yuthon.com/</id>
   
   <author>
@@ -20,7 +20,7 @@
     <link href="http://www.yuthon.com/2017/08/12/Something-about-GANs/"/>
     <id>http://www.yuthon.com/2017/08/12/Something-about-GANs/</id>
     <published>2017-08-12T11:24:14.000Z</published>
-    <updated>2017-08-13T13:23:28.000Z</updated>
+    <updated>2017-08-13T14:44:23.000Z</updated>
     
     <content type="html"><![CDATA[<p>最近在看关于GANs的论文，并且自己动手用PyTorch写了一些经典文章的实现，想要稍微总结一下，故有此文。在最后我总结了我自己看过的有关GANs的一些比较好的资源，希望对读者有所帮助。</p>
 <p>（待填坑……）</p>
@@ -69,7 +69,28 @@
 <p>那么问题又转移到了，<strong>如何衡量生成样本分布$\mathbb{P}_{\theta}$与真实样本分布$\mathbb{P}_r$之间的相似性或者说距离$\rho(\mathbb{P}_{\theta}, \mathbb{P}_r)$？</strong>这个距离度量需要有比较好的性质，不能两个分布没有交集就直接歇菜了（说的就是KL散度你这个大坑货）。WGAN论文之后的部分就在讲如何定义一个好的距离度量，并将其应用在GANs中。</p>
 <p>各个距离度量的一个基本的差异在于它们对于成序列的概率分布的收敛性的影响。一个概率分布的序列$(\mathbb{P}_t)_{t\in\mathbb{R}}$能够收敛，当且仅当存在一个$\mathbb{P}_\infty$使得$\rho(\mathbb{P}_{\theta}, \mathbb{P}_r)$趋向于零，也就是说取决于$\rho$的定义。一般来说，如果$\rho$在拓扑（topology）上越弱，则序列越容易收敛。</p>
 <p>为了优化生成模型的参数$\theta$，我们希望定义的模型能够使得映射$\theta \mapsto \mathbb{P_\theta}$连续。这里的连续指的是当一连串的参数$\theta_t$收敛于一个值$\theta$，概率$\mathbb{P}_{\theta_t}$也能收敛于$\mathbb{P}_\theta$。不过这种连续性取决于我们选择的距离度量。距离度量越弱，概率分布越容易瘦脸，则越容易定义一个从$\theta$空间到$\mathbb{P}_\theta$空间的连续的映射。我们这里关注映射$\theta \mapsto \mathbb{P_\theta}$连续性的原因是，<strong>我们希望$\theta \mapsto \rho(\mathbb{P}_{\theta}, \mathbb{P}_r)$的损失函数是连续的（方便梯度下降训练），而这等价于在使用距离度量$\rho$的情况下映射$\theta \mapsto \mathbb{P_\theta}$连续。</strong></p>
-<h3 id="Different-Disrances"><a href="#Different-Disrances" class="headerlink" title="Different Disrances"></a>Different Disrances</h3><p>（待填坑……）</p>
+<h3 id="Different-Disrances"><a href="#Different-Disrances" class="headerlink" title="Different Disrances"></a>Different Disrances</h3><p>令$\mathcal{X}$为紧致的度量集合（例如图像空间$[0,1]^d$），$\Sigma$为$\mathcal{X}$的Borel子集，$\operatorname{Prob}(\mathcal{X})$为$\mathcal{X}$上的概率度量空间，则可以定义两个分布$\mathbb{P}_r, \mathbb{P}_g \in \operatorname{Prob}(\mathcal{X})$之间的距离或是散度如下：</p>
+<ul>
+<li><p><strong>TV距离（The Total Variation distance）</strong><br>$$<br>\delta (\mathbb{P}_r, \mathbb{P}_g) = \underset{A\in\Sigma}{\sup} |\mathbb{P}_r (A) - \mathbb{P}_g(A)|<br>$$</p>
+</li>
+<li><p><strong>KL散度（The Kullback-Leibler divergence）</strong>：注意KL散度是不对称的，而且在例如$P_g (x) = 0$且$P_r (x) &gt; 0$的情况下会变成无穷。<br>$$<br>KL(\mathbb{P}_r \parallel \mathbb{P}_g) = \int \log \left( \frac{P_r (x)}{P_g (x)} \right) P_r (x) d \mu (x)<br>$$</p>
+</li>
+<li><p><strong>JS散度（The Jensen-Shannon divergence）</strong>：其中$\mathbb{P}_m= (\mathbb{P}_r + \mathbb{P}_g) / 2$。JS散度是对称的，并且始终是有定义的。DCGAN的生成器的损失函数就是JS散度形式的，但是JS散度也会导致一些问题。<br>$$<br>JS(\mathbb{P}_r, \mathbb{P}_g) = KL(\mathbb{P}_r \parallel \mathbb{P}_m) + KL(\mathbb{P}_g \parallel \mathbb{P}_m)<br>$$</p>
+</li>
+<li><p><strong>EM距离（The Earth-Mover distance or Wasserstein-1）</strong>：其中$\prod(\mathbb{P}_r, \mathbb{P}_g)$表示所有边际概率为$\mathbb{P}_r$与$\mathbb{P}_g$的联合分布$\gamma (x,y)$的集合。直观地说，$\gamma (x,y)$表示了为了将分布$\mathbb{P}_r$变换成$\mathbb{P}_g$所需要的从$x$移到$y$的”质量“的多少。而EM距离则代表了最优搬运方案的代价。<br>$$<br>W(\mathbb{P}_r, \mathbb{P}_g) = \underset{\gamma\in\prod(\mathbb{P}_r, \mathbb{P}_g)}{\inf} \mathbb{E} _{(x,y)\sim \gamma} \left[ \parallel x- y\parallel \right]<br>$$</p>
+</li>
+</ul>
+<p>为了比较这几个距离度量的优劣，WGAN设计了一个例子：令$Z \sim U[0,1]$，$\mathbb{P}_0$为$(0, Z) \in \mathbb{R}^2$的分布（$x$坐标为$0$，$y$坐标为$Z$，实际上就是分布在点$(0,0)$到点$(0,1)$这条线段上）。令生成样本分布为$g_\theta (z)=(\theta, z)$，其中以$\theta$作为唯一的实值参数（实际上就就是沿着$x$轴左右移动之前提到的线段）。</p>
+<p><img src="/images/WGAN_example_1.png" alt="WGAN_example_1"></p>
+<p>则前文所述的各个距离度量的表达式为：</p>
+<ul>
+<li>$W(\mathbb{P}_\theta, \mathbb{P}_0) = |\theta|$</li>
+<li>$JS(\mathbb{P}_\theta, \mathbb{P}_0) =  \begin{cases} \log 2, &amp; \text{if } \theta \ne 0 \\  0, &amp; \text{if } \theta = 0 \end{cases}$</li>
+<li>$KL(\mathbb{P}_\theta, \mathbb{P}_0) = (\mathbb{P}_0, \mathbb{P}_\theta) = \begin{cases} +\infty, &amp; \text{if } \theta \ne 0 \\  0, &amp; \text{if } \theta = 0 \end{cases}$</li>
+<li>$\delta(\mathbb{P}_\theta, \mathbb{P}_0) = \begin{cases} 1, &amp; \text{if } \theta \ne 0 \\  0, &amp; \text{if } \theta = 0 \end{cases}$</li>
+</ul>
+<p>可以看出，当$\theta _t \to 0$，只有EM距离能够使得序列$(\mathbb{P}_{\theta _t}) _{t \in N}$收敛于$\mathbb{P}_0$，而其他的JS散度、KL散度、KL散度取反或者TV距离都不能。这说明<strong>在EM距离下，我们能够通过梯度下降的方式习得低维流形上的概率分布，而在其他距离度量下甚至连损失函数的连续性都不能保证，更遑论习得概率分布了。</strong>一句话，EM距离大法好！因此，WGAN将EM距离（又称Wasserstein-1距离）作为两个概率分布之间的距离度量，从而推导损失函数的表达式。</p>
+<p>（待填坑……）</p>
 <h2 id="GANs-in-Practice"><a href="#GANs-in-Practice" class="headerlink" title="GANs in Practice"></a>GANs in Practice</h2><h3 id="MLP-GAN"><a href="#MLP-GAN" class="headerlink" title="MLP-GAN"></a>MLP-GAN</h3><p>使用多层感知机（MLP）来构建判别器与生成器的网络，可以说得上是最为简单的GANs了。可以根据这个来摸清楚GANs自身的一套工作流程到底是怎么样的，为之后实现复杂的GANs网络做个铺垫。本小节相关代码在<a href="https://github.com/corenel/GAN-Zoo/tree/master/GAN" target="_blank" rel="external">GAN-Zoo/GAN</a>中。</p>
 <p>首先我们需要训练集，比如说我们这里用到的MNIST数据集。PyTorch在这点上做得很好，对于一些常用的数据集都自带有loader，不用自己写了。相关代码见<a href="https://github.com/corenel/GAN-Zoo/blob/master/GAN/data_loader.py" target="_blank" rel="external">GAN-Zoo/GAN/data_loader.py</a>。</p>
 <p>有了数据集之后就需要自己定义模型的网络结构了，具体到GANs就是<a href="https://github.com/corenel/GAN-Zoo/blob/master/GAN/models.py#L6-L22" target="_blank" rel="external">判别器</a>与<a href="https://github.com/corenel/GAN-Zoo/blob/master/GAN/models.py#L25-L41" target="_blank" rel="external">生成器</a>的定义。这里贴一段判别器的定义，可以看出PyTorch在网络定义方面还是很方便的（和Keras差不多）。</p>
