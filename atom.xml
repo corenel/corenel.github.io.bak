@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://www.yuthon.com/"/>
-  <updated>2017-08-13T14:44:23.000Z</updated>
+  <updated>2017-08-13T16:05:20.000Z</updated>
   <id>http://www.yuthon.com/</id>
   
   <author>
@@ -20,7 +20,7 @@
     <link href="http://www.yuthon.com/2017/08/12/Something-about-GANs/"/>
     <id>http://www.yuthon.com/2017/08/12/Something-about-GANs/</id>
     <published>2017-08-12T11:24:14.000Z</published>
-    <updated>2017-08-13T14:44:23.000Z</updated>
+    <updated>2017-08-13T16:05:20.000Z</updated>
     
     <content type="html"><![CDATA[<p>最近在看关于GANs的论文，并且自己动手用PyTorch写了一些经典文章的实现，想要稍微总结一下，故有此文。在最后我总结了我自己看过的有关GANs的一些比较好的资源，希望对读者有所帮助。</p>
 <p>（待填坑……）</p>
@@ -62,8 +62,8 @@
 </ul>
 <p>总而言之，就是换了原始的GAN中的网络架构，把FC层都换成了带BN层的卷积层。</p>
 <h2 id="WGAN-amp-WGAN-GP"><a href="#WGAN-amp-WGAN-GP" class="headerlink" title="WGAN &amp; WGAN-GP"></a>WGAN &amp; WGAN-GP</h2><h3 id="What-does-it-mean-to-learn-a-probability-distribution"><a href="#What-does-it-mean-to-learn-a-probability-distribution" class="headerlink" title="What does it mean to learn a probability distribution?"></a>What does it mean to learn a probability distribution?</h3><p>WGAN在<a href="https://arxiv.org/abs/1701.07875" target="_blank" rel="external">paper</a>开头就直截了当地提出了一个问题，<strong>我们怎么样才算是学到了一个概率分布呢？</strong>如果按照本文开头的说法，我们的做法是先定义一个参数化的概率密度族$(P_\theta )_{\theta \in \mathbb{R}}$，然后通过在已有的数据集${x^{(i)}} ^m_{i=1}$上最大化似然的方法来找到一个最佳的参数，并将这个参数对应的那个概率密度$P_{\theta}$视为我们所学习到的模型。<br>$$<br>\underset{\theta \in \mathbb{R}}{\max} \frac{1}{m} \sum ^m_{i=1} \log P_{\theta} (x^{(i)})<br>$$<br>如果真实的数据分布$\mathbb{P}_r$存在密度，而我们学习到的概率密度$P_{\theta}$所对应的概率分布为$\mathbb{P}_{\theta}$，则<strong>上述学习过程实际上等价于最小化$\mathbb{P}_r$与$\mathbb{P}_{\theta}$之间的KL散度$KL(\mathbb{P}_r \parallel \mathbb{P}_{\theta})$。</strong>这也是上文提到过的。</p>
-<p>是不是看起来有理有据令人信服？但是，这上面的推理过程有一个很重要很显而易见但是又常常为人所忽视的条件，那就是<strong>首先$\mathbb{P}_r$与$\mathbb{P}_{\theta}$之间的KL散度必须存在，然后我们才能去最小化这个KL散度，来获取最优$\theta$</strong>。你TM在逗我，KL散度还能不存在？事实上，这是很常见的。比如说我们用GANs生成样本的时候，输入的随机噪声通常就是一个64维的向量，然后经过生成器网络来生成一个$64<em>64=4096$维的图片，其本质还是决定于开始的那个64维的随即向量。64维相对于4096维来说实在是微不足道，<em>*也就是说，生成样本分布的支撑集（support）构成了高维空间上的低维流形（manifold），撑不满整个高维空间。那么该模型的流形与真实分布的支撑集之间很有可能就没有不可忽视的交集（non-negligible intersection），以致两者间的KL散度不存在，或者说是$\infty$。</em></em></p>
-<p>KL散度都不存在了，那还优化个毛？不过这难不倒千千万万机智的研究者。<strong>你不是要让这两个概率分布有交集吗，那我就往$\mathbb{P}_{\theta}$上加噪声，加个大点的噪声总是能让这两个分布碰在一起的，那KL散度不是就有了？</strong>这也是几乎所有的生成模型都包含了噪声项的原因。一般来说，在训练开始的时候加的噪声要大一点，让含有噪声的两个分布能够够得着。随着训练过程的深入，两个分布的主体开始慢慢靠近，这时候噪声就需要慢慢减小了。最后两个分布开始真正有了不可忽视的交集，那么此时加不加噪声也没什么关系了。</p>
+<p>是不是看起来有理有据令人信服？但是，这上面的推理过程有一个很重要很显而易见但是又常常为人所忽视的条件，那就是<strong>首先$\mathbb{P}_r$与$\mathbb{P}_{\theta}$之间的KL散度必须存在，然后我们才能去最小化这个KL散度，来获取最优$\theta$</strong>。你TM在逗我，KL散度还能不存在？事实上，这是很常见的。比如说我们用GANs生成样本的时候，输入的随机噪声通常就是一个64维的向量，然后经过生成器网络来生成一个$64\times64=4096$维的图片，其本质还是决定于开始的那个64维的随机向量。64维相对于4096维来说实在是微不足道，<strong>也就是说，生成样本分布的支撑集（support）构成了高维空间上的低维流形（manifold），撑不满整个高维空间。那么该模型的流形与真实分布的支撑集之间很有可能就没有不可忽视的交集（non-negligible intersection），以致两者间的KL散度不存在，或者说是$\infty$。</strong></p>
+<p>KL散度都不存在了，那还优化个毛？不过这难不倒千千万万机智的研究者。<strong>你不是要让这两个概率分布有交集吗，那我就往$\mathbb{P}_{\theta}​$上加噪声，加个大点的噪声总是能让这两个分布碰在一起的，那KL散度不是就有了？</strong>这也是几乎所有的生成模型都包含了噪声项的原因。一般来说，在训练开始的时候加的噪声要大一点，让含有噪声的两个分布能够够得着。随着训练过程的深入，两个分布的主体开始慢慢靠近，这时候噪声就需要慢慢减小了。最后两个分布开始真正有了不可忽视的交集，那么此时加不加噪声也没什么关系了。</p>
 <p>不过这种方法也是存在着一些问题的，加噪声很可能使得生成出来的样本比较模糊（blurry）。如果加的是<code>mean=0.1</code>的高斯噪声，而像素值本身又已经归一化到了$[0,1]$，那么很显然，这个噪声相对于像素值来说太大了。于是机智的研究者在论文里展示生成的样本的时候，不像他们在训练过程中干的那样，是不怎么加噪声的。换句话说，加噪声虽然在一定程度上保证了KL散度的存在，也就是使得极大似然方法能够奏效，但是这对于问题本质上来说并没有改善，并非解决问题的正确方法（走上了邪路^_^）。</p>
 <p>与其显式地估计有可能并不存在的$\mathbb{P}_r$的密度，不如<strong>直接将来自先验分布$p(z)$的随机变量$\mathcal{Z}$通过参数化的映射$g_\theta : \mathcal{Z} \to \mathcal{X}$来生成样本$\mathcal{X}$，只要这个映射出来的样本$\mathcal{X}$的分布服从或者接近$\mathbb{P}_r$</strong>，那不就是学到了真实的概率分布？VAEs和GANs就是这么做的。这么做有两个好处，首先其与直接估计密度的方法不同，能够表示被约束在低维流形的概率分布；同时直接生成样本有时候比得到一个干巴巴的概率密度更加有用。</p>
 <p>那么问题又转移到了，<strong>如何衡量生成样本分布$\mathbb{P}_{\theta}$与真实样本分布$\mathbb{P}_r$之间的相似性或者说距离$\rho(\mathbb{P}_{\theta}, \mathbb{P}_r)$？</strong>这个距离度量需要有比较好的性质，不能两个分布没有交集就直接歇菜了（说的就是KL散度你这个大坑货）。WGAN论文之后的部分就在讲如何定义一个好的距离度量，并将其应用在GANs中。</p>
@@ -82,6 +82,7 @@
 </ul>
 <p>为了比较这几个距离度量的优劣，WGAN设计了一个例子：令$Z \sim U[0,1]$，$\mathbb{P}_0$为$(0, Z) \in \mathbb{R}^2$的分布（$x$坐标为$0$，$y$坐标为$Z$，实际上就是分布在点$(0,0)$到点$(0,1)$这条线段上）。令生成样本分布为$g_\theta (z)=(\theta, z)$，其中以$\theta$作为唯一的实值参数（实际上就就是沿着$x$轴左右移动之前提到的线段）。</p>
 <p><img src="/images/WGAN_example_1.png" alt="WGAN_example_1"></p>
+<p><img src="/images/WGAN_figure_1.png" alt="WGAN_figure_1"></p>
 <p>则前文所述的各个距离度量的表达式为：</p>
 <ul>
 <li>$W(\mathbb{P}_\theta, \mathbb{P}_0) = |\theta|$</li>
