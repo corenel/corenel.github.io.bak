@@ -109,6 +109,8 @@ DCGAN即使用了全卷积网络的GANs，一般特指[这篇paper](https://arxi
 
 ## WGAN & WGAN-GP
 
+### What does it mean to learn a probability distribution?
+
 WGAN在[paper](https://arxiv.org/abs/1701.07875)开头就直截了当地提出了一个问题，**我们怎么样才算是学到了一个概率分布呢？**如果按照本文开头的说法，我们的做法是先定义一个参数化的概率密度族$(P\_\theta )\_{\theta \in \mathbb{R}}$，然后通过在已有的数据集$\{x^{(i)}\} ^m\_{i=1}$上最大化似然的方法来找到一个最佳的参数，并将这个参数对应的那个概率密度$P\_{\theta}$视为我们所学习到的模型。
 $$
 \underset{\theta \in \mathbb{R}}{\max} \frac{1}{m} \sum ^m\_{i=1} \log P\_{\theta} (x^{(i)})
@@ -124,6 +126,12 @@ KL散度都不存在了，那还优化个毛？不过这难不倒千千万万机
 与其显式地估计有可能并不存在的$\mathbb{P}\_r$的密度，不如**直接将来自先验分布$p(z)$的随机变量$\mathcal{Z}$通过参数化的映射$g\_\theta : \mathcal{Z} \to \mathcal{X}$来生成样本$\mathcal{X}$，只要这个映射出来的样本$\mathcal{X}$的分布服从或者接近$\mathbb{P}\_r$**，那不就是学到了真实的概率分布？VAEs和GANs就是这么做的。这么做有两个好处，首先其与直接估计密度的方法不同，能够表示被约束在低维流形的概率分布；同时直接生成样本有时候比得到一个干巴巴的概率密度更加有用。
 
 那么问题又转移到了，如何衡量生成样本分布$\mathbb{P}\_{\theta}$与真实样本分布$\mathbb{P}\_r$之间的相似性或者说距离$\rho(\mathbb{P}\_{\theta}, \mathbb{P}\_r)$？这个距离度量需要有比较好的性质，不能两个分布没有交集就直接歇菜了（说的就是KL散度你这个大坑货）。WGAN论文之后的部分就在讲如何定义一个好的距离度量，并将其应用在GANs中。
+
+各个距离度量的一个基本的差异在于它们对于成序列的概率分布的收敛性的影响。一个概率分布的序列$(\mathbb{P}\_t)\_{t\in\mathbb{R}}$能够收敛，当且仅当存在一个$\mathbb{P}\_\infty$使得$\rho(\mathbb{P}\_{\theta}, \mathbb{P}\_r)$趋向于零，也就是说取决于$\rho$的定义。一般来说，如果$\rho$在拓扑（topology）上越弱，则序列越容易收敛。
+
+为了优化生成模型的参数$\theta$，我们希望定义的模型能够使得映射$\theta \mapsto \mathbb{P\_\theta}$连续。这里的连续指的是当一连串的参数$\theta\_t$收敛于一个值$\theta$，概率$\mathbb{P}\_{\theta\_t}$也能收敛于$\mathbb{P}\_\theta$。不过这种连续性取决于我们选择的距离度量。距离度量越弱，概率分布越容易瘦脸，则越容易定义一个从$\theta$空间到$\mathbb{P}\_\theta$空间的连续的映射。我们着这里关注映射$\theta \mapsto \mathbb{P\_\theta}$连续性的原因是，我们希望$\theta \mapsto \rho(\mathbb{P}\_{\theta}, \mathbb{P}\_r)$的损失函数是连续的（方便梯度下降训练），而这等价于在使用距离度量$\rho$的情况下映射$\theta \mapsto \mathbb{P\_\theta}$连续。
+
+### Different Disrances
 
 （待填坑……）
 
