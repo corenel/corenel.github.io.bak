@@ -95,6 +95,60 @@ $$
 
 ![cost_functions_of_GANs](/images/cost_functions_of_GANs.png)
 
+## DCGAN
+
+（待填坑……）
+
+## WGAN & WGAN-GP
+
+（待填坑……）
+
+## GANs in Practice
+
+### MLP-GAN
+
+使用多层感知机（MLP）来构建判别器与生成器的网络，可以说得上是最为简单的GANs了。可以根据这个来摸清楚GANs自身的一套工作流程到底是怎么样的，为之后实现复杂的GANs网络做个铺垫。本小节相关代码在[GAN-Zoo/GAN](https://github.com/corenel/GAN-Zoo/tree/master/GAN)中。
+
+首先我们需要训练集，比如说我们这里用到的MNIST数据集。PyTorch在这点上做得很好，对于一些常用的数据集都自带有loader，不用自己写了。相关代码见[GAN-Zoo/GAN/data_loader.py](https://github.com/corenel/GAN-Zoo/blob/master/GAN/data_loader.py)。
+
+有了数据集之后就需要自己定义模型的网络结构了，具体到GANs就是[判别器](https://github.com/corenel/GAN-Zoo/blob/master/GAN/models.py#L6-L22)与[生成器](https://github.com/corenel/GAN-Zoo/blob/master/GAN/models.py#L25-L41)的定义。这里贴一段判别器的定义，可以看出PyTorch在网络定义方面还是很方便的（和Keras差不多）。
+
+```python
+class Discriminator(nn.Module):
+    """Model for Discriminator."""
+
+    def __init__(self, input_size, hidden_size, output_size):
+        """Init for Discriminator model."""
+        super(Discriminator, self).__init__()
+        self.layer = nn.Sequential(nn.Linear(input_size, hidden_size),
+                                   nn.LeakyReLU(0.2),
+                                   nn.Linear(hidden_size, hidden_size),
+                                   nn.LeakyReLU(0.2),
+                                   nn.Linear(hidden_size, output_size),
+                                   nn.Sigmoid())
+
+    def forward(self, x):
+        """Forward step for Discriminator model."""
+        out = self.layer(x)
+        return out
+```
+
+定义完模型，之后就是整个网络的训练过程了：
+
+- [初始化阶段](https://github.com/corenel/GAN-Zoo/blob/master/GAN/main.py#L17-L37)：初始化models、criterion（`nn.BCELoss()`）以及optimizer（`nn.optim.Adam()`），检查cuda是否可用（`nn.cuda.is_available()`），能用的话就上GPU跑。
+- 网络训练阶段：
+  - [训练判别器](https://github.com/corenel/GAN-Zoo/blob/master/GAN/main.py#L49-L78)：主要分为两个步骤，首先从数据集中读取样本，判别器forward一遍，然后和真实标签（`1`）做loss并backward；其次，生成随机噪声而后经过生成器的forward得到生成样本，再喂给判别器，与虚假标签（`0`）做loss并backward。最后由optimizer更新判别器网络的参数。
+  - [训练生成器](https://github.com/corenel/GAN-Zoo/blob/master/GAN/main.py#L80-L105)：首先生成随机噪声，而后通过生成器网络生成虚假样本，再通过判别器网络得到loss，并更新生成器网络。值得注意的是，[生成器的loss的计算](https://github.com/corenel/GAN-Zoo/blob/master/GAN/main.py#L91)用的是真实标签（`1`），也就是上述的heuristicly designed non-saturating cost。
+  - [输出log并保存model](https://github.com/corenel/GAN-Zoo/blob/master/GAN/main.py#L107-L131)
+
+非常简单的代码，但是生成出来的数字的效果还是很不错的。
+
+![GAN_real_images](/images/GAN_real_images.png)
+
+![GAN_fake_images-300](/images/GAN_fake_images-300.png)
+
+第一张是MNIST数据集中的，第二张是通过GANs生成的（300次迭代）。虽然第二张还有些不尽如人意之处（迭代次数太少），但是总体上来说，已经非常接近真实的数字图片了。这就是GANs的威力！
+
 （待填坑……）
 
 <!-- more -->
