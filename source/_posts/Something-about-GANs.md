@@ -100,6 +100,7 @@ $$
 
 
 
+
 从下图可以看出，heuristicly designed non-saturating cost在$D(G(z))$变化的时候，其方差较小，因此是比较合适作为生成器代价函数的选择的。
 
 ![cost_functions_of_GANs](/images/cost_functions_of_GANs.png)
@@ -165,6 +166,7 @@ KL散度都不存在了，那还优化个毛？不过这难不倒千千万万机
 
 
 
+
 为了比较这几个距离度量的优劣，WGAN设计了一个例子：令$Z \sim U[0,1]$，$\mathbb{P}\_0$为$(0, Z) \in \mathbb{R}^2$的分布（$x$坐标为$0$，$y$坐标为$Z$，实际上就是分布在点$(0,0)$到点$(0,1)$这条线段上）。令生成样本分布为$g\_\theta (z)=(\theta, z)$，其中以$\theta$作为唯一的实值参数（实际上就就是沿着$x$轴左右移动之前提到的线段）。
 
 ![WGAN_example_1](/images/WGAN_example_1.png)
@@ -179,6 +181,34 @@ KL散度都不存在了，那还优化个毛？不过这难不倒千千万万机
 - $\delta(\mathbb{P}\_\theta, \mathbb{P}\_0) = \begin{cases} 1, & \text{if } \theta \ne 0 \\\\  0, & \text{if } \theta = 0 \end{cases}$
 
 可以看出，当$\theta \_t \to 0$，只有EM距离能够使得序列$(\mathbb{P}\_{\theta \_t}) \_{t \in N}$收敛于$\mathbb{P}\_0$，而其他的JS散度、KL散度、KL散度取反或者TV距离都不能。这说明**在EM距离下，我们能够通过梯度下降的方式习得低维流形上的概率分布，而在其他距离度量下甚至连损失函数的连续性都不能保证，更遑论习得概率分布了。**一句话，EM距离大法好！因此，WGAN将EM距离（又称Wasserstein-1距离）作为两个概率分布之间的距离度量，从而推导损失函数的表达式。
+
+### Wasserstein GAN
+
+从上面的例子可以看出，Wasserstein距离比JS散度具有更优良的性质。（当然，WGAN原论文里面还有一大堆数学推导来证明，这里就不列了。）但是，Wasserstein距离的原始公式是很难计算的（intractable）。WGAN里使用了一个Kantorovich-Rubinstein duality的定理，将EM距离的式子转换为：
+$$
+W(\mathbb{P}\_\theta, \mathbb{P}\_0) = \frac{1}{K} \underset{\parallel f \parallel \_L \le K}{\sup} \mathbb{E}\_{x\sim \mathbb{P}\_r} - \mathbb{E}\_{x\sim \mathbb{P}\_\theta} [f(x)]
+$$
+这里的$f(x)$需要是K-Lipschitz函数，也就是说要求$\exists K\in \mathbb{R},K\ge0$，使得对于实值函数$f(x)$定义域内的任意$x\_1$与$x\_2$，都满足下式：
+$$
+|f(x\_1)-f(x\_2)| \le K |x\_1-x\_2|
+$$
+假设我们有一个符合K-Lipschitz条件的函数族$\{f\_w\}\_{w\in \mathcal{W}}$，那么就变成了解决以下问题：
+$$
+\underset{w\in\mathcal{W}}{\max} \mathbb{E} \_{x\sim \mathbb{P}\_r} [f\_w (x)] - \mathbb{E} \_{z\sim p(z)} [f\_w (g\_\theta (z))]
+$$
+这个函数族自然是可以用一个含参$w\in \mathcal{W}$的神经网络来表示，但是如何满足K-Lipschitz条件呢？需要注意的是，整个函数族$\{f\_w\}\_{w\in \mathcal{W}}$需要符合条件，但我们并不关心$K$的具体值。因此WGAN论文中提出了一种简单粗暴的做法，把权重的值域$\mathcal{W}$限制在一个非常小的范围内，比如说$\mathcal{W} = [-0.01, 0.01]$，也就是$w \in [-0.01, 0.01]$。这么一来，$\partial f\_w / \partial x$也会被限制在一定范围内，则$\exists K\in \mathbb{R},K\ge0$使得$f\_w$满足K-Lipschitz条件。当然这种做法很粗糙，也会导致某些问题，这些问题与解决放将在之后的WGAN-GP小节中详述。
+
+到此为止，WGAN的改进就基本说完了，主要是：
+
+- 判别器与生成器的loss不用log
+- 判别器不用Sigmoid层
+- 优化器更新参数之后将权重限制在一个非常小的区间$\mathcal{W}$内
+- 使用RMSprop而非基于动量的优化器
+- 在初始阶段多训练判别器几次（$n\_{critic}=100$），保证判别器在初始的时候就已经达到一个比较好的水准，增加训练的稳定性
+
+WGAN训练过程的伪代码如下所示：
+
+![WGAN_algorithm](/images/WGAN_algorithm.png)
 
 （待填坑……）
 
