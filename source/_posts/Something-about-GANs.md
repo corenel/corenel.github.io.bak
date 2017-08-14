@@ -220,9 +220,17 @@ WGAN训练过程的伪代码如下所示：
 
 ![WGAN_figure_4](/images/WGAN_figure_4.png)
 
-同时，WGAN还能在生成器去掉BN层之后依然得到比较好的生成样本，DCGAN就直接崩了。此外，如果都用MLP而不是CNN，WGAN的多样性也比DCGAN好一些，DCGAN已经会出现多样性不足（mode collapse）的缺陷。
+使用Wasserstein距离与使用JS散度训练出来的DCGAN，在正常情况下生成样本质量是差不多的：
 
-![WGAN_figure_5_6_7](/images/WGAN_figure_5_6_7.png)
+![WGAN_figure_5](/images/WGAN_figure_5.png)
+
+但是，WGAN还能在生成器去掉BN层之后依然得到比较好的生成样本，原始DCGAN就直接崩了。
+
+![WGAN_figure_6](/images/WGAN_figure_6.png)
+
+此外，如果都用MLP而不是CNN，WGAN的质量会稍差一些，但是使用JS散度训练出来的DCGAN还会有多样性不足（mode collapse）的缺陷。
+
+![WGAN_figure_7](/images/WGAN_figure_7.png)
 
 ### WGAN-GP
 
