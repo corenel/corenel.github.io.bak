@@ -184,7 +184,7 @@ KL散度都不存在了，那还优化个毛？不过这难不倒千千万万机
 
 ### Wasserstein GAN
 
-从上面的例子可以看出，Wasserstein距离比JS散度具有更优良的性质。（当然，WGAN原论文里面还有一大堆数学推导来证明，这里就不列了。）但是，Wasserstein距离的原始公式是很难计算的（intractable）。WGAN里使用了一个Kantorovich-Rubinstein duality的定理，将EM距离的式子转换为：
+从上面的例子可以看出，**Wasserstein距离比JS散度具有更优良的性质**。（当然，WGAN原论文里面还有一大堆数学推导来证明，这里就不列了。）但是，Wasserstein距离的原始公式是很难计算的（intractable）。WGAN里使用了一个Kantorovich-Rubinstein duality的定理，将EM距离的式子转换为：
 $$
 W(\mathbb{P}\_\theta, \mathbb{P}\_0) = \frac{1}{K} \underset{\parallel f \parallel \_L \le K}{\sup} \mathbb{E}\_{x\sim \mathbb{P}\_r} - \mathbb{E}\_{x\sim \mathbb{P}\_\theta} [f(x)]
 $$
@@ -196,9 +196,13 @@ $$
 $$
 \underset{w\in\mathcal{W}}{\max} \mathbb{E} \_{x\sim \mathbb{P}\_r} [f\_w (x)] - \mathbb{E} \_{z\sim p(z)} [f\_w (g\_\theta (z))]
 $$
-这个函数族自然是可以用一个含参$w\in \mathcal{W}$的神经网络来表示，但是如何满足K-Lipschitz条件呢？需要注意的是，整个函数族$\{f\_w\}\_{w\in \mathcal{W}}$需要符合条件，但我们并不关心$K$的具体值。因此WGAN论文中提出了一种简单粗暴的做法，把权重的值域$\mathcal{W}$限制在一个非常小的范围内，比如说$\mathcal{W} = [-0.01, 0.01]$，也就是$w \in [-0.01, 0.01]$。这么一来，$\partial f\_w / \partial x$也会被限制在一定范围内，则$\exists K\in \mathbb{R},K\ge0$使得$f\_w$满足K-Lipschitz条件。当然这种做法很粗糙，也会导致某些问题，这些问题与解决放将在之后的WGAN-GP小节中详述。
+这个函数族自然是可以用一个含参$w\in \mathcal{W}$的神经网络来表示，但是如何满足K-Lipschitz条件呢？需要注意的是，整个函数族$\{f\_w\}\_{w\in \mathcal{W}}$需要符合条件，但我们并不关心$K$的具体值。因此**WGAN论文中提出了一种简单粗暴的做法，把权重的值域$\mathcal{W}$限制在一个非常小的范围内**，比如说$\mathcal{W} = [-0.01, 0.01]$，也就是$w \in [-0.01, 0.01]$。这么一来，$\partial f\_w / \partial x$也会被限制在一定范围内，则$\exists K\in \mathbb{R},K\ge0$使得$f\_w$满足K-Lipschitz条件。当然这种做法很粗糙，也会导致某些问题，这些问题与解决放将在之后的WGAN-GP小节中详述。
 
-到此为止，WGAN的改进就基本说完了，主要是：
+WGAN又做了一个实验，如下图所示，判别器学习区分真假两个高斯分布。可以看出用了JS散度的判别器虽然能很快就把这两个样本分布判别出来，但是在左右两端都处于饱和状态，根本提供不了梯度信息。而**用了Wasserstein距离的判别器（文中称作critic）则几乎能在任何位置都提供线性的梯度信息，这对于生成器的训练来说是非常重要的。**
+
+![WGAN_figure_2](/images/WGAN_figure_2.png)
+
+到此为止，WGAN所使用的Wasserstein距离就介绍完了。具体到网络训练上，相对于DCGAN的主要改进有：
 
 - 判别器与生成器的loss不用log
 - 判别器不用Sigmoid层
@@ -209,6 +213,18 @@ $$
 WGAN训练过程的伪代码如下所示：
 
 ![WGAN_algorithm](/images/WGAN_algorithm.png)
+
+**除了改善网络训练的稳定性之外，WGAN所使用的Wasserstein距离还是一个非常好的训练程度的指示器。**但是JS散度就没有这个作用。
+
+![WGAN_figure_3](/images/WGAN_figure_3.png)
+
+![WGAN_figure_4](/images/WGAN_figure_4.png)
+
+同时，WGAN还能在生成器去掉BN层之后依然得到比较好的生成样本，DCGAN就直接崩了。此外，如果都用MLP而不是CNN，WGAN的多样性也比DCGAN好一些，DCGAN已经会出现多样性不足（mode collapse）的缺陷。
+
+![WGAN_figure_5_6_7](/images/WGAN_figure_5_6_7.png)
+
+### WGAN-GP
 
 （待填坑……）
 
