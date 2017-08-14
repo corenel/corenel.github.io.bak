@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://www.yuthon.com/"/>
-  <updated>2017-08-14T10:54:27.000Z</updated>
+  <updated>2017-08-14T16:39:28.000Z</updated>
   <id>http://www.yuthon.com/</id>
   
   <author>
@@ -20,7 +20,7 @@
     <link href="http://www.yuthon.com/2017/08/12/Something-about-GANs/"/>
     <id>http://www.yuthon.com/2017/08/12/Something-about-GANs/</id>
     <published>2017-08-12T11:24:14.000Z</published>
-    <updated>2017-08-14T10:54:27.000Z</updated>
+    <updated>2017-08-14T16:39:28.000Z</updated>
     
     <content type="html"><![CDATA[<p>最近在看关于GANs的论文，并且自己动手用PyTorch写了一些经典文章的实现，想要稍微总结一下，故有此文。在最后我总结了我自己看过的有关GANs的一些比较好的资源，希望对读者有所帮助。</p>
 <p>（待填坑……）</p>
@@ -94,7 +94,7 @@
 <h3 id="Wasserstein-GAN"><a href="#Wasserstein-GAN" class="headerlink" title="Wasserstein GAN"></a>Wasserstein GAN</h3><p>从上面的例子可以看出，<strong>Wasserstein距离比JS散度具有更优良的性质</strong>。（当然，WGAN原论文里面还有一大堆数学推导来证明，这里就不列了。）但是，Wasserstein距离的原始公式是很难计算的（intractable）。WGAN里使用了一个Kantorovich-Rubinstein duality的定理，将EM距离的式子转换为：<br>$$<br>W(\mathbb{P}_\theta, \mathbb{P}_0) = \frac{1}{K} \underset{\parallel f \parallel _L \le K}{\sup} \mathbb{E}_{x\sim \mathbb{P}_r} - \mathbb{E}_{x\sim \mathbb{P}_\theta} [f(x)]<br>$$<br>这里的$f(x)$需要是K-Lipschitz函数，也就是说要求$\exists K\in \mathbb{R},K\ge0$，使得对于实值函数$f(x)$定义域内的任意$x_1$与$x_2$，都满足下式：<br>$$<br>|f(x_1)-f(x_2)| \le K |x_1-x_2|<br>$$<br>假设我们有一个符合K-Lipschitz条件的函数族${f_w}_{w\in \mathcal{W}}$，那么就变成了解决以下问题：<br>$$<br>\underset{w\in\mathcal{W}}{\max} \mathbb{E} _{x\sim \mathbb{P}_r} [f_w (x)] - \mathbb{E} _{z\sim p(z)} [f_w (g_\theta (z))]<br>$$<br>这个函数族自然是可以用一个含参$w\in \mathcal{W}$的神经网络来表示，但是如何满足K-Lipschitz条件呢？需要注意的是，整个函数族${f_w}_{w\in \mathcal{W}}$需要符合条件，但我们并不关心$K$的具体值。因此<strong>WGAN论文中提出了一种简单粗暴的做法，把权重的值域$\mathcal{W}$限制在一个非常小的范围内</strong>，比如说$\mathcal{W} = [-0.01, 0.01]$，也就是$w \in [-0.01, 0.01]$。这么一来，$\partial f_w / \partial x$也会被限制在一定范围内，则$\exists K\in \mathbb{R},K\ge0$使得$f_w$满足K-Lipschitz条件。当然这种做法很粗糙，也会导致某些问题，这些问题与解决放将在之后的WGAN-GP小节中详述。</p>
 <p>WGAN又做了一个实验，如下图所示，判别器学习区分真假两个高斯分布。可以看出用了JS散度的判别器虽然能很快就把这两个样本分布判别出来，但是在左右两端都处于饱和状态，根本提供不了梯度信息。而<strong>用了Wasserstein距离的判别器（文中称作critic）则几乎能在任何位置都提供线性的梯度信息，这对于生成器的训练来说是非常重要的。</strong></p>
 <p><img src="/images/WGAN_figure_2.png" alt="WGAN_figure_2"></p>
-<p>到此为止，WGAN所使用的Wasserstein距离就介绍完了。具体到网络训练上，相对于DCGAN的主要改进有：</p>
+<p>到此为止，WGAN所使用的Wasserstein距离就介绍完了。损失函数定义如下：<br>$$<br>\mathcal{L}_D = \mathbb{E} _{z\sim p(z)} [f_w (g_\theta (z))] - \mathbb{E} _{x\sim \mathbb{P}_r} [f_w (x)]   \\<br>\mathcal{L}_G = - \mathbb{E} _{z\sim p(z)} [f_w (g_\theta (z))]<br>$$<br>具体到网络训练上，相对于DCGAN的主要改进有：</p>
 <ul>
 <li>判别器与生成器的loss不用log</li>
 <li>判别器不用Sigmoid层</li>
@@ -107,9 +107,32 @@
 <p><strong>除了改善网络训练的稳定性之外，WGAN所使用的Wasserstein距离还是一个非常好的训练程度的指示器。</strong>但是JS散度就没有这个作用。</p>
 <p><img src="/images/WGAN_figure_3.png" alt="WGAN_figure_3"></p>
 <p><img src="/images/WGAN_figure_4.png" alt="WGAN_figure_4"></p>
-<p>同时，WGAN还能在生成器去掉BN层之后依然得到比较好的生成样本，DCGAN就直接崩了。此外，如果都用MLP而不是CNN，WGAN的多样性也比DCGAN好一些，DCGAN已经会出现多样性不足（mode collapse）的缺陷。</p>
-<p><img src="/images/WGAN_figure_5_6_7.png" alt="WGAN_figure_5_6_7"></p>
-<h3 id="WGAN-GP"><a href="#WGAN-GP" class="headerlink" title="WGAN-GP"></a>WGAN-GP</h3><p>（待填坑……）</p>
+<p>使用Wasserstein距离与使用JS散度训练出来的DCGAN，在正常情况下生成样本质量是差不多的：</p>
+<p><img src="/images/WGAN_figure_5.png" alt="WGAN_figure_5"></p>
+<p>但是，WGAN还能在生成器去掉BN层之后依然得到比较好的生成样本，原始DCGAN就直接崩了。</p>
+<p><img src="/images/WGAN_figure_6.png" alt="WGAN_figure_6"></p>
+<p>此外，如果都用MLP而不是CNN，WGAN的质量会稍差一些，但是使用JS散度训练出来的DCGAN还会有多样性不足（mode collapse）的缺陷。</p>
+<p><img src="/images/WGAN_figure_7.png" alt="WGAN_figure_7"></p>
+<h3 id="WGAN-GP"><a href="#WGAN-GP" class="headerlink" title="WGAN-GP"></a>WGAN-GP</h3><p>上面提到，WGAN让$f_w$满足K-Lipschitz条件的方法很粗暴，直接将整个网络的权重都限制在了一个很小的区间内。这样做其实是会导致一些问题的。</p>
+<ul>
+<li>第一个问题是<strong>weight clipping不能充分利用神经网络的容量（capacity underuse）</strong>。如下图所示，左图第一排是WGAN估计的分布（value surface），第二排是WGAN-GP估计的分布。可以明显看出，WGAN基本上都是用矩形来近似，没有像WGAN-GP那样学到数据样本更高层的变化趋势。从右图的第二幅图可以看出，经过充分训练的WGAN网络的权值基本上就分布在了$-c$与$c$两个端点上，中间几乎没有权值分布。这简直就像二值神经网络一样了，难怪网络的容量不能得到充分利用。</li>
+<li>第二个问题是<strong>梯度消失与梯度爆炸（exploding and vanishing gradients）</strong>。从右图的第一幅图可以看到，在不用BatchNorm的时候，weight clipping的常数$c$稍有不同，就会使得梯度随着网络一层层传播而指数增长或者衰减，从而导致梯度消失或者爆炸。</li>
+</ul>
+<p><img src="/images/WGAN-GP_figure_1.png" alt="WGAN-GP_figure_1"></p>
+<p>针对这两个问题，WGAN的作者又想出了新的操作——gradient decay。新的操作能够解决上述的两个问题，让WGAN的训练过程更加稳定（好像上次WGAN对DCGAN的时候也是这么讲的:cry:）。</p>
+<p>上面说了，weight clipping是为了让网络函数$D(x)$满足Lipschitz条件才用的，并不是非它不可。既然表现这么差，那我们能不能换一种方法来做Lipschitz约束呢？gradient decay就是这样被想出来的。我们回顾一下Lipschitz条件的定义，是要求函数$D(x)$在它的值域上满足$\forall x_1, x_2, \parallel \nabla D(x) \parallel _p \le K$。于是作者们<strong>在判别器的损失函数上加了一个梯度的惩罚项，鼓励梯度的范数趋近于K</strong>（或者说是1，反正1-Lipschitz与K-Lipschitz条件只是差了常数倍）<br>$$<br>L = \underset{\tilde{x} \sim \mathbb{P}_g}{\mathbb{E}} [D(\tilde{x})] - \underset{x \sim \mathbb{P}_r}{\mathbb{E}} [D(x)] + \lambda \underset{\hat{x} \sim \mathbb{P}_{\hat{x}}}{\mathbb{E}} [(\parallel \nabla _{\hat{x}} D(\hat{x})\parallel _2 -1)^2]<br>$$<br>这里有几个需要注意的地方：</p>
+<ul>
+<li><strong>最优判别器的一个特性（properties of the optimal WGAN critic）</strong>：为什么惩罚项是鼓励梯度绝对值趋向于$K$，而不是只是让梯度在$[-K, K]$之间呢？这就牵扯到WGAN训练出来的最优判别器的一个性质。假设我们随机采到了两个样本$x_r \sim \mathbb{P} _ r$和$x_g \sim \mathbb{P} _ g$，那么对所有在其连线$x_t = (1-t)x_g + t x_r$上的点的梯度就是$\nabla D(x_t) = \frac{x_r - x_t}{\parallel y - x_t \parallel}$。换句话说，在$\mathbb{P}_r$与$\mathbb{P}_g$内，以及两者的中间地带，最优判别器的梯度基本上都是1（或者说$K$）。</li>
+</ul>
+<ul>
+<li><strong>$\mathbb{P}_{\hat{x}}$的采样分布（sampling distribution）</strong>：在计算$\lambda \underset{\hat{x} \sim \mathbb{P}_{\hat{x}}}{\mathbb{E}} [(\parallel \nabla _{\hat{x}} D(\hat{x})\parallel _2 -1)^2]$的时候，需要把期望$\mathbb{E}$转换为采样然后取平均。然而这个$\mathbb{P}_{\hat{x}}$要求我们在整个样本空间$\mathcal{X}$上采样，这种在高维空间指望用采样来估计期望的方法显然是不可实现的，会导致维度灾难。于是文中将$\mathbb{P}_{\hat{x}}$的采样定义为在沿着真实分布$\mathbb{P}_r$的一堆点与生成分布$\mathbb{P}_g$的一堆点的直线上均匀采样。从实验效果上来说，这是很有效的。</li>
+<li><strong>惩罚系数（penalty coefficient）</strong>：取$\lambda=10$，作者称无论在Toy数据集还是大规模的ImageNet数据及上都是work的。</li>
+<li><strong>不要用Batch Normalization</strong>：gradient penalty惩罚的是单个对单个的样本，而BN会把这样单个的映射变成整个batch的所有输入到整个batch的输出，引入了不同采样之间的依赖关系，这样GP就不能用了。作者推荐用Layer Normalization。</li>
+<li><strong>双边惩罚（two-sided penalty）</strong>：惩罚项鼓励梯度从正负两边来趋向1（或者说$K$），作者称这样能收敛到更好的最优点，速度更快，而且对于判别器来说不会造成太大的约束。</li>
+</ul>
+<p>WGAN-GP相对于WGAN的改进就是上面这些了，其算法的伪代码如下。</p>
+<p><img src="/images/WGAN-GP_algorithm.png" alt="WGAN-GP_algorithm"></p>
+<p>（待填坑……）</p>
 <h2 id="GANs-in-Practice"><a href="#GANs-in-Practice" class="headerlink" title="GANs in Practice"></a>GANs in Practice</h2><h3 id="MLP-GAN"><a href="#MLP-GAN" class="headerlink" title="MLP-GAN"></a>MLP-GAN</h3><p>使用多层感知机（MLP）来构建判别器与生成器的网络，可以说得上是最为简单的GANs了。可以根据这个来摸清楚GANs自身的一套工作流程到底是怎么样的，为之后实现复杂的GANs网络做个铺垫。本小节相关代码在<a href="https://github.com/corenel/GAN-Zoo/tree/master/GAN" target="_blank" rel="external">GAN-Zoo/GAN</a>中。</p>
 <p>首先我们需要训练集，比如说我们这里用到的MNIST数据集。PyTorch在这点上做得很好，对于一些常用的数据集都自带有loader，不用自己写了。相关代码见<a href="https://github.com/corenel/GAN-Zoo/blob/master/GAN/data_loader.py" target="_blank" rel="external">GAN-Zoo/GAN/data_loader.py</a>。</p>
 <p>有了数据集之后就需要自己定义模型的网络结构了，具体到GANs就是<a href="https://github.com/corenel/GAN-Zoo/blob/master/GAN/models.py#L6-L22" target="_blank" rel="external">判别器</a>与<a href="https://github.com/corenel/GAN-Zoo/blob/master/GAN/models.py#L25-L41" target="_blank" rel="external">生成器</a>的定义。这里贴一段判别器的定义，可以看出PyTorch在网络定义方面还是很方便的（和Keras差不多）。</p>
@@ -145,7 +168,15 @@
 <li>给生成器加Dropout层</li>
 <li>……</li>
 </ul>
-<p>这样的trick是还有很多，有些我试过确实有用，还有些则不是很确定，属于玄学范畴。不过与其用一大堆额tricks，还不如直接简单粗暴地上WGAN吧！</p>
+<p>这样的trick是还有很多，有些我试过确实有用，还有些则不是很确定，属于玄学范畴。不过与其用一大堆tricks，还不如直接简单粗暴地上WGAN吧！</p>
+<h3 id="WGAN"><a href="#WGAN" class="headerlink" title="WGAN"></a>WGAN</h3><p>相关代码见<a href="https://github.com/corenel/GAN-Zoo/tree/master/WGAN" target="_blank" rel="external">GAN-Zoo/WGAN</a>。WGAN在实现上主要有以下几点需要注意：</p>
+<ul>
+<li>判别器模型的输出不过Sigmoid层，而是取平均之后flatten到1维，输出的是Wasserstein距离而非分类结果。（<a href="https://github.com/corenel/GAN-Zoo/blob/master/WGAN/models.py#L81-L82" target="_blank" rel="external">code</a>）</li>
+<li>由于判别器器在一个epoch中需要训练多次，因此不能用<code>for..in..</code>来loop整个书记，而是用<code>iterator</code>来迭代循环。（代码丑陋了不少，<a href="https://github.com/corenel/GAN-Zoo/blob/master/WGAN/main.py#L70-L76" target="_blank" rel="external">code</a>）</li>
+<li>在生成器训练过25次之前，或者是之后每500次的时候，判别器在每个epoch内都需要训练100次而非默认的5次。这是为了让判别器在一开始就达到差不多最优的状态。（<a href="https://github.com/corenel/GAN-Zoo/blob/master/WGAN/main.py#L59-L65" target="_blank" rel="external">code</a>）</li>
+<li>为了提升效率，优化生成器的时候用判别器得到loss不更新判别器的梯度（<a href="https://github.com/corenel/GAN-Zoo/blob/master/WGAN/main.py#L100-L102" target="_blank" rel="external">code</a>），优化判别器用生成器生成虚假样本时也不更新生成器的梯度（<a href="https://github.com/corenel/GAN-Zoo/blob/master/WGAN/main.py#L83-L88" target="_blank" rel="external">code</a>）。</li>
+<li>在生成器的optimizer更新权值之后clamp所有的权值，使其在一定范围内，以满足K-Lipschitz条件。（<a href="https://github.com/corenel/GAN-Zoo/blob/master/WGAN/main.py#L93-L95" target="_blank" rel="external">code</a>）</li>
+</ul>
 <p>（待填坑……）</p>
 <!-- more -->
 <h2 id="Further-Reading"><a href="#Further-Reading" class="headerlink" title="Further Reading"></a>Further Reading</h2><p>最后总结一些我在学习过程中看过的比较好的资料以及代码实现：</p>
