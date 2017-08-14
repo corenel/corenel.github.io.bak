@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://www.yuthon.com/"/>
-  <updated>2017-08-13T16:05:20.000Z</updated>
+  <updated>2017-08-14T06:17:27.000Z</updated>
   <id>http://www.yuthon.com/</id>
   
   <author>
@@ -20,7 +20,7 @@
     <link href="http://www.yuthon.com/2017/08/12/Something-about-GANs/"/>
     <id>http://www.yuthon.com/2017/08/12/Something-about-GANs/</id>
     <published>2017-08-12T11:24:14.000Z</published>
-    <updated>2017-08-13T16:05:20.000Z</updated>
+    <updated>2017-08-14T06:17:27.000Z</updated>
     
     <content type="html"><![CDATA[<p>最近在看关于GANs的论文，并且自己动手用PyTorch写了一些经典文章的实现，想要稍微总结一下，故有此文。在最后我总结了我自己看过的有关GANs的一些比较好的资源，希望对读者有所帮助。</p>
 <p>（待填坑……）</p>
@@ -91,6 +91,17 @@
 <li>$\delta(\mathbb{P}_\theta, \mathbb{P}_0) = \begin{cases} 1, &amp; \text{if } \theta \ne 0 \\  0, &amp; \text{if } \theta = 0 \end{cases}$</li>
 </ul>
 <p>可以看出，当$\theta _t \to 0$，只有EM距离能够使得序列$(\mathbb{P}_{\theta _t}) _{t \in N}$收敛于$\mathbb{P}_0$，而其他的JS散度、KL散度、KL散度取反或者TV距离都不能。这说明<strong>在EM距离下，我们能够通过梯度下降的方式习得低维流形上的概率分布，而在其他距离度量下甚至连损失函数的连续性都不能保证，更遑论习得概率分布了。</strong>一句话，EM距离大法好！因此，WGAN将EM距离（又称Wasserstein-1距离）作为两个概率分布之间的距离度量，从而推导损失函数的表达式。</p>
+<h3 id="Wasserstein-GAN"><a href="#Wasserstein-GAN" class="headerlink" title="Wasserstein GAN"></a>Wasserstein GAN</h3><p>从上面的例子可以看出，Wasserstein距离比JS散度具有更优良的性质。（当然，WGAN原论文里面还有一大堆数学推导来证明，这里就不列了。）但是，Wasserstein距离的原始公式是很难计算的（intractable）。WGAN里使用了一个Kantorovich-Rubinstein duality的定理，将EM距离的式子转换为：<br>$$<br>W(\mathbb{P}_\theta, \mathbb{P}_0) = \frac{1}{K} \underset{\parallel f \parallel _L \le K}{\sup} \mathbb{E}_{x\sim \mathbb{P}_r} - \mathbb{E}_{x\sim \mathbb{P}_\theta} [f(x)]<br>$$<br>这里的$f(x)$需要是K-Lipschitz函数，也就是说要求$\exists K\in \mathbb{R},K\ge0$，使得对于实值函数$f(x)$定义域内的任意$x_1$与$x_2$，都满足下式：<br>$$<br>|f(x_1)-f(x_2)| \le K |x_1-x_2|<br>$$<br>假设我们有一个符合K-Lipschitz条件的函数族${f_w}_{w\in \mathcal{W}}$，那么就变成了解决以下问题：<br>$$<br>\underset{w\in\mathcal{W}}{\max} \mathbb{E} _{x\sim \mathbb{P}_r} [f_w (x)] - \mathbb{E} _{z\sim p(z)} [f_w (g_\theta (z))]<br>$$<br>这个函数族自然是可以用一个含参$w\in \mathcal{W}$的神经网络来表示，但是如何满足K-Lipschitz条件呢？需要注意的是，整个函数族${f_w}_{w\in \mathcal{W}}$需要符合条件，但我们并不关心$K$的具体值。因此WGAN论文中提出了一种简单粗暴的做法，把权重的值域$\mathcal{W}$限制在一个非常小的范围内，比如说$\mathcal{W} = [-0.01, 0.01]$，也就是$w \in [-0.01, 0.01]$。这么一来，$\partial f_w / \partial x$也会被限制在一定范围内，则$\exists K\in \mathbb{R},K\ge0$使得$f_w$满足K-Lipschitz条件。当然这种做法很粗糙，也会导致某些问题，这些问题与解决放将在之后的WGAN-GP小节中详述。</p>
+<p>到此为止，WGAN的改进就基本说完了，主要是：</p>
+<ul>
+<li>判别器与生成器的loss不用log</li>
+<li>判别器不用Sigmoid层</li>
+<li>优化器更新参数之后将权重限制在一个非常小的区间$\mathcal{W}$内</li>
+<li>使用RMSprop而非基于动量的优化器</li>
+<li>在初始阶段多训练判别器几次（$n_{critic}=100$），保证判别器在初始的时候就已经达到一个比较好的水准，增加训练的稳定性</li>
+</ul>
+<p>WGAN训练过程的伪代码如下所示：</p>
+<p><img src="/images/WGAN_algorithm.png" alt="WGAN_algorithm"></p>
 <p>（待填坑……）</p>
 <h2 id="GANs-in-Practice"><a href="#GANs-in-Practice" class="headerlink" title="GANs in Practice"></a>GANs in Practice</h2><h3 id="MLP-GAN"><a href="#MLP-GAN" class="headerlink" title="MLP-GAN"></a>MLP-GAN</h3><p>使用多层感知机（MLP）来构建判别器与生成器的网络，可以说得上是最为简单的GANs了。可以根据这个来摸清楚GANs自身的一套工作流程到底是怎么样的，为之后实现复杂的GANs网络做个铺垫。本小节相关代码在<a href="https://github.com/corenel/GAN-Zoo/tree/master/GAN" target="_blank" rel="external">GAN-Zoo/GAN</a>中。</p>
 <p>首先我们需要训练集，比如说我们这里用到的MNIST数据集。PyTorch在这点上做得很好，对于一些常用的数据集都自带有loader，不用自己写了。相关代码见<a href="https://github.com/corenel/GAN-Zoo/blob/master/GAN/data_loader.py" target="_blank" rel="external">GAN-Zoo/GAN/data_loader.py</a>。</p>
