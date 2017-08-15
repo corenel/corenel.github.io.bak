@@ -4,8 +4,32 @@
 
     
   <url>
+    <loc>http://www.yuthon.com/2017/08/15/Notes-for-Adversarial-Discriminative-Domain-Adaptation/</loc>
+    <lastmod>2017-08-15T12:33:28.000Z</lastmod>
+    <data>
+        <display>
+        <title>Notes for Adversarial Discriminative Domain Adaptation</title>
+        <pubTime>2017-08-15T12:19:46.000Z</pubTime>
+        
+        <tag>Deep Learning</tag>
+         
+        <tag>Domain Adaptation</tag>
+         
+        <tag>GANs</tag>
+         
+         
+           
+             
+              <breadCrumb title="Thesis Notes" url="http://www.yuthon.com/categories/Thesis-Notes/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
     <loc>http://www.yuthon.com/2017/08/12/Something-about-GANs/</loc>
-    <lastmod>2017-08-15T11:18:55.000Z</lastmod>
+    <lastmod>2017-08-15T12:33:22.000Z</lastmod>
     <data>
         <display>
         <title>Something about GAN</title>
@@ -13,9 +37,9 @@
         
         <tag>Deep Learning</tag>
          
-        <tag>Generative Adversarial Networks</tag>
-         
         <tag>GANs</tag>
+         
+        <tag>Generative Adversarial Networks</tag>
          
         <tag>DCGAN</tag>
          
@@ -914,28 +938,6 @@
 
     
   <url>
-    <loc>http://www.yuthon.com/2016/04/13/CodeSchool-Try-jQuery/</loc>
-    <lastmod>2016-05-16T11:51:43.000Z</lastmod>
-    <data>
-        <display>
-        <title>Notes for Code School - Try jQuery</title>
-        <pubTime>2016-04-13T09:24:09.000Z</pubTime>
-        
-        <tag>CodeSchool</tag>
-         
-        <tag>JavaScript</tag>
-         
-         
-           
-             
-              <breadCrumb title="Notes" url="http://www.yuthon.com/categories/Notes/"/>
-          
-        </display>
-    </data>
-    </url>
-
-    
-  <url>
     <loc>http://www.yuthon.com/2016/04/12/CodeSchool-JavaScript-Best-Practices/</loc>
     <lastmod>2016-05-16T11:51:43.000Z</lastmod>
     <data>
@@ -964,6 +966,28 @@
         <display>
         <title>Notes for Code School - JavaScript Road Trip</title>
         <pubTime>2016-04-09T04:37:07.000Z</pubTime>
+        
+        <tag>CodeSchool</tag>
+         
+        <tag>JavaScript</tag>
+         
+         
+           
+             
+              <breadCrumb title="Notes" url="http://www.yuthon.com/categories/Notes/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://www.yuthon.com/2016/04/13/CodeSchool-Try-jQuery/</loc>
+    <lastmod>2016-05-16T11:51:43.000Z</lastmod>
+    <data>
+        <display>
+        <title>Notes for Code School - Try jQuery</title>
+        <pubTime>2016-04-13T09:24:09.000Z</pubTime>
         
         <tag>CodeSchool</tag>
          
