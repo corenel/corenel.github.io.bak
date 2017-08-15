@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://www.yuthon.com/"/>
-  <updated>2017-08-15T02:08:10.000Z</updated>
+  <updated>2017-08-15T10:19:22.000Z</updated>
   <id>http://www.yuthon.com/</id>
   
   <author>
@@ -20,7 +20,7 @@
     <link href="http://www.yuthon.com/2017/08/12/Something-about-GANs/"/>
     <id>http://www.yuthon.com/2017/08/12/Something-about-GANs/</id>
     <published>2017-08-12T11:24:14.000Z</published>
-    <updated>2017-08-15T02:08:10.000Z</updated>
+    <updated>2017-08-15T10:19:22.000Z</updated>
     
     <content type="html"><![CDATA[<p>最近在看关于GANs的论文，并且自己动手用PyTorch写了一些经典文章的实现，想要稍微总结一下，故有此文。在最后我总结了我自己看过的有关GANs的一些比较好的资源，希望对读者有所帮助。</p>
 <p>（待填坑……）</p>
@@ -180,10 +180,10 @@
 <h3 id="WGAN"><a href="#WGAN" class="headerlink" title="WGAN"></a>WGAN</h3><p>相关代码见<a href="https://github.com/corenel/GAN-Zoo/tree/master/WGAN" target="_blank" rel="external">GAN-Zoo/WGAN</a>。WGAN在实现上主要有以下几点需要注意：</p>
 <ul>
 <li>判别器模型的输出不过Sigmoid层，而是取平均之后flatten到1维，输出的是Wasserstein距离而非分类结果。（<a href="https://github.com/corenel/GAN-Zoo/blob/master/WGAN/models.py#L81-L82" target="_blank" rel="external">code</a>）</li>
-<li>由于判别器器在一个epoch中需要训练多次，因此不能用<code>for..in..</code>来loop整个书记，而是用<code>iterator</code>来迭代循环。（代码丑陋了不少，<a href="https://github.com/corenel/GAN-Zoo/blob/master/WGAN/main.py#L70-L76" target="_blank" rel="external">code</a>）</li>
-<li>在生成器训练过25次之前，或者是之后每500次的时候，判别器在每个epoch内都需要训练100次而非默认的5次。这是为了让判别器在一开始就达到差不多最优的状态。（<a href="https://github.com/corenel/GAN-Zoo/blob/master/WGAN/main.py#L59-L65" target="_blank" rel="external">code</a>）</li>
-<li>为了提升效率，优化生成器的时候用判别器得到loss不更新判别器的梯度（<a href="https://github.com/corenel/GAN-Zoo/blob/master/WGAN/main.py#L100-L102" target="_blank" rel="external">code</a>），优化判别器用生成器生成虚假样本时也不更新生成器的梯度（<a href="https://github.com/corenel/GAN-Zoo/blob/master/WGAN/main.py#L83-L88" target="_blank" rel="external">code</a>）。</li>
-<li>在生成器的optimizer更新权值之后clamp所有的权值，使其在一定范围内，以满足K-Lipschitz条件。（<a href="https://github.com/corenel/GAN-Zoo/blob/master/WGAN/main.py#L93-L95" target="_blank" rel="external">code</a>）</li>
+<li>由于判别器器在一个epoch中需要训练多次，因此不能用<code>for..in..</code>来loop整个书记，而是用<code>iterator</code>来迭代循环。（<a href="https://github.com/corenel/GAN-Zoo/blob/master/WGAN/main.py#L68-L69" target="_blank" rel="external">code</a>）</li>
+<li>在生成器训练过25次之前，或者是之后每500次的时候，判别器在每个epoch内都需要训练100次而非默认的5次。这是为了让判别器在一开始就达到差不多最优的状态。（<a href="https://github.com/corenel/GAN-Zoo/blob/master/WGAN/main.py#L58-L64" target="_blank" rel="external">code</a>）</li>
+<li>为了提升效率，优化生成器的时候用判别器得到loss不更新判别器的梯度（<a href="https://github.com/corenel/GAN-Zoo/blob/master/WGAN/main.py#L95-L97" target="_blank" rel="external">code</a>），优化判别器用生成器生成虚假样本时也不更新生成器的梯度（<a href="https://github.com/corenel/GAN-Zoo/blob/master/WGAN/main.py#L78-L83" target="_blank" rel="external">code</a>）。</li>
+<li>在生成器的optimizer更新权值之后clamp所有的权值，使其在一定范围内，以满足K-Lipschitz条件。（<a href="https://github.com/corenel/GAN-Zoo/blob/master/WGAN/main.py#L88-L90" target="_blank" rel="external">code</a>）</li>
 </ul>
 <p>（待填坑……）</p>
 <!-- more -->
