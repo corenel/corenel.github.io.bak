@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://www.yuthon.com/"/>
-  <updated>2017-08-14T16:39:28.000Z</updated>
+  <updated>2017-08-15T02:08:10.000Z</updated>
   <id>http://www.yuthon.com/</id>
   
   <author>
@@ -20,7 +20,7 @@
     <link href="http://www.yuthon.com/2017/08/12/Something-about-GANs/"/>
     <id>http://www.yuthon.com/2017/08/12/Something-about-GANs/</id>
     <published>2017-08-12T11:24:14.000Z</published>
-    <updated>2017-08-14T16:39:28.000Z</updated>
+    <updated>2017-08-15T02:08:10.000Z</updated>
     
     <content type="html"><![CDATA[<p>最近在看关于GANs的论文，并且自己动手用PyTorch写了一些经典文章的实现，想要稍微总结一下，故有此文。在最后我总结了我自己看过的有关GANs的一些比较好的资源，希望对读者有所帮助。</p>
 <p>（待填坑……）</p>
@@ -132,7 +132,15 @@
 </ul>
 <p>WGAN-GP相对于WGAN的改进就是上面这些了，其算法的伪代码如下。</p>
 <p><img src="/images/WGAN-GP_algorithm.png" alt="WGAN-GP_algorithm"></p>
-<p>（待填坑……）</p>
+<p>接下来看看实验结果：</p>
+<ul>
+<li><p>WGAN-GP的收敛速度明显比WGAN快，虽然在wall time上还是比不过DCGAN，但是WGAN-GP在训练的稳定性上犹有过之。</p>
+<p><img src="/images/WGAN-GP_figure_3.png" alt="WGAN-GP_figure_3"></p>
+</li>
+<li><p>同时，在面对之前的一些困难的训练条件（比如说不用BN层甚至不用任何normalization），WGAN-GP都能够稳定训练并且结果良好。特别是面对ResNet-101这么高层的网络，只有WGAN-GP能训练出结果。</p>
+<p><img src="/images/WGAN-GP_figure_2.png" alt="WGAN-GP_figure_2"></p>
+</li>
+</ul>
 <h2 id="GANs-in-Practice"><a href="#GANs-in-Practice" class="headerlink" title="GANs in Practice"></a>GANs in Practice</h2><h3 id="MLP-GAN"><a href="#MLP-GAN" class="headerlink" title="MLP-GAN"></a>MLP-GAN</h3><p>使用多层感知机（MLP）来构建判别器与生成器的网络，可以说得上是最为简单的GANs了。可以根据这个来摸清楚GANs自身的一套工作流程到底是怎么样的，为之后实现复杂的GANs网络做个铺垫。本小节相关代码在<a href="https://github.com/corenel/GAN-Zoo/tree/master/GAN" target="_blank" rel="external">GAN-Zoo/GAN</a>中。</p>
 <p>首先我们需要训练集，比如说我们这里用到的MNIST数据集。PyTorch在这点上做得很好，对于一些常用的数据集都自带有loader，不用自己写了。相关代码见<a href="https://github.com/corenel/GAN-Zoo/blob/master/GAN/data_loader.py" target="_blank" rel="external">GAN-Zoo/GAN/data_loader.py</a>。</p>
 <p>有了数据集之后就需要自己定义模型的网络结构了，具体到GANs就是<a href="https://github.com/corenel/GAN-Zoo/blob/master/GAN/models.py#L6-L22" target="_blank" rel="external">判别器</a>与<a href="https://github.com/corenel/GAN-Zoo/blob/master/GAN/models.py#L25-L41" target="_blank" rel="external">生成器</a>的定义。这里贴一段判别器的定义，可以看出PyTorch在网络定义方面还是很方便的（和Keras差不多）。</p>
