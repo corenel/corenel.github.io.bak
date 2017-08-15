@@ -381,6 +381,13 @@ Epoch [25/25] Step [40/782]:d_loss=0.21678031980991364 g_loss=11.419050216674805
 - 为了提升效率，优化生成器的时候用判别器得到loss不更新判别器的梯度（[code](https://github.com/corenel/GAN-Zoo/blob/master/WGAN/main.py#L95-L97)），优化判别器用生成器生成虚假样本时也不更新生成器的梯度（[code](https://github.com/corenel/GAN-Zoo/blob/master/WGAN/main.py#L78-L83)）。
 - 在生成器的optimizer更新权值之后clamp所有的权值，使其在一定范围内，以满足K-Lipschitz条件。（[code](https://github.com/corenel/GAN-Zoo/blob/master/WGAN/main.py#L88-L90)）
 
+### WGAN-GP
+
+相关代码见[GAN-Zoo/WGAN](https://github.com/corenel/GAN-Zoo/tree/master/WGAN-GP)。WGAN-GP在实现上与WGAN的主要区别在于：
+
+- 用gradient penalty代替了weight clipping。这里面涉及到计算梯度的梯度，这在PyTorch 0.2.0版本前是无法做到的，我猜大概也是因为这个原因，原作者选择了用TensorFlow来实现WGAN-GP。关于在低版本的PyTorch上实现gradient penalty的讨论[见此](https://discuss.pytorch.org/t/how-to-implement-gradient-penalty-in-pytorch/1656)。PyTorch版本更新之后增加了`torch.autograd.grad`这么一个函数，能够满足我们的需求。
+- 不使用Batch Normalization，详细原因在前文已经给出。可以选择的替代有Layer Normaliztion，Weight Normalization等。
+
 （待填坑……）
 
 <!-- more -->
