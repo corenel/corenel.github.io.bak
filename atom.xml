@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://www.yuthon.com/"/>
-  <updated>2017-08-15T10:19:22.000Z</updated>
+  <updated>2017-08-15T11:18:55.000Z</updated>
   <id>http://www.yuthon.com/</id>
   
   <author>
@@ -20,7 +20,7 @@
     <link href="http://www.yuthon.com/2017/08/12/Something-about-GANs/"/>
     <id>http://www.yuthon.com/2017/08/12/Something-about-GANs/</id>
     <published>2017-08-12T11:24:14.000Z</published>
-    <updated>2017-08-15T10:19:22.000Z</updated>
+    <updated>2017-08-15T11:18:55.000Z</updated>
     
     <content type="html"><![CDATA[<p>最近在看关于GANs的论文，并且自己动手用PyTorch写了一些经典文章的实现，想要稍微总结一下，故有此文。在最后我总结了我自己看过的有关GANs的一些比较好的资源，希望对读者有所帮助。</p>
 <p>（待填坑……）</p>
@@ -184,6 +184,11 @@
 <li>在生成器训练过25次之前，或者是之后每500次的时候，判别器在每个epoch内都需要训练100次而非默认的5次。这是为了让判别器在一开始就达到差不多最优的状态。（<a href="https://github.com/corenel/GAN-Zoo/blob/master/WGAN/main.py#L58-L64" target="_blank" rel="external">code</a>）</li>
 <li>为了提升效率，优化生成器的时候用判别器得到loss不更新判别器的梯度（<a href="https://github.com/corenel/GAN-Zoo/blob/master/WGAN/main.py#L95-L97" target="_blank" rel="external">code</a>），优化判别器用生成器生成虚假样本时也不更新生成器的梯度（<a href="https://github.com/corenel/GAN-Zoo/blob/master/WGAN/main.py#L78-L83" target="_blank" rel="external">code</a>）。</li>
 <li>在生成器的optimizer更新权值之后clamp所有的权值，使其在一定范围内，以满足K-Lipschitz条件。（<a href="https://github.com/corenel/GAN-Zoo/blob/master/WGAN/main.py#L88-L90" target="_blank" rel="external">code</a>）</li>
+</ul>
+<h3 id="WGAN-GP-1"><a href="#WGAN-GP-1" class="headerlink" title="WGAN-GP"></a>WGAN-GP</h3><p>相关代码见<a href="https://github.com/corenel/GAN-Zoo/tree/master/WGAN-GP" target="_blank" rel="external">GAN-Zoo/WGAN</a>。WGAN-GP在实现上与WGAN的主要区别在于：</p>
+<ul>
+<li>用gradient penalty代替了weight clipping。这里面涉及到计算梯度的梯度，这在PyTorch 0.2.0版本前是无法做到的，我猜大概也是因为这个原因，原作者选择了用TensorFlow来实现WGAN-GP。关于在低版本的PyTorch上实现gradient penalty的讨论<a href="https://discuss.pytorch.org/t/how-to-implement-gradient-penalty-in-pytorch/1656" target="_blank" rel="external">见此</a>。PyTorch版本更新之后增加了<code>torch.autograd.grad</code>这么一个函数，能够满足我们的需求。</li>
+<li>不使用Batch Normalization，详细原因在前文已经给出。可以选择的替代有Layer Normaliztion，Weight Normalization等。</li>
 </ul>
 <p>（待填坑……）</p>
 <!-- more -->
