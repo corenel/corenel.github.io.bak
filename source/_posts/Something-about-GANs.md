@@ -104,6 +104,7 @@ $$
 
 
 
+
 从下图可以看出，heuristicly designed non-saturating cost在$D(G(z))$变化的时候，其方差较小，因此是比较合适作为生成器代价函数的选择的。
 
 ![cost_functions_of_GANs](/images/cost_functions_of_GANs.png)
@@ -164,6 +165,7 @@ KL散度都不存在了，那还优化个毛？不过这难不倒千千万万机
   $$
   W(\mathbb{P}\_r, \mathbb{P}\_g) = \underset{\gamma\in\prod(\mathbb{P}\_r, \mathbb{P}\_g)}{\inf} \mathbb{E} \_{(x,y)\sim \gamma} \left[ \parallel x- y\parallel \right]
   $$
+
 
 
 
@@ -374,10 +376,10 @@ Epoch [25/25] Step [40/782]:d_loss=0.21678031980991364 g_loss=11.419050216674805
 相关代码见[GAN-Zoo/WGAN](https://github.com/corenel/GAN-Zoo/tree/master/WGAN)。WGAN在实现上主要有以下几点需要注意：
 
 - 判别器模型的输出不过Sigmoid层，而是取平均之后flatten到1维，输出的是Wasserstein距离而非分类结果。（[code](https://github.com/corenel/GAN-Zoo/blob/master/WGAN/models.py#L81-L82)）
-- 由于判别器器在一个epoch中需要训练多次，因此不能用`for..in..`来loop整个书记，而是用`iterator`来迭代循环。（代码丑陋了不少，[code](https://github.com/corenel/GAN-Zoo/blob/master/WGAN/main.py#L70-L76)）
-- 在生成器训练过25次之前，或者是之后每500次的时候，判别器在每个epoch内都需要训练100次而非默认的5次。这是为了让判别器在一开始就达到差不多最优的状态。（[code](https://github.com/corenel/GAN-Zoo/blob/master/WGAN/main.py#L59-L65)）
-- 为了提升效率，优化生成器的时候用判别器得到loss不更新判别器的梯度（[code](https://github.com/corenel/GAN-Zoo/blob/master/WGAN/main.py#L100-L102)），优化判别器用生成器生成虚假样本时也不更新生成器的梯度（[code](https://github.com/corenel/GAN-Zoo/blob/master/WGAN/main.py#L83-L88)）。
-- 在生成器的optimizer更新权值之后clamp所有的权值，使其在一定范围内，以满足K-Lipschitz条件。（[code](https://github.com/corenel/GAN-Zoo/blob/master/WGAN/main.py#L93-L95)）
+- 由于判别器器在一个epoch中需要训练多次，因此不能用`for..in..`来loop整个书记，而是用`iterator`来迭代循环。（[code](https://github.com/corenel/GAN-Zoo/blob/master/WGAN/main.py#L68-L69)）
+- 在生成器训练过25次之前，或者是之后每500次的时候，判别器在每个epoch内都需要训练100次而非默认的5次。这是为了让判别器在一开始就达到差不多最优的状态。（[code](https://github.com/corenel/GAN-Zoo/blob/master/WGAN/main.py#L58-L64)）
+- 为了提升效率，优化生成器的时候用判别器得到loss不更新判别器的梯度（[code](https://github.com/corenel/GAN-Zoo/blob/master/WGAN/main.py#L95-L97)），优化判别器用生成器生成虚假样本时也不更新生成器的梯度（[code](https://github.com/corenel/GAN-Zoo/blob/master/WGAN/main.py#L78-L83)）。
+- 在生成器的optimizer更新权值之后clamp所有的权值，使其在一定范围内，以满足K-Lipschitz条件。（[code](https://github.com/corenel/GAN-Zoo/blob/master/WGAN/main.py#L88-L90)）
 
 （待填坑……）
 
