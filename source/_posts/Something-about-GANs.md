@@ -102,6 +102,8 @@ $$
 
 
 
+
+
 从下图可以看出，heuristicly designed non-saturating cost在$D(G(z))$变化的时候，其方差较小，因此是比较合适作为生成器代价函数的选择的。
 
 ![cost_functions_of_GANs](/images/cost_functions_of_GANs.png)
@@ -162,6 +164,8 @@ KL散度都不存在了，那还优化个毛？不过这难不倒千千万万机
   $$
   W(\mathbb{P}\_r, \mathbb{P}\_g) = \underset{\gamma\in\prod(\mathbb{P}\_r, \mathbb{P}\_g)}{\inf} \mathbb{E} \_{(x,y)\sim \gamma} \left[ \parallel x- y\parallel \right]
   $$
+
+
 
 
 
@@ -268,7 +272,15 @@ WGAN-GP相对于WGAN的改进就是上面这些了，其算法的伪代码如下
 
 ![WGAN-GP_algorithm](/images/WGAN-GP_algorithm.png)
 
-（待填坑……）
+接下来看看实验结果：
+
+- WGAN-GP的收敛速度明显比WGAN快，虽然在wall time上还是比不过DCGAN，但是WGAN-GP在训练的稳定性上犹有过之。
+
+  ![WGAN-GP_figure_3](/images/WGAN-GP_figure_3.png)
+
+- 同时，在面对之前的一些困难的训练条件（比如说不用BN层甚至不用任何normalization），WGAN-GP都能够稳定训练并且结果良好。特别是面对ResNet-101这么高层的网络，只有WGAN-GP能训练出结果。
+
+  ![WGAN-GP_figure_2](/images/WGAN-GP_figure_2.png)
 
 ## GANs in Practice
 
