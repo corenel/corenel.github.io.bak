@@ -14,9 +14,7 @@ tags:
 
 最近在看关于GANs的论文，并且自己动手用PyTorch写了一些经典文章的实现，想要稍微总结一下，故有此文。在最后我总结了我自己看过的有关GANs的一些比较好的资源，希望对读者有所帮助。
 
-（待填坑……）
-
-<!-- more -->
+!-- more -->
 
 ## Before Reading: PyTorch
 
@@ -105,6 +103,7 @@ $$
 
 
 
+
 从下图可以看出，heuristicly designed non-saturating cost在$D(G(z))$变化的时候，其方差较小，因此是比较合适作为生成器代价函数的选择的。
 
 ![cost_functions_of_GANs](/images/cost_functions_of_GANs.png)
@@ -165,6 +164,7 @@ KL散度都不存在了，那还优化个毛？不过这难不倒千千万万机
   $$
   W(\mathbb{P}\_r, \mathbb{P}\_g) = \underset{\gamma\in\prod(\mathbb{P}\_r, \mathbb{P}\_g)}{\inf} \mathbb{E} \_{(x,y)\sim \gamma} \left[ \parallel x- y\parallel \right]
   $$
+
 
 
 
