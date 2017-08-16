@@ -19,7 +19,7 @@ tags:
 ## Contributions
 
 - 将之前的论文里提到的一些方法，例如weight sharing、base models、adversarial loss等，归入了统一的框架之中，并进行了测试；
-- 提出了一种新的框架ADDA，主要思想是先用有标签的源数据（labelled source data）训练一个编码器（encoder，用于将源数据映射到其特征空间中）和分类器（classifier，用于给源数据样本分类）出来。而后用GANs训练目标域的编码器（target encoder），用以将未标记的目标数据（unlabelled target data）映射到源域的特征空间中。最后就可以用源域的分类器来判别经过目标编码器的目标数据了。
+- 提出了一种新的框架ADDA，主要思想是不做分类器的自适应，而是设法将目标域的数据映射到域源域差不多的特征空间上，这样就能够复用源域的分类器。
 
 <!-- more -->
 
