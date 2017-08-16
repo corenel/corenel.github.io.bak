@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://www.yuthon.com/"/>
-  <updated>2017-08-16T03:21:28.000Z</updated>
+  <updated>2017-08-16T03:30:39.000Z</updated>
   <id>http://www.yuthon.com/</id>
   
   <author>
@@ -20,7 +20,7 @@
     <link href="http://www.yuthon.com/2017/08/15/Notes-for-Adversarial-Discriminative-Domain-Adaptation/"/>
     <id>http://www.yuthon.com/2017/08/15/Notes-for-Adversarial-Discriminative-Domain-Adaptation/</id>
     <published>2017-08-15T12:19:46.000Z</published>
-    <updated>2017-08-16T03:21:28.000Z</updated>
+    <updated>2017-08-16T03:30:39.000Z</updated>
     
     <content type="html"><![CDATA[<h2 id="About-this-paper"><a href="#About-this-paper" class="headerlink" title="About this paper"></a>About this paper</h2><ul>
 <li><strong>Title</strong>: Adversarial Discriminative Domain Adaptation</li>
@@ -30,7 +30,7 @@
 </ul>
 <h2 id="Contributions"><a href="#Contributions" class="headerlink" title="Contributions"></a>Contributions</h2><ul>
 <li>将之前的论文里提到的一些方法，例如weight sharing、base models、adversarial loss等，归入了统一的框架之中，并进行了测试；</li>
-<li>提出了一种新的框架ADDA，主要思想是先用有标签的源数据（labelled source data）训练一个编码器（encoder，用于将源数据映射到其特征空间中）和分类器（classifier，用于给源数据样本分类）出来。而后用GANs训练目标域的编码器（target encoder），用以将未标记的目标数据（unlabelled target data）映射到源域的特征空间中。最后就可以用源域的分类器来判别经过目标编码器的目标数据了。</li>
+<li>提出了一种新的框架ADDA，主要思想是不做分类器的自适应，而是设法将目标域的数据映射到域源域差不多的特征空间上，这样就能够复用源域的分类器。</li>
 </ul>
 <a id="more"></a>
 <h2 id="Methods"><a href="#Methods" class="headerlink" title="Methods"></a>Methods</h2><h3 id="Generalized-architecture-for-adversarial-domain-adaptation"><a href="#Generalized-architecture-for-adversarial-domain-adaptation" class="headerlink" title="Generalized architecture for adversarial domain adaptation"></a>Generalized architecture for adversarial domain adaptation</h3><p>如下图所示，文中提出的用于对抗性领域迁移的统一框架，主要是其中有三个可以做选择的地方：</p>
@@ -58,7 +58,7 @@
 </ul>
 <h3 id="ADDA-architecture"><a href="#ADDA-architecture" class="headerlink" title="ADDA architecture"></a>ADDA architecture</h3><p>对于上述统一框架中，ADDA的选择如下：</p>
 <ul>
-<li><strong>首先，ADDA选择了使用判别模型</strong>，因为作者觉得用生成模型生成领域内的样本所训练出来的参数，很大一部分对于判别器的自适应任务来说并没有什么用。另外，之前的文章有很多是直接在判别的空间上做自适应，这对于两个很相似的域来说是可以的，但是对于一些不那么相似的域之间，也就是所谓的“困难任务”上，这么做就不一定能够收敛了。</li>
+<li><strong>首先，ADDA选择了使用判别模型</strong>，因为作者觉得用生成模型生成领域内的样本所训练出来的参数，很大一部分对于判别器的自适应任务来说并没有什么用。另外，之前的文章有很多是直接在判别的空间上做自适应，这对于两个很相似的域来说是可以的（比如MNIST与USPS），但是对于一些不那么相似的域之间（比如MNIST与SVHN），也就是所谓的“困难任务”上，这么做就不一定能够收敛了。</li>
 <li><strong>其次，对于源映射域目标映射，ADDA选择不对两者的参数关系作出约束。</strong>当然，为了让目标映射快速收敛起见，ADDA使用了源映射的参数来初始化目标映射模型。</li>
 <li><strong>最后，ADDA使用了非饱和的GANs损失函数。</strong></li>
 </ul>
@@ -81,7 +81,7 @@
 &lt;/ul&gt;
 &lt;h2 id=&quot;Contributions&quot;&gt;&lt;a href=&quot;#Contributions&quot; class=&quot;headerlink&quot; title=&quot;Contributions&quot;&gt;&lt;/a&gt;Contributions&lt;/h2&gt;&lt;ul&gt;
 &lt;li&gt;将之前的论文里提到的一些方法，例如weight sharing、base models、adversarial loss等，归入了统一的框架之中，并进行了测试；&lt;/li&gt;
-&lt;li&gt;提出了一种新的框架ADDA，主要思想是先用有标签的源数据（labelled source data）训练一个编码器（encoder，用于将源数据映射到其特征空间中）和分类器（classifier，用于给源数据样本分类）出来。而后用GANs训练目标域的编码器（target encoder），用以将未标记的目标数据（unlabelled target data）映射到源域的特征空间中。最后就可以用源域的分类器来判别经过目标编码器的目标数据了。&lt;/li&gt;
+&lt;li&gt;提出了一种新的框架ADDA，主要思想是不做分类器的自适应，而是设法将目标域的数据映射到域源域差不多的特征空间上，这样就能够复用源域的分类器。&lt;/li&gt;
 &lt;/ul&gt;
     
     </summary>
