@@ -57,6 +57,7 @@ tags:
 
 
 
+
 ### ADDA architecture
 
 对于上述统一框架中，ADDA的选择如下：
@@ -74,3 +75,7 @@ tags:
 - 最后，使用$M\_t$，将目标域的数据变换到特征空间，并交由分类器$C$来分类。
 
 
+## Code
+
+- [code from authors (TensorFlow)](https://github.com/erictzeng/adda)
+- [my implementation (PyTorch)](https://github.com/corenel/pytorch-adda)
