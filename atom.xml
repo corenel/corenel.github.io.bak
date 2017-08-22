@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://www.yuthon.com/"/>
-  <updated>2017-08-16T03:30:39.000Z</updated>
+  <updated>2017-08-22T07:50:56.000Z</updated>
   <id>http://www.yuthon.com/</id>
   
   <author>
@@ -20,7 +20,7 @@
     <link href="http://www.yuthon.com/2017/08/15/Notes-for-Adversarial-Discriminative-Domain-Adaptation/"/>
     <id>http://www.yuthon.com/2017/08/15/Notes-for-Adversarial-Discriminative-Domain-Adaptation/</id>
     <published>2017-08-15T12:19:46.000Z</published>
-    <updated>2017-08-16T03:30:39.000Z</updated>
+    <updated>2017-08-22T07:50:56.000Z</updated>
     
     <content type="html"><![CDATA[<h2 id="About-this-paper"><a href="#About-this-paper" class="headerlink" title="About this paper"></a>About this paper</h2><ul>
 <li><strong>Title</strong>: Adversarial Discriminative Domain Adaptation</li>
@@ -68,6 +68,10 @@
 <li>首先，使用带标记的源数据$(X_s, Y_s)$来训练源映射$M_s$与分类器$C$，优化$\mathcal{L}_{cls}$；</li>
 <li>其次，固定$M_s$，使用GANs来训练$M_t$，优化$\mathcal{L}_{adv_D}$与$\mathcal{L}_{adv_M}$；</li>
 <li>最后，使用$M_t$，将目标域的数据变换到特征空间，并交由分类器$C$来分类。</li>
+</ul>
+<h2 id="Code"><a href="#Code" class="headerlink" title="Code"></a>Code</h2><ul>
+<li><a href="https://github.com/erictzeng/adda" target="_blank" rel="external">code from authors (TensorFlow)</a></li>
+<li><a href="https://github.com/corenel/pytorch-adda" target="_blank" rel="external">my implementation (PyTorch)</a></li>
 </ul>
 ]]></content>
     
