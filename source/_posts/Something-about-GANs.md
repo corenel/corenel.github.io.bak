@@ -104,6 +104,7 @@ $$
 
 
 
+
 从下图可以看出，heuristicly designed non-saturating cost在$D(G(z))$变化的时候，其方差较小，因此是比较合适作为生成器代价函数的选择的。
 
 ![cost_functions_of_GANs](/images/cost_functions_of_GANs.png)
@@ -164,6 +165,7 @@ KL散度都不存在了，那还优化个毛？不过这难不倒千千万万机
   $$
   W(\mathbb{P}\_r, \mathbb{P}\_g) = \underset{\gamma\in\prod(\mathbb{P}\_r, \mathbb{P}\_g)}{\inf} \mathbb{E} \_{(x,y)\sim \gamma} \left[ \parallel x- y\parallel \right]
   $$
+
 
 
 
@@ -383,12 +385,15 @@ Epoch [25/25] Step [40/782]:d_loss=0.21678031980991364 g_loss=11.419050216674805
 
 ### WGAN-GP
 
-相关代码见[GAN-Zoo/WGAN](https://github.com/corenel/GAN-Zoo/tree/master/WGAN-GP)。WGAN-GP在实现上与WGAN的主要区别在于：
+相关代码见[GAN-Zoo/WGAN-GP](https://github.com/corenel/GAN-Zoo/tree/master/WGAN-GP)。WGAN-GP在实现上与WGAN的主要区别在于：
 
 - 用gradient penalty代替了weight clipping。这里面涉及到计算梯度的梯度，这在PyTorch 0.2.0版本前是无法做到的，我猜大概也是因为这个原因，原作者选择了用TensorFlow来实现WGAN-GP。关于在低版本的PyTorch上实现gradient penalty的讨论[见此](https://discuss.pytorch.org/t/how-to-implement-gradient-penalty-in-pytorch/1656)。PyTorch版本更新之后增加了`torch.autograd.grad`这么一个函数，能够满足我们的需求。
-- 不使用Batch Normalization，详细原因在前文已经给出。可以选择的替代有Layer Normaliztion，Weight Normalization等。
+- 在判别器中不使用Batch Normalization，详细原因在前文已经给出。可以选择的替代有Layer Normaliztion，Weight Normalization等。
 
-（待填坑……）
+在代码与实验中，有以下几点需要注意：
+
+- 在训练的初始阶段，由于增大了判别器的训练次数（1个epoch训练100次），判别器接近最优，导致刚开始的loss非常大（~ -150000）。在判别器训练次数恢复正常后（1个epoch训练5次），loss的绝对值逐渐下降到几千几百的级别。迭代10000次左右即收敛到比较好的效果。
+- 我的代码实现里，对于判别器模型没有使用任何Normalization，加上的话收敛速度应该会有一定提升。
 
 <!-- more -->
 
