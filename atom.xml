@@ -106,7 +106,7 @@
     <link href="http://www.yuthon.com/2017/08/12/Something-about-GANs/"/>
     <id>http://www.yuthon.com/2017/08/12/Something-about-GANs/</id>
     <published>2017-08-12T11:24:14.000Z</published>
-    <updated>2017-08-16T03:04:38.000Z</updated>
+    <updated>2017-08-23T01:59:32.000Z</updated>
     
     <content type="html"><![CDATA[<p>最近在看关于GANs的论文，并且自己动手用PyTorch写了一些经典文章的实现，想要稍微总结一下，故有此文。在最后我总结了我自己看过的有关GANs的一些比较好的资源，希望对读者有所帮助。</p>
 <a id="more"></a>
@@ -270,12 +270,16 @@
 <li>为了提升效率，优化生成器的时候用判别器得到loss不更新判别器的梯度（<a href="https://github.com/corenel/GAN-Zoo/blob/master/WGAN/main.py#L95-L97" target="_blank" rel="external">code</a>），优化判别器用生成器生成虚假样本时也不更新生成器的梯度（<a href="https://github.com/corenel/GAN-Zoo/blob/master/WGAN/main.py#L78-L83" target="_blank" rel="external">code</a>）。</li>
 <li>在生成器的optimizer更新权值之后clamp所有的权值，使其在一定范围内，以满足K-Lipschitz条件。（<a href="https://github.com/corenel/GAN-Zoo/blob/master/WGAN/main.py#L88-L90" target="_blank" rel="external">code</a>）</li>
 </ul>
-<h3 id="WGAN-GP-1"><a href="#WGAN-GP-1" class="headerlink" title="WGAN-GP"></a>WGAN-GP</h3><p>相关代码见<a href="https://github.com/corenel/GAN-Zoo/tree/master/WGAN-GP" target="_blank" rel="external">GAN-Zoo/WGAN</a>。WGAN-GP在实现上与WGAN的主要区别在于：</p>
+<h3 id="WGAN-GP-1"><a href="#WGAN-GP-1" class="headerlink" title="WGAN-GP"></a>WGAN-GP</h3><p>相关代码见<a href="https://github.com/corenel/GAN-Zoo/tree/master/WGAN-GP" target="_blank" rel="external">GAN-Zoo/WGAN-GP</a>。WGAN-GP在实现上与WGAN的主要区别在于：</p>
 <ul>
 <li>用gradient penalty代替了weight clipping。这里面涉及到计算梯度的梯度，这在PyTorch 0.2.0版本前是无法做到的，我猜大概也是因为这个原因，原作者选择了用TensorFlow来实现WGAN-GP。关于在低版本的PyTorch上实现gradient penalty的讨论<a href="https://discuss.pytorch.org/t/how-to-implement-gradient-penalty-in-pytorch/1656" target="_blank" rel="external">见此</a>。PyTorch版本更新之后增加了<code>torch.autograd.grad</code>这么一个函数，能够满足我们的需求。</li>
-<li>不使用Batch Normalization，详细原因在前文已经给出。可以选择的替代有Layer Normaliztion，Weight Normalization等。</li>
+<li>在判别器中不使用Batch Normalization，详细原因在前文已经给出。可以选择的替代有Layer Normaliztion，Weight Normalization等。</li>
 </ul>
-<p>（待填坑……）</p>
+<p>在代码与实验中，有以下几点需要注意：</p>
+<ul>
+<li>在训练的初始阶段，由于增大了判别器的训练次数（1个epoch训练100次），判别器接近最优，导致刚开始的loss非常大（~ -150000）。在判别器训练次数恢复正常后（1个epoch训练5次），loss的绝对值逐渐下降到几千几百的级别。迭代10000次左右即收敛到比较好的效果。</li>
+<li>我的代码实现里，对于判别器模型没有使用任何Normalization，加上的话收敛速度应该会有一定提升。</li>
+</ul>
 <!-- more -->
 <h2 id="Further-Reading"><a href="#Further-Reading" class="headerlink" title="Further Reading"></a>Further Reading</h2><p>最后总结一些我在学习过程中看过的比较好的资料以及代码实现：</p>
 <ul>
